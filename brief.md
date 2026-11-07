@@ -46,6 +46,41 @@ Followed by the lecturer's announcement, pasted in full: "PA#2: your team decide
 > Gambetta là không lỗi thôi
 > áp dụng các font không lỗi theo bạn biết trước
 
+### 1.7 Review, division of work and repository (2026-11-07)
+
+> đã xong thiết kế ban đầu trong artifact, bạn xem thử được không
+
+> mình nên chia việc cho thành viên Khánh như thế nào
+
+> về set up góc chụp bạn có cần mình lựa hình để để hiểu và tạo bố cục 3D như thế nào như trong video khong
+
+> Mình chủ yếu sẽ thiết kế landing page còn các trang phần sau mình muốn Khánh làm và mình sẽ duyệt kỹ như cách thầy chấm, mình muốn yêu cầu Khánh thiết kế phần sau thật kỹ cho từng component đặc biệt là status bagde, ...
+> Bạn cho mình phần phần chia lại
+
+> Tạo luôn repo cho mình, liên tục cập nhật ai log
+
+> đổi tên file có sai quy định không và nếu Khánh không có link design system thì sao, có thể gửi ở dạng khác vì Khánh có thể dùng agent khác nên mình muốn dùng file để dùng chung dễ dàng hơn
+
+### 1.8 The photographer's story (2026-11-07)
+
+> Mình có thể lấy hình ảnh pov photographer được không
+
+> mình sẽ thích kiểu qua màn hình máy ảnh hơn vì muốn cái nhìn vào là khách hàng nhìn và
+
+> ý tưởng của mình là pov của photographer cầm máy ảnh xong có một cái tay điều chỉnh cho mọi người trong lớp tạo dáng và chụp xong photographer di chuyển góc chụp tiếp tục chụp xong lại di chuyển ra sân trường để có góc chụp khác, giống như một câu chuyện chụp ảnh thật
+
+> làm thử cho mình xem
+
+> https://tracewood.aura.build/ bạn xem thử web này, mình thấy cách này khá hay và có thể áp dụng, bạn xem và nêu cho mình nếu áp dụng cho ý tưởng hiện tại thì câu chuyện chụp ảnh thay đổi bối cảnh thế nào
+
+### 1.9 Skeleton and 3D (2026-11-07)
+
+> Tên file: quan-ly.html
+
+> mình vẫn muốn áp dụng phần 3d như tracewood được không
+
+> bạn xem lại yêu cầu đề có file nào cần vừa làm vừa ghi song song như ai log nữa không
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

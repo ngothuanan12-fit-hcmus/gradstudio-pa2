@@ -86,6 +86,15 @@ Changed: the assistant had said the effect needs ready-made 3D models. That was 
 Rejected: Tracewood's post-processing effects, such as `GTAOPass`, to keep it light on weak machines. Not measured.
 By hand: An's decision to use 3D.
 
+## 2026-11-07 — which files must be kept up to date while working
+Commit: the commit that adds this entry, directly after 0d1384e.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: check the rubric for other files that must be written alongside the work, like this log.
+Kept: the answer: `brief.md` must be kept the same way.
+Changed: rereading the rubric showed the assistant had let `brief.md` fall behind since the fonts step. It added the missing prompts, as sent, with dates. They were added afterwards, on the same day.
+Rejected: nothing.
+By hand: An's question caught this.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
