@@ -92,4 +92,18 @@ Asked for: add commit hashes to this log, put it in time order, and create `brie
 Kept: the prompts and the Claude Design text as given.
 Changed: while writing `brief.md`, the assistant found that the Claude Design text leaves out relative links, the semantic rules, no fixed widths and the W3C and Accessibility checks. They are in a separate prompt for building the pages, marked as not yet sent.
 Rejected: adding those constraints to the Claude Design text afterwards, because the brief must show what was actually given.
-By hand: An confirmed the pasted text matches what the assistant wrote. An pasted it into Claude Design; the result is not yet logged.
+By hand: An confirmed the pasted text matches what the assistant wrote. An pasted it into Claude Design; the result is logged in the next entry.
+
+## 2026-11-07 — design system from Claude Design, and its review
+Commit: the commit that adds this entry, directly after 4585cea. The design system itself is outside the repository.
+Tool: Claude Design made the system (tokens, two themes, 15 components). Claude Code reviewed it.
+Asked for: Claude Design: the text in `brief.md` Part 2. Claude Code: look at the result.
+Kept: colours and spacing tokens, the type scale, the component list and the scroll structure. All 36 colour pairs we computed passed (4.5:1 for text, 3:1 for control borders). No `!important`.
+Changed (to do when porting, nothing is built yet):
+- The drawing is a flat floor plan, with no `rotate` or `perspective` in the CSS, so it is not the 3D effect we asked for. Caught by rendering it in Chrome and searching the CSS.
+- At a 360 px wide container the schedule grid sticks out, from `min-width: 880px`. It scrolls inside its box, but the rubric only exempts a table's wrapper, so it needs a real table or a list at 360 px. Caught by the rubric's second Console line, adapted to 360 because headless Chrome would not open narrower than about 500 px.
+- `dangerouslySetInnerHTML` for the drawing, and index keys in four lists, break our NEVER list. Caught by searching `bundle.js`.
+- The chat form and booking form call `preventDefault`, which would stop their main-flow `action`.
+- It is built for React 18 and global `window.GradStudio`, and loads fonts with `@import`; our rules use React 19, modules, and fonts in the repository.
+Rejected: nothing yet.
+By hand: An ran Claude Design. The canvas for the three screens is still empty, so the pages themselves have not been designed.
