@@ -7,7 +7,7 @@ Started on 2026-11-07, with the first commit after the rules file. The two earli
 Tool: Claude Code (Claude Opus 5.5).
 Asked for: JavaScript rules based on the exercises in `BT/` and `theory/`, then also the lecturer's feedback stored in the `Web` folder.
 Kept: the never list, the *Done means* table and the process rules taken from lecturer feedback (commit 798a111).
-Changed: the assistant first planned to allow `type="module"`; we tested a page from `file://` in headless Chrome. A classic `defer` script ran, but `type="module"` and `fetch` failed, so both became never rules.
+Changed: nothing by hand yet. To check the rule about opening from the folder, the assistant tested a page from `file://` in headless Chrome: a classic `defer` script ran, but `type="module"` and `fetch` failed, so both became never rules for static pages.
 Rejected: the PA#1 feedback about the official-looking header, because GradStudio has no such header; CI rules, because the PA#2 rubric does not mark CI.
 By hand: An asked for the rules and chose the sources. Rules not yet reviewed with Khánh.
 
