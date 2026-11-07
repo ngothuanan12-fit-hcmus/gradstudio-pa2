@@ -107,3 +107,12 @@ Changed (to do when porting, nothing is built yet):
 - It is built for React 18 and global `window.GradStudio`, and loads fonts with `@import`; our rules use React 19, modules, and fonts in the repository.
 Rejected: nothing yet.
 By hand: An ran Claude Design. The canvas for the three screens is still empty, so the pages themselves have not been designed.
+
+## 2026-11-07 — dividing the work
+Commit: the commit that adds this entry, directly after b78e89a.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: a new division: An designs the landing page, Khánh designs and builds the later pages in detail, An reviews them the way the lecturer marks.
+Kept: the division, the component requirements and the review steps, for the team to confirm.
+Changed: An's request replaced the assistant's earlier split. The assistant also noticed that the design system has four badge tones while the GradStudio proposal has nine booking statuses, so the requirements include a mapping. It also flagged that "Tạo booking" starts disabled, which stops the main flow until a free time is chosen.
+Rejected: nothing yet.
+By hand: An decided the roles.
