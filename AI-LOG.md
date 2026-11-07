@@ -350,3 +350,17 @@ Not changed: no page component, style, data or build file was touched in this au
 Checks: reread the five named files, `git status --short`, `git diff --name-status`, `git log --oneline` and the recent file history. The source files were unchanged since the last `npm run lint` and `npm run build`, so the full build and flow suite was not repeated. One targeted check was added: enumerate every internal link and form action on the three rendered pages, confirm the three paths return 200, and read `clientWidth` at 1280 px with mobile emulation. This follows the owner's limit on unnecessary test runs.
 Assistant's error: the first completion report said the two pages were ready before updating `AI-LOG.md` or `brief.md`, although both are mandatory in `CLAUDE.md`. The owner's audit caught it. This entry and the new gate are the correction, and the missing prompt is now in `brief.md` verbatim rather than reconstructed.
 By hand: the owner wrote the audit directive and required the gate. No manual source edit.
+
+## 2026-11-08 — develop branch and pull request #1 (pushed)
+
+Commit: the commit that adds this entry, directly after 1a1e40b.
+Tool: OpenCode (DeepSeek V4.1 Flash Free) and `gh` 2.46.0.
+Asked for: the owner's prompt of 2026-11-08, recorded in `brief.md` Part 5: use the `gh` CLI to create `develop` from `main`, create a branch from the work, commit, push, and open a pull request into `develop` with a full comment.
+Done:
+- Created `develop` from `main` at `7e14731` and pushed it to `origin`.
+- Created `feature/quan-ly-lich-chup` from `develop`.
+- Committed `5b7b341` "Build the management and customer schedule pages" (17 files) and `1a1e40b` "Record the build and audit in AI-LOG" (1 file).
+- Pushed the feature branch and opened PR #1 with base `develop` and head `feature/quan-ly-lich-chup`: https://github.com/ngothuanan12-fit-hcmus/gradstudio-pa2/pull/1
+- Added a Done-means evidence comment to the PR: https://github.com/ngothuanan12-fit-hcmus/gradstudio-pa2/pull/1#issuecomment-6710871237
+Checks: `gh pr view 1` reports `OPEN`, base `develop`, head `feature/quan-ly-lich-chup`; the branch carries `5b7b341` and `1a1e40b`, and this entry is the commit after them. `git status` leaves only the pre-existing `.gitignore` change; it is not part of the branch or the PR.
+By hand: the owner requested the branch and the pull request. No source edit was made in this step.

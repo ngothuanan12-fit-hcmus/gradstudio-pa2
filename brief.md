@@ -2,7 +2,7 @@
 
 Team: Ngô Thuận An (23120206), Nguyễn Hữu Khánh (24120340).
 
-The prompts are pasted in order, in the language they were sent. Status lines and notes in English were added by the team. Prompts sent to coding assistants are in Part 1, Part 3A and Part 4; the design system set-up is in Part 2. Part 3 is a draft that was never sent; the prompt actually sent for the two pages is Part 3A. Part 4 is the documentation audit sent on 2026-11-08.
+The prompts are pasted in order, in the language they were sent. Status lines and notes in English were added by the team. Prompts sent to coding assistants are in Part 1, Part 3A, Part 4 and Part 5; the design system set-up is in Part 2. Part 3 is a draft that was never sent; the prompt actually sent for the two pages is Part 3A. Part 4 is the documentation audit sent on 2026-11-08; Part 5 is the branch and pull-request request sent later that day.
 
 ## Part 1 — Claude Code: rules and decisions (sent)
 
@@ -358,6 +358,14 @@ Trả về:
 Từ các task tiếp theo, chủ động cập nhật AI-LOG.md và brief.md theo CLAUDE.md, không chờ tôi nhắc lại.
 ```
 
+## Part 5 — GitHub branch and pull request (sent 2026-11-08)
+
+**Nguyên văn prompt đã gửi.**
+
+```text
+Dùng gh cli để tạo cho tôi 1 nhánh develop từ main sau đó tạo branch từ những gì vừa làm commit lên branch sau đó push lên và tạo pull request vào develop viết comment đầy đủ
+```
+
 ## Still to add
 
-- Prompts sent after 2026-11-08, in order, including any sent by Khánh.
+- Prompts sent after Part 5, in order, including any sent by Khánh.
