@@ -8,6 +8,7 @@ Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 ann
 - React 19 with Vite, as in session 6. The built `dist/` folder is handed in and opened through a local server with JavaScript on. `PA2` `S6`
 - Three pages, built by Vite as three HTML files, `index.html`, `hoi-thoai.html` and `lich-chup.html`, joined by relative `<a href>`. No router, so every screen has a real path. List these paths in `PROTOTYPE.md`. `PA2`
 - `base: './'` in `vite.config.js`, so `dist/` still loads when it is not served from the root.
+- Customer pages and the studio's management page have separate layouts in one project: `CustomerLayout` and `AdminLayout`. This saves building user roles for now, but it is not protection: anyone can open a page by its path. Once real customer data exists, the server must require a login for the management side. Lecturer's remark in class `FB`
 - Data lives in `src/data.js`. There is no API in PA#2, and the session 6 fake API runs only on the dev server, not in `dist/`. `S6`
 - Plain CSS with custom properties. One framework at most for the semester, and we use none. `PA2`
 - Spacing scale: `--space-1` to `--space-8` = 4, 8, 12, 16, 24, 32, 48, 64 px.
@@ -40,6 +41,11 @@ Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 ann
 - Status text goes in one `role="status"` element. `IA2` `S6`
 - Format money as `price.toLocaleString('vi-VN') + ' đ'`. Convert strings with `Number()` before calculating. `IA2` `S6`
 - Each HTML file has `<meta name="viewport">`, a `<title>`, and a `<noscript>` message. `PA2`
+- The page must stay smooth on Slow 4G. Lecturer's remark in class `FB`
+  - Keep images in the repository, compressed, in WebP, sized for their slot, with `srcset` where phone and laptop differ.
+  - Every image has `width` and `height` or an `aspect-ratio`, so nothing jumps when it loads. Images below the first screen use `loading="lazy"`; the main image does not.
+  - Each HTML file has a small shell inside `#root` (page name and a loading line), so a slow connection never shows a blank page.
+  - Use one font family with `font-display: swap`, or system fonts.
 - Buttons and standalone links have `min-height: 44px` at 360 px. At least one long item, such as a long Vietnamese name, must wrap. `PA2`
 
 ## When a page talks to a server (PA#3 onward)
@@ -66,7 +72,8 @@ Run these yourself. "The assistant says it works" is not a check. `IA2` `IA3` `S
 | 7 | W3C checker and DevTools Accessibility pane | 0 errors; landmarks, one `<h1>`, labels, `alt`. How to check rendered React pages is still to be confirmed with the lecturer |
 | 8 | DevTools colour picker | Body text 16 px or larger; text and buttons at 4.5:1 or better |
 | 9 | Read `src/` against the NEVER list | `key={item.id}`, no `dangerouslySetInnerHTML`, totals computed |
-| 10 | `git diff --stat` before each commit | Only the files this step meant to change |
+| 10 | `npm run preview`, Network tab, tick *Disable cache*, choose *Slow 4G*, reload each path. Do not measure on `npm run dev` | Page name shows at once, never blank; no layout jump as images load; controls work; no failed request. Team target: usable within 3 seconds |
+| 11 | `git diff --stat` before each commit | Only the files this step meant to change |
 
 ## Team process (from lecturer feedback)
 
