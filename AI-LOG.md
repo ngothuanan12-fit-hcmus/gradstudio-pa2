@@ -58,6 +58,15 @@ Changed: three things found in Chrome screenshots, then fixed in the test: the s
 Rejected: nothing yet.
 By hand: none. Real scrolling smoothness and the phone layout have not been tested. The photo on the camera screen is a placeholder.
 
+## 2026-11-07 — studying tracewood.aura.build
+Commit: the commit that adds this entry, directly after 53bea7e.
+Tool: Claude Code (Claude Opus 5.5), with Playwright to scroll the site and capture frames.
+Asked for: how the site's approach would change the settings in our photographer's story.
+Kept: its ideas, for An to decide: every scene starts as lines and dissolves into a real picture, content sits inside the scene (prints on a desk, sheets pinned to a board), and a section menu at the bottom.
+Changed: the site runs live 3D with three.js and a loading screen, took 67 s to load in our headless Chrome (no graphics card, so not a fair speed test) and is titled as a template. So the assistant proposed building the ideas with SVG, CSS and photos, not its code or 3D.
+Rejected: remixing or copying the template, because the rubric gives 0–4 for a ready-made template; three.js, for the dependency rule and Slow 4G.
+By hand: An found the site.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
