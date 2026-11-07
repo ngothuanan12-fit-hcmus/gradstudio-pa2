@@ -54,7 +54,7 @@ Design system có 4 tông, còn đề xuất có 9 trạng thái cộng thêm t�
 | `ChatPanel` | Tin của khách và studio, tin rất dài, ô nhập có `label`, gửi rỗng không tạo tin |
 | `BookingForm` | Mọi ô có `label` thật, lỗi dưới ô kèm `aria-invalid`, form có `action` sang `lich-chup.html` |
 | `ConflictAlert` | Nêu rõ ai bận lúc nào. Giờ trống là `button` có trạng thái đã chọn. Chọn 14:00 thì hết báo lỗi |
-| `ResourceSchedule` | 4 kiểu Bận, Trùng, Trống, Đề xuất. Không che chữ. Xử lý 360px như bảng trên |
+| `ResourceSchedule` | 4 kiểu Bận, Trùng, Trống, Đề xuất. Không che hay cắt chữ: bản xem trước đang cắt "Linh yêu cầu" và "Linh · makeup" trong khối 1 giờ, phải sửa. Xử lý 360px như bảng trên |
 | `WeekCalendar` | Ngày đang chọn, ngày không có lịch, tab là `button`, 09:00 cũ gạch ngang, 14:00 là giờ mới |
 | `BookingSummary` | `GS-1024`, gói, ngày, giờ, tiền thẳng cột, tên gói dài xuống dòng |
 | `DepositCard` | 1.800.000đ, cọc 540.000đ, còn 1.260.000đ |
