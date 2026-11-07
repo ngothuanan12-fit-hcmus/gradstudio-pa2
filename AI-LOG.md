@@ -212,6 +212,15 @@ Changed: nothing in the code. Outside the repository, the rubric PDF moved out o
 Rejected: nothing.
 By hand: An's decisions. An has not reported testing on a real graphics card.
 
+## 2026-11-07 — end of the day
+Commit: the commit that adds this entry, directly after ca48062.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: An closed the day and asked that this log and `brief.md` keep being written alongside the work.
+Kept: state at close: landing page on `main`; quan-ly and lich-chup are still placeholders for Khánh.
+Changed: nothing in the code.
+Rejected: nothing.
+By hand: still open for 2026-11-08: the photo gallery, the Pexels label decision, smoothness on a real graphics card, W3C, screenshots, self-assessment, and review of Khánh's pages.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

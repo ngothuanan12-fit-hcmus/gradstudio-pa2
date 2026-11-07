@@ -136,6 +136,8 @@ An also attached that photo.
 
 > 1 gộp vài main, nhắc thư viện ảnh mai mình làm liền
 
+> đã xong việc hôm nay, nhớ ghi nhận ai log liên tục và song song
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
