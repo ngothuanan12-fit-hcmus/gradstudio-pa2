@@ -3,7 +3,7 @@ import { flushSync } from 'react-dom';
 import CustomerLayout from '../layouts/CustomerLayout.jsx';
 import ChatDock from '../components/ChatDock.jsx';
 import PackageCard from '../components/PackageCard.jsx';
-import StoryHero from '../components/StoryHero.jsx';
+import Story from '../components/Story.jsx';
 import { packages, processSteps } from '../data.js';
 import '../styles/home.css';
 
@@ -23,7 +23,7 @@ export default function Home() {
 
   return (
     <CustomerLayout current="home" wide>
-      <StoryHero />
+      <Story />
 
       <section className="home-section" id="goi-chup" aria-labelledby="goi-chup-title">
         <h2 className="section-heading" id="goi-chup-title">Chọn buổi chụp của bạn</h2>

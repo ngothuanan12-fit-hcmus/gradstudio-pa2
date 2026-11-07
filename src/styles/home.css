@@ -54,6 +54,40 @@
   .hero-text { position: relative; justify-items: center; text-align: center; padding: var(--space-24); }
 }
 
+/* 3D story. Only shown at 768 px or wider. Words live in the scene: each moment has its own place. */
+.story { position: relative; height: 1400vh; }
+.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: clip; background: var(--ground); }
+.stage-view { display: block; width: 100%; height: 100%; }
+.stage-veil { position: absolute; inset: 0; background: var(--ground); opacity: 0; pointer-events: none; }
+.stage-links { position: absolute; top: var(--space-16); right: var(--space-24); justify-content: flex-end; z-index: 1; }
+.stage-links .btn-secondary { background: var(--scrim); }
+.stage-bar { position: absolute; inset: auto 0 0; height: var(--space-4); background: var(--surface-raised); }
+.stage-bar i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+
+.cap { position: absolute; display: grid; gap: var(--space-12); opacity: 0; visibility: hidden; font-size: 18px; line-height: 28px; text-shadow: 0 1px 3px rgba(0, 0, 0, .65), 0 2px 22px rgba(0, 0, 0, .6); }
+.cap .story-title { font-size: clamp(44px, 5.2vw, 76px); line-height: 1.08; text-wrap: balance; }
+.cap-price { margin-top: var(--space-4); font-size: 22px; line-height: 32px; font-weight: 600; }
+.cap-note { color: var(--ink-muted); font-size: 16px; line-height: 26px; }
+
+.at-center { inset: 0; align-content: center; justify-items: center; text-align: center; padding: var(--space-32); }
+.at-top { top: var(--space-64); left: 0; right: 0; text-align: center; padding-inline: var(--space-32); }
+.at-bottom { bottom: var(--space-32); left: 0; right: 0; text-align: center; padding-inline: var(--space-32); }
+.at-left, .at-right { top: 0; bottom: 0; width: min(36vw, 500px); align-content: center; }
+.at-left { left: clamp(var(--space-32), 5vw, 96px); }
+.at-right { right: clamp(var(--space-32), 5vw, 96px); }
+.at-lefttop { top: var(--space-64); left: clamp(var(--space-32), 5vw, 96px); width: min(42vw, 620px); padding-top: var(--space-32); }
+
+/* A soft dark backing only where the words sit on a bright or busy part of the scene. */
+.at-top::before, .at-bottom::before, .at-center::before { content: ""; position: absolute; z-index: -1; pointer-events: none; }
+.at-top::before { inset: calc(var(--space-64) * -1) 0 calc(var(--space-48) * -2); background: linear-gradient(rgba(8, 6, 3, .68) 55%, rgba(8, 6, 3, 0)); }
+.at-bottom::before { inset: calc(var(--space-48) * -2) 0 calc(var(--space-32) * -1); background: linear-gradient(rgba(8, 6, 3, 0), rgba(8, 6, 3, .8) 50%); }
+.at-center::before { inset: 0; background: radial-gradient(ellipse 38% 30% at 50% 50%, rgba(8, 11, 10, .82) 45%, rgba(8, 11, 10, 0) 100%); }
+
+/* Tall windows: photos sit high, so every caption goes below them. */
+@media (orientation: portrait) {
+  .at-left, .at-right, .at-lefttop { inset: auto var(--space-24) var(--space-24); width: auto; padding: var(--space-16); background: var(--scrim); border-radius: var(--radius-md); text-shadow: none; }
+}
+
 @media (min-width: 1280px) {
   .home-section { padding-inline: var(--space-48); }
   .process { grid-template-columns: repeat(4, minmax(0, 1fr)); }
