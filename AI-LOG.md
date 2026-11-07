@@ -203,6 +203,15 @@ Changed: on a real page the assistant added links that skip the long story, and 
 Rejected: nothing by An in this step. The assistant left out the photo gallery from Screen 1 to save time and listed it in `PROTOTYPE.md`; An has not decided on that yet.
 By hand: An approved version 8. Smoothness on a real graphics card and the W3C check on rendered pages are still not done. Nothing is merged to `main` yet.
 
+## 2026-11-07 — landing page merged to main
+Commit: the commit that adds this entry, directly after 911c81e, which `main` reached by fast-forward from `landing`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: An asked to merge `landing` into `main`, and to clean up. An decided the photo gallery from Screen 1 will be built tomorrow, 2026-11-08.
+Kept: all commits of `landing`, unchanged. Lint and build pass on `main`.
+Changed: nothing in the code. Outside the repository, the rubric PDF moved out of the project folder and the unused Gambetta fonts were deleted, at An's request.
+Rejected: nothing.
+By hand: An's decisions. An has not reported testing on a real graphics card.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

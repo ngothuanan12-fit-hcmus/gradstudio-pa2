@@ -132,6 +132,10 @@ An also attached that photo.
 
 > đồng ý với bản 8
 
+> dọn các phần trước được không
+
+> 1 gộp vài main, nhắc thư viện ảnh mai mình làm liền
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
