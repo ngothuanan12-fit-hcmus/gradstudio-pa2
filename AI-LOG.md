@@ -194,6 +194,15 @@ Changed: chalk labels no longer show behind the closing words. Words still stay 
 Rejected: the Unsplash photo from the original team's card, replaced by An's choice.
 By hand: An chose the photo. Whether An approves the rest of version 7 is still open.
 
+## 2026-11-07 — An approved version 8; landing page built in the project
+Commit: 8f7a1c0 for the page without 3D and the commit before this entry for the 3D, on branch `landing`.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL for the checks.
+Asked for: An approved version 8 of the test scene: the words that follow each scene, the zoom speed, the photos and the descriptions. The assistant then moved it into `Home.jsx`, without 3D first, as already agreed.
+Kept: the approved scene and words, moved into `src/story/scene.js` as a module with start and stop. Package cards, "Tư vấn gói này", the process and the chat from Screen 1. `three` loads only at 768 px or wider, with WebGL and without reduced motion.
+Changed: on a real page the assistant added links that skip the long story, and moved the caption under the photo in tall windows such as 768 x 800. Package photos had uneven heights in the first screenshot and now share one frame. Checks on the built page: 360, 768 and 1280 px pass, FAILURES: 0, nothing past the right edge during the 3D. Controls work by mouse and Enter. Narrowing the window from 1280 to 360 falls back to the plain screen. On a phone, with reduced motion and without WebGL, the 3D file is not downloaded. Slow 4G at 1280 px, measured in headless Chrome: words at 2.0 s, 3D takes over at 6.4 s, all loaded at 8.6 s.
+Rejected: nothing by An in this step. The assistant left out the photo gallery from Screen 1 to save time and listed it in `PROTOTYPE.md`; An has not decided on that yet.
+By hand: An approved version 8. Smoothness on a real graphics card and the W3C check on rendered pages are still not done. Nothing is merged to `main` yet.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

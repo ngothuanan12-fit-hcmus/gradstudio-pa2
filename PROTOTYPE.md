@@ -27,7 +27,7 @@ Paths, relative to the server root of `dist/`:
 
 | File | PA#1 screen | What the user does there | Links open |
 |---|---|---|---|
-| `index.html` | Screen 1, `docs/pa1/01-customer-services-chat.png` | The customer follows the shoot story, sees the packages, and sends a chat message | Chat form → `quan-ly.html`; menu → `lich-chup.html` |
+| `index.html` | Screen 1, `docs/pa1/01-customer-services-chat.png` | The customer follows the classroom story, sees the three packages, asks about one, and sends a chat message | Chat form → `quan-ly.html`; menu → `lich-chup.html`; "Xem gói chụp" and "Chat với studio" move within the page |
 | `quan-ly.html` | Screen 2, `docs/pa1/02-admin-scheduling.png`, `02b`, `02c` | The studio sees the conflict at 09:00, picks 14:00, records Linh's agreement and creates booking GS-1024 | "Tạo booking" → `lich-chup.html` |
 | `lich-chup.html` | Screen 3, `docs/pa1/03-customer-appointment.png` | Linh checks the agreed schedule and the deposit | Menu → `index.html` |
 
@@ -38,12 +38,14 @@ Decided so far. Add each new difference when it is made.
 | Difference | Why |
 |---|---|
 | New visual design: colours, type, components and layout | The lecturer lets each team decide the design |
-| The landing page tells a shoot as a first-person story in 3D, from the classroom to the schoolyard | Customers see the process and possible frames before asking. The steps and angles are examples, not the studio's real process |
-| Packages and sample photos sit inside the story's scenes | They replace separate sections, so the page reads as one journey |
-| Stacked steps on phones, without 3D or reduced motion | A 3D scene does not suit 360 px or Slow 4G |
+| The first screen is a 3D walk into a classroom, where one photo per package is pinned on the board | The page shows the services as one journey. The classroom is an illustration, not the studio's premises |
+| Package cards, process and chat follow the story as normal sections, in every version | So every feature works with a keyboard and without 3D |
+| A plain first screen on phones, without WebGL or with reduced motion | A 3D scene does not suit 360 px or Slow 4G. The 3D code is not downloaded there |
+| The chat is a section, not a corner box; sending a message opens `quan-ly.html` | It carries the main flow to the next page |
+| The photo gallery, the drag-a-photo block and the customer logos are removed | The package photos show the style. Listed here so the difference is on record |
 | Separate layouts for customer and management pages | The lecturer's remark in class |
 | The Màn 1, 2 and 3 demo switcher is removed | Pages link through the main flow instead |
-| Our own photos replace the ones in PA#1 | Those belong to the PA#1 team's references |
+| Different stock photos replace the ones in PA#1 | Sources are in `docs/IMAGE_SOURCES.md` |
 
 ## Not wired yet
 

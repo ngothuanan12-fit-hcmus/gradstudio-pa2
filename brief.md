@@ -130,6 +130,8 @@ An also attached eight photos.
 
 An also attached that photo.
 
+> đồng ý với bản 8
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
