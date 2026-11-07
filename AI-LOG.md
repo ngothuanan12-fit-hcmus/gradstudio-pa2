@@ -122,6 +122,24 @@ Changed: the page descriptions for two corridors were nearly the same, so the as
 Rejected: the photo of adults in white áo dài, because it does not show the students we target. Photos with banners naming a real school need cropping.
 By hand: An chose and downloaded the photos. The portrait has not been compared with its source page.
 
+## 2026-11-07 — font check: Gambetta fails Vietnamese
+Commit: the commit that adds this entry, directly after 0c7b0a5.
+Tool: Claude Code (Claude Opus 5.5), with fontTools and Chrome.
+Asked for: check whether the downloaded font is right.
+Kept: the check itself. A comparison with Newsreader, Playfair Display and Lora, for An to choose.
+Changed: Gambetta was chosen earlier, on An's test on Fontshare and the assistant's advice to use that test. The font file has only 38 of 134 Vietnamese letters, and no combining hook, horn or dot. In Chrome, letters such as ử, ổ, Ả and Ớ fell back to another font, heavier and upright. The assistant's earlier test string could not show this reliably. It had said "looks the same" was enough; reading the font file is the check that works.
+Rejected: Gambetta, pending An's decision. Newsreader stands in for now, so `CLAUDE.md` still names Gambetta until An decides.
+By hand: An downloaded the font and asked for the check. An also confirmed the portrait's source, and asked to leave the label for identifiable students undecided.
+
+## 2026-11-07 — 3D classroom, part 1: the room only
+Commit: the commit that adds this entry, directly after 0c7b0a5. The test page is outside the repository, and none of its code is in the project yet.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL for the checks.
+Asked for: build the classroom in small parts, stop for review after each. This part: lines turning into a room while scrolling in.
+Kept: awaiting An's review. Anything An rejects will be recorded here.
+Changed: two errors found in screenshots at six scroll positions: window glass and the door opening sat inside the wall and were cut into jagged shapes, and the ceiling was too dark. Both fixed and rendered again. No console errors, no sideways scroll at 390 px.
+Rejected: nothing yet.
+By hand: An set the way of working. Smoothness on a real graphics card has not been tested.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

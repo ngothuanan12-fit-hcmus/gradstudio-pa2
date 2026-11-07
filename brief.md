@@ -101,6 +101,12 @@ An also attached that portrait photo.
 
 An also attached eight photos.
 
+> ảnh chân dung đúng rồi
+> Tuổi của người trong 2 ảnh Pexels: hai ảnh có vẻ là học sinh, có thể chưa đủ 18 tuổi, và đồng phục có thể có phù hiệu trường. Pexels không cho biết họ đã đồng ý thế nào. Với bài tập, mình đề xuất ghi rõ "Ảnh minh họa", không viết như thể đây là khách thật của studio phần này nên để lại, chưa xử lý vì mình không thích cách xử lý này
+> xem font đúng chưa
+> cảnh lớp học 3d làm từng phần nhỏ xem ổn không hoặc cần chỉnh sửa mới làm tiếp
+> phần làm này nhớ lưu ý nhắc mình chọn reject nếu có sai vào ai log
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
