@@ -1,19 +1,62 @@
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 import CustomerLayout from '../layouts/CustomerLayout.jsx';
-import ChatPanel from '../components/ChatPanel.jsx';
-import { messages } from '../data.js';
+import ChatDock from '../components/ChatDock.jsx';
+import PackageCard from '../components/PackageCard.jsx';
+import StoryHero from '../components/StoryHero.jsx';
+import { packages, processSteps } from '../data.js';
+import '../styles/home.css';
 
-// Placeholder for An's landing page. The chat form is the main-flow link to the next page.
 export default function Home() {
+  const [askingId, setAskingId] = useState(null);
+  const [chatOpen, setChatOpen] = useState(true);
+  const asking = packages.find((item) => item.id === askingId);
+
+  function askAbout(id) {
+    // The chat must be open in the page before it can take focus.
+    flushSync(() => {
+      setAskingId(id);
+      setChatOpen(true);
+    });
+    document.getElementById('home-chat-input').focus();
+  }
+
   return (
-    <CustomerLayout current="home">
-      <h1 className="page-title">Đi qua một buổi chụp</h1>
-      <ChatPanel
-        id="home-chat"
-        label="Tin nhắn cho studio"
-        placeholder="Nhập tin nhắn cho studio"
-        messages={messages.slice(0, 1)}
-        action="quan-ly.html"
-      />
+    <CustomerLayout current="home" wide>
+      <StoryHero />
+
+      <section className="home-section" id="goi-chup" aria-labelledby="goi-chup-title">
+        <h2 className="section-heading" id="goi-chup-title">Chọn buổi chụp của bạn</h2>
+        <p>Mỗi buổi chụp bắt đầu bằng một cuộc trò chuyện.</p>
+        <div className="package-list">
+          {packages.map((item) => (
+            <PackageCard key={item.id} item={item} asking={item.id === askingId} onAsk={askAbout} />
+          ))}
+        </div>
+        <p className="home-note">Giá tham khảo. Giá chốt được ghi trên booking sau khi tư vấn.</p>
+      </section>
+
+      <section className="home-section" aria-labelledby="quy-trinh-title">
+        <h2 className="section-heading" id="quy-trinh-title">Từ một tin nhắn đến bộ ảnh hoàn chỉnh</h2>
+        <ol className="process">
+          {processSteps.map((step) => (
+            <li key={step.id}>
+              <h3 className="process-title">{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="home-section" aria-labelledby="hoi-studio-title">
+        <h2 className="section-heading" id="hoi-studio-title">Ngày ra trường chỉ có một lần</h2>
+        <p>Nhắn GradStudio để giữ lịch đẹp cho mùa tốt nghiệp này.</p>
+        <ChatDock open={chatOpen} onToggle={() => setChatOpen(!chatOpen)} packageName={asking?.name} />
+      </section>
+
+      <p className="home-section home-note">
+        Ảnh: Phú Lucas, Hưng Nguyễn và Darion Dewhirst (Unsplash), Nguyễn Tiến Thịnh (Pexels). Nguồn chi tiết trong docs/IMAGE_SOURCES.md.
+      </p>
     </CustomerLayout>
   );
 }

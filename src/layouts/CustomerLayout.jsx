@@ -1,5 +1,6 @@
 // Customer pages. Includes the header, menu and footer landmarks.
-export default function CustomerLayout({ current, children }) {
+// `wide` lets a page run edge to edge and set its own section widths.
+export default function CustomerLayout({ current, wide = false, children }) {
   return (
     <>
       <header className="page-header">
@@ -11,7 +12,7 @@ export default function CustomerLayout({ current, children }) {
           </ul>
         </nav>
       </header>
-      <main className="page-main">{children}</main>
+      <main className={wide ? 'page-main-wide' : 'page-main'}>{children}</main>
       <footer className="page-footer">GradStudio. Bản mẫu cho môn CSC13008, dữ liệu minh họa.</footer>
     </>
   );
