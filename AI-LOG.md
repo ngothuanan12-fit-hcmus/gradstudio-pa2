@@ -116,3 +116,12 @@ Kept: the division, the component requirements and the review steps, for the tea
 Changed: An's request replaced the assistant's earlier split. The assistant also noticed that the design system has four badge tones while the GradStudio proposal has nine booking statuses, so the requirements include a mapping. It also flagged that "Tạo booking" starts disabled, which stops the main flow until a free time is chosen.
 Rejected: nothing yet.
 By hand: An decided the roles.
+
+## 2026-11-07 — team repository on GitHub
+Commit: the commit that adds this entry, directly after dd803ad, is the first one pushed.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: create the team repository.
+Kept: private repository `gradstudio-pa2` under An's account, with the existing history pushed as it is.
+Changed: nothing. The rubric PDF stays out through `.gitignore`.
+Rejected: a public repository for now, because the hand-in is a zip. If we later share a link with the lecturer, it must be made public and checked in an incognito window.
+By hand: An asked for it. Khánh still has to be added as a collaborator.
