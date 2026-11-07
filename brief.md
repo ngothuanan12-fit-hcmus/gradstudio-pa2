@@ -94,6 +94,13 @@ Followed by the lecturer's announcement, pasted in full: "PA#2: your team decide
 
 An also attached that portrait photo.
 
+> Ảnh của Anh Lee từ Pexels: https://www.pexels.com/vi-vn/anh/l-p-h-c-vui-t-i-c-a-h-c-sinh-ha-n-i-33415710/
+> Ảnh của Nguyễn Tiến Thịnh từ Pexels: https://www.pexels.com/vi-vn/anh/bu-i-lien-hoan-trong-l-p-h-c-v-i-h-c-sinh-va-bong-bay-36985960/
+> Ảnh của Green odette từ Pexels: https://www.pexels.com/vi-vn/anh/h-c-sinh-trung-h-c-an-m-ng-ngoai-tr-i-32292149/
+> ảnh nào chưa biết chắc với nguồn nào thì nói mình
+
+An also attached eight photos.
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

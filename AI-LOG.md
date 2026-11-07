@@ -113,6 +113,15 @@ Changed: the assistant could read the collection's text but not see its photos. 
 Rejected: trying other ways past the refusal.
 By hand: An chose the photos.
 
+## 2026-11-07 — matching photos to their sources
+Commit: the commit that adds this entry, directly after 303e3ca. The photos are outside the repository for now.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: review eight photos An downloaded, and say which photo or source is uncertain.
+Kept: a source list, for An to confirm. Five photos proposed for use, three as reserves.
+Changed: the page descriptions for two corridors were nearly the same, so the assistant compared each photo with a small copy from its source page instead of guessing. All eight matched. The story's schoolyard caption about graduation gowns no longer fits the photos, so it needs rewording.
+Rejected: the photo of adults in white áo dài, because it does not show the students we target. Photos with banners naming a real school need cropping.
+By hand: An chose and downloaded the photos. The portrait has not been compared with its source page.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
