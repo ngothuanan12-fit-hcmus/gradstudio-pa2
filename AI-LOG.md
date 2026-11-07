@@ -176,6 +176,15 @@ Changed: the assistant had set the move too short, and none of its own checks me
 Rejected: `docs/YEU-CAU-KHANH.md` removed at An's request, because An will brief Khánh by message. Earlier log entries that name it stay as written; the file remains in git history. Before removal, a fresh clone of the repository installed, passed lint and built. Khánh has not yet been invited to the repository.
 By hand: An's review and decisions.
 
+## 2026-11-07 — An's review: separate photos, real descriptions, words that follow the scene
+Commit: the commit that adds this entry, directly after 04be424. The test page is outside the repository, and none of its code is in the project yet.
+Tool: Claude Code (Claude Opus 5.5), with Playwright, web search and software WebGL for the checks.
+Asked for: a different photo for each package, descriptions checked against real studio sites and the original team's site, and words that change with each scene as in Tracewood and the video. Record what An rejects or approves.
+Kept: awaiting An's review. Approved by An so far: the idea of photos pinned on the board and each photo standing for one package. An has not yet judged smoothness on this version.
+Changed: the descriptions, the three "from" prices and most scene lines now come from the original team's public prototype; two accent lines and the room title are the assistant's wording. The words now move between centre, top, bottom, right, left and upper left, and fade and drift with the scroll. In a close-up the other photos and chalk step back. The first render put orange text on the yellow wall, a fan ran through a title, a heading wrapped badly, and the dark backing hid the brand name and the opening line drawing; all seen in screenshots and fixed. New check at 1280, 1920 and 390 px: words stay on screen and do not cover the photo in focus. No console errors, no sideways scroll, no camera jump. The Chân dung/CV photo is the Unsplash image the original team used; its author is not yet identified.
+Rejected: An rejected the same person on two packages, the assistant's descriptions, and the numbered story with its caption always on one side. An also found a factual error the assistant had made: it said only Premium has a price and showed "Giá: studio báo khi chat", but the assistant had never read the original site, which lists a price for all three. `design-system/README.md` carried the same claim and is corrected.
+By hand: An's review and direction.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

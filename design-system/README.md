@@ -19,7 +19,7 @@ GradStudio là một hệ thống thiết kế dùng cho hai phía. **Trang khá
   - Ngày viết `24/10/2026`, thứ viết đầy đủ (“Thứ Bảy”), trên lịch tuần viết tắt `T2…T7, CN`.
   - Giờ viết 24h `09:00`. Khoảng giờ dùng dấu gạch nối dài, không có khoảng trắng: `13:00–14:00`.
   - Mã booking có dạng `GS-1024`.
-- **Giá:** chỉ hiển thị giá mà studio cung cấp. Hiện mới có **Gói Tốt nghiệp Premium 1.800.000đ**, cọc 30% là 540.000đ. Gói khác và tùy chọn makeup hoặc thuê áo chưa có giá thì ghi “Giá: studio báo khi chat” hoặc “Báo giá khi chat”. Không được tự đặt con số mới.
+- **Giá:** chỉ hiển thị giá mà studio cung cấp. Theo web gốc của GradStudio: **Kỷ yếu lớp từ 350.000đ/người, Tốt nghiệp từ 1.800.000đ, Chân dung/CV từ 690.000đ**, kèm câu "Giá tham khảo — giá chốt được ghi trên booking sau khi tư vấn." Booking mẫu là **Gói Tốt nghiệp Premium 1.800.000đ**, cọc 30% là 540.000đ. Tùy chọn makeup hoặc thuê áo chưa có giá thì ghi “Báo giá khi chat”. Không được tự đặt con số mới.
 
 ## Chữ
 

@@ -122,6 +122,8 @@ An also attached eight photos.
 
 > bỏ file YEU-CAU-KHANH.md vì mình sẽ gửi tin nhắn
 
+> ảnh cho mỗi gói nên có ảnh khác nhau, sửa lại các câu mô tả, xem trên các web thực tế người ta dùng cách mô tả thế nào và web gốc của nhóm kia có dòng mô tả không, story đang đi từ 1 đến 7 và chỉ nằm một bên trong khi tracewood hay video mình cho bạn xem minh họa chữ thay đổi linh hoạt tùy vào bối cảnh, nhớ ghi lại mình reject hay đồng ý vào ai log
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
