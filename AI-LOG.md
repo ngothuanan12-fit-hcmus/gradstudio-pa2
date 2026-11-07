@@ -67,6 +67,16 @@ Changed: the site runs live 3D with three.js and a loading screen, took 67 s to 
 Rejected: remixing or copying the template, because the rubric gives 0–4 for a ready-made template; three.js, for the dependency rule and Slow 4G.
 By hand: An found the site.
 
+## 2026-11-07 — React project skeleton
+Commit: the commits that rename the page and add the skeleton, directly after 2564399.
+Tool: Claude Code (Claude Opus 5.5), with Playwright to run the checks.
+Asked for: name the management page `quan-ly.html`, and set up the project so Khánh can start.
+Kept: Vite and React 19, three HTML files, layouts, `Button`, `ChatPanel`, `BookingSummary`, `src/data.js`, and placeholder pages joined by real forms. The fonts are in the repository.
+Changed: three things found by checks. `BookingSummary` had a border inside a border, seen when reading the code. The first page load at 360 px logged a red 404 for the favicon, caught by listening for console errors, so a favicon was added. `dist/` was moved to `.gitignore`, which replaces the earlier note about keeping it in the repository: it goes in the zip, and tracking it would cause conflicts between two people.
+Rejected: `@import` for fonts, because files in the repository load without an outside host.
+Checks run on the built pages, through a local server: 360, 768 and 1280 px, no sideways scroll, nothing past the right edge, controls at least 44 px, one `h1`, four landmarks, labels, no console errors, the main flow with a reload on each page, and loading from a subfolder. Simulated Slow 4G at 360 px: loading line after about 0.6 s, page after about 2 s. The pages are placeholders, so this will change. The W3C checker has not been run yet.
+By hand: An chose the name. Newsreader stands in until the Gambetta files are added.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
