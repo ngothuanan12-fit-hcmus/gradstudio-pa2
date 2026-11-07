@@ -115,6 +115,8 @@ An also attached eight photos.
 
 > font ổn, duyệt phần 1
 
+> mình nghĩ không nên để mô hình người vào mà nên zoom lên bảng xong sẽ có các hình ghim các ảnh thật trên bảng, mỗi hình đại diện cho từng gói chụp luôn, zoom để thấy tổng quan các gói xong zoom từng hình, phần 2 này chắc mình sẽ reject để đổi ý tưởng
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

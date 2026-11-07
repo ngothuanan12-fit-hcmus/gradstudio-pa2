@@ -158,6 +158,15 @@ Changed: errors found in the assistant's own output, each by a check, all fixed.
 Rejected: nothing yet.
 By hand: An approved the font and part 1. Smoothness on a real graphics card is still untested, and part 2 adds to the load.
 
+## 2026-11-07 — part 2 rejected: real photos pinned on the board instead of people
+Commit: the commit that adds this entry, directly after 06317e4. The test page is outside the repository, and none of its code is in the project yet.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL for the checks.
+Asked for: An's own idea: no human models. Zoom to the board, show real photos pinned on it, one per package, see them all together, then zoom into each.
+Kept: awaiting An's review. Three photos for the three services on the PA#1 service cards: Kỷ yếu lớp, Tốt nghiệp, Chân dung/CV. Only the Premium package shows a price and details, as the proposal gives them; the other two say "Giá: studio báo khi chat", per the design system rule.
+Changed: first render had dull photo borders, faint chalk, a portrait touching the top of the screen and an overview too tight to show the room. All fixed and rendered again. Photos load, no console errors, no sideways scroll at 1280 or 390 px. The Chân dung/CV photo is a crop of the Tốt nghiệp portrait, so the same person appears twice; the short lines under the package names are the assistant's wording. Both wait for An's decision.
+Rejected: An rejected the assistant's part 2, 13 modelled people gathering at the board, and the assistant's proposed next part, hands and a camera. Removed from the page.
+By hand: the concept is An's. Smoothness on a real graphics card is still untested.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
