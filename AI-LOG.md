@@ -289,3 +289,64 @@ Changed: the assistant wrote `design-system/preview.html` to show the components
 Rejected: keeping only a link to the design system, because a different agent cannot open it.
 Assistant's error: in its first `preview.html`, the heading of the dark section was dark on dark, because a `data-theme` section changes the tokens but keeps the inherited text colour. Caught by looking at a Chrome screenshot; fixed by setting `color: var(--ink)` on that section. The landing page's light final screen needs the same care. The screenshot also showed the schedule cutting off labels in one-hour blocks, now in Khánh's requirements.
 By hand: An's request. The renaming is still An's decision; the rubric fixes only `index.html`, and the other names are free as long as `screenshots/`, `checks/` and `PROTOTYPE.md` match.
+
+## 2026-11-08 — `quan-ly.html` and `lich-chup.html` built and checked (uncommitted)
+
+Commit: 5b7b341 (build and docs). Written on 2026-11-08 after the owner's audit; the build prompt was sent on 2026-11-07.
+Tool: OpenCode (DeepSeek V4.1 Flash Free), with Chrome DevTools for the rendered-page checks.
+Asked for: the owner's prompt of 2026-11-07, now recorded verbatim in `brief.md` Part 3A. It asked for the management page (search and status filter, chat, BookingForm, makeup/photographer/room schedule, the 09:00 conflict, the 14:00 quote flow with a simulated Linh reply, and the create button) and the customer schedule page (status tabs with counts and empty states, week calendar on 24/10, the old 09:00 struck through, GS-1024 card, map, and the simulated 30% deposit). It also fixed the sample data, the status-badge rules and the documentation note for "Xem đường đi".
+Kept:
+- Nine components in `src/components/`: `StatusBadge`, `ConversationList`, `ChatPanel`, `BookingForm`, `ConflictAlert`, `ResourceSchedule`, `WeekCalendar`, `BookingSummary`, `DepositCard`.
+- `src/data.js` now holds the conversations, free slots, resource schedule, week days, service names and the booking fields from the prompt: `Nguyễn Thùy Linh`, Admin `Thảo`, `Tốt nghiệp cá nhân`, `Có mặt sớm 10 phút`, `Gói Tốt nghiệp Premium · 2 giờ · 30 ảnh chỉnh`, 1.800.000đ, 540.000đ, 1.260.000đ, 24/10/2026, Mai, Tuấn and Phòng B.
+- The main flow: 09:00 shows the Mai conflict; picking 14:00 adds the proposal to the chat and clears the error; "Gửi báo giá" adds the quote; "Chốt giờ này" adds "Dạ em chốt lịch 14:00 ạ." and enables "Tạo booking mới"; "Từ chối" leaves it disabled; the enabled button submits the form to `lich-chup.html`.
+- The customer flow: tabs `Tất cả / Chờ cọc / Đã đặt lịch / Hoàn thành` with computed counts and an empty state; 24/10 selected; 09:00 struck through; makeup 13:00–14:00 and shoot 14:00–16:00; GS-1024 summary; map; simulated deposit dialogue. Cancel keeps the state, success moves the booking to `Đã đặt lịch`, changes the counts to `1/0/1/0` and shows `hẹn 13:00`.
+Changed from the design-system port:
+- `window.GradStudio` and React 18 became module imports and React 19.
+- Index keys became id keys in `ChatPanel`, `ConflictAlert` and `WeekCalendar`; the booking tabs and week days use ids too.
+- `preventDefault` was removed from `BookingForm`; it is a real form with `action="lich-chup.html"`. The chat still prevents the default only on the management page, where it adds a local message.
+- The 880 px schedule timeline became a list at every width, so no block clips "Linh yêu cầu" or "Linh · makeup". This is also the design system's allowed 360 px fallback.
+- Fonts come from `public/fonts.css`, not `@import`; the pages load no `bundle.js`, `bundle.css` or CDN React.
+- The two names the original site does not have were removed from `design-system/components/bundle.js`.
+- The deposit dialogue is native `<dialog>` and says "Mô phỏng thanh toán"; the confirmation button is secondary so each page keeps at most one primary button.
+Errors found and fixed:
+- The first CSS grid put `grid-area` on items outside the media query. At 360 px the result showed only the schedule panel and a large blank area. A full-page 360 px screenshot caught it; the area declarations were moved inside `min-width: 768px`.
+- The `confirmed` badge first used the same 1 px solid border as `neutral`, so the four tones did not all differ by border style. A rendered check of all four tones caught it; it became 2 px solid.
+- A range inside one `<time>` element was not a valid time value. The agenda now uses two `<time>` elements with `dateTime` for the start and end.
+- Two additions were removed to stay inside the sample data: the invented Phòng B free block `09:00–12:00` and the `08:00–18:00` line above the schedule.
+Checks run (evidence from the session, not a claim):
+- `npm run lint` exited 0 with no output; no `eslint-disable` exists in `src/`.
+- `npm run build` built `index.html`, `quan-ly.html` and `lich-chup.html`. `npm run preview` served them at `127.0.0.1:4173`; the Network list showed only 200 responses, no 404 or 500, and the Console list was empty during the flow.
+- At 360, 768 and 1280 px on all three pages, `document.documentElement.scrollWidth > document.documentElement.clientWidth` printed `false` and the overflow list printed `[]`. On `quan-ly` and `lich-chup` at 1280 px in plain desktop mode `clientWidth` read 1265 because Chrome's vertical scrollbar took 15 px; `index` read 1280. A supplementary check with 1280 px mobile emulation read `clientWidth` 1280 on all three pages, so the rubric's "equals the width set" line passes in the device-emulation mode and there is no horizontal overflow in either mode.
+- Lighthouse Accessibility scored 100 on both pages. The four badge tones measured `neutral` 5.29, `pending` 4.61, `confirmed` 5.57 and `conflict` 5.40:1 in `studio`, and 5.87, 6.96, 7.71 and 6.77:1 in `cinema`; their border styles were solid 1 px, dashed 1 px, solid 2 px and dotted 2 px.
+- At 360 px "Chờ khách chọn ảnh" was 44 px high over two lines inside a 294 px row; the document stayed 360 px wide.
+- Flow checks: empty chat submit added no message; search found only "Nguyễn Thị Hoàng Phương Uyên"; the conflict filter showed the empty-state text; picking 14:00 removed `aria-invalid`; accepting enabled the submit; declining kept it disabled; the submit reached `lich-chup.html`; clicking 25/10 showed "Không có lịch chụp ngày này."; the 09:00 element computed `text-decoration: line-through`; the deposit Cancel kept "Chờ cọc"; the confirm produced "Đã cọc", `aria-valuenow=30`, the "Đã đặt lịch" tab and the 13:00 note.
+- Link check: the rendered pages listed only the relative internal links `index.html`, `quan-ly.html` and `lich-chup.html`; the form actions were `quan-ly.html` (home chat) and `lich-chup.html` (booking). `curl` returned 200 for all three internal paths. The only external link is "Xem đường đi", recorded under *Not wired yet*.
+- Slow 4G with cache disabled: DOMContentLoaded 1666 ms, load 3334 ms, and the shell text was visible before React. The page was usable before the 3 s team target, though the full load event passed it.
+- W3C online could not be reached: `validator.w3.org` returned a Cloudflare challenge. `html-validate` on the rendered DOM reported only style-convention findings (`crossorigin=""`, boolean attributes written with values, a preference for `<progress>`), not structural errors. This is the one Done-means row without a clean external check.
+- There is no unit-test framework in the project, so no `test` command exists. The checks above are lint, build, browser and accessibility evidence.
+Decisions and limits:
+- The schedule is a list at every width rather than a desktop timeline; it keeps every label readable and avoids a second responsive layout.
+- The payment is a native modal and a local state change only. No fetch, storage, URL data or real transaction exists.
+- The form's GET submit leaves a trailing `?` in the address, but no field has a `name`, so no booking data travels in the URL.
+- The build prints `./fonts.css doesn't exist at build time`; `public/fonts.css` is copied to `dist/`, and the preview requested it with a 200, so this is a build-time warning, not a missing file.
+By hand: the owner supplied the feature spec and the sample data. No manual source edit was made during the run. The owner's audit caught the missing documentation; the next entry records that correction.
+
+## 2026-11-08 — documentation compliance audit and gate (uncommitted)
+
+Commit: the commit that adds this entry, directly after 5b7b341.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the owner's audit directive of 2026-11-08, now recorded verbatim in `brief.md` Part 4. It asked for a read of `AGENTS.md`, `CLAUDE.md`, `AI-LOG.md`, `brief.md` and `PROTOTYPE.md`, a check of `git status`, `git diff` and the history, and a correction of any missing documentation without touching the page implementation or inventing commits.
+Found:
+- `AI-LOG.md` had no entry for the two-page build. The log stopped at the design-system hand-off.
+- `brief.md` still marked Part 3 as `NOT YET SENT` and did not contain the prompt actually sent; the prepared Part 3 text was not the same prompt.
+- `PROTOTYPE.md` already listed the built screens and "Xem đường đi" under *Not wired yet*, but it did not record the list-vs-timeline choice or the badge treatment.
+- `CLAUDE.md` required the log and the brief, but had no explicit check before a commit or PR.
+Changed:
+- Added the build entry above and this audit entry. The build entry carries the real build commit `5b7b341`; this audit entry is the commit that adds this entry. No hash was invented.
+- Added Part 3A (the actual build prompt) and Part 4 (this audit directive) to `brief.md`; marked Part 3 as a draft that was never sent; removed the stale "screens still to add" line.
+- Added the resource-schedule and status-badge rows to `PROTOTYPE.md` *Changed since PA#1`.
+- Added the Documentation gate to `CLAUDE.md`, before *Team process*: after every meaningful step, after every sent prompt, and before every commit or PR.
+Not changed: no page component, style, data or build file was touched in this audit. The branch, commit and pull request were requested after the audit; this entry records the documentation work, not a source change.
+Checks: reread the five named files, `git status --short`, `git diff --name-status`, `git log --oneline` and the recent file history. The source files were unchanged since the last `npm run lint` and `npm run build`, so the full build and flow suite was not repeated. One targeted check was added: enumerate every internal link and form action on the three rendered pages, confirm the three paths return 200, and read `clientWidth` at 1280 px with mobile emulation. This follows the owner's limit on unnecessary test runs.
+Assistant's error: the first completion report said the two pages were ready before updating `AI-LOG.md` or `brief.md`, although both are mandatory in `CLAUDE.md`. The owner's audit caught it. This entry and the new gate are the correction, and the missing prompt is now in `brief.md` verbatim rather than reconstructed.
+By hand: the owner wrote the audit directive and required the gate. No manual source edit.
