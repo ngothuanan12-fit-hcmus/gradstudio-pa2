@@ -95,6 +95,15 @@ Changed: rereading the rubric showed the assistant had let `brief.md` fall behin
 Rejected: nothing.
 By hand: An's question caught this.
 
+## 2026-11-07 — PROTOTYPE.md, docs/pa1 and a correction to Khánh's requirements
+Commit: the commit that adds this entry, directly after 0cb3463.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: create `PROTOTYPE.md` and fetch the PA#1 screens. An chose the five-scene story, and told the assistant not to build the scenes until An has picked photos.
+Kept: `docs/pa1/` with the original files and a source note, and a draft `PROTOTYPE.md` with what is decided so far.
+Changed: reading the PA#1 team's `LINK.md` showed an error in the assistant's requirements for Khánh. It had said not to simulate the deposit and to leave it under *Not wired yet*, but the original Screen 3 has a labelled payment simulation, and the lecturer requires the pages to deliver those features. It also had no list of required features. Both were fixed in `docs/YEU-CAU-KHANH.md`.
+Rejected: starting the 3D scene now, at An's request.
+By hand: An's decisions. Khánh will be added to the repository by An.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

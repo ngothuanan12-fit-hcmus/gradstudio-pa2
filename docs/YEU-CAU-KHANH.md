@@ -23,9 +23,23 @@ Hạn nộp: 22:00 Chủ nhật 8/11/2026. An làm landing page và duyệt bài
 | `preventDefault` trong `BookingForm` | Bỏ, để form dùng `action` sang `lich-chup.html` |
 | `.gs-sched-grid { min-width: 880px }` | `<table>` thật trong khung cuộn, hoặc danh sách ở 360px |
 | `@import` font trong CSS | Font trong repo do An thêm |
-| `DepositCard` đổi thành "Đã cọc" sau khi bấm | Không giả lập đã trả tiền. Nút ghi trong *Not wired yet* |
 
 Chỉ dùng token có sẵn. Cần token mới thì hỏi An trước. Không tự đặt thêm giá, giờ hay chính sách ngoài đề xuất GradStudio.
+
+## Tính năng phải có
+
+Thầy yêu cầu các trang phải đủ tính năng của 3 màn gốc. Xem ảnh và mô tả trong `docs/pa1/`, nhất là `docs/pa1/LINK.md`. Giao diện được đổi, tính năng thì phải giữ:
+
+| Trang | Tính năng |
+|---|---|
+| `quan-ly.html` | Danh sách hội thoại có ô tìm và lọc trạng thái, có **Nguyễn Thùy Linh**. Chat và form **Booking mới**. Lịch thợ makeup, thợ chụp, phòng và gợi ý giờ trống. Yêu cầu 09:00 báo trùng vì Mai bận 08:00–12:00 |
+| Luồng `quan-ly.html` | **Chọn 14:00** thêm lời đề xuất vào chat → mô phỏng phản hồi của Linh: **Chốt giờ này** hoặc **Từ chối** → chốt thì nút **Tạo booking** mới bật → bấm sang `lich-chup.html`. Có **Gửi báo giá vào chat** |
+| `lich-chup.html` | Tab lọc **Tất cả, Chờ cọc, Đã đặt lịch, Hoàn thành** có số lượng và trạng thái rỗng. Lịch tuần chọn 24/10. Dòng thời gian: 09:00 gạch ngang, makeup 13:00–14:00, chụp 14:00–16:00. Thẻ booking GS-1024. Bản đồ minh họa |
+| Luồng `lich-chup.html` | **Thanh toán cọc 30%** mở hộp **Mô phỏng thanh toán** 540.000đ: **Hủy** giữ nguyên, **Thanh toán thành công** chuyển sang **Đã đặt lịch**, đổi số trên các tab và hẹn 13:00 |
+
+Ghi rõ đây là mô phỏng, không có giao dịch thật. **Xem đường đi** ghi vào *Not wired yet*. Bỏ các nút Màn 1, 2, 3 và **Đặt lại demo**.
+
+Thông tin thêm từ tài liệu gốc: gói **Gói Tốt nghiệp Premium · 2 giờ · 30 ảnh chỉnh**, loại buổi chụp **Tốt nghiệp cá nhân**, Admin **Thảo**, có mặt sớm 10 phút. Câu Linh đồng ý: "Dạ em chốt lịch 14:00 ạ."
 
 ## StatusBadge (kỹ nhất)
 
@@ -83,7 +97,7 @@ Design system có 4 tông, còn đề xuất có 9 trạng thái cộng thêm t�
 | Tối 7/11 | Chốt bảng badge, làm `StatusBadge` và `BookingForm` |
 | 12:00 Chủ nhật | Pull Request trang quản lý |
 | 16:00 | Pull Request lịch chụp, sửa xong nhận xét vòng 1 |
-| 18:00 | Ảnh `screenshots/` và kết quả W3C `checks/` của 2 trang, thêm `docs/pa1/` và phần `PROTOTYPE.md` của 2 trang |
+| 18:00 | Ảnh `screenshots/` và kết quả W3C `checks/` của 2 trang, cập nhật phần `PROTOTYPE.md` của 2 trang |
 | 20:00 | Đọc lại toàn bộ code cùng An trước khi nộp |
 
 Nếu trễ, ưu tiên: `StatusBadge`, rồi `BookingForm` và `ConflictAlert`, rồi `ResourceSchedule`, rồi phần còn lại. Báo An sớm nếu thấy không kịp.

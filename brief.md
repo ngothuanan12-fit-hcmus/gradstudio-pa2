@@ -81,6 +81,12 @@ Followed by the lecturer's announcement, pasted in full: "PA#2: your team decide
 
 > bạn xem lại yêu cầu đề có file nào cần vừa làm vừa ghi song song như ai log nữa không
 
+> 1 ok
+> 2 chốt
+> 3 mình sẽ tự thêm
+
+> đừng xây bối cảnh ngay, chờ mình lấy hình theo gợi ý của bạn đã
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
