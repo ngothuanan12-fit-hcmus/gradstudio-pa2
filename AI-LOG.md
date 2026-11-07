@@ -49,6 +49,15 @@ Changed: the assistant proposed drawing the scene, people, hand and camera as li
 Rejected: for this deadline, filming or generating a real walkthrough video, because of time, consent and download size on Slow 4G. An can still overrule this.
 By hand: the story is An's.
 
+## 2026-11-07 — one-scene test of the photographer's story
+Commit: the commit that adds this entry, directly after 59744ac. The test page is outside the repository, and none of its code is in the project yet.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: a test of the "directing the class" scene, to judge whether line art looks good enough.
+Kept: nothing yet; An decides after viewing it.
+Changed: three things found in Chrome screenshots, then fixed in the test: the shutter finger floated above the camera, the settings text overlapped the live view on the camera screen, and lines showed through the caption. The first screenshots were wrong, because headless Chrome does not capture a scrolled sticky page and a resize event reset the scroll position; the check was changed to fix each moment directly.
+Rejected: nothing yet.
+By hand: none. Real scrolling smoothness and the phone layout have not been tested. The photo on the camera screen is a placeholder.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
