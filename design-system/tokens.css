@@ -1,0 +1,78 @@
+/* GradStudio — generated from tokens.json */
+:root, [data-theme="cinema"] {
+  --ground: #0c100f;
+  --surface: #151a18;
+  --surface-raised: #1d2321;
+  --ink: #f3eee4;
+  --ink-muted: #b8b2a6;
+  --accent: #e8a55c;
+  --on-accent: #1b1207;
+  --accent-soft: #33261a;
+  --line: #2a312e;
+  --line-strong: #747b76;
+  --chalk: #e6e0d0;
+  --chalk-dim: #56625c;
+  --on-photo: #ffffff;
+  --scrim: rgba(8, 11, 10, 0.78);
+  --free: #7fcfae;
+  --free-soft: #13302a;
+  --danger: #ff8f78;
+  --danger-soft: #3b1f1a;
+  --busy: #2f3633;
+  --focus: var(--accent);
+  --shadow-panel: 0 16px 48px rgba(0, 0, 0, 0.48);
+}
+[data-theme="studio"] {
+  --ground: #f6f2ea;
+  --surface: #ffffff;
+  --surface-raised: #fbf9f5;
+  --ink: #1a1e1c;
+  --ink-muted: #575c58;
+  --accent: #9c5612;
+  --on-accent: #ffffff;
+  --accent-soft: #f6e7d4;
+  --line: #e0d9cc;
+  --line-strong: #878c87;
+  --chalk: #34463f;
+  --chalk-dim: #b7c1bb;
+  --on-photo: #ffffff;
+  --scrim: rgba(8, 11, 10, 0.78);
+  --free: #1d6a50;
+  --free-soft: #e2f1ea;
+  --danger: #b42a1f;
+  --danger-soft: #fbe8e4;
+  --busy: #e7e2d8;
+  --focus: var(--accent);
+  --shadow-panel: 0 1px 2px rgba(26, 30, 28, 0.08), 0 8px 24px rgba(26, 30, 28, 0.06);
+}
+:root {
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 999px;
+  --control-height: 48px;
+  --control-height-sm: 44px;
+  --content-max: 1200px;
+  --font-display: "Gambetta", "Newsreader", Georgia, serif;
+  --font-sans: "Be Vietnam Pro", system-ui, sans-serif;
+}
+.display-hero { font-family: var(--font-display); font-size: 64px; line-height: 72px; font-weight: 500; letter-spacing: -0.01em; }
+.display-hero-italic { font-family: var(--font-display); font-size: 64px; line-height: 72px; font-weight: 400; font-style: italic; }
+.step-title { font-family: var(--font-display); font-size: 44px; line-height: 52px; font-weight: 500; letter-spacing: 0.04em; }
+.step-title-italic { font-family: var(--font-display); font-size: 44px; line-height: 52px; font-weight: 400; font-style: italic; }
+.section-title { font-family: var(--font-display); font-size: 40px; line-height: 48px; font-weight: 500; }
+.price-display { font-family: var(--font-display); font-size: 32px; line-height: 40px; font-weight: 500; }
+.heading { font-family: var(--font-sans); font-size: 24px; line-height: 32px; font-weight: 600; }
+.title { font-family: var(--font-sans); font-size: 18px; line-height: 28px; font-weight: 600; }
+.body { font-family: var(--font-sans); font-size: 16px; line-height: 26px; font-weight: 400; }
+.body-strong { font-family: var(--font-sans); font-size: 16px; line-height: 26px; font-weight: 600; }
+.label { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 500; }
+.eyebrow { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 600; letter-spacing: 0.14em; }
+.meta { font-family: var(--font-sans); font-size: 14px; line-height: 20px; font-weight: 400; }

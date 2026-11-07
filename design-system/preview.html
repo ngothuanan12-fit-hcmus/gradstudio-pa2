@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi" data-theme="studio">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GradStudio: xem trước design system</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components/bundle.css">
+<!-- Reference only: the real pages must not load these scripts or bundle.js. Needs a network connection. -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="components/bundle.js"></script>
+<style>
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--font-sans); }
+  .sheet { display: grid; gap: var(--space-32); padding: var(--space-24); max-width: var(--content-max); margin-inline: auto; }
+  .part { display: grid; gap: var(--space-16); min-width: 0; }
+  .part > h2 { margin: 0; }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-8); align-items: center; }
+  .dark { padding: var(--space-24); background: var(--ground); }
+</style>
+</head>
+<body>
+<div id="root" class="gs"></div>
+<script>
+var G = window.GradStudio, h = React.createElement, b = G.sampleBooking;
+function part(title, children) { return h('section', { className: 'part' }, h('h2', { className: 'heading' }, title), children); }
+var rows = [
+  { id: 'mai', name: 'Mai', role: 'Thợ makeup', lanes: 2, blocks: [{ from: '08:00', to: '12:00', label: 'Đã kín' }, { from: '09:00', to: '10:00', label: 'Linh yêu cầu', kind: 'conflict', lane: 2 }, { from: '13:00', to: '14:00', label: 'Linh · makeup', kind: 'proposed', lane: 2 }] },
+  { id: 'tuan', name: 'Tuấn', role: 'Thợ chụp', blocks: [{ from: '11:00', to: '14:00', label: 'Trống', kind: 'free' }, { from: '14:00', to: '16:00', label: 'Linh · GS-1024', kind: 'proposed' }] }
+];
+var slots = [{ time: '14:00', note: 'Makeup 13:00–14:00, chụp với Tuấn 14:00–16:00 tại Phòng B' }];
+var days = [{ dow: 'T5', num: 22 }, { dow: 'T6', num: 23 }, { dow: 'T7', num: 24, events: [{ from: '14:00', to: '16:00', title: 'Chụp với Tuấn · GS-1024', where: 'Phòng B' }] }];
+ReactDOM.createRoot(document.getElementById('root')).render(h('main', { className: 'sheet' },
+  h('h1', { className: 'section-title' }, 'GradStudio: xem trước design system'),
+  part('StatusBadge', h('div', { className: 'row' }, h(G.StatusBadge, { tone: 'neutral' }), h(G.StatusBadge, { tone: 'pending' }), h(G.StatusBadge, { tone: 'confirmed' }), h(G.StatusBadge, { tone: 'conflict' }))),
+  part('Button', h('div', { className: 'row' }, h(G.Button, { variant: 'primary' }, 'Tạo booking'), h(G.Button, { variant: 'secondary' }, 'Lưu nháp'), h(G.Button, { variant: 'ghost' }, 'Hủy'), h(G.Button, { disabled: true }, 'Đang khóa'))),
+  part('ConversationList', h(G.ConversationList, { activeId: 'linh', items: [{ id: 'linh', name: 'Linh', time: '09:42', last: 'Dạ 14:00 được ạ', status: 'pending', unread: 2 }, { id: 'hoa', name: 'Nguyễn Thị Hoàng Phương Uyên', time: '08:15', last: 'Em muốn hỏi gói kỷ yếu', status: 'neutral' }] })),
+  part('ChatPanel', h(G.ChatPanel, { id: 'demo', messages: [{ who: 'Linh', text: 'Em muốn chụp lúc 09:00 ngày 24/10.', time: '09:40' }, { me: true, text: 'Studio đề xuất 14:00 vì thợ makeup Mai bận buổi sáng.', time: '09:42' }] })),
+  part('BookingForm và ConflictAlert', h(G.BookingForm, { conflict: true, booking: b }, h(G.ConflictAlert, { slots: slots }, 'Linh yêu cầu 09:00, nhưng Mai (makeup) bận 08:00–12:00.'))),
+  part('ResourceSchedule', h(G.ResourceSchedule, { title: 'Thứ Bảy, 24/10/2026', start: 8, end: 18, rows: rows })),
+  part('WeekCalendar', h(G.WeekCalendar, { title: '19 – 25/10/2026', days: days, selected: 2 })),
+  part('BookingSummary và DepositCard', h('div', { className: 'row' }, h(G.BookingSummary, { booking: b, badge: h(G.StatusBadge, { tone: 'pending' }) }), h(G.DepositCard, { booking: b }))),
+  h('section', { 'data-theme': 'cinema', className: 'part dark' },
+    h('h2', { className: 'heading' }, 'Trang khách (An làm)'),
+    h(G.PackageChip, {}), h(G.SetDrawing, { step: 1 }),
+    h(G.StepCaption, { step: 3, steps: 6, top: 'Góc bàn học', bottom: 'ánh sáng cửa sổ', desc: 'Ánh nắng sớm qua ô cửa sổ.', angle: 3, angles: 5 }),
+    h(G.AngleMap, { current: 3 }))
+));
+</script>
+</body>
+</html>
