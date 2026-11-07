@@ -40,6 +40,15 @@ Changed: stock POV photos of Vietnamese classrooms may be hard to find and would
 Rejected: nothing yet.
 By hand: An's choice. An's message was cut off, so the reason for it is not yet recorded.
 
+## 2026-11-07 — the landing page as a photographer's story
+Commit: the commit that adds this entry, directly after 0e725f2.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: fit An's fuller idea: first-person view of a photographer holding the camera, one hand directing the class to pose, taking the shot, then moving to the next angle and out to the schoolyard, like a real shoot.
+Kept: the idea and its order of beats. The assistant's camera-only proposal from the entry above did not capture this story.
+Changed: the assistant proposed drawing the scene, people, hand and camera as line art, with real photos appearing on the camera screen, and building the plain stacked version first. Waiting for An's decision; nothing built or measured.
+Rejected: for this deadline, filming or generating a real walkthrough video, because of time, consent and download size on Slow 4G. An can still overrule this.
+By hand: the story is An's.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
