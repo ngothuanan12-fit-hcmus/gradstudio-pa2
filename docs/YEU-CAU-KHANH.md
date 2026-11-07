@@ -64,7 +64,7 @@ Design system có 4 tông, còn đề xuất có 9 trạng thái cộng thêm t�
 - Trang quản lý: 360px một cột, 768px hai cột, 1280px ba cột.
 - Mỗi trang: một `h1`, không nhảy cấp heading; có `header`, `nav`, `main`, `footer`; tối đa một nút `primary`.
 - Theme `studio`. Liên kết tương đối, không dùng `/page.html`.
-- Tên file trang quản lý đang là `hoi-thoai.html`. An có thể đổi thành `quan-ly.html`, nên chờ An chốt trước khi tạo file.
+- Hai trang của bạn là `quan-ly.html` và `lich-chup.html`. Khung đã có sẵn: `src/pages/QuanLy.jsx` và `src/pages/LichChup.jsx`.
 
 ## Quy trình
 

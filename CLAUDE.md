@@ -6,7 +6,7 @@ Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 ann
 ## Stack
 
 - React 19 with Vite, as in session 6. The built `dist/` folder is handed in and opened through a local server with JavaScript on. `PA2` `S6`
-- Three pages, built by Vite as three HTML files, `index.html`, `hoi-thoai.html` and `lich-chup.html`, joined by relative `<a href>`. No router, so every screen has a real path. List these paths in `PROTOTYPE.md`. `PA2`
+- Three pages, built by Vite as three HTML files, `index.html`, `quan-ly.html` and `lich-chup.html`, joined by relative `<a href>`. No router, so every screen has a real path. List these paths in `PROTOTYPE.md`. `PA2`
 - `base: './'` in `vite.config.js`, so `dist/` still loads when it is not served from the root.
 - Customer pages and the studio's management page have separate layouts in one project: `CustomerLayout` and `AdminLayout`. This saves building user roles for now, but it is not protection: anyone can open a page by its path. Once real customer data exists, the server must require a login for the management side. Lecturer's remark in class `FB`
 - Data lives in `src/data.js`. There is no API in PA#2, and the session 6 fake API runs only on the dev server, not in `dist/`. `S6`

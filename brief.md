@@ -117,7 +117,7 @@ Dựng 3 trang GradStudio bằng React theo thiết kế Claude Design đính k�
 
 Trang và liên kết:
 - index.html: trang khách. Form chat có action tới trang quản lý.
-- hoi-thoai.html: trang quản lý. Form "Tạo booking" có action tới lich-chup.html.
+- quan-ly.html: trang quản lý. Form "Tạo booking" có action tới lich-chup.html.
 - lich-chup.html: "Lịch chụp của tôi". "Thanh toán cọc 30%" ghi vào "Not wired yet".
 - Chỉ dùng đường dẫn tương đối tới file, không dùng /page.html hay thư mục.
 
