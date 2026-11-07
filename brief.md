@@ -2,7 +2,7 @@
 
 Team: Ngô Thuận An (23120206), Nguyễn Hữu Khánh (24120340).
 
-The prompts are pasted in order, in the language they were sent. Status lines and notes in English were added by the team. Prompts sent to Claude Code are in part 1, the design system set-up is in part 2, and the prompt for building the pages is in part 3.
+The prompts are pasted in order, in the language they were sent. Status lines and notes in English were added by the team. Prompts sent to coding assistants are in Part 1, Part 3A and Part 4; the design system set-up is in Part 2. Part 3 is a draft that was never sent; the prompt actually sent for the two pages is Part 3A. Part 4 is the documentation audit sent on 2026-11-08.
 
 ## Part 1 — Claude Code: rules and decisions (sent)
 
@@ -182,9 +182,9 @@ Ràng buộc kỹ thuật:
 
 Suggested attachments: four frames from the reference video and the font files. Team to confirm what was uploaded.
 
-## Part 3 — Claude Code: building the pages
+## Part 3 — Claude Code: building the pages (draft, not sent)
 
-**Status: NOT YET SENT.** Remove this line and record the date when it is sent. Edit the prompt first if needed, and keep here exactly what is sent.
+**Status: DRAFT — NOT SENT.** Kept as the prepared prompt. The prompt actually sent is Part 3A.
 
 ```text
 Dựng 3 trang GradStudio bằng React theo thiết kế Claude Design đính kèm và luật trong CLAUDE.md.
@@ -216,7 +216,148 @@ Done khi:
 Làm từng trang, dừng sau mỗi trang để nhóm kiểm tra và commit.
 ```
 
+## Part 3A — OpenCode: the two pages built (sent 2026-11-07)
+
+**Nguyên văn prompt đã gửi.** The message also carried the harness's skill preamble; that is tooling text and is not reproduced here.
+
+```text
+1. TÍNH NĂNG
+quan-ly.html
+- Danh sách hội thoại có ô tìm và lọc trạng thái, có Nguyễn Thùy Linh.
+- Chat và form Booking mới.
+- Lịch thợ makeup, thợ chụp, phòng và gợi ý giờ trống.
+- Yêu cầu 09:00 báo trùng vì Mai bận 08:00–12:00.
+- Có nút Gửi báo giá vào chat.
+Luồng chính: Chọn 14:00 thêm lời đề xuất vào chat → mô phỏng phản hồi của Linh: Chốt giờ này hoặc Từ chối → chốt thì nút Tạo booking mới bật → bấm sang lich-chup.html.
+
+lich-chup.html
+- Tab lọc Tất cả, Chờ cọc, Đã đặt lịch, Hoàn thành, có số lượng và trạng thái rỗng.
+- Lịch tuần chọn ngày 24/10.
+- Dòng thời gian: 09:00 gạch ngang, makeup 13:00–14:00, chụp 14:00–16:00.
+- Thẻ booking GS-1024.
+- Bản đồ minh họa.
+Luồng chính: Thanh toán cọc 30% mở hộp Mô phỏng thanh toán 540.000đ. Hủy thì giữ nguyên. Thanh toán thành công thì chuyển sang Đã đặt lịch, đổi số trên các tab và hẹn 13:00.
+
+Lưu ý
+- Ghi rõ thanh toán là mô phỏng, không có giao dịch thật.
+- Nút Xem đường đi ghi vào mục Not wired yet trong PROTOTYPE.md.
+- Bỏ các nút Màn 1, 2, 3 và Đặt lại demo.
+
+Dữ liệu mẫu (không tự thêm giá, giờ hay chính sách khác)
+- Khách Linh, Admin Thảo, có mặt sớm 10 phút. Linh đồng ý: "Dạ em chốt lịch 14:00 ạ."
+- Loại buổi chụp: Tốt nghiệp cá nhân.
+- Gói: Gói Tốt nghiệp Premium · 2 giờ · 30 ảnh chỉnh.
+- Giá 1.800.000đ, cọc 540.000đ, còn lại 1.260.000đ.
+- Ngày 24/10/2026, thợ makeup Mai, thợ chụp Tuấn, Phòng B.
+- Tên và giá các dịch vụ theo web gốc: Kỷ yếu lớp từ 350.000đ/người, Tốt nghiệp từ 1.800.000đ, Chân dung/CV từ 690.000đ.
+- Đừng dùng tên "Gói Kỷ yếu nhóm" và "Gói Chân dung" trong design-system/components/bundle.js, vì web gốc không có.
+
+2. STATUSBADGE
+Yêu cầu
+- Mỗi tông khác nhau về độ sáng, kiểu viền và ký hiệu. Xem ở chế độ xám vẫn phân biệt được.
+- Luôn có chữ, không dùng badge chỉ có chấm màu.
+- Chữ đạt từ 4.5:1 trên nền của chính badge, ở cả hai theme.
+- Chữ tối thiểu 14px, không viết cả câu.
+- Badge là span, không có hover. Nếu bấm được thì phải là button cao 44px.
+- "Chờ khách chọn ảnh" phải xuống dòng ở 360px, không làm vỡ thẻ.
+
+3. COMPONENT KHÁC
+- ConversationList: đang chọn, chưa đọc, danh sách rỗng, tên tiếng Việt rất dài. Mỗi dòng là button hoặc a, cao từ 44px.
+- ChatPanel: tin của khách và studio, tin rất dài, ô nhập có label, gửi rỗng không tạo tin.
+- BookingForm: mọi ô có label thật, lỗi dưới ô kèm aria-invalid, form có action sang lich-chup.html.
+- ConflictAlert: nêu rõ ai bận lúc nào. Giờ trống là button có trạng thái đã chọn. Chọn 14:00 thì hết báo lỗi.
+- ResourceSchedule: 4 kiểu Bận, Trùng, Trống, Đề xuất. Không che hay cắt chữ: bản xem trước đang cắt "Linh yêu cầu" và "Linh · makeup" trong khối 1 giờ, phải sửa. Ở 360px dùng table thật trong khung cuộn, hoặc đổi thành danh sách.
+- WeekCalendar: ngày đang chọn, ngày không có lịch, tab là button, 09:00 cũ gạch ngang, 14:00 là giờ mới.
+- BookingSummary: GS-1024, gói, ngày, giờ, tiền thẳng cột, tên gói dài xuống dòng.
+- DepositCard: 1.800.000đ, cọc 540.000đ, còn 1.260.000đ.
+
+Khi chép từ design-system/ phải đổi:
+- window.GradStudio và React 18 → module import/export và React 19.
+- key theo chỉ số trong ChatPanel, ConflictAlert, WeekCalendar → key theo id.
+- preventDefault trong BookingForm → bỏ, để form dùng action.
+- .gs-sched-grid { min-width: 880px } → cách xử lý 360px nêu ở ResourceSchedule.
+- @import font trong CSS → dùng font đã có trong repo.
+Trang thật không tải bundle.js, bundle.css hay React từ CDN.
+
+4. BỐ CỤC
+- Trang quản lý: 360px một cột, 768px hai cột, 1280px ba cột.
+- Mỗi trang một h1, không nhảy cấp heading. Có header, nav, main, footer. Tối đa một nút primary.
+- Theme studio. Liên kết tương đối, không dùng /page.html.
+- Trước khi tạo Pull Request, tự chạy bảng Done means trong CLAUDE.md.
+```
+
+## Part 4 — Documentation compliance audit (sent 2026-11-08)
+
+**Nguyên văn prompt đã gửi.**
+
+```text
+## OWNER DIRECTIVE — DOCUMENTATION COMPLIANCE AUDIT
+
+Bạn đã hoàn thành triển khai `quan-ly.html` và `lich-chup.html`. Tuy nhiên, tôi nghi ngờ bạn chưa thực hiện đầy đủ nghĩa vụ documentation theo `CLAUDE.md`.
+
+### 1. Audit trước, sửa sau
+
+Đọc lại `AGENTS.md`, `CLAUDE.md`, `AI-LOG.md`, `brief.md` và `PROTOTYPE.md`.
+
+Kiểm tra `git status`, `git diff` và lịch sử commit liên quan.
+
+Đối chiếu từng yêu cầu documentation trong `CLAUDE.md` với trạng thái thực tế của repository.
+
+Đặc biệt xác minh:
+
+- AI-LOG.md đã ghi lại các bước triển khai, kiểm thử, lỗi và quyết định chưa?
+- brief.md đã lưu chính xác các prompt thực sự được gửi chưa?
+- PROTOTYPE.md đã phản ánh đúng các tính năng hoàn thành và chưa kết nối chưa?
+- Các kết quả kiểm thử trong báo cáo có evidence thực tế hay chỉ là những tuyên bố?
+- Checklist Done means đã được thực hiện đầy đủ chưa?
+
+### 2. Khắc phục các thiếu sót
+
+Nếu phát hiện thiếu tài liệu, hãy cập nhật đúng quy định.
+
+Đối với AI-LOG.md:
+- Ghi lại những việc thực sự đã làm và kết quả kiểm thử có thể xác minh.
+- Nêu rõ lỗi, cách xử lý, quyết định và phần can thiệp của con người.
+- Không tự tạo commit hash; đánh dấu chưa commit nếu cần.
+- Không backdate, không dựng lại lịch sử.
+
+Đối với brief.md:
+- Chỉ ghi nguyên văn prompt thực sự được gửi.
+- Giữ đúng thứ tự lịch sử.
+- Nếu không truy xuất được prompt gốc, ghi rõ không thể xác minh, tuyệt đối không tự tái tạo nội dung rồi coi là prompt gốc.
+
+### 3. Ngăn tái diễn
+
+Kiểm tra phần Done means trong CLAUDE.md.
+
+Đề xuất bổ sung documentation gate bắt buộc:
+
+- AI-LOG.md được cập nhật sau mỗi bước triển khai có ý nghĩa.
+- brief.md được cập nhật sau mỗi prompt thực sự được gửi.
+- Trước khi commit hoặc tạo PR, phải đối chiếu hai tài liệu với công việc thực tế.
+- Không được tuyên bố hoàn thành nếu chưa thực hiện documentation gate.
+
+Chỉ được sửa CLAUDE.md nếu không mâu thuẫn với các quy định đã có.
+
+### 4. Giới hạn
+
+- Không sửa lại implementation của hai trang.
+- Không tự ý tạo commit hoặc Pull Request.
+- Không chỉnh sửa lịch sử giả tạo để làm tài liệu trông đầy đủ.
+- Không chạy lại toàn bộ test nếu evidence hiện có đã đủ; chỉ kiểm tra bổ sung khi cần.
+
+### 5. Báo cáo cuối
+
+Trả về:
+1. Những yêu cầu CLAUDE.md đã tuân thủ.
+2. Những yêu cầu đã vi phạm hoặc chưa có evidence.
+3. Các tài liệu đã cập nhật và nội dung thay đổi.
+4. Documentation gate đã được thiết lập như thế nào.
+5. Những vấn đề chưa thể xác minh.
+
+Từ các task tiếp theo, chủ động cập nhật AI-LOG.md và brief.md theo CLAUDE.md, không chờ tôi nhắc lại.
+```
+
 ## Still to add
 
-- The GradStudio screens in `docs/pa1/`, which Part 3 hands over.
-- Any later prompts, in order, including those sent by Khánh.
+- Prompts sent after 2026-11-08, in order, including any sent by Khánh.

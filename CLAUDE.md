@@ -77,6 +77,16 @@ Run these yourself. "The assistant says it works" is not a check. `IA2` `IA3` `S
 | 10 | `npm run preview`, Network tab, tick *Disable cache*, choose *Slow 4G*, reload each path. Do not measure on `npm run dev` | Page name shows at once, never blank; no layout jump as images load; controls work; no failed request. Team target: usable within 3 seconds |
 | 11 | `git diff --stat` before each commit | Only the files this step meant to change |
 
+### Documentation gate (added 2026-11-08)
+
+Before a commit, a pull request, or any "done" claim, all three must be true:
+
+- `AI-LOG.md` has an entry for every meaningful implementation step: what was asked, what changed, every check with its actual result, errors found and fixed, decisions, and human intervention. If the step is not committed yet, write `Chưa commit`; the commit that records the step replaces that marker with the real hash. Never invent a hash.
+- `brief.md` holds each prompt exactly as sent, in order, with its date. If the original text cannot be retrieved, say so; never reconstruct it and label the reconstruction as the original.
+- `git status`, `git diff --stat` and the two files agree with the work actually done. Read them before committing or opening a PR.
+
+A "done" report that skips this gate is not done.
+
 ## Team process (from lecturer feedback)
 
 - **Small commits, one meaningful step each.** A first commit with this file, then at least one per page and one for the responsive pass. `FB` `PA2`

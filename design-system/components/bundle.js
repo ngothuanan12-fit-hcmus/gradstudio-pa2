@@ -206,7 +206,7 @@
       h("h3", { className: "gs-form-title" }, "Booking mới", h(StatusBadge, { tone: p.conflict ? "conflict" : "pending" })),
       h("div", { className: "gs-form-row" },
         h(Field, { name: "kh", label: "Khách hàng", value: b.customer }),
-        h(Field, { name: "goi", label: "Gói chụp", value: b.pkg, options: [b.pkg, "Gói Kỷ yếu nhóm", "Gói Chân dung"] })),
+        h(Field, { name: "goi", label: "Gói chụp", value: b.pkg, options: [b.pkg, "Kỷ yếu lớp", "Tốt nghiệp", "Chân dung/CV"] })),
       h("div", { className: "gs-form-row" },
         h(Field, { name: "ngay", label: "Ngày chụp", value: b.date, hint: b.dow }),
         h(Field, { name: "gio", label: "Giờ bắt đầu", value: p.conflict ? b.requested : b.makeup.from, error: p.conflict ? "Mai (makeup) bận 08:00–12:00" : null })),
