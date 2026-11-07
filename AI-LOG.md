@@ -35,6 +35,14 @@ Changed: An's idea was that separate pages reduce permission work. The assistant
 Rejected: server rendering and a second project, because neither is needed for three pages and both add work before the deadline.
 By hand: An reported both remarks from class. Not yet measured, because no page exists.
 
+## 2026-11-07 — text for the Claude Design set-up form
+Tool: Claude Code (Claude Opus 5.5), writing the text; Claude Design will use it next.
+Asked for: what to fill in the design system form, with a 3D landing page and the same font as our earlier project, Thủ Tục Dễ.
+Kept: the name and blurb, the notes text, and which upload fields to leave empty.
+Changed: our files name three fonts for Thủ Tục Dễ (Inter, Noto Sans, Be Vietnam Pro), and the final Claude Design font was never recorded, so the assistant could not confirm "the same font". It proposed Be Vietnam Pro until An checks. It also limited 3D to CSS for now, because our rules forbid a new dependency and the page must stay smooth on Slow 4G.
+Rejected: linking the GradStudio repository in the form, because we are changing its interface and the course says not to put a classmate's work in prompts; the story and features go in as text from the assigned topic.
+By hand: An chose a 3D landing page and has a reference video, which the assistant has not seen yet.
+
 ## 2026-11-07 — reference sites for the design
 Tool: Claude Code (Claude Opus 5.5).
 Asked for: foreign photo studio websites to compare before we choose a look.
