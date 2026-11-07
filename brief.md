@@ -107,6 +107,12 @@ An also attached eight photos.
 > cảnh lớp học 3d làm từng phần nhỏ xem ổn không hoặc cần chỉnh sửa mới làm tiếp
 > phần làm này nhớ lưu ý nhắc mình chọn reject nếu có sai vào ai log
 
+> 3 điều cũng tạm ổn rồi, có thể cải thiện để thật hơn
+> Nhãn cho ảnh có học sinh trên Pexels: mình giữ nguyên, chưa xử lý, và sẽ nhắc lại trước khi nộp.
+> Font: chờ bạn chọn cụ thể là sao
+> font thì theo bạn để xuất nhưng trình bày theo câu có các chữ kiểm tra lỗi font để mình xem ổn chưa
+> nhớ nhắc mình xóa các phần không cần thiết hoặc chuyển qua thư mục khác để không nộp dư thừa
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

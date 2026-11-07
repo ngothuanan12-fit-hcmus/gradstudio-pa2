@@ -140,6 +140,15 @@ Changed: two errors found in screenshots at six scroll positions: window glass a
 Rejected: nothing yet.
 By hand: An set the way of working. Smoothness on a real graphics card has not been tested.
 
+## 2026-11-07 — Newsreader chosen, and a more real room
+Commit: the commit that adds this entry, directly after 34b604d. The test page is outside the repository.
+Tool: Claude Code (Claude Opus 5.5), with fontTools and Playwright.
+Asked for: use the assistant's suggested font and show test sentences to check; make the room look more real; remind An to remove extras before hand-in.
+Kept: Newsreader for titles, in the project files. All five font files in the repository have 134 of 134 Vietnamese letters; An still has to read the test sentences on the page.
+Changed: worn walls, wood grain, tile wear, a view outside the windows, sunlight, strip lights, a lectern and a classroom banner. All are drawn in code. The banner motto is the assistant's own addition, not from the photo or the proposal.
+Rejected: Gambetta, for missing Vietnamese letters.
+By hand: An approved part 1 with the request to make it more real. Part 2 has not started. Smoothness on a real graphics card is still untested.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

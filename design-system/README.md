@@ -1,3 +1,5 @@
+> Ghi chú của nhóm: tài liệu này nhắc đến Gambetta, nhưng nhóm đã đổi sang **Newsreader** vì file Gambetta chỉ có 38/134 chữ có dấu tiếng Việt. Xem `CLAUDE.md`.
+
 GradStudio là một hệ thống thiết kế dùng cho hai phía. **Trang khách** mang chất điện ảnh: tối, toàn màn hình, ảnh là trung tâm. **Trang quản lý** và **“Lịch chụp của tôi”** thì sáng, gọn và dễ đọc khi có nhiều dữ liệu. Cả hai phía dùng chung một bộ token, một bộ font và một namespace component (`window.GradStudio`). Mọi chữ trên giao diện đều là tiếng Việt.
 
 ## Hai theme, một bộ token
