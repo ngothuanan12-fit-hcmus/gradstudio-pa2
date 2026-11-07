@@ -43,6 +43,14 @@ Changed: our files name three fonts for Thủ Tục Dễ (Inter, Noto Sans, Be V
 Rejected: linking the GradStudio repository in the form, because we are changing its interface and the course says not to put a classmate's work in prompts; the story and features go in as text from the assigned topic.
 By hand: An chose a 3D landing page and has a reference video, which the assistant has not seen yet.
 
+## 2026-11-07 — 3D idea for the landing page
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: fit An's idea into the Claude Design notes. Scrolling moves through a class or school set, shows different camera angles, and labels each step, so customers see the process and the frames they may get. Audience widened to school and university students about to graduate.
+Kept: the updated notes text and the plan for a simple CSS scene with real text for each step.
+Changed: the assistant checked the idea against the rubric and found a risk: 3D parts that extend past the screen would appear in the second Console line, so the starting view must fit inside the screen. Phones get a lighter version. Marked the angles and steps as examples, because the proposal does not describe them.
+Rejected: three.js and pre-rendered image sequences for now, because of added download size on Slow 4G. Not measured; nothing is built yet.
+By hand: An's idea, inspired by a video of a house built while scrolling. The assistant has not seen the video.
+
 ## 2026-11-07 — reference sites for the design
 Tool: Claude Code (Claude Opus 5.5).
 Asked for: foreign photo studio websites to compare before we choose a look.
