@@ -51,6 +51,14 @@ Changed: the assistant checked the idea against the rubric and found a risk: 3D 
 Rejected: three.js and pre-rendered image sequences for now, because of added download size on Slow 4G. Not measured; nothing is built yet.
 By hand: An's idea, inspired by a video of a house built while scrolling. The assistant has not seen the video.
 
+## 2026-11-07 — studying the reference video
+Tool: Claude Code (Claude Opus 5.5), with ffmpeg to pull frames from the 11-second video.
+Asked for: study the video for style, text layout, components and effects, and fit them to our page.
+Kept: the structure seen in the frames: full-screen scene, step counter, two-line title with one accent line, progress ring, angle map, summary card at the end.
+Changed: the assistant replaced its earlier CSS miniature idea, because the frames show a glowing line drawing that turns into a real photo. New proposal: an SVG line drawing of the classroom, a camera move with CSS, and a real photo fading in at each step.
+Rejected: copying the video's tiny monospace labels, because our body text must be at least 16 px; a scrubbed video, because no footage exists and it would be heavy on Slow 4G. Not yet built or measured.
+By hand: An supplied the video and asked for it to be studied. The site in it (Pennwick) is a style reference only; no name, image or text is copied.
+
 ## 2026-11-07 — reference sites for the design
 Tool: Claude Code (Claude Opus 5.5).
 Asked for: foreign photo studio websites to compare before we choose a look.
