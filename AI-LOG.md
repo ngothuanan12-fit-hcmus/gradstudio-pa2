@@ -31,6 +31,15 @@ Changed: the old rule "React starts in PA#3" and the JavaScript-off rules no lon
 Rejected: a router library, because it adds a dependency and three built HTML files give real paths without one (not yet tried in a build).
 By hand: An's decisions on React and on commit messages.
 
+## 2026-11-07 — camera screen view for the landing page
+Commit: the commit that adds this entry, directly after 720992c.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: whether we can use photographer POV images. An then chose the view through the camera screen.
+Kept: An's choice of the camera screen view.
+Changed: stock POV photos of Vietnamese classrooms may be hard to find and would not match each other, so the assistant proposed drawing the camera in SVG and CSS and showing a normal photo on its screen. Waiting for An to confirm; not built yet.
+Rejected: nothing yet.
+By hand: An's choice. An's message was cut off, so the reason for it is not yet recorded.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
