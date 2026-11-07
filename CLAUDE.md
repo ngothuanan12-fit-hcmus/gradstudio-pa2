@@ -13,7 +13,8 @@ Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 ann
 - Plain CSS with custom properties. One framework at most for the semester, and we use none. `PA2`
 - Spacing scale: `--space-1` to `--space-8` = 4, 8, 12, 16, 24, 32, 48, 64 px.
 - Mobile first. Breakpoints: `min-width: 768px` and `min-width: 1280px`.
-- Colours, type and layout are the team's own choice; record them here once chosen. `PA2`
+- Fonts: Gambetta for large titles, Be Vietnam Pro for everything else. Keep the font files in the repository as `woff2`.
+- Colours and layout are the team's own choice; record them here once chosen. `PA2`
 - Check `node --version` on each machine: `npm create vite@latest` needs Node 20.19 or newer. `S6`
 
 ## NEVER
@@ -45,7 +46,7 @@ Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 ann
   - Keep images in the repository, compressed, in WebP, sized for their slot, with `srcset` where phone and laptop differ.
   - Every image has `width` and `height` or an `aspect-ratio`, so nothing jumps when it loads. Images below the first screen use `loading="lazy"`; the main image does not.
   - Each HTML file has a small shell inside `#root` (page name and a loading line), so a slow connection never shows a blank page.
-  - Use one font family with `font-display: swap`, or system fonts.
+  - Load only the font weights in use, with `font-display: swap`, so text shows before the font arrives.
 - Buttons and standalone links have `min-height: 44px` at 360 px. At least one long item, such as a long Vietnamese name, must wrap. `PA2`
 
 ## When a page talks to a server (PA#3 onward)

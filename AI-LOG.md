@@ -59,6 +59,14 @@ Changed: the assistant replaced its earlier CSS miniature idea, because the fram
 Rejected: copying the video's tiny monospace labels, because our body text must be at least 16 px; a scrubbed video, because no footage exists and it would be heavy on Slow 4G. Not yet built or measured.
 By hand: An supplied the video and asked for it to be studied. The site in it (Pennwick) is a style reference only; no name, image or text is copied.
 
+## 2026-11-07 — choosing fonts
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: Fontshare fonts to try, then apply the ones without errors.
+Kept: Gambetta for large titles and Be Vietnam Pro for other text. The "one font" rule became a rule about loading only the weights in use.
+Changed: the assistant could not read Fontshare's language data (the pages returned an empty shell and the font server did not connect), so it gave a Vietnamese test string instead of claiming support.
+Rejected: its other suggestions (Zodiak, Boska, Erode, General Sans, Satoshi, Switzer), because An's test found errors in the fonts tried; only Gambetta passed.
+By hand: An ran the test on Fontshare. Be Vietnam Pro comes from what the assistant knows, and the font files have not been checked character by character yet.
+
 ## 2026-11-07 — reference sites for the design
 Tool: Claude Code (Claude Opus 5.5).
 Asked for: foreign photo studio websites to compare before we choose a look.
