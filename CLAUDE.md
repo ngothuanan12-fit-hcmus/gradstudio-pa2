@@ -20,7 +20,7 @@ Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 ann
 
 ## NEVER
 
-1. **NEVER** add a dependency beyond React, Vite and the session 6 lint tools: no router, axios, UI, state or icon library, no CDN script. `S6` `PA2`
+1. **NEVER** add a dependency beyond React, Vite, the session 6 lint tools and `three`: no router, axios, UI, state or icon library, no CDN script. `three` is for the landing page's 3D scene only, loaded with a dynamic `import()` after the page shows, at 768 px or wider. Without WebGL, on phones or with reduced motion, the page shows the stacked steps instead. `S6` `PA2`
 2. **NEVER** navigate with `onClick` or `location.href`. Going to another page is `<a href="lich-chup.html">` or a form with `action`. `PA2`
 3. **NEVER** use an absolute path (`/page.html`) or a folder as a link. `PA2`
 4. **NEVER** use `dangerouslySetInnerHTML`. Data is rendered as text. `S6`

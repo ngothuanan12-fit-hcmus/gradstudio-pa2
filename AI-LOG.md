@@ -77,6 +77,15 @@ Rejected: `@import` for fonts, because files in the repository load without an o
 Checks run on the built pages, through a local server: 360, 768 and 1280 px, no sideways scroll, nothing past the right edge, controls at least 44 px, one `h1`, four landmarks, labels, no console errors, the main flow with a reload on each page, and loading from a subfolder. Simulated Slow 4G at 360 px: loading line after about 0.6 s, page after about 2 s. The pages are placeholders, so this will change. The W3C checker has not been run yet.
 By hand: An chose the name. Newsreader stands in until the Gambetta files are added.
 
+## 2026-11-07 — real 3D with three.js
+Commit: the commit that adds this entry, directly after b5b8362.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: An still wants 3D like Tracewood.
+Kept: `three` allowed for the landing page only, with a fallback to stacked steps. Not installed yet.
+Changed: the assistant had said the effect needs ready-made 3D models. That was wrong: the list of files Tracewood loads includes `RoundedBoxGeometry` and `RoomEnvironment`, which suggests its room is built in code. The assistant also measured `three` instead of guessing: a test bundle with the parts we expect to use is 532 KB, or 131 KB with gzip.
+Rejected: Tracewood's post-processing effects, such as `GTAOPass`, to keep it light on weak machines. Not measured.
+By hand: An's decision to use 3D.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
