@@ -149,6 +149,15 @@ Changed: worn walls, wood grain, tile wear, a view outside the windows, sunlight
 Rejected: Gambetta, for missing Vietnamese letters.
 By hand: An approved part 1 with the request to make it more real. Part 2 has not started. Smoothness on a real graphics card is still untested.
 
+## 2026-11-07 — 3D classroom, part 2: the class gathers
+Commit: the commit that adds this entry, directly after 3b043d3. The test page is outside the repository, and none of its code is in the project yet.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL for the checks.
+Asked for: An read the font sentences, said the font is fine and approved part 1, banner included. Next small part, as the assistant proposed: people gathering in front of the board, without the hand or camera.
+Kept: awaiting An's review. Anything An rejects will be recorded here. The 13 figures are invented, with no real person's likeness.
+Changed: errors found in the assistant's own output, each by a check, all fixed. A path test over 200 scroll steps found people walking through each other: p1 with p7, p0 with p1, p7 with p8. It now reports none, closest pair 0.37 m. Screenshots at six positions showed a stiff lined-up group, striped shadows and stray triangles on the ao dai, heads covering the board text, and arms reaching into empty air at the ends of the group. Screenshots also showed the board text breaking into "yê´u" once the font test left the page: the code asked for the font without saying which letters, so the Vietnamese part was never loaded. The project must pass the text to `document.fonts.load` when it draws Vietnamese on a canvas. No console errors; no sideways scroll at 1280 or 390 px; 342 draw calls.
+Rejected: nothing yet.
+By hand: An approved the font and part 1. Smoothness on a real graphics card is still untested, and part 2 adds to the load.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

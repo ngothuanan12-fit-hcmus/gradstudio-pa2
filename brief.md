@@ -113,6 +113,8 @@ An also attached eight photos.
 > font thì theo bạn để xuất nhưng trình bày theo câu có các chữ kiểm tra lỗi font để mình xem ổn chưa
 > nhớ nhắc mình xóa các phần không cần thiết hoặc chuyển qua thư mục khác để không nộp dư thừa
 
+> font ổn, duyệt phần 1
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
