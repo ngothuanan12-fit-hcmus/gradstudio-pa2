@@ -167,6 +167,15 @@ Changed: first render had dull photo borders, faint chalk, a portrait touching t
 Rejected: An rejected the assistant's part 2, 13 modelled people gathering at the board, and the assistant's proposed next part, hands and a camera. Removed from the page.
 By hand: the concept is An's. Smoothness on a real graphics card is still untested.
 
+## 2026-11-07 — board writing and zoom speed, after An's review
+Commit: the commit that adds this entry, directly after 0c6c3f6. The test page is outside the repository, and none of its code is in the project yet.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL for the checks.
+Asked for: An's review found two errors in the assistant's board scene: writing was on the board before the photos, and the zoom into each photo was too fast and no longer smooth. An also asked whether Khánh can start from the repository now.
+Kept: awaiting An's review. Each label now appears with its photo, and the heading with the first photo. The move between photos went from 0.04 to 0.10 of a longer scroll, about 36 % of a screen to 130 %.
+Changed: the assistant had set the move too short, and none of its own checks measured speed, so An's review caught it. Other causes of jerky motion found by reading the code and fixed: shadows redrawn every frame during zooms, photos sent to the graphics card at first view, and a zoom that sped up as it neared the photo. New camera path check: no jumps. Screenshots at nine positions; no console errors; no sideways scroll at 1280 or 390 px. Software rendering cannot measure smoothness, so An has to judge it on a real machine.
+Rejected: `docs/YEU-CAU-KHANH.md` removed at An's request, because An will brief Khánh by message. Earlier log entries that name it stay as written; the file remains in git history. Before removal, a fresh clone of the repository installed, passed lint and built. Khánh has not yet been invited to the repository.
+By hand: An's review and decisions.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

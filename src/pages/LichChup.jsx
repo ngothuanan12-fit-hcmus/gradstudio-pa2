@@ -2,7 +2,7 @@ import CustomerLayout from '../layouts/CustomerLayout.jsx';
 import BookingSummary from '../components/BookingSummary.jsx';
 import { booking } from '../data.js';
 
-// Placeholder for Khánh's page. See docs/YEU-CAU-KHANH.md.
+// Placeholder for Khánh's page.
 export default function LichChup() {
   return (
     <CustomerLayout current="schedule">

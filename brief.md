@@ -117,6 +117,11 @@ An also attached eight photos.
 
 > mình nghĩ không nên để mô hình người vào mà nên zoom lên bảng xong sẽ có các hình ghim các ảnh thật trên bảng, mỗi hình đại diện cho từng gói chụp luôn, zoom để thấy tổng quan các gói xong zoom từng hình, phần 2 này chắc mình sẽ reject để đổi ý tưởng
 
+> trên bảng chưa nên có chữ ngay mà nên hiện khi cùng với ảnh, zoom vào từng hình bị nhanh quá, chuyển động không còn mượt nữa
+> mình có thể commit lên repo để Khánh làm rồi mình tiếp tục làm phần của mình không được không
+
+> bỏ file YEU-CAU-KHANH.md vì mình sẽ gửi tin nhắn
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
