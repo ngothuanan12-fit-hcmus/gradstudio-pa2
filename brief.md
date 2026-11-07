@@ -124,6 +124,12 @@ An also attached eight photos.
 
 > ảnh cho mỗi gói nên có ảnh khác nhau, sửa lại các câu mô tả, xem trên các web thực tế người ta dùng cách mô tả thế nào và web gốc của nhóm kia có dòng mô tả không, story đang đi từ 1 đến 7 và chỉ nằm một bên trong khi tracewood hay video mình cho bạn xem minh họa chữ thay đổi linh hoạt tùy vào bối cảnh, nhớ ghi lại mình reject hay đồng ý vào ai log
 
+> https://unsplash.com/fr/photos/jeune-homme-aux-cheveux-boucles-sur-fond-vert-KDF7-23mAU8
+> ảnh chân dung lấy ảnh này
+> soạn chi tiết nội dung phải làm cho Khánh, là mục 6 trong đoạn Nội dung phải làm: danh sách tính năng, bảng StatusBadge và các mốc thời gian.
+
+An also attached that photo.
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

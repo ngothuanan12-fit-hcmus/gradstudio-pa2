@@ -185,6 +185,15 @@ Changed: the descriptions, the three "from" prices and most scene lines now come
 Rejected: An rejected the same person on two packages, the assistant's descriptions, and the numbered story with its caption always on one side. An also found a factual error the assistant had made: it said only Premium has a price and showed "Giá: studio báo khi chat", but the assistant had never read the original site, which lists a price for all three. `design-system/README.md` carried the same claim and is corrected.
 By hand: An's review and direction.
 
+## 2026-11-07 — An's photo for Chân dung/CV, and the brief for Khánh
+Commit: the commit that adds this entry, directly after 7e14731. The test page is outside the repository.
+Tool: Claude Code (Claude Opus 5.5), with a web fetch and Playwright.
+Asked for: use An's chosen portrait for Chân dung/CV; write out the features, StatusBadge table and timeline for An's message to Khánh.
+Kept: An's photo, by Darion Dewhirst under the free Unsplash License, read from the photo's page; it replaces the assistant's choice. The message text is a draft for An to send, built from the removed requirements file with the real package names and prices added.
+Changed: chalk labels no longer show behind the closing words. Words still stay on screen and clear of the photo at 1280, 1920 and 390 px; no console errors, no sideways scroll.
+Rejected: the Unsplash photo from the original team's card, replaced by An's choice.
+By hand: An chose the photo. Whether An approves the rest of version 7 is still open.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
