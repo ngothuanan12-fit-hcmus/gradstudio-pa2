@@ -87,6 +87,13 @@ Followed by the lecturer's announcement, pasted in full: "PA#2: your team decide
 
 > đừng xây bối cảnh ngay, chờ mình lấy hình theo gợi ý của bạn đã
 
+> https://unsplash.com/fr/collections/JP8zgj9YQQ4/b%E1%BB%AFa-h%E1%BB%8Dc-cu%E1%BB%91i-c%C3%B9ng
+> bạn xem các ảnh cso phù hợp chưa
+> lấy ảnh nhớ để nguồn
+> link của ảnh professional portrait student: https://unsplash.com/fr/photos/un-diplome-sourit-tenant-des-fleurs-pret-a-celebrer-ILJfgW9YbcI
+
+An also attached that portrait photo.
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

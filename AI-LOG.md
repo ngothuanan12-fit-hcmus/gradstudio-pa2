@@ -104,6 +104,15 @@ Changed: reading the PA#1 team's `LINK.md` showed an error in the assistant's re
 Rejected: starting the 3D scene now, at An's request.
 By hand: An's decisions. Khánh will be added to the repository by An.
 
+## 2026-11-07 — checking An's photos
+Commit: the commit that adds this entry, directly after 375d473. The photos are outside the repository for now.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: check whether a portrait and an Unsplash collection suit the page, and keep the sources.
+Kept: the portrait (Hưng Nguyễn, Unsplash License), and the source file `nguon-anh.txt`.
+Changed: the assistant could read the collection's text but not see its photos. Its scripted download got 401 from Unsplash, so it stopped and asked An to download them. Its advice on those 10 photos rests on their descriptions only.
+Rejected: trying other ways past the refusal.
+By hand: An chose the photos.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).
