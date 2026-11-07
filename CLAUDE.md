@@ -14,7 +14,8 @@ Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 ann
 - Spacing scale: `--space-1` to `--space-8` = 4, 8, 12, 16, 24, 32, 48, 64 px.
 - Mobile first. Breakpoints: `min-width: 768px` and `min-width: 1280px`.
 - Fonts: Gambetta for large titles, Be Vietnam Pro for everything else. Keep the font files in the repository as `woff2`.
-- Colours and layout are the team's own choice; record them here once chosen. `PA2`
+- Colours, type sizes and component behaviour: `design-system/`, generated with Claude Design. It is a reference: pages use `design-system/tokens.css` values and components rewritten in `src/components/`. They never load `bundle.js`, `bundle.css` or a CDN script.
+- Colours and layout are the team's own choice. `PA2`
 - Check `node --version` on each machine: `npm create vite@latest` needs Node 20.19 or newer. `S6`
 
 ## NEVER

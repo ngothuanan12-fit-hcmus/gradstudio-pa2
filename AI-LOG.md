@@ -125,3 +125,12 @@ Kept: private repository `gradstudio-pa2` under An's account, with the existing 
 Changed: nothing. The rubric PDF stays out through `.gitignore`.
 Rejected: a public repository for now, because the hand-in is a zip. If we later share a link with the lecturer, it must be made public and checked in an incognito window.
 By hand: An asked for it. Khánh still has to be added as a collaborator.
+
+## 2026-11-07 — design system as files, requirements for Khánh
+Commit: the two commits after c7bd762 (design system files; rules and requirements).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: whether renaming a page breaks a rule, and a way to share the design system without a link, because Khánh may use another agent.
+Kept: `design-system/` copied from the Claude Design output, `AGENTS.md`, and `docs/YEU-CAU-KHANH.md`.
+Changed: the assistant wrote `design-system/preview.html` to show the components in a browser, since the original previews only run inside Claude Design. The requirements override the design system where it breaks our rules, for example `DepositCard` pretending a payment was made.
+Rejected: keeping only a link to the design system, because a different agent cannot open it.
+By hand: An's request. The renaming is still An's decision; the rubric fixes only `index.html`, and the other names are free as long as `screenshots/`, `checks/` and `PROTOTYPE.md` match.
