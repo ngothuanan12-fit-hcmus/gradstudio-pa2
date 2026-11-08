@@ -477,9 +477,19 @@ By hand: none.
 ## 2026-11-08 — management page: the booking form
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: d7106b5.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: the form must have visible labels, the error under the time field with `aria-invalid`, a real `action`, and no simulated quote step.
 Changed: `src/components/BookingForm.jsx` opens at the agreed 14:00 with the badge *Đã chốt lịch* and the submit enabled. Switching back to 09:00 shows the clash, sets `aria-invalid`, and disables the submit with a note. The *Gửi báo giá* button and the `onSendQuote` prop are gone: the quote is already the third message, and sending has no next page. The submit reads *Tạo booking và mở lịch chụp của Linh*, so the label says who continues. `src/styles/admin.css` gains the form rules.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the resource schedule
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: Mai, Tuấn and Phòng B must stay readable at every width, with Bận / Trùng / Trống / Đề xuất never told by colour alone.
+Changed: `src/components/ResourceSchedule.jsx` is a list at every width instead of the design system's 880 px timeline. Each block keeps its kind as text and a glyph, plus the full label and time, so nothing clips at 360 px. `src/styles/admin.css` gains the schedule rules.
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
