@@ -2,7 +2,8 @@ import Button from './Button.jsx';
 import ChatPanel from './ChatPanel.jsx';
 import { messages } from '../data.js';
 
-// The chat on the landing page: it can be folded away and shows which package is being asked about.
+// The chat on the landing page, seen from Linh's side: her question and the studio's reply that it will check.
+// It can be folded away and shows which package is being asked about.
 export default function ChatDock({ open, onToggle, packageName }) {
   return (
     <div className="chat-dock" id="chat">
@@ -17,8 +18,9 @@ export default function ChatDock({ open, onToggle, packageName }) {
           id="home-chat"
           label="Tin nhắn cho studio"
           placeholder="Nhập tin nhắn cho studio"
-          messages={messages.slice(0, 1)}
+          messages={messages.slice(0, 2)}
           action="quan-ly.html"
+          viewer="customer"
         />
       </div>
     </div>
