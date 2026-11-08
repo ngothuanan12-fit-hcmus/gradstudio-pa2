@@ -167,6 +167,12 @@ An also attached `GradStudio-final-project-brief.pdf`, the class brief with the 
 > có nên ghi trong quy trình là  "cọc để giữ lịch" rồi phần mô tả mới ghi 30% không
 
 > đồng ý
+
+> /human không thích câu kết mới của cảnh 3D
+> câu đầu phần chat vẫn chưa ổn vì chưa tổng quát cho các trường hợp khách muốn chụp theo nhu cầu khác
+> Mỗi buổi chụp bắt đầu bằng một cuộc trò chuyện. mình cũng không thích câu này như ảnh
+
+An also attached a screenshot of that line under "Chọn buổi chụp của bạn".
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

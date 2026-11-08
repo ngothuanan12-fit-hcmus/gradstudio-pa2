@@ -397,3 +397,12 @@ Kept: step 3 is now "Cọc để giữ lịch"; its description still says "cọ
 Changed: nothing else. Lint and build pass; five steps, no sideways scroll at 360, 768 and 1280 px.
 Rejected: nothing.
 By hand: An's idea and approval. The rest of Fix these problem 1 and the new closing words still await An's review.
+
+## 2026-11-08 — three landing lines rejected and rewritten
+Commit: 4f9872e, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5) with An's `/human` writing skill, and Playwright screenshots of the built page.
+Asked for: new wording for three lines An rejected.
+Kept: awaiting An's review. 3D closing: "Chưa chắc chọn gói nào? / hỏi studio trước đã", "Giá từng gói và khung chat nằm ngay bên dưới." 3D overview: "Ba gói đang ghim trên bảng. Cuộn tiếp để xem từng gói và giá khởi điểm." Under the packages heading: "Cần makeup, thuê áo, hay muốn chụp kiểu không có trong ba gói này, bạn hỏi studio trong chat." Above the chat: "Kể studio bạn muốn chụp gì, ngày nào, đi mấy người. Studio xem lịch thợ chụp, makeup và phòng rồi trả lời trong chat." Make-up and costume rental are the extras the brief names.
+Changed: the rejected lines were the assistant's or copied from the original team's site; the chat line spoke only of graduation season, so it did not fit class yearbooks or CV portraits. Words stay on screen at 1280 and 768 px; rubric checks pass at 360, 768 and 1280 px, FAILURES: 0.
+Rejected: by An: the second 3D closing ("Ba tấm ảnh trên bảng / còn thiếu tấm của bạn"); the line above the chat ("Nhắn GradStudio để hỏi lịch trống cho mùa tốt nghiệp này."), as not general enough for other kinds of shoot; and "Mỗi buổi chụp bắt đầu bằng một cuộc trò chuyện.", used in two places.
+By hand: An's review. The heading above the chat, "Ngày ra trường chỉ có một lần", is also about graduation only; raised with An, not changed.
