@@ -513,3 +513,13 @@ Asked for: align with the rules and brief that reached `main` while this branch 
 Changed: the first chat message is now the brief's exact question, "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", followed by the studio's reply that it will check; the proposal, quote and Linh's agreement follow. The submit now reads "Khách hàng: mở lịch chụp GS-1024", so the label says who continues. The earlier entries now carry the hashes from after the rebase; the old hashes no longer exist and were replaced, not invented.
 Checks: `npm run lint` exits 0 with no output; `npm run build` exits 0.
 By hand: none.
+
+
+## 2026-11-08 — landing lines drafted to the seven writing rules
+Commit: the commit that adds this entry, directly after 263a1e8.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: rewrite the landing page's lines to the seven rules in `CLAUDE.md` and show them to An before changing the page.
+Kept: awaiting An's review; nothing on the page changed. Every line of copy on `index.html` was checked against the rules. Drafts change the line under the plain first screen, the room caption, the three package accent lines, the opening line of the packages section, the closing words of the 3D story, and the heading and opening line of the chat section; the rest already fits.
+Changed: the check found two lines of the assistant's that break rule 1, one emotional line per page: "nơi câu chuyện bắt đầu" and "Ngày ra trường chỉ có một lần" (the second copied from the original team's site). The package accents "cả lớp, một khung hình" and "cho ngày ra trường" said a mood, not who the package is for (rule 3).
+Rejected: nothing yet.
+By hand: An's request.

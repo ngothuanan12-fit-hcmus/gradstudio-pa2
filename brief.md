@@ -180,6 +180,8 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > soạn đoạn tin nhắn để gửi Khánh
 > trong tin nhắn chỉ nêu việc cần làm, đoạn tin nhắn phải blind review
 > để Khánh tự làm chứ nêu quá rõ thì sẽ bị một chiều
+
+> viết các câu theo 7 nguyên tắc rồi nêu lại cho mình xem
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
