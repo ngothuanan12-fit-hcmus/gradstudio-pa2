@@ -550,3 +550,12 @@ Kept: the comment is on PR #2. It names what passes, five problems on the page w
 Changed: the first draft was in Vietnamese and spoke as An ("Mình đã review…"); An asked for English and no pronouns. It also asked Khánh to tell An before every shared-file change; An found that too much work, and the review before merging now carries that check.
 Rejected: by An, the Vietnamese first-person draft, and the rule to announce every shared-file change.
 By hand: An's decisions on tone, language and the rule.
+
+## 2026-11-08 — Fix these, problem 2: the landing chat
+Commit: a791543 for the shared `ChatPanel`, 9c95ab8 for the landing chat, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built pages.
+Asked for: fix the two remaining parts of problem 2 on `index.html`: the studio's reply that it will check, and Linh's own message on her side of the chat.
+Kept: the landing chat now shows Linh's question from the brief and the studio's reply "Dạ để studio kiểm tra lịch thợ makeup, thợ chụp và phòng rồi báo lại ạ." Both lines were already in `src/data.js` from Khánh's PR #2. `ChatPanel` takes a `viewer` option, `studio` by default: messages from the viewer's side sit on the right without a name. The landing page sets `customer`.
+Changed: `ChatPanel` is a shared file, so it changed in its own commit, as the new team rule says. Checked on the built pages: on `index.html` Linh's message is on the right and the studio's on the left with its name, at 360 and 1280 px; on `quan-ly.html` every message keeps its side; the landing send still opens `quan-ly.html`; rubric checks pass for both pages at 360, 768 and 1280 px.
+Rejected: nothing yet.
+By hand: An's request. Problem 3, the send button and the link to the next page, waits until all three pages exist, as An decided.

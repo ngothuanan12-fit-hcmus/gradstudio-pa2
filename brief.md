@@ -195,6 +195,8 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > Không dùng đại từ xưng mình hay gì cả, khi đăng thật thì dùng tiếng Anh, nếu sửa các file dùng chung mà không báo thì sao, chứ báo nhiều quá mình phải làm quá nhiều
 
 > Đồng ý đăng, điều chỉnh luật luôn
+
+> sửa hai lỗi trên trang chủ
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
