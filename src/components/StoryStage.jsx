@@ -38,7 +38,7 @@ export default function StoryStage({ start }) {
         </div>
         <div className="cap at-bottom">
           <h2 className="story-title">Chọn buổi chụp của bạn</h2>
-          <p>Mỗi buổi chụp bắt đầu bằng một cuộc trò chuyện.</p>
+          <p>Ba gói đang ghim trên bảng. Cuộn tiếp để xem từng gói và giá khởi điểm.</p>
         </div>
         {packages.map((item, i) => (
           <div className={`cap ${PLACES[i]}`} key={item.id}>
@@ -48,8 +48,8 @@ export default function StoryStage({ start }) {
           </div>
         ))}
         <div className="cap at-center">
-          <h2 className="story-title">Ba tấm ảnh trên bảng <em>còn thiếu tấm của bạn</em></h2>
-          <p>Nhắn ngày bạn muốn chụp, studio xem thợ và phòng còn trống rồi trả lời trong chat.</p>
+          <h2 className="story-title">Chưa chắc chọn gói nào? <em>hỏi studio trước đã</em></h2>
+          <p>Giá từng gói và khung chat nằm ngay bên dưới.</p>
           <p className="cap-note">Giá tham khảo. Giá chốt được ghi trên booking sau khi tư vấn.</p>
         </div>
         <div className="story-actions stage-links">

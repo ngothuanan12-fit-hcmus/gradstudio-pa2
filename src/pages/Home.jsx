@@ -27,7 +27,7 @@ export default function Home() {
 
       <section className="home-section" id="goi-chup" aria-labelledby="goi-chup-title">
         <h2 className="section-heading" id="goi-chup-title">Chọn buổi chụp của bạn</h2>
-        <p>Mỗi buổi chụp bắt đầu bằng một cuộc trò chuyện.</p>
+        <p>Cần makeup, thuê áo, hay muốn chụp kiểu không có trong ba gói này, bạn hỏi studio trong chat.</p>
         <div className="package-list">
           {packages.map((item) => (
             <PackageCard key={item.id} item={item} asking={item.id === askingId} onAsk={askAbout} />
@@ -50,7 +50,7 @@ export default function Home() {
 
       <section className="home-section" aria-labelledby="hoi-studio-title">
         <h2 className="section-heading" id="hoi-studio-title">Ngày ra trường chỉ có một lần</h2>
-        <p>Nhắn GradStudio để hỏi lịch trống cho mùa tốt nghiệp này.</p>
+        <p>Kể studio bạn muốn chụp gì, ngày nào, đi mấy người. Studio xem lịch thợ chụp, makeup và phòng rồi trả lời trong chat.</p>
         <ChatDock open={chatOpen} onToggle={() => setChatOpen(!chatOpen)} packageName={asking?.name} />
       </section>
 
