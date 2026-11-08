@@ -121,7 +121,7 @@ export const packages = [
   {
     id: 'ky-yeu',
     name: 'Kỷ yếu lớp',
-    line: 'cả lớp, một khung hình',
+    line: 'cho cả lớp',
     text: 'Một người đại diện đặt lịch cho cả lớp. Studio lo trang phục, makeup và lịch chụp cho cả nhóm.',
     price: 350000,
     unit: '/người',
@@ -131,7 +131,7 @@ export const packages = [
   {
     id: 'tot-nghiep',
     name: 'Tốt nghiệp',
-    line: 'cho ngày ra trường',
+    line: 'cho một người hoặc nhóm nhỏ',
     text: 'Chụp cá nhân hoặc nhóm nhỏ, tùy chọn makeup và thuê áo. Gói Premium: 2 giờ, 30 ảnh chỉnh.',
     price: 1800000,
     unit: '',
@@ -141,7 +141,7 @@ export const packages = [
   {
     id: 'chan-dung',
     name: 'Chân dung / CV',
-    line: 'cho hồ sơ của bạn',
+    line: 'cho CV và hồ sơ xin việc',
     text: 'Buổi chụp ngắn, chọn ảnh cần chỉnh và nhận file.',
     price: 690000,
     unit: '',

@@ -49,7 +49,7 @@ export default function Home() {
       </section>
 
       <section className="home-section" aria-labelledby="hoi-studio-title">
-        <h2 className="section-heading" id="hoi-studio-title">Ngày ra trường chỉ có một lần</h2>
+        <h2 className="section-heading" id="hoi-studio-title">Nhắn cho studio</h2>
         <p>Kể studio bạn muốn chụp gì, ngày nào, đi mấy người. Studio xem lịch thợ chụp, makeup và phòng rồi trả lời trong chat.</p>
         <ChatDock open={chatOpen} onToggle={() => setChatOpen(!chatOpen)} packageName={asking?.name} />
       </section>
