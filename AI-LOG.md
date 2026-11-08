@@ -523,3 +523,13 @@ Kept: awaiting An's review; nothing on the page changed. Every line of copy on `
 Changed: the check found two lines of the assistant's that break rule 1, one emotional line per page: "nơi câu chuyện bắt đầu" and "Ngày ra trường chỉ có một lần" (the second copied from the original team's site). The package accents "cả lớp, một khung hình" and "cho ngày ra trường" said a mood, not who the package is for (rule 3).
 Rejected: nothing yet.
 By hand: An's request.
+
+## 2026-11-08 — customer schedule page: the week it opens on
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the second page of the redo in `brief.md` Part 6, on its own branch after the management page.
+Changed: `src/data.js` gains the week 19–25/10/2026. Saturday 24/10 carries the old 09:00 request, struck through because it clashed with Mai, then make-up 13:00–14:00 and the shoot 14:00–16:00. Sunday 25/10 has no events, so the empty state has a real day to show. The booking data added with the management page already holds the rest of this page's state.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
