@@ -187,6 +187,8 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > Cảnh 3D nhìn toàn bảng ghi là có nhiều lựa chọn chứ đừng nói ghim trên bảng nghe không hay
 > Câu đầu phần gói dùng như hiện tại Cần makeup, thuê áo, hay muốn chụp kiểu không có trong ba gói này, bạn hỏi studio trong chat.
 > các phần khác đã ổn
+
+> Review or #2 cho mình
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
