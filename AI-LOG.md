@@ -415,3 +415,12 @@ Kept: awaiting An's review of the rules; nothing on the page changed. Sites read
 Changed: the assistant had written lines by guessing for three rounds, and An rejected them; this step replaces guessing with sources.
 Rejected: nothing yet.
 By hand: An's direction. Limits: vinmedia.vn and kyyeugalaxy.com refused connections; tipustudio.vn had an expired certificate; most profile studios list only Facebook; one homepage was read through a page summary, not verbatim. Seven sites is a small sample.
+
+## 2026-11-08 — writing rules approved; repo checked for Khánh's restart; message drafted
+Commit: 57c3c58 for `CLAUDE.md`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with `gh` and `git`.
+Asked for: An approved the seven writing rules. Before any rewrite: confirm whether the repository is ready for Khánh to start again, and draft a message to Khánh that lists only the tasks, without leading him to one answer.
+Kept: the rules, now in `CLAUDE.md` under "Writing on the pages". Repository state: `main` matches `origin/main`, Khánh has write access, no pull request is open, `quan-ly.html` and `lich-chup.html` are still placeholders, lint and build passed at the last commit. The message draft is for An to edit and send; it is not in the repository.
+Changed: nothing on the pages.
+Rejected: nothing.
+By hand: An approved the rules and set how the message should read. Open points raised with An: the old `develop` and `feature/quan-ly-lich-chup` branches are still on GitHub; the rubric and the GradStudio brief PDFs are not in the repository; `messages` in `src/data.js`, which the landing chat and the management page both read, will change with Fix these problem 2.

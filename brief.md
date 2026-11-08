@@ -175,6 +175,11 @@ An also attached `GradStudio-final-project-brief.pdf`, the class brief with the 
 An also attached a screenshot of that line under "Chọn buổi chụp của bạn".
 
 > thay vì đoán thì đi xem các studio thực tế ở Việt Nam xem các họ diễn đạt và kể câu chuyển của họ như thế nào rồi tổng hợp quy tắc diễn đặt thực tế nhất cho mình xem rồi mới viết lại
+
+> /human đồng ý với các quy tắc, nhưng trước khi làm mình cần bạn xác nhận giờ Khánh có thể tiếp tục làm lại chưa, repo đã sẵn sàng để Khánh làm lại chưa
+> soạn đoạn tin nhắn để gửi Khánh
+> trong tin nhắn chỉ nêu việc cần làm, đoạn tin nhắn phải blind review
+> để Khánh tự làm chứ nêu quá rõ thì sẽ bị một chiều
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
