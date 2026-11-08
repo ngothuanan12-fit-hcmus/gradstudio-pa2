@@ -527,9 +527,19 @@ By hand: An's request.
 ## 2026-11-08 — customer schedule page: the week it opens on
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: 0d5d20b.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: the second page of the redo in `brief.md` Part 6, on its own branch after the management page.
 Changed: `src/data.js` gains the week 19–25/10/2026. Saturday 24/10 carries the old 09:00 request, struck through because it clashed with Mai, then make-up 13:00–14:00 and the shoot 14:00–16:00. Sunday 25/10 has no events, so the empty state has a real day to show. The booking data added with the management page already holds the rest of this page's state.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the booking summary
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the booking information from screen 3 of the brief, in its one open state, with the exact status name.
+Changed: `src/components/BookingSummary.jsx` now reads GS-1024 with the package and its detail, the day, make-up 13:00–14:00 with Mai, the shoot 14:00–16:00 with Tuấn in Phòng B, and the package total. The badge reads *Đã thống nhất lịch · Chờ cọc 30%* with the dashed pending style, so the page never claims the slot is held.
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
