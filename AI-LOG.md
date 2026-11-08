@@ -541,3 +541,12 @@ Kept: the page opens straight into the brief's state: Linh on *Đã chốt lịc
 Changed: nothing; findings for An. The opening state does not say in so many words that 09:00 clashed because Mai is busy 08:00–12:00: the alert reads "Không còn trùng lịch", and the reason sits only in the chat and the schedule. The form's badge shows *Chờ cọc 30%* with the confirmed tick before any booking exists. Two buttons carry the primary style (the disabled "Gửi" and the submit). Two sample rows do not fit their status: Trần Minh Anh is *Chưa trả lời* but says she has sent her chosen photos; Lê Gia Bảo is *Hoàn thành* but writes "hẹn gặp ngày 24/10". The unread count is 14 px. Process: Khánh merged his own PR five minutes after opening it, with no review; the seven component commits were authored within 86 seconds; shared files (`ChatPanel`, `src/data.js`, `base.css`, `mount.jsx`) were changed. The landing chat still works and now shows Linh's exact question from the brief.
 Rejected: nothing yet; An decides what Khánh fixes.
 By hand: An's request.
+
+## 2026-11-08 — review posted on PR #2; team rules for merging and shared files
+Commit: fe5663b for `CLAUDE.md`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with `gh`.
+Asked for: show the review comment before posting; then write it in English without personal pronouns, post it, and replace "tell An before changing shared files" with something lighter.
+Kept: the comment is on PR #2. It names what passes, five problems on the page without giving the fixes, and two process points. `CLAUDE.md` *Team process* gains two rules: a pull request waits for review and nobody merges their own; shared files change in their own commit and are listed in the pull request description, with no message beforehand.
+Changed: the first draft was in Vietnamese and spoke as An ("Mình đã review…"); An asked for English and no pronouns. It also asked Khánh to tell An before every shared-file change; An found that too much work, and the review before merging now carries that check.
+Rejected: by An, the Vietnamese first-person draft, and the rule to announce every shared-file change.
+By hand: An's decisions on tone, language and the rule.
