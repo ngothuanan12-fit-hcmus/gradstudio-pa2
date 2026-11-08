@@ -497,7 +497,7 @@ By hand: none.
 ## 2026-11-08 — management page: the page itself
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: f25c723.
 Tool: OpenCode (DeepSeek V4.1 Flash Free), with Chrome DevTools on the built page.
 Asked for: the brief's one state on direct open (after Linh agrees), no demo controls, and the PR #1 comment's filter fix.
 Changed: `src/pages/QuanLy.jsx` opens at 14:00 with *Tạo booking* enabled and no simulation section; `src/styles/admin.css` gains the one / two / three column layout. The status filter now matches the conversation status, not the badge tone, so "Đã chốt lịch" returns only Linh and "Đang tư vấn" returns only Uyên. `src/data.js` gains the four service names and prices from the brief. `PROTOTYPE.md` records the screen and the disabled chat send.
