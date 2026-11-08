@@ -1,11 +1,11 @@
 # GradStudio — team rules (CSC13008, PA#2 onward)
 
 Applies to every team member and every assistant working in this repository.
-Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 announcement, `S6` session 6 React starter, `IA2` session 4 catalogue, `IA3` session 5 three answers, `FB` lecturer feedback.
+Tags say where a rule comes from: `PA2` the rubric (updated 2026-11-08, due 2026-11-11 22:00), `BR` the GradStudio final project brief, its main flow example and its *Fix these* list, `S6` session 6 React starter, `IA2` session 4 catalogue, `IA3` session 5 three answers, `FB` lecturer feedback.
 
 ## Stack
 
-- React 19 with Vite, as in session 6. The built `dist/` folder is handed in and opened through a local server with JavaScript on. `PA2` `S6`
+- React 19 with Vite, as in session 6. The built `dist/` folder is handed in. It is marked from a local static server with JavaScript on and the outside network blocked, and each path is opened directly. So CSS, fonts and images are bundled or kept in the repository, never loaded from a CDN. We do not get to run `npm` for the marker: rebuild after the last change, and zip the working folder, not a clone, because `dist/` is gitignored. `PA2` `S6`
 - Three pages, built by Vite as three HTML files, `index.html`, `quan-ly.html` and `lich-chup.html`, joined by relative `<a href>`. No router, so every screen has a real path. List these paths in `PROTOTYPE.md`. `PA2`
 - `base: './'` in `vite.config.js`, so `dist/` still loads when it is not served from the root.
 - Customer pages and the studio's management page have separate layouts in one project: `CustomerLayout` and `AdminLayout`. This saves building user roles for now, but it is not protection: anyone can open a page by its path. Once real customer data exists, the server must require a login for the management side. Lecturer's remark in class `FB`
@@ -17,6 +17,23 @@ Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 ann
 - Colours, type sizes and component behaviour: `design-system/`, generated with Claude Design. It is a reference: pages use `design-system/tokens.css` values and components rewritten in `src/components/`. They never load `bundle.js`, `bundle.css` or a CDN script.
 - Colours and layout are the team's own choice. `PA2`
 - Check `node --version` on each machine: `npm create vite@latest` needs Node 20.19 or newer. `S6`
+
+## What the GradStudio brief requires
+
+The pages must deliver the features of the brief's three screens, and none of its *Fix these* problems may appear. A difference in layout, content or colour costs nothing. `BR` `PA2`
+
+- **One story on all pages**, from section 3 of the brief: Linh, Saturday 24/10/2026, 09:00 clashes because make-up artist Mai is busy 08:00–12:00; make-up 13:00–14:00 with Mai, shoot 14:00–16:00 with Tuấn in Phòng B; Admin Thảo; booking GS-1024, Gói Tốt nghiệp Premium (2 hours, 30 edited photos), Tốt nghiệp cá nhân, 1.800.000đ, deposit 540.000đ, remaining 1.260.000đ. Services: Kỷ yếu lớp từ 350.000đ/người, Tốt nghiệp từ 1.800.000đ, Chân dung/CV từ 690.000đ.
+- **One state per page, shown when the path is opened directly.** `index.html`: Linh's question "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?" and the studio's reply that it will check. `quan-ly.html`: the moment after Linh agrees: 14:00 chosen, the conversation *Đã chốt lịch*, *Tạo booking* enabled, and a note that 09:00 clashed because Mai is busy 08:00–12:00. `lich-chup.html`: GS-1024 waiting for the deposit.
+- **No demo controls**: no *Màn 1 / 2 / 3*, *Đặt lại demo*, *Mô phỏng phản hồi của Linh* or *Mô phỏng thanh toán*.
+- **Moving along the flow** is a real link with a label a user understands. PA#2 has no sign-in and the flow changes role twice, so the label says who continues, for example "Nhân viên studio: mở cuộc trò chuyện này".
+- **An action with no next page** (sending a message, *Thanh toán cọc 30%*) is a disabled button with a short visible note. A link to `#` is never used.
+- **Status names, exactly:** conversations *Chưa trả lời, Đang tư vấn, Đã chốt lịch, Hoàn thành*; bookings *Chờ cọc 30%* (on `lich-chup.html` it may read *Đã thống nhất lịch · Chờ cọc 30%*), *Đã đặt lịch, Hoàn thành*.
+- **Never promise the slot early.** The slot is held only after the deposit succeeds and the resources are checked again, not at the moment a time is agreed.
+- The chat and the whole *Booking mới* form are readable by scrolling the page at every width; no inner scrolling column hides part of them. The chat never floats over content.
+- Every booking in the resource calendar is readable at every width, and a clash is never shown by colour or hatching alone.
+- Controls that lead nowhere yet are removed or shown plainly as not available yet, and listed under *Not wired yet*.
+- Photos of real people only with a licence, and the source named in `PROTOTYPE.md`.
+- Where the brief is silent, the product owners decide. Their answers are posted under "GradStudio — questions for the product owners" in the course Facebook group; cite the one you rely on in the repository.
 
 ## NEVER
 
@@ -30,7 +47,7 @@ Tags say where a rule comes from: `PA2` rubric and the lecturer's 2026-11-06 ann
 8. **NEVER** carry main-flow data between pages with `localStorage` or the URL. Each page reads what it needs from `src/data.js`. `PA2`
 9. **NEVER** use a fixed `width` that can overflow, `overflow-x: hidden` to hide overflow, or `!important`. `PA2`
 10. **NEVER** use a `<div>` as a button, or an input without a visible `<label>`. Each page has one `<h1>` and no skipped heading level. `PA2`
-11. **NEVER** leave a control that does nothing. A control leading outside the three pages goes under *Not wired yet* in `PROTOTYPE.md`. `PA2`
+11. **NEVER** leave a control that does nothing or link to `#`. An action with no next page is a disabled button with a visible note; a control leading outside the three pages is removed or shown as not available yet, and listed under *Not wired yet* in `PROTOTYPE.md`. `PA2` `BR`
 12. **NEVER** write inline `style=""` for appearance. Appearance stays in the CSS file. `IA2`
 13. **NEVER** add `eslint-disable`, or change a check, a rule or `docs/pa1/`, to make a result pass. Fix the page. `S6` `IA2` `IA3`
 
@@ -66,16 +83,18 @@ Run these yourself. "The assistant says it works" is not a check. `IA2` `IA3` `S
 | # | Do this | You should see |
 |---|---|---|
 | 1 | `npm run lint` | No output, no `eslint-disable` anywhere |
-| 2 | `npm run build`, then `npm run preview` | `dist/` builds and opens with no 404 in the Network tab |
+| 2 | `npm run build`, then `npx vite preview`; turn the network off; open each path directly | `dist/` opens with no 404 in the Network tab; each page shows its own state without a click on an earlier page |
 | 3 | Each path at 360, 768 and 1280 px | All content visible; every main-flow link opens the right page, also after a reload |
 | 4 | The rubric's Console lines at each width | `false`, then `[]`; `document.documentElement.clientWidth` equals the width set |
 | 5 | Console, while using each control | No `Uncaught …`, nothing red |
 | 6 | Tab through the page, press Enter on each control | Focus is visible; the control works |
-| 7 | W3C checker and DevTools Accessibility pane | 0 errors; landmarks, one `<h1>`, labels, `alt`. How to check rendered React pages is still to be confirmed with the lecturer |
+| 7 | W3C checker on the rendered page: in DevTools copy the `<html>` element's outerHTML, put `<!DOCTYPE html>` in front, paste into *Text input* at validator.w3.org/nu. Never upload `dist/index.html`, an empty shell. Then the DevTools Accessibility pane | 0 errors, saved as `checks/validator-<page>.png` or `.txt`; landmarks, one `<h1>`, labels, `alt` |
 | 8 | DevTools colour picker | Body text 16 px or larger; text and buttons at 4.5:1 or better |
 | 9 | Read `src/` against the NEVER list | `key={item.id}`, no `dangerouslySetInnerHTML`, totals computed |
 | 10 | `npm run preview`, Network tab, tick *Disable cache*, choose *Slow 4G*, reload each path. Do not measure on `npm run dev` | Page name shows at once, never blank; no layout jump as images load; controls work; no failed request. Team target: usable within 3 seconds |
 | 11 | `git diff --stat` before each commit | Only the files this step meant to change |
+| 12 | DevTools device toolbar at each width, ⋮ → *Capture full size screenshot*, JavaScript on | Nine files in `screenshots/`: `index-360.png` … `lich-chup-1280.png`, matching the pages |
+| 13 | Read each page against *What the GradStudio brief requires* | Every feature there; none of the *Fix these* problems |
 
 ## Team process (from lecturer feedback)
 
@@ -89,7 +108,7 @@ Run these yourself. "The assistant says it works" is not a check. `IA2` `IA3` `S
 - Make any repository you link public, and open the link in an incognito window before handing in. `FB`
 - Tests, if any, assert the error type, never the exact message text. `FB`
 - Use one numbering for steps across the progress bar, headings and buttons. Check exports and screenshots are complete. `FB`
-- Keep facts to what the GradStudio proposal gives. Do not invent prices, times or policies; record anything removed in `AI-LOG.md`. `FB`
+- Keep facts to the GradStudio brief and its example. Do not invent prices, times or policies; record anything removed in `AI-LOG.md`. `FB` `BR`
 - Reference sites inform layout only. Do not copy their images, text or code. No ready-made template. `PA2`
 - Self-score level by level against the rubric, with evidence on every row. When unsure, score a little lower. `FB`
 - Rules file, brief, `PROTOTYPE.md`, `AI-LOG.md` and the self-assessment must say the same thing.
