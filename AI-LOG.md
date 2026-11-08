@@ -507,7 +507,7 @@ By hand: none.
 ## 2026-11-08 — management page: exact brief wording after the rebase
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: 2ecef25.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: align with the rules and brief that reached `main` while this branch was open, and keep the recorded hashes real after the rebase.
 Changed: the first chat message is now the brief's exact question, "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", followed by the studio's reply that it will check; the proposal, quote and Linh's agreement follow. The submit now reads "Khách hàng: mở lịch chụp GS-1024", so the label says who continues. The earlier entries now carry the hashes from after the rebase; the old hashes no longer exist and were replaced, not invented.
