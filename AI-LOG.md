@@ -388,3 +388,12 @@ Kept: awaiting An's review. New words, written for the shot on screen, where the
 Changed: at 768 px the first screenshot left the word "chat" alone on a second line; the caption lines are now balanced and the shot was taken again. The words stay on screen at 1280 and 768 px, no sideways scroll, no page error.
 Rejected: An rejected the assistant's closing line from Fix these problem 1, "Ngày ra trường chỉ có một lần / Nhắn GradStudio để hỏi lịch trống cho mùa tốt nghiệp này." The rest of problem 1, the five process steps and the line above the chat, has had no comment from An yet.
 By hand: An's request.
+
+## 2026-11-08 — deposit step title shortened
+Commit: 8c06043, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright screenshots of the built page.
+Asked for: An asked whether step 3 should read "Cọc để giữ lịch" and leave 30% to the description; the assistant agreed and An approved.
+Kept: step 3 is now "Cọc để giữ lịch"; its description still says "cọc 30% thành công". The brief's fixed status name "Chờ cọc 30%" is for booking statuses, so it does not apply to a process title.
+Changed: nothing else. Lint and build pass; five steps, no sideways scroll at 360, 768 and 1280 px.
+Rejected: nothing.
+By hand: An's idea and approval. The rest of Fix these problem 1 and the new closing words still await An's review.

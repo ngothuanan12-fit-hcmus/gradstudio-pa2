@@ -163,6 +163,10 @@ An also attached `GradStudio-final-project-brief.pdf`, the class brief with the 
 
 > /human Cảnh kết câu chuyện 3D đổi câu khác
 > nhớ xem đây là lệnh reject hay đồng ý
+
+> có nên ghi trong quy trình là  "cọc để giữ lịch" rồi phần mô tả mới ghi 30% không
+
+> đồng ý
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
