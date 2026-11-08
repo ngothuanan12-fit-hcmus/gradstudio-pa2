@@ -49,7 +49,7 @@ export default function StoryStage({ start }) {
         ))}
         <div className="cap at-center">
           <h2 className="story-title">Ngày ra trường <em>chỉ có một lần</em></h2>
-          <p>Nhắn GradStudio để giữ lịch đẹp cho mùa tốt nghiệp này.</p>
+          <p>Nhắn GradStudio để hỏi lịch trống cho mùa tốt nghiệp này.</p>
           <p className="cap-note">Giá tham khảo. Giá chốt được ghi trên booking sau khi tư vấn.</p>
         </div>
         <div className="story-actions stage-links">

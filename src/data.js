@@ -52,11 +52,13 @@ export const packages = [
   },
 ];
 
+// The steps of section 3 of the GradStudio brief. The slot is held only after the deposit succeeds.
 export const processSteps = [
   { id: 'chat', title: 'Chat tư vấn', text: 'Nhắn studio ngay trên web để hỏi gói, concept và giá.' },
-  { id: 'lich', title: 'Chốt lịch', text: 'Studio kiểm tra thợ chụp, makeup, phòng và giữ lịch cho bạn.' },
+  { id: 'lich', title: 'Thống nhất giờ', text: 'Studio kiểm tra thợ chụp, makeup, phòng và đề xuất giờ trống. Bạn đồng ý ngay trong chat.' },
+  { id: 'coc', title: 'Cọc 30% để giữ lịch', text: 'Lịch chỉ được giữ khi bạn cọc 30% thành công và studio kiểm tra lại lịch.' },
   { id: 'chup', title: 'Buổi chụp', text: 'Ekip chuẩn bị theo checklist của từng loại buổi chụp.' },
-  { id: 'anh', title: 'Chọn ảnh và nhận file', text: 'Chọn ảnh cần chỉnh trong tài khoản, nhận file khi hoàn tất.' },
+  { id: 'anh', title: 'Chọn ảnh và nhận file', text: 'Chọn ảnh cần chỉnh, thanh toán 70% còn lại, nhận file khi hoàn tất.' },
 ];
 
 export function formatVND(value) {
