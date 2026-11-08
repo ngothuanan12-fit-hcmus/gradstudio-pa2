@@ -20,10 +20,11 @@ export const booking = {
 };
 
 export const messages = [
-  { id: 'm1', who: 'Linh', text: 'Em muốn chụp tốt nghiệp ngày 24/10, có makeup, lúc 09:00 được không ạ?', time: '09:40' },
-  { id: 'm2', who: 'Studio', me: true, text: 'Thợ makeup Mai bận 08:00–12:00. Studio đề xuất makeup 13:00–14:00 và chụp 14:00–16:00.', time: '09:42' },
-  { id: 'm3', who: 'Studio', me: true, text: 'Báo giá Gói Tốt nghiệp Premium: 1.800.000đ. Cọc 540.000đ, còn lại 1.260.000đ.', time: '09:46' },
-  { id: 'm4', who: 'Linh', text: 'Dạ em chốt lịch 14:00 ạ.', time: '09:47' },
+  { id: 'm1', who: 'Linh', text: 'Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?', time: '09:40' },
+  { id: 'm2', who: 'Studio', me: true, text: 'Dạ để studio kiểm tra lịch thợ makeup, thợ chụp và phòng rồi báo lại ạ.', time: '09:41' },
+  { id: 'm3', who: 'Studio', me: true, text: 'Thợ makeup Mai bận 08:00–12:00. Studio đề xuất makeup 13:00–14:00 và chụp 14:00–16:00.', time: '09:42' },
+  { id: 'm4', who: 'Studio', me: true, text: 'Báo giá Gói Tốt nghiệp Premium: 1.800.000đ. Cọc 540.000đ, còn lại 1.260.000đ.', time: '09:46' },
+  { id: 'm5', who: 'Linh', text: 'Dạ em chốt lịch 14:00 ạ.', time: '09:47' },
 ];
 
 // Service names and prices follow the GradStudio brief.

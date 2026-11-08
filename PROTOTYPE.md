@@ -31,7 +31,7 @@ Each page opens straight into its own state, as the GradStudio brief asks.
 | Path | GradStudio screen | What the user does there | Links open |
 |---|---|---|---|
 | `index.html` | Screen 1, Services and chat (customer) | Linh walks into the classroom story, sees the three services and their prices, asks about one, and reads the process and the chat | Chat form → `quan-ly.html`; menu → `lich-chup.html`; "Xem gói chụp" and "Chat với studio" move within the page |
-| `quan-ly.html` | Screen 2, Advice and clash handling (Admin) | Admin Thảo opens the moment after Linh agrees: 14:00 chosen, the conversation *Đã chốt lịch*, *Tạo booking* enabled, and a note that 09:00 clashed because Mai is busy 08:00–12:00. Search and the status filter work; choosing 09:00 brings the clash back | "Tạo booking và mở lịch chụp của Linh" → `lich-chup.html` |
+| `quan-ly.html` | Screen 2, Advice and clash handling (Admin) | Admin Thảo opens the moment after Linh agrees: 14:00 chosen, the conversation *Đã chốt lịch*, *Tạo booking* enabled, and a note that 09:00 clashed because Mai is busy 08:00–12:00. Search and the status filter work; choosing 09:00 brings the clash back | "Khách hàng: mở lịch chụp GS-1024" → `lich-chup.html` |
 | `lich-chup.html` | Screen 3, Review the appointment and pay the deposit (customer) | Being rebuilt. Planned state: Linh sees GS-1024 waiting for the 30% deposit | Menu → `index.html` |
 
 ## Your design choices

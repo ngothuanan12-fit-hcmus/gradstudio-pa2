@@ -99,7 +99,7 @@ export default function BookingForm({
 
       <div className="form-actions">
         <Button variant="primary" type="submit" disabled={conflict}>
-          Tạo booking và mở lịch chụp của Linh
+          Khách hàng: mở lịch chụp GS-1024
         </Button>
       </div>
       <p className="form-note">
