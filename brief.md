@@ -153,6 +153,8 @@ An also pasted the lecturer's updated PA#2 announcement and attached the updated
 > đóng PR cho kèm lý do nghiêm trọng nhất là không tuân thủ AI LOG ngay từ đầu
 
 An also attached `GradStudio-final-project-brief.pdf`, the class brief with the three screens and the *Fix these* list.
+
+> trong 3 lỗi trên thì lỗi nào nằm ở phần lading page của mình, ghi nguồn ảnh đầy đủ cho mình cái nào không rõ hoặc thiếu thì báo cho mình, cập nhật CLAUDE theo đề mới
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

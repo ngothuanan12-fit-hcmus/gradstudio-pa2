@@ -361,3 +361,12 @@ Kept: the closing comment on PR #1 gives that reason with the evidence (one code
 Changed: nothing in the code. The assistant also deleted an empty `package-lock.json` it had created by mistake in the folder above the project when a lint command ran in the wrong directory; that wrong directory also explains the false "2 errors" reported during the review.
 Rejected: PR #1, by An.
 By hand: An's decision and the closing reason.
+
+## 2026-11-08 — photo sources in full, and the rules file for the new rubric
+Commit: 4e1c2b2 for `CLAUDE.md`, bb36195 for the sources, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with a web fetch of the four photo pages.
+Asked for: which of the three *Fix these* problems are on An's landing page; full photo sources, with anything unclear reported; `CLAUDE.md` brought up to the updated rubric.
+Kept: all three problems are on `index.html`: the process step that promises "giữ lịch", the chat that does not show Linh's exact question and the studio's reply, and the send button that leads to the next page. Not fixed yet. The four photo pages each show the author, profile, date and a free licence, and are now named in `PROTOTYPE.md` and in full in `docs/IMAGE_SOURCES.md`. `CLAUDE.md` gains a section with the brief's requirements and *Fix these* list, the marking setup (JavaScript on, network blocked, paths opened directly), the W3C method for rendered pages, the screenshot names, and rule 11 rewritten for disabled actions.
+Changed: the old rules file said how React pages are checked was "still to be confirmed"; the rubric now says, so that row is replaced. The Pexels page text calls the photo "free" without naming the Pexels License, recorded as such.
+Rejected: nothing.
+By hand: An's questions.
