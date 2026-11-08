@@ -1,0 +1,50 @@
+/* Management page. Shared primitives live in ui.css. */
+
+.toolbar { display: grid; gap: var(--space-12); }
+
+.conv-list { display: grid; margin: 0; padding: 0; list-style: none; }
+.conv-list li + li { border-top: 1px solid var(--line); }
+.conv {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: var(--space-4) var(--space-12);
+  width: 100%;
+  min-height: var(--control-height-sm);
+  padding: var(--space-12);
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.conv[aria-current='true'] { background: var(--surface-raised); box-shadow: inset 3px 0 0 var(--accent); }
+.conv-avatar {
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+.conv-body { display: grid; gap: 2px; min-width: 0; }
+.conv-top { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); min-width: 0; }
+.conv-name { min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.conv-last { color: var(--ink-muted); overflow-wrap: anywhere; }
+.conv-meta { display: grid; justify-items: end; align-content: start; gap: var(--space-4); }
+.conv-time { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.conv-unread {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 14px;
+  font-weight: 600;
+}

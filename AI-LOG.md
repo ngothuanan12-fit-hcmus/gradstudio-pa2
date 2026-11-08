@@ -437,9 +437,19 @@ By hand: the owner chose the redo and the status-name source.
 ## 2026-11-08 — management page: the status badge
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: 3302548.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: the same redo prompt, one component per commit.
 Changed: `src/components/StatusBadge.jsx` is a plain span with text, its own glyph and one of four border styles, so no status is told by colour alone. `src/styles/ui.css` now holds the panel, field, empty-state and badge styles that both rebuilt pages share, and `mount.jsx` loads it once. Content text is 16 px; only the badge stays at 14 px, which the component prompt allows.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the conversation list
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: one component per commit, as the PR #1 comment asks.
+Changed: `src/components/ConversationList.jsx` lists the four conversations as buttons with a selected row, an unread count and the full long Vietnamese name, which wraps. The status badge inside it uses the row's own status, not a colour. `src/styles/admin.css` starts with the list and search-toolbar rules; content text is 16 px.
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
