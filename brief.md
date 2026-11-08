@@ -288,3 +288,20 @@ Sử dụng gh cli để lấy commnet review mới nhất trong pull request #1
 ```
 
 After this prompt, the owner chose the full redo in the review comment (one branch per page from the latest `main`, one commit per component, a PR per page into `main`, the log and `brief.md` kept at every step) and agreed to take the status names from the comment and `CLAUDE.md` rather than wait for the brief file.
+
+> Vì kết quả bạn vừa làm đã cũ hơn so với commit mới nhất từ main đây các yêu cầu lead đã nhắc tôi:
+> anh bỏ PR #1 rồi á, lý do anh ghi trong comment ở PR. Em xem lại yêu cầu rubric và file brief. Đọc kỹ yêu cầu đề ai log viết như thế nào lại hôm qua anh có nói ghi ai log liên tục đó, lỗi này trừ nhiều điểm nên anh không lấy phần hôm qua của em được, em làm lại theo đúng nguyên tắc cho anh 
+> anh nói lại việc của em là làm hai trang quan-ly.html và lich-chup.html
+> Pull main mới nhất về rồi đọc lại CLAUDE.md, có vài quy tắc mới anh mới cập nhật, với khi nào bắt đầu làm thì nói anh để anh tạm dừng push lên main chứ anh làm là push liên tục 
+> Mỗi trang một nhánh tách từ main, mỗi trang một PR vào main chứ không phải gộp chung 
+> Trước khi mở PR, tự chạy hết bảng Done means trong CLAUDE.md và ghi kết quả vào AI-LOG. 
+> Chỗ nào brief không nói rõ thì em hỏi anh rồi hẵn làm tiếp chứ không có làm nguyên cục như hôm qua nữa
+> Em làm lại phiên mới luôn đi cũng được
+> Có mấy rule mới
+
+> Tôi có 1 câu hỏi trước khi làm hướng 1 là. Nhánh feat/quan-ly.html đã thoả mãn hết chưa mà đã merged vào main rồi?
+
+> Khi viết brief.md thì follow và học theo cách lead An đã viết. Sau đó triển khai kế hoạch cho tôi
+
+Khánh conveyed lead An's instructions: pull latest `main`, follow the 7 new writing rules in `CLAUDE.md`, complete the 13-point Done means checklist before opening a PR, save W3C check results in `checks/` and full-page screenshots in `screenshots/`, and log real verification evidence in `AI-LOG.md`.
+
