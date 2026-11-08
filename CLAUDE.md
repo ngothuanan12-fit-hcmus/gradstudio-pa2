@@ -35,6 +35,18 @@ The pages must deliver the features of the brief's three screens, and none of it
 - Photos of real people only with a licence, and the source named in `PROTOTYPE.md`.
 - Where the brief is silent, the product owners decide. Their answers are posted under "GradStudio — questions for the product owners" in the course Facebook group; cite the one you rely on in the repository.
 
+## Writing on the pages
+
+From seven Vietnamese studio sites read on 2026-11-08 (Kỷ Yếu Sài Gòn, TABI, Jan 21st, BFFMEDIA, Gạo Nâu Profile, KA Studio, Namnguyen). Approved by An.
+
+1. One emotional line, in the page's main heading. Everywhere else, write plainly.
+2. A section's opening line says what the reader finds there. No philosophy, no slogan.
+3. A package reads: who it is for, what it includes, then the price as "Từ …".
+4. Buttons and calls to action are a short verb and object: "Nhận tư vấn", "Xem bảng giá", "Chat với studio".
+5. Call the reader "bạn". The studio calls itself "GradStudio" or "studio", not "chúng tôi".
+6. A closing line is a plain invitation, "nhé" is fine, and it never promises a slot.
+7. Words such as "thanh xuân" and "khoảnh khắc" at most once on a page.
+
 ## NEVER
 
 1. **NEVER** add a dependency beyond React, Vite, the session 6 lint tools and `three`: no router, axios, UI, state or icon library, no CDN script. `three` is for the landing page's 3D scene only, loaded with a dynamic `import()` after the page shows, at 768 px or wider. Without WebGL, on phones or with reduced motion, the page shows the stacked steps instead. `S6` `PA2`
