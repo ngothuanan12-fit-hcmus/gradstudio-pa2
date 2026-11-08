@@ -221,6 +221,15 @@ Changed: nothing in the code.
 Rejected: nothing.
 By hand: still open for 2026-11-08: the photo gallery, the Pexels label decision, smoothness on a real graphics card, W3C, screenshots, self-assessment, and review of Khánh's pages.
 
+## 2026-11-08 — review of Khánh's pull request #1
+Commit: the commit that adds this entry, directly after acb5cf3. Nothing in PR #1 was changed and no comment was posted on it.
+Tool: Claude Code (Claude Opus 5.5), with `gh`, Playwright and scratch checkouts of the branch and of `main` merged with it.
+Asked for: check PR #1 against what An asked Khánh to build, and whether Khánh's own description of the work is true.
+Kept: Khánh's description holds where tested. On the merged copy: lint and build pass; at 360, 768 and 1280 px no sideways scroll, nothing past the right edge, controls 44 px, one `h1`, four landmarks, one primary button per page; the management page has 1, 2 and 3 columns at the three widths. The 09:00 conflict, 14:00 proposal, quote, decline, accept, create-booking link, search, empty send, tabs and counts, 25/10 empty day, struck 09:00, deposit cancel and success all behave as described. The landing page's chat still opens `quan-ly.html` after the merge.
+Changed: nothing; findings for An. The "Chờ cọc" filter also lists "Chờ khách chọn ảnh", because it filters by tone, not status. Some body text is 14 px, below the team's 16 px rule. Linh's row already shows "Dạ em chốt lịch 14:00 ạ." and "Chờ cọc" before the flow starts. "Xem đường đi" opens a Google Maps search for the name GradStudio. No page shows every badge for review. Process: one branch and one commit for both pages and all components, where one per page and one per component were asked; the PR targets a new `develop` branch made from an older `main`; shared files, `CLAUDE.md` and `design-system/` were edited; the log has no `Who: Khánh` line and its build entry was written after the work. Merging into `main` conflicts only in `PROTOTYPE.md`. Not checked by the assistant: Lighthouse and the contrast figures Khánh reports.
+Rejected: nothing yet; An decides what Khánh fixes.
+By hand: the assistant's own test script picked the wrong "Gửi" button and copied packages without `three` at first; both were the assistant's errors, fixed and rerun.
+
 ## 2026-11-07 — reference sites for the design
 Commit: 0eebd2b. The comparison page itself is outside the repository.
 Tool: Claude Code (Claude Opus 5.5).

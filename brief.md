@@ -138,6 +138,8 @@ An also attached that photo.
 
 > đã xong việc hôm nay, nhớ ghi nhận ai log liên tục và song song
 
+> kiểm tra pr của Khánh xem có làm đúng như mình giao chưa, Khánh có nêu các việc đã làm nhưng mình không nêu thẳng, bạn kiểm tra rồi báo lại với mình xem có khớp với ý của Khánh không
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
