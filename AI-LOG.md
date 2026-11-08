@@ -523,3 +523,12 @@ Kept: awaiting An's review; nothing on the page changed. Every line of copy on `
 Changed: the check found two lines of the assistant's that break rule 1, one emotional line per page: "nơi câu chuyện bắt đầu" and "Ngày ra trường chỉ có một lần" (the second copied from the original team's site). The package accents "cả lớp, một khung hình" and "cho ngày ra trường" said a mood, not who the package is for (rule 3).
 Rejected: nothing yet.
 By hand: An's request.
+
+## 2026-11-08 — landing lines rewritten to the writing rules
+Commit: b8383f7, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright screenshots of the built page.
+Asked for: apply An's decisions on the drafted lines.
+Kept: approved by An: package accents "cho cả lớp", "cho một người hoặc nhóm nhỏ", "cho CV và hồ sơ xin việc"; 3D closing "Chưa chọn được gói? / chat với studio nhé" with "Giá từng gói và khung chat ở ngay bên dưới."; the plain first screen line "Studio chụp kỷ yếu lớp, ảnh tốt nghiệp và chân dung CV. Hỏi giá và lịch trống ngay trên web."; chat heading "Nhắn cho studio". 3D overview line, An's wording idea: "Có nhiều lựa chọn cho bạn. Cuộn tiếp để xem từng gói và giá khởi điểm."
+Changed: at 1280 px the new accent split "hồ sơ" across two lines; a non-breaking space keeps it together, checked in a screenshot. A screenshot taken after jumping straight to that close-up still showed the neighbouring photo bright; a timed test showed it was the camera still easing toward the stop in software rendering (left-edge brightness 135 after 9 s, 50 after 25 s, 47.5 when scrolled through), not a fault. Words stay on screen and clear of photos at 1280 and 768 px; phone, reduced motion and no WebGL still skip the 3D download; rubric checks pass at 360, 768 and 1280 px.
+Rejected: by An: the assistant's drafts for the room caption ("các gói chụp ghim trên bảng phía trước") and for the packages opening line; both stay as they were. The overview line "Ba gói đang ghim trên bảng", because "ghim trên bảng" does not read well.
+By hand: An's decisions and the overview wording idea.

@@ -182,6 +182,11 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > để Khánh tự làm chứ nêu quá rõ thì sẽ bị một chiều
 
 > viết các câu theo 7 nguyên tắc rồi nêu lại cho mình xem
+
+> cảnh 3D trong lớp giữ như hiện tại
+> Cảnh 3D nhìn toàn bảng ghi là có nhiều lựa chọn chứ đừng nói ghim trên bảng nghe không hay
+> Câu đầu phần gói dùng như hiện tại Cần makeup, thuê áo, hay muốn chụp kiểu không có trong ba gói này, bạn hỏi studio trong chat.
+> các phần khác đã ổn
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
