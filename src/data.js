@@ -56,7 +56,7 @@ export const packages = [
 export const processSteps = [
   { id: 'chat', title: 'Chat tư vấn', text: 'Nhắn studio ngay trên web để hỏi gói, concept và giá.' },
   { id: 'lich', title: 'Thống nhất giờ', text: 'Studio kiểm tra thợ chụp, makeup, phòng và đề xuất giờ trống. Bạn đồng ý ngay trong chat.' },
-  { id: 'coc', title: 'Cọc 30% để giữ lịch', text: 'Lịch chỉ được giữ khi bạn cọc 30% thành công và studio kiểm tra lại lịch.' },
+  { id: 'coc', title: 'Cọc để giữ lịch', text: 'Lịch chỉ được giữ khi bạn cọc 30% thành công và studio kiểm tra lại lịch.' },
   { id: 'chup', title: 'Buổi chụp', text: 'Ekip chuẩn bị theo checklist của từng loại buổi chụp.' },
   { id: 'anh', title: 'Chọn ảnh và nhận file', text: 'Chọn ảnh cần chỉnh, thanh toán 70% còn lại, nhận file khi hoàn tất.' },
 ];
