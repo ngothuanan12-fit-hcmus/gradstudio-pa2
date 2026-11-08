@@ -47,6 +47,17 @@ Decided so far. Add each new difference when it is made.
 | The Màn 1, 2 and 3 demo switcher is removed | Pages link through the main flow instead |
 | Different stock photos replace the ones in PA#1 | Sources are in `docs/IMAGE_SOURCES.md` |
 
+## Image sources
+
+Licensed stock photos, named here as the GradStudio brief asks. Full details and our changes: `docs/IMAGE_SOURCES.md`.
+
+| Photo | Author | Source | Licence |
+|---|---|---|---|
+| Empty classroom (first screen without 3D) | Phú Lucas | [Unsplash rOIMcn2i2-M](https://unsplash.com/photos/rOIMcn2i2-M) | Unsplash License |
+| Kỷ yếu lớp | Nguyễn Tiến Thịnh | [Pexels 36985960](https://www.pexels.com/photo/36985960/) | Pexels License |
+| Tốt nghiệp | Hưng Nguyễn | [Unsplash ILJfgW9YbcI](https://unsplash.com/photos/ILJfgW9YbcI) | Unsplash License |
+| Chân dung / CV | Darion Dewhirst | [Unsplash KDF7-23mAU8](https://unsplash.com/photos/KDF7-23mAU8) | Unsplash License |
+
 ## Not wired yet
 
 Add each control that leads outside the three pages.
