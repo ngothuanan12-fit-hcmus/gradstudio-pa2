@@ -144,6 +144,11 @@ An also attached that photo.
 > luật mới thêm vào CLAUDE.md là gì
 > pr đang pr vào đâu
 
+> nếu bỏ luật mới thêm thì có ảnh hưởng gì không, vì Khánh không ghi AI LOG nên chắc mình muốn Khánh làm lại từ đầu và pr này mình sẽ reject
+> việc cần xác nhận thì mình thấy có thay đổi như sau
+
+An also pasted the lecturer's updated PA#2 announcement and attached the updated rubric PDF. Main changes: due Wednesday 11/11/2026 22:00; pages must deliver the features of the GradStudio final project brief and avoid its *Fix these* list (Drive link, not yet read); React is served from `dist/` with JavaScript on and the outside network blocked; W3C is run on each rendered page's `outerHTML`; `PROTOTYPE.md` section 4 is now "Your design choices".
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

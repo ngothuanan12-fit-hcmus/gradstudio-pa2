@@ -343,3 +343,12 @@ Kept: answers from the history and the rubric. Khánh's three commits are dated 
 Changed: nothing.
 Rejected: nothing.
 By hand: An's questions.
+
+## 2026-11-08 — An rejects PR #1; the rubric is updated
+Commit: the commit that adds this entry, directly after 37b4a73.
+Tool: Claude Code (Claude Opus 5.5), reading the updated rubric An attached and `git show`.
+Asked for: whether dropping Khánh's new `CLAUDE.md` rule changes anything, given that An will reject PR #1 and ask Khánh to start again; and what the updated rubric changes.
+Kept: the new rule exists only on Khánh's branch, not on `main` or `develop`, so rejecting the PR leaves the rules file as it was. The updated rubric moves the deadline to 2026-11-11 22:00, says how React pages are marked (served from `dist/`, JavaScript on, outside network blocked) and how to run W3C on them, renames a `PROTOTYPE.md` section, and points to a GradStudio brief with a *Fix these* list that the team has not read yet.
+Changed: nothing yet. `CLAUDE.md` row 7 and `PROTOTYPE.md` still follow the old wording.
+Rejected: An rejects PR #1, because its log and brief were written after the work, and asks Khánh to rebuild the two pages with the log kept as he goes. An decides when to close it.
+By hand: An's decision.
