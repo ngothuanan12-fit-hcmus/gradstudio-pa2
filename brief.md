@@ -173,6 +173,8 @@ An also attached `GradStudio-final-project-brief.pdf`, the class brief with the 
 > Mỗi buổi chụp bắt đầu bằng một cuộc trò chuyện. mình cũng không thích câu này như ảnh
 
 An also attached a screenshot of that line under "Chọn buổi chụp của bạn".
+
+> thay vì đoán thì đi xem các studio thực tế ở Việt Nam xem các họ diễn đạt và kể câu chuyển của họ như thế nào rồi tổng hợp quy tắc diễn đặt thực tế nhất cho mình xem rồi mới viết lại
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

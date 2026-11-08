@@ -406,3 +406,12 @@ Kept: awaiting An's review. 3D closing: "Chưa chắc chọn gói nào? / hỏi 
 Changed: the rejected lines were the assistant's or copied from the original team's site; the chat line spoke only of graduation season, so it did not fit class yearbooks or CV portraits. Words stay on screen at 1280 and 768 px; rubric checks pass at 360, 768 and 1280 px, FAILURES: 0.
 Rejected: by An: the second 3D closing ("Ba tấm ảnh trên bảng / còn thiếu tấm của bạn"); the line above the chat ("Nhắn GradStudio để hỏi lịch trống cho mùa tốt nghiệp này."), as not general enough for other kinds of shoot; and "Mỗi buổi chụp bắt đầu bằng một cuộc trò chuyện.", used in two places.
 By hand: An's review. The heading above the chat, "Ngày ra trường chỉ có một lần", is also about graduation only; raised with An, not changed.
+
+## 2026-11-08 — how real Vietnamese studios word their sites
+Commit: the commit that adds this entry, directly after 316481a.
+Tool: Claude Code (Claude Opus 5.5), with web search and two web-fetch agents.
+Asked for: stop guessing at wording; read real Vietnamese studio sites, sum up how they phrase things, show An the rules, and only then rewrite.
+Kept: awaiting An's review of the rules; nothing on the page changed. Sites read: Kỷ Yếu Sài Gòn, TABI Studio, Jan 21st, BFFMEDIA, Gạo Nâu Profile and KA Studio; Namnguyen Studio only as an old archived copy.
+Changed: the assistant had written lines by guessing for three rounds, and An rejected them; this step replaces guessing with sources.
+Rejected: nothing yet.
+By hand: An's direction. Limits: vinmedia.vn and kyyeugalaxy.com refused connections; tipustudio.vn had an expired certificate; most profile studios list only Facebook; one homepage was read through a page summary, not verbatim. Seven sites is a small sample.
