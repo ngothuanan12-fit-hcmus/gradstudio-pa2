@@ -487,9 +487,19 @@ By hand: none.
 ## 2026-11-08 — management page: the resource schedule
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: 9b82359.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: Mai, Tuấn and Phòng B must stay readable at every width, with Bận / Trùng / Trống / Đề xuất never told by colour alone.
 Changed: `src/components/ResourceSchedule.jsx` is a list at every width instead of the design system's 880 px timeline. Each block keeps its kind as text and a glyph, plus the full label and time, so nothing clips at 360 px. `src/styles/admin.css` gains the schedule rules.
 Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the page itself
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free), with Chrome DevTools on the built page.
+Asked for: the brief's one state on direct open (after Linh agrees), no demo controls, and the PR #1 comment's filter fix.
+Changed: `src/pages/QuanLy.jsx` opens at 14:00 with *Tạo booking* enabled and no simulation section; `src/styles/admin.css` gains the one / two / three column layout. The status filter now matches the conversation status, not the badge tone, so "Đã chốt lịch" returns only Linh and "Đang tư vấn" returns only Uyên. `src/data.js` gains the four service names and prices from the brief. `PROTOTYPE.md` records the screen and the disabled chat send.
+Checks: `npm run lint` exit 0 with no output; `npm run build` builds `index.html`, `quan-ly.html` and `lich-chup.html` (exit 0). At 360, 768 and 1280 px with device emulation, `clientWidth` and `scrollWidth` are equal (360/360, 768/768, 1280/1280), no element passes the right edge, and the shortest button is 48 px. Switching the start to 09:00 sets `aria-invalid="true"`, shows "Mai (makeup) bận 08:00–12:00", disables the submit, and puts *Trùng lịch* in the badge and the status line; 14:00 clears all three. The filter returns one row for *Đã chốt lịch* and none for the old tone name; search "Uyên" returns one row. The chat log is 438 px high with `scrollHeight` 438, so no inner scroll hides it. Content text measures 16 px; only the status badge stays at 14 px. The form action is `lich-chup.html`.
 By hand: none.

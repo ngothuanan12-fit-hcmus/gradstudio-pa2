@@ -5,6 +5,7 @@ import Button from './Button.jsx';
 // page, where the form opens the management page.
 export default function ChatPanel({
   id,
+  title = 'Chat với studio',
   label,
   messages = [],
   action,
@@ -17,7 +18,7 @@ export default function ChatPanel({
   const noteId = `${id}-note`;
   return (
     <section className="chat" aria-labelledby={`${id}-title`}>
-      <h2 id={`${id}-title`} className="summary-title">Chat với studio</h2>
+      <h2 id={`${id}-title`} className="summary-title">{title}</h2>
       {messages.length ? (
         <ol className="chat-log">
           {messages.map((message) => (

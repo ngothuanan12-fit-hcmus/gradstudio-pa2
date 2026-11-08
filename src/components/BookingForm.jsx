@@ -20,7 +20,7 @@ export default function BookingForm({
       <div className="panel-head">
         <h2 id="booking-form-title">Booking mới</h2>
         <StatusBadge tone={conflict ? 'conflict' : 'confirmed'}>
-          {conflict ? 'Trùng lịch' : 'Đã chốt lịch'}
+          {conflict ? 'Trùng lịch' : 'Chờ cọc 30%'}
         </StatusBadge>
       </div>
       <p className="form-lede">

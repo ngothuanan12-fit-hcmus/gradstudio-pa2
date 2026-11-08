@@ -26,6 +26,14 @@ export const messages = [
   { id: 'm4', who: 'Linh', text: 'Dạ em chốt lịch 14:00 ạ.', time: '09:47' },
 ];
 
+// Service names and prices follow the GradStudio brief.
+export const services = [
+  { id: 'premium', name: 'Gói Tốt nghiệp Premium', priceNote: '1.800.000đ · 2 giờ · 30 ảnh chỉnh' },
+  { id: 'ky-yeu', name: 'Kỷ yếu lớp', priceNote: 'từ 350.000đ/người' },
+  { id: 'tot-nghiep', name: 'Tốt nghiệp', priceNote: 'từ 1.800.000đ' },
+  { id: 'chan-dung', name: 'Chân dung/CV', priceNote: 'từ 690.000đ' },
+];
+
 // The management page opens after Linh has agreed, so the list shows that state.
 export const conversations = [
   {
