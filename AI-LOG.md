@@ -334,3 +334,12 @@ Changed: the assistant wrote `design-system/preview.html` to show the components
 Rejected: keeping only a link to the design system, because a different agent cannot open it.
 Assistant's error: in its first `preview.html`, the heading of the dark section was dark on dark, because a `data-theme` section changes the tokens but keeps the inherited text colour. Caught by looking at a Chrome screenshot; fixed by setting `color: var(--ink)` on that section. The landing page's light final screen needs the same care. The screenshot also showed the schedule cutting off labels in one-hour blocks, now in Khánh's requirements.
 By hand: An's request. The renaming is still An's decision; the rubric fixes only `index.html`, and the other names are free as long as `screenshots/`, `checks/` and `PROTOTYPE.md` match.
+
+## 2026-11-08 — An's questions on PR #1
+Commit: the commit that adds this entry, directly after 439e9bb.
+Tool: Claude Code (Claude Opus 5.5), with `gh`, `git log` and the rubric PDF.
+Asked for: whether Khánh logged as he worked, whether a log entry without `Who` costs marks, what rule Khánh added to `CLAUDE.md`, and where PR #1 points.
+Kept: answers from the history and the rubric. Khánh's three commits are dated 00:45, 00:45 and 00:47 on 2026-11-08, and his build entry says it was written after the work. The rubric does not ask for `Who`; that was the team's own request. It scores a log "clearly written after the fact" at 1–4 of 10, and it reads the commit author for who did what. PR #1 points at `develop`, which stands at 7e14731 and has no landing page.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's questions.

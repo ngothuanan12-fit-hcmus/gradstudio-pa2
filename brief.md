@@ -140,6 +140,10 @@ An also attached that photo.
 
 > kiểm tra pr của Khánh xem có làm đúng như mình giao chưa, Khánh có nêu các việc đã làm nhưng mình không nêu thẳng, bạn kiểm tra rồi báo lại với mình xem có khớp với ý của Khánh không
 
+> nghĩa là Khánh không vừa làm vừa commit ai log và brief đúng không, trong đề kêu nếu commit ai log mà không ghi who có sao không
+> luật mới thêm vào CLAUDE.md là gì
+> pr đang pr vào đâu
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
