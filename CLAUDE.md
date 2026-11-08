@@ -112,6 +112,8 @@ Run these yourself. "The assistant says it works" is not a check. `IA2` `IA3` `S
 
 - **Small commits, one meaningful step each.** A first commit with this file, then at least one per page and one for the responsive pass. `FB` `PA2`
 - **Commit messages carry no `Co-Authored-By` or "Generated with" line.** Assistant use is recorded in `AI-LOG.md`. Same for pull requests.
+- **A pull request waits for review before it is merged.** Nobody merges their own pull request.
+- **Shared files** (`src/data.js`, `src/styles/`, `src/layouts/`, `src/pages/mount.jsx`, components another page uses, `CLAUDE.md`) change in their own commit and are listed in the pull request description. No message is needed beforehand; the review checks the other pages before merging.
 - **Commit the assistant's output first, then your fix separately**, so *Changed* points at a real diff. `FB`
 - **Write `AI-LOG.md` right after each step**, with the commit hash. Name what the assistant got wrong, the check that caught it, and what you told it. Never backdate an entry. `FB` `PA2`
 - **`brief.md` holds the prompts actually given**, pasted in order. `PA2`
