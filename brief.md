@@ -160,6 +160,9 @@ An also attached `GradStudio-final-project-brief.pdf`, the class brief with the 
 > theo luật mới thì trên trang có gì cần sửa không,
 > 3 lỗi sẽ sửa lần lượt từng lỗi và mình sẽ tự xem để duyệt, lỗi thứ ba bạn nhắc mình kiếm tra lại khi đã có đủ trang
 > nhớ sửa prototype.md cho đúng, có cần sửa liền không chứ sửa sau có thể sẽ quên
+
+> /human Cảnh kết câu chuyện 3D đổi câu khác
+> nhớ xem đây là lệnh reject hay đồng ý
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

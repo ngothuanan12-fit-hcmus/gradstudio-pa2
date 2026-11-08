@@ -379,3 +379,12 @@ Kept: awaiting An's review. The process now has the brief's five steps: chat, ag
 Changed: a search for "giữ lịch" found two more promises beyond the one the brief names; the assistant had copied all three from the original team's text without checking them against the brief's main flow. The first screenshots at 768 and 1280 px showed the steps out of line, because each step stretched to the tallest; fixed with `align-content: start` and shot again. Lint and build pass; rubric checks pass at 360, 768 and 1280 px; no sideways scroll.
 Rejected: nothing yet.
 By hand: An set the order: one problem at a time, An reviews each, and problem 3 is checked again once all three pages exist. Also found by the new rules, for problem 2: on the customer's page Linh's own message sits on the left like someone else's.
+
+## 2026-11-08 — closing words of the 3D story rewritten
+Commit: 4db5274, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5) with An's `/human` writing skill, and Playwright screenshots of the built page.
+Asked for: other words for the last moment of the 3D story, and to record whether An's request is a reject or an approval.
+Kept: awaiting An's review. New words, written for the shot on screen, where the camera has pulled back to the three photos: "Ba tấm ảnh trên bảng / còn thiếu tấm của bạn", then "Nhắn ngày bạn muốn chụp, studio xem thợ và phòng còn trống rồi trả lời trong chat." Nothing in them promises a slot.
+Changed: at 768 px the first screenshot left the word "chat" alone on a second line; the caption lines are now balanced and the shot was taken again. The words stay on screen at 1280 and 768 px, no sideways scroll, no page error.
+Rejected: An rejected the assistant's closing line from Fix these problem 1, "Ngày ra trường chỉ có một lần / Nhắn GradStudio để hỏi lịch trống cho mùa tốt nghiệp này." The rest of problem 1, the five process steps and the line above the chat, has had no comment from An yet.
+By hand: An's request.
