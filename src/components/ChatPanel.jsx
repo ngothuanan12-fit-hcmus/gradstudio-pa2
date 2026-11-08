@@ -2,7 +2,8 @@ import Button from './Button.jsx';
 
 // A plain conversation. Sending a message has no next page in PA#2, so the
 // send button is disabled with a visible note. `action` is only for the landing
-// page, where the form opens the management page.
+// page, where the form opens the management page. `viewer` says whose side the
+// page is on: messages from that side sit on the right, with no name.
 export default function ChatPanel({
   id,
   title = 'Chat với studio',
@@ -13,6 +14,7 @@ export default function ChatPanel({
   disabled = false,
   note,
   emptyText = 'Chưa có tin nhắn trong hội thoại này.',
+  viewer = 'studio',
 }) {
   const inputId = `${id}-input`;
   const noteId = `${id}-note`;
@@ -21,13 +23,16 @@ export default function ChatPanel({
       <h2 id={`${id}-title`} className="summary-title">{title}</h2>
       {messages.length ? (
         <ol className="chat-log">
-          {messages.map((message) => (
-            <li key={message.id} className={message.me ? 'chat-msg chat-msg-me' : 'chat-msg'}>
-              {!message.me && message.who ? <span className="chat-who">{message.who}</span> : null}
-              <p>{message.text}</p>
-              {message.time ? <time className="chat-time">{message.time}</time> : null}
-            </li>
-          ))}
+          {messages.map((message) => {
+            const own = viewer === 'studio' ? message.me : !message.me;
+            return (
+              <li key={message.id} className={own ? 'chat-msg chat-msg-me' : 'chat-msg'}>
+                {!own && message.who ? <span className="chat-who">{message.who}</span> : null}
+                <p>{message.text}</p>
+                {message.time ? <time className="chat-time">{message.time}</time> : null}
+              </li>
+            );
+          })}
         </ol>
       ) : <p className="empty">{emptyText}</p>}
       <form className="chat-form" action={action}>
