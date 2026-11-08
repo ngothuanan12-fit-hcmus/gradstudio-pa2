@@ -547,9 +547,19 @@ By hand: none.
 ## 2026-11-08 — customer schedule page: the week view
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: d3ffcea.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: screen 3's week calendar, readable at every width, with the clash visible in text.
 Changed: `src/components/WeekCalendar.jsx` lists the seven days of 19–25/10/2026. Saturday 24/10 is marked *Hôm nay* and holds three events: the old 09:00 request, struck through and tagged *Đã bỏ vì trùng lịch*, then make-up 13:00–14:00 and the shoot 14:00–16:00. A day without events says *Không có lịch*. `src/styles/schedule.css` holds the rules in one column at every width, so no empty cell leaves a gap beside Saturday.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the 30% deposit
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: screen 3's deposit block, with the payment action disabled and a visible note, and no *Mô phỏng thanh toán*.
+Changed: `src/components/DepositCard.jsx` shows the 540.000đ deposit, the 1.260.000đ left after it and the 1.800.000đ package. *Thanh toán cọc 30%* is a disabled button described by a visible note: PA#2 has no payment, and the slot is kept only after the deposit succeeds and the studio checks the calendar again. `src/styles/schedule.css` gains the deposit rules.
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
