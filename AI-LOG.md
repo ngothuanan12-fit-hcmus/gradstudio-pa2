@@ -467,9 +467,19 @@ By hand: none.
 ## 2026-11-08 — management page: the clash alert
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: 8911f4b.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: the 09:00 clash has to name who is busy, and a free time is a real button with a selected state.
 Changed: `src/components/ConflictAlert.jsx` states "Linh yêu cầu 09:00, nhưng Mai (makeup) bận 08:00–12:00" and shows the free time as a button with `aria-pressed`, so the choice is not told by colour alone. `src/styles/admin.css` gains the alert and slot rules.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the booking form
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the form must have visible labels, the error under the time field with `aria-invalid`, a real `action`, and no simulated quote step.
+Changed: `src/components/BookingForm.jsx` opens at the agreed 14:00 with the badge *Đã chốt lịch* and the submit enabled. Switching back to 09:00 shows the clash, sets `aria-invalid`, and disables the submit with a note. The *Gửi báo giá* button and the `onSendQuote` prop are gone: the quote is already the third message, and sending has no next page. The submit reads *Tạo booking và mở lịch chụp của Linh*, so the label says who continues. `src/styles/admin.css` gains the form rules.
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.

@@ -77,3 +77,11 @@
 .slot-time { color: var(--free); font-weight: 600; }
 .slot-note { color: var(--ink-muted); }
 .slot-picked { color: var(--free); }
+
+/* BookingForm */
+.booking-form { align-content: start; }
+.form-lede { color: var(--ink-muted); }
+.form-grid { display: grid; gap: var(--space-12); }
+.form-actions { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.form-actions .btn { flex: 1 1 auto; }
+.form-note { color: var(--ink-muted); }
