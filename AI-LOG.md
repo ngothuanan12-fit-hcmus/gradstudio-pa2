@@ -557,9 +557,19 @@ By hand: none.
 ## 2026-11-08 — customer schedule page: the 30% deposit
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: 3f2667f.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: screen 3's deposit block, with the payment action disabled and a visible note, and no *Mô phỏng thanh toán*.
 Changed: `src/components/DepositCard.jsx` shows the 540.000đ deposit, the 1.260.000đ left after it and the 1.800.000đ package. *Thanh toán cọc 30%* is a disabled button described by a visible note: PA#2 has no payment, and the slot is kept only after the deposit succeeds and the studio checks the calendar again. `src/styles/schedule.css` gains the deposit rules.
 Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the page itself
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free), with Chrome DevTools on the built page.
+Asked for: the brief's one state on direct open (GS-1024 waiting for the 30% deposit), no *Mô phỏng thanh toán*, exact status names, and the "Xem đường đi" Google Maps link gone.
+Changed: `src/pages/LichChup.jsx` puts the week, the booking summary and the deposit in one page, with a `role="status"` line that never promises the slot. The status tabs, the map panel and the *Xem đường đi* link are gone; no control leads outside the three pages. `src/styles/schedule.css` gains the page layout. `PROTOTYPE.md` records the screen, the disabled deposit and its *Not wired yet* row.
+Checks: `npm run lint` exits 0 with no output; `npm run build` exits 0. On the built page at 360, 768 and 1280 px, `clientWidth` equals `scrollWidth` (360/360, 768/768, 1280/1280) and no element passes either edge. The deposit button is 48 px high and disabled, the note is visible, the page has one `<h1>`, no skipped heading level, no `role="tab"`, no link to Google Maps, one `role="status"`, and content text measures 16 px.
 By hand: none.
