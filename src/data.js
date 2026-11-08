@@ -1,14 +1,20 @@
 // Sample data from the GradStudio story. Do not add prices, times or policies that it does not give.
 export const booking = {
   id: 'GS-1024',
-  customer: 'Linh',
+  customer: 'Nguyễn Thùy Linh',
+  admin: 'Thảo',
+  sessionType: 'Tốt nghiệp cá nhân',
   pkg: 'Gói Tốt nghiệp Premium',
+  pkgDetail: '2 giờ · 30 ảnh chỉnh',
+  arrivalNote: 'Có mặt sớm 10 phút',
   price: 1800000,
   deposit: 540000,
   rest: 1260000,
   date: '24/10/2026',
   dayOfWeek: 'Thứ Bảy',
   requested: '09:00',
+  agreed: '14:00',
+  statusLabel: 'Chờ cọc 30%',
   makeup: { who: 'Mai', from: '13:00', to: '14:00' },
   shoot: { who: 'Tuấn', from: '14:00', to: '16:00', room: 'Phòng B' },
 };
@@ -16,6 +22,89 @@ export const booking = {
 export const messages = [
   { id: 'm1', who: 'Linh', text: 'Em muốn chụp tốt nghiệp ngày 24/10, có makeup, lúc 09:00 được không ạ?', time: '09:40' },
   { id: 'm2', who: 'Studio', me: true, text: 'Thợ makeup Mai bận 08:00–12:00. Studio đề xuất makeup 13:00–14:00 và chụp 14:00–16:00.', time: '09:42' },
+  { id: 'm3', who: 'Studio', me: true, text: 'Báo giá Gói Tốt nghiệp Premium: 1.800.000đ. Cọc 540.000đ, còn lại 1.260.000đ.', time: '09:46' },
+  { id: 'm4', who: 'Linh', text: 'Dạ em chốt lịch 14:00 ạ.', time: '09:47' },
+];
+
+// The management page opens after Linh has agreed, so the list shows that state.
+export const conversations = [
+  {
+    id: 'linh',
+    name: 'Nguyễn Thùy Linh',
+    time: '09:47',
+    last: 'Dạ em chốt lịch 14:00 ạ.',
+    status: 'agreed',
+    statusLabel: 'Đã chốt lịch',
+    tone: 'confirmed',
+  },
+  {
+    id: 'uyen',
+    name: 'Nguyễn Thị Hoàng Phương Uyên',
+    time: '08:15',
+    last: 'Em muốn hỏi gói kỷ yếu lớp cho cả nhóm.',
+    status: 'advising',
+    statusLabel: 'Đang tư vấn',
+    tone: 'pending',
+    unread: 1,
+  },
+  {
+    id: 'anh',
+    name: 'Trần Minh Anh',
+    time: '07:50',
+    last: 'Em gửi ảnh chọn rồi ạ.',
+    status: 'new',
+    statusLabel: 'Chưa trả lời',
+    tone: 'neutral',
+    unread: 2,
+  },
+  {
+    id: 'bao',
+    name: 'Lê Gia Bảo',
+    time: 'Hôm qua',
+    last: 'Cảm ơn studio, hẹn gặp ngày 24/10.',
+    status: 'done',
+    statusLabel: 'Hoàn thành',
+    tone: 'confirmed',
+  },
+];
+
+// The only free time in the story: Mai's make-up block and Tuấn's shoot block do not overlap.
+export const freeSlots = [
+  {
+    id: 'slot-1400',
+    time: '14:00',
+    note: 'Makeup 13:00–14:00 với Mai; chụp 14:00–16:00 với Tuấn tại Phòng B.',
+  },
+];
+
+export const scheduleRows = [
+  {
+    id: 'mai',
+    name: 'Mai',
+    role: 'Thợ makeup',
+    blocks: [
+      { id: 'mai-busy', from: '08:00', to: '12:00', label: 'Đã kín', kind: 'busy' },
+      { id: 'mai-conflict', from: '09:00', to: '10:00', label: 'Linh yêu cầu 09:00', kind: 'conflict' },
+      { id: 'mai-proposed', from: '13:00', to: '14:00', label: 'Linh · makeup', kind: 'proposed' },
+    ],
+  },
+  {
+    id: 'tuan',
+    name: 'Tuấn',
+    role: 'Thợ chụp',
+    blocks: [
+      { id: 'tuan-free', from: '11:00', to: '14:00', label: 'Trống', kind: 'free' },
+      { id: 'tuan-proposed', from: '14:00', to: '16:00', label: 'Linh · GS-1024', kind: 'proposed' },
+    ],
+  },
+  {
+    id: 'phong-b',
+    name: 'Phòng B',
+    role: 'Phòng chụp',
+    blocks: [
+      { id: 'phong-proposed', from: '14:00', to: '16:00', label: 'Linh · GS-1024', kind: 'proposed' },
+    ],
+  },
 ];
 
 // Names, descriptions and "from" prices come from the PA#1 team's prototype. `line` is our own short line.

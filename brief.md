@@ -276,3 +276,13 @@ Làm từng trang, dừng sau mỗi trang để nhóm kiểm tra và commit.
 
 - The GradStudio screens in `docs/pa1/`, which Part 3 hands over.
 - Any later prompts, in order, including those sent by Khánh.
+
+## Part 6 — the two pages rebuilt after PR #1 was closed (sent 2026-11-08)
+
+**Nguyên văn prompt đã gửi.**
+
+```text
+Sử dụng gh cli để lấy commnet review mới nhất trong pull request #1 đã bị closed để fix theo đúng mô tả trong comment để phù hợp nhất
+```
+
+After this prompt, the owner chose the full redo in the review comment (one branch per page from the latest `main`, one commit per component, a PR per page into `main`, the log and `brief.md` kept at every step) and agreed to take the status names from the comment and `CLAUDE.md` rather than wait for the brief file.

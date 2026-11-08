@@ -424,3 +424,12 @@ Kept: the rules, now in `CLAUDE.md` under "Writing on the pages". Repository sta
 Changed: nothing on the pages.
 Rejected: nothing.
 By hand: An approved the rules and set how the message should read. Open points raised with An: the old `develop` and `feature/quan-ly-lich-chup` branches are still on GitHub; the rubric and the GradStudio brief PDFs are not in the repository; `messages` in `src/data.js`, which the landing chat and the management page both read, will change with Fix these problem 2.
+## 2026-11-08 — management page: the data it opens with
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free) and `gh`.
+Asked for: the prompt in `brief.md` Part 6, after the owner closed PR #1. The owner then chose the full redo described in the latest PR #1 comment and told me to follow the comment's own status names.
+Changed: `src/data.js` now holds the state `quan-ly.html` opens in, after Linh agrees: the full customer name, Admin Thảo, the session type, the package detail and arrival note, the agreed 14:00, the four chat messages including her "Dạ em chốt lịch 14:00 ạ.", four conversations with the brief's status names (*Chưa trả lời, Đang tư vấn, Đã chốt lịch, Hoàn thành*), the one free slot and the Mai / Tuấn / Phòng B schedule. The two messages used by `index.html` are unchanged.
+Checks: `npm run lint` exits 0 with no output on this commit.
+By hand: the owner chose the redo and the status-name source.
