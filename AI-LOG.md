@@ -370,3 +370,12 @@ Kept: all three problems are on `index.html`: the process step that promises "gi
 Changed: the old rules file said how React pages are checked was "still to be confirmed"; the rubric now says, so that row is replaced. The Pexels page text calls the photo "free" without naming the Pexels License, recorded as such.
 Rejected: nothing.
 By hand: An's questions.
+
+## 2026-11-08 — Fix these, problem 1: the landing page promised the slot too early
+Commit: fcf234f for the page, f0f71cb for `PROTOTYPE.md`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright screenshots of the built page.
+Asked for: fix the three *Fix these* problems on `index.html` one at a time, with An reviewing each; check whether the new rules find anything else; restructure `PROTOTYPE.md` now rather than later.
+Kept: awaiting An's review. The process now has the brief's five steps: chat, agree a time, a 30% deposit that holds the slot, the shoot, choosing photos and paying the remaining 70%. "giữ lịch đẹp" in the 3D closing words and above the chat became "hỏi lịch trống". `PROTOTYPE.md` follows the new rubric: `npm ci` and `npx vite preview`, the brief's screen names, "Your design choices", image sources, and the two pages being rebuilt marked as planned.
+Changed: a search for "giữ lịch" found two more promises beyond the one the brief names; the assistant had copied all three from the original team's text without checking them against the brief's main flow. The first screenshots at 768 and 1280 px showed the steps out of line, because each step stretched to the tallest; fixed with `align-content: start` and shot again. Lint and build pass; rubric checks pass at 360, 768 and 1280 px; no sideways scroll.
+Rejected: nothing yet.
+By hand: An set the order: one problem at a time, An reviews each, and problem 3 is checked again once all three pages exist. Also found by the new rules, for problem 2: on the customer's page Linh's own message sits on the left like someone else's.
