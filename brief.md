@@ -149,6 +149,10 @@ An also attached that photo.
 
 An also pasted the lecturer's updated PA#2 announcement and attached the updated rubric PDF. Main changes: due Wednesday 11/11/2026 22:00; pages must deliver the features of the GradStudio final project brief and avoid its *Fix these* list (Drive link, not yet read); React is served from `dist/` with JavaScript on and the outside network blocked; W3C is run on each rendered page's `outerHTML`; `PROTOTYPE.md` section 4 is now "Your design choices".
 
+
+> đóng PR cho kèm lý do nghiêm trọng nhất là không tuân thủ AI LOG ngay từ đầu
+
+An also attached `GradStudio-final-project-brief.pdf`, the class brief with the three screens and the *Fix these* list.
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

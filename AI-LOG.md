@@ -352,3 +352,12 @@ Kept: the new rule exists only on Khánh's branch, not on `main` or `develop`, s
 Changed: nothing yet. `CLAUDE.md` row 7 and `PROTOTYPE.md` still follow the old wording.
 Rejected: An rejects PR #1, because its log and brief were written after the work, and asks Khánh to rebuild the two pages with the log kept as he goes. An decides when to close it.
 By hand: An's decision.
+
+## 2026-11-08 — PR #1 closed
+Commit: the commit that adds this entry, directly after 97c5c75.
+Tool: Claude Code (Claude Opus 5.5), with `gh`.
+Asked for: close PR #1, with the most serious reason first: the log was not kept from the start.
+Kept: the closing comment on PR #1 gives that reason with the evidence (one code commit, log and prompts added 00:45–00:47 after the work, the entry's own "written after" line), the other review findings, and how to redo it, including the *Fix these* items from the GradStudio brief that touch Khánh's pages. Branches were left in place.
+Changed: nothing in the code. The assistant also deleted an empty `package-lock.json` it had created by mistake in the folder above the project when a lint command ran in the wrong directory; that wrong directory also explains the false "2 errors" reported during the review.
+Rejected: PR #1, by An.
+By hand: An's decision and the closing reason.
