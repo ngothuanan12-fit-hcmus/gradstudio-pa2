@@ -424,3 +424,92 @@ Kept: the rules, now in `CLAUDE.md` under "Writing on the pages". Repository sta
 Changed: nothing on the pages.
 Rejected: nothing.
 By hand: An approved the rules and set how the message should read. Open points raised with An: the old `develop` and `feature/quan-ly-lich-chup` branches are still on GitHub; the rubric and the GradStudio brief PDFs are not in the repository; `messages` in `src/data.js`, which the landing chat and the management page both read, will change with Fix these problem 2.
+## 2026-11-08 — management page: the data it opens with
+
+Who: Khánh (24120340).
+Commit: 67068c5.
+Tool: OpenCode (DeepSeek V4.1 Flash Free) and `gh`.
+Asked for: the prompt in `brief.md` Part 6, after the owner closed PR #1. The owner then chose the full redo described in the latest PR #1 comment and told me to follow the comment's own status names.
+Changed: `src/data.js` now holds the state `quan-ly.html` opens in, after Linh agrees: the full customer name, Admin Thảo, the session type, the package detail and arrival note, the agreed 14:00, the four chat messages including her "Dạ em chốt lịch 14:00 ạ.", four conversations with the brief's status names (*Chưa trả lời, Đang tư vấn, Đã chốt lịch, Hoàn thành*), the one free slot and the Mai / Tuấn / Phòng B schedule. The two messages used by `index.html` are unchanged.
+Checks: `npm run lint` exits 0 with no output on this commit.
+By hand: the owner chose the redo and the status-name source.
+
+## 2026-11-08 — management page: the status badge
+
+Who: Khánh (24120340).
+Commit: 68f88f2.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the same redo prompt, one component per commit.
+Changed: `src/components/StatusBadge.jsx` is a plain span with text, its own glyph and one of four border styles, so no status is told by colour alone. `src/styles/ui.css` now holds the panel, field, empty-state and badge styles that both rebuilt pages share, and `mount.jsx` loads it once. Content text is 16 px; only the badge stays at 14 px, which the component prompt allows.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the conversation list
+
+Who: Khánh (24120340).
+Commit: d6d907f.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: one component per commit, as the PR #1 comment asks.
+Changed: `src/components/ConversationList.jsx` lists the four conversations as buttons with a selected row, an unread count and the full long Vietnamese name, which wraps. The status badge inside it uses the row's own status, not a colour. `src/styles/admin.css` starts with the list and search-toolbar rules; content text is 16 px.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the chat
+
+Who: Khánh (24120340).
+Commit: ac955b5.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: remove the simulated reply, as the *Fix these* list says; an action with no next page is a disabled button with a note.
+Changed: `src/components/ChatPanel.jsx` no longer keeps a local draft or appends messages. It shows the conversation, hides the customer's own name on her messages, and takes `disabled` plus a short note, which the management page uses because sending has no next page. The landing page still submits to `quan-ly.html`, because that form does have a next page. `src/styles/base.css` sets the time line at 16 px and adds the note style.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the clash alert
+
+Who: Khánh (24120340).
+Commit: 1193ed1.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the 09:00 clash has to name who is busy, and a free time is a real button with a selected state.
+Changed: `src/components/ConflictAlert.jsx` states "Linh yêu cầu 09:00, nhưng Mai (makeup) bận 08:00–12:00" and shows the free time as a button with `aria-pressed`, so the choice is not told by colour alone. `src/styles/admin.css` gains the alert and slot rules.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the booking form
+
+Who: Khánh (24120340).
+Commit: 9d7981a.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the form must have visible labels, the error under the time field with `aria-invalid`, a real `action`, and no simulated quote step.
+Changed: `src/components/BookingForm.jsx` opens at the agreed 14:00 with the badge *Đã chốt lịch* and the submit enabled. Switching back to 09:00 shows the clash, sets `aria-invalid`, and disables the submit with a note. The *Gửi báo giá* button and the `onSendQuote` prop are gone: the quote is already the third message, and sending has no next page. The submit reads *Tạo booking và mở lịch chụp của Linh*, so the label says who continues. `src/styles/admin.css` gains the form rules.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the resource schedule
+
+Who: Khánh (24120340).
+Commit: 53fa568.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: Mai, Tuấn and Phòng B must stay readable at every width, with Bận / Trùng / Trống / Đề xuất never told by colour alone.
+Changed: `src/components/ResourceSchedule.jsx` is a list at every width instead of the design system's 880 px timeline. Each block keeps its kind as text and a glyph, plus the full label and time, so nothing clips at 360 px. `src/styles/admin.css` gains the schedule rules.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the page itself
+
+Who: Khánh (24120340).
+Commit: 66e54b9.
+Tool: OpenCode (DeepSeek V4.1 Flash Free), with Chrome DevTools on the built page.
+Asked for: the brief's one state on direct open (after Linh agrees), no demo controls, and the PR #1 comment's filter fix.
+Changed: `src/pages/QuanLy.jsx` opens at 14:00 with *Tạo booking* enabled and no simulation section; `src/styles/admin.css` gains the one / two / three column layout. The status filter now matches the conversation status, not the badge tone, so "Đã chốt lịch" returns only Linh and "Đang tư vấn" returns only Uyên. `src/data.js` gains the four service names and prices from the brief. `PROTOTYPE.md` records the screen and the disabled chat send.
+Checks: `npm run lint` exit 0 with no output; `npm run build` builds `index.html`, `quan-ly.html` and `lich-chup.html` (exit 0). At 360, 768 and 1280 px with device emulation, `clientWidth` and `scrollWidth` are equal (360/360, 768/768, 1280/1280), no element passes the right edge, and the shortest button is 48 px. Switching the start to 09:00 sets `aria-invalid="true"`, shows "Mai (makeup) bận 08:00–12:00", disables the submit, and puts *Trùng lịch* in the badge and the status line; 14:00 clears all three. The filter returns one row for *Đã chốt lịch* and none for the old tone name; search "Uyên" returns one row. The chat log is 438 px high with `scrollHeight` 438, so no inner scroll hides it. Content text measures 16 px; only the status badge stays at 14 px. The form action is `lich-chup.html`.
+By hand: none.
+
+## 2026-11-08 — management page: exact brief wording after the rebase
+
+Who: Khánh (24120340).
+Commit: 2ecef25.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: align with the rules and brief that reached `main` while this branch was open, and keep the recorded hashes real after the rebase.
+Changed: the first chat message is now the brief's exact question, "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", followed by the studio's reply that it will check; the proposal, quote and Linh's agreement follow. The submit now reads "Khách hàng: mở lịch chụp GS-1024", so the label says who continues. The earlier entries now carry the hashes from after the rebase; the old hashes no longer exist and were replaced, not invented.
+Checks: `npm run lint` exits 0 with no output; `npm run build` exits 0.
+By hand: none.

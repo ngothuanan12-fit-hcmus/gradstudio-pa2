@@ -1,0 +1,159 @@
+/* Management page. Shared primitives live in ui.css. */
+
+.toolbar { display: grid; gap: var(--space-12); }
+
+.conv-list { display: grid; align-content: start; margin: 0; padding: 0; list-style: none; }
+.conv-list li + li { border-top: 1px solid var(--line); }
+.conv {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: var(--space-4) var(--space-12);
+  width: 100%;
+  min-height: var(--control-height-sm);
+  padding: var(--space-12);
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+.conv[aria-current='true'] { background: var(--surface-raised); box-shadow: inset 3px 0 0 var(--accent); }
+.conv-avatar {
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+.conv-body { display: grid; gap: 2px; min-width: 0; }
+.conv-top { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); min-width: 0; }
+.conv-name { min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.conv-last { color: var(--ink-muted); overflow-wrap: anywhere; }
+.conv-meta { display: grid; justify-items: end; align-content: start; gap: var(--space-4); }
+.conv-time { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.conv-unread {
+  display: inline-grid;
+  place-items: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ConflictAlert */
+.alert { display: grid; gap: var(--space-8); padding: var(--space-12); border-radius: var(--radius-sm); }
+.alert-danger { background: var(--danger-soft); border: 1px solid var(--danger); }
+.alert-free { background: var(--free-soft); border: 2px dashed var(--free); }
+.alert-head { display: flex; gap: var(--space-8); align-items: flex-start; }
+.alert-icon { flex: none; color: var(--danger); font-weight: 700; }
+.alert-free .alert-icon { color: var(--free); }
+.alert h3 { color: var(--danger); font-size: 18px; line-height: 28px; }
+.alert-free h3 { color: var(--free); }
+.slots-label { font-weight: 500; }
+.slots { display: grid; gap: var(--space-8); }
+.slot {
+  display: grid;
+  gap: var(--space-4);
+  min-height: var(--control-height-sm);
+  padding: var(--space-8) var(--space-12);
+  border: 2px dashed var(--free);
+  border-radius: var(--radius-sm);
+  background: var(--free-soft);
+  color: var(--ink);
+  font: 500 16px/24px var(--font-sans);
+  text-align: left;
+  cursor: pointer;
+}
+.slot[aria-pressed='true'] { border-style: solid; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--free); }
+.slot-time { color: var(--free); font-weight: 600; }
+.slot-note { color: var(--ink-muted); }
+.slot-picked { color: var(--free); }
+
+/* BookingForm */
+.booking-form { align-content: start; }
+.form-lede { color: var(--ink-muted); }
+.form-grid { display: grid; gap: var(--space-12); }
+.form-actions { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.form-actions .btn { flex: 1 1 auto; }
+.form-note { color: var(--ink-muted); }
+
+/* ResourceSchedule: a list, so no block ever clips its label. */
+.sched { align-content: start; }
+.sched-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8) var(--space-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-muted);
+}
+.sched-legend li { display: inline-flex; align-items: center; gap: var(--space-4); }
+.sched-swatch { display: inline-block; width: 16px; height: 12px; border-radius: 2px; }
+.sched-rows { display: grid; gap: var(--space-16); }
+.sched-row { display: grid; gap: var(--space-8); padding-top: var(--space-12); border-top: 1px solid var(--line); }
+.sched-row h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-4) var(--space-8); font-size: 18px; line-height: 28px; }
+.sched-row h3 span { color: var(--ink-muted); font-weight: 400; }
+.sched-blocks { display: grid; gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
+.sched-block {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  overflow-wrap: anywhere;
+}
+.sched-kind, .sched-time { font-weight: 600; }
+.sched-time { font-variant-numeric: tabular-nums; }
+.kind-busy { color: var(--ink); background: var(--busy); border-color: var(--busy); }
+.kind-conflict { color: var(--danger); background: var(--danger-soft); border: 2px solid var(--danger); }
+.kind-free { color: var(--free); background: var(--free-soft); border: 2px dashed var(--free); }
+.kind-proposed { color: var(--accent); background: var(--accent-soft); border: 2px solid var(--accent); }
+.sched-swatch.kind-busy { border: 1px solid var(--line-strong); }
+.sched-swatch.kind-conflict { border: 2px solid var(--danger); }
+.sched-swatch.kind-free { border: 2px dashed var(--free); }
+.sched-swatch.kind-proposed { border: 2px solid var(--accent); }
+
+/* Management page layout: one column at 360, two at 768, three at 1280. */
+.admin-grid { display: grid; gap: var(--space-24); min-width: 0; }
+.admin-convs { align-content: start; }
+.admin-chat { display: grid; align-content: start; gap: var(--space-16); min-width: 0; }
+
+@media (min-width: 768px) {
+  .toolbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+
+  .admin-grid {
+    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+    grid-template-areas:
+      "convs chat"
+      "convs form"
+      "convs sched";
+    align-items: start;
+  }
+
+  .admin-convs { grid-area: convs; }
+  .admin-chat { grid-area: chat; }
+  .booking-form { grid-area: form; }
+  .sched { grid-area: sched; }
+
+  .form-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .sched-blocks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1280px) {
+  .admin-grid {
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr) minmax(0, 380px);
+    grid-template-areas:
+      "convs chat form"
+      "convs sched sched";
+  }
+}
