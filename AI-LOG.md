@@ -427,9 +427,19 @@ By hand: An approved the rules and set how the message should read. Open points 
 ## 2026-11-08 — management page: the data it opens with
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: 2609aef.
 Tool: OpenCode (DeepSeek V4.1 Flash Free) and `gh`.
 Asked for: the prompt in `brief.md` Part 6, after the owner closed PR #1. The owner then chose the full redo described in the latest PR #1 comment and told me to follow the comment's own status names.
 Changed: `src/data.js` now holds the state `quan-ly.html` opens in, after Linh agrees: the full customer name, Admin Thảo, the session type, the package detail and arrival note, the agreed 14:00, the four chat messages including her "Dạ em chốt lịch 14:00 ạ.", four conversations with the brief's status names (*Chưa trả lời, Đang tư vấn, Đã chốt lịch, Hoàn thành*), the one free slot and the Mai / Tuấn / Phòng B schedule. The two messages used by `index.html` are unchanged.
 Checks: `npm run lint` exits 0 with no output on this commit.
 By hand: the owner chose the redo and the status-name source.
+
+## 2026-11-08 — management page: the status badge
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the same redo prompt, one component per commit.
+Changed: `src/components/StatusBadge.jsx` is a plain span with text, its own glyph and one of four border styles, so no status is told by colour alone. `src/styles/ui.css` now holds the panel, field, empty-state and badge styles that both rebuilt pages share, and `mount.jsx` loads it once. Content text is 16 px; only the badge stays at 14 px, which the component prompt allows.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
