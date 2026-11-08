@@ -124,8 +124,9 @@ a { color: var(--accent); }
 .chat-msg { max-width: 90%; padding: var(--space-8) var(--space-12); background: var(--surface-raised); border-radius: var(--radius-md); }
 .chat-msg-me { justify-self: end; background: var(--accent-soft); }
 .chat-who { font-weight: 600; }
-.chat-time { display: block; color: var(--ink-muted); font-size: 14px; line-height: 20px; }
+.chat-time { display: block; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
 .chat-form { display: grid; gap: var(--space-8); }
+.chat-note { color: var(--ink-muted); }
 .chat-label { font-weight: 500; }
 .chat-row { display: flex; flex-wrap: wrap; gap: var(--space-8); }
 .chat-input {

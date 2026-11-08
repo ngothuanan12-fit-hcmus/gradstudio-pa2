@@ -447,9 +447,19 @@ By hand: none.
 ## 2026-11-08 — management page: the conversation list
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: 0cc1c4a.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: one component per commit, as the PR #1 comment asks.
 Changed: `src/components/ConversationList.jsx` lists the four conversations as buttons with a selected row, an unread count and the full long Vietnamese name, which wraps. The status badge inside it uses the row's own status, not a colour. `src/styles/admin.css` starts with the list and search-toolbar rules; content text is 16 px.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the chat
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: remove the simulated reply, as the *Fix these* list says; an action with no next page is a disabled button with a note.
+Changed: `src/components/ChatPanel.jsx` no longer keeps a local draft or appends messages. It shows the conversation, hides the customer's own name on her messages, and takes `disabled` plus a short note, which the management page uses because sending has no next page. The landing page still submits to `quan-ly.html`, because that form does have a next page. `src/styles/base.css` sets the time line at 16 px and adds the note style.
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
