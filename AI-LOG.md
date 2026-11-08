@@ -457,9 +457,19 @@ By hand: none.
 ## 2026-11-08 — management page: the chat
 
 Who: Khánh (24120340).
-Commit: Chưa commit.
+Commit: 396e956.
 Tool: OpenCode (DeepSeek V4.1 Flash Free).
 Asked for: remove the simulated reply, as the *Fix these* list says; an action with no next page is a disabled button with a note.
 Changed: `src/components/ChatPanel.jsx` no longer keeps a local draft or appends messages. It shows the conversation, hides the customer's own name on her messages, and takes `disabled` plus a short note, which the management page uses because sending has no next page. The landing page still submits to `quan-ly.html`, because that form does have a next page. `src/styles/base.css` sets the time line at 16 px and adds the note style.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — management page: the clash alert
+
+Who: Khánh (24120340).
+Commit: Chưa commit.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the 09:00 clash has to name who is busy, and a free time is a real button with a selected state.
+Changed: `src/components/ConflictAlert.jsx` states "Linh yêu cầu 09:00, nhưng Mai (makeup) bận 08:00–12:00" and shows the free time as a button with `aria-pressed`, so the choice is not told by colour alone. `src/styles/admin.css` gains the alert and slot rules.
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.

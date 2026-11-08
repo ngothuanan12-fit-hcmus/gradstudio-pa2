@@ -48,3 +48,32 @@
   font-size: 14px;
   font-weight: 600;
 }
+
+/* ConflictAlert */
+.alert { display: grid; gap: var(--space-8); padding: var(--space-12); border-radius: var(--radius-sm); }
+.alert-danger { background: var(--danger-soft); border: 1px solid var(--danger); }
+.alert-free { background: var(--free-soft); border: 2px dashed var(--free); }
+.alert-head { display: flex; gap: var(--space-8); align-items: flex-start; }
+.alert-icon { flex: none; color: var(--danger); font-weight: 700; }
+.alert-free .alert-icon { color: var(--free); }
+.alert h3 { color: var(--danger); font-size: 18px; line-height: 28px; }
+.alert-free h3 { color: var(--free); }
+.slots-label { font-weight: 500; }
+.slots { display: grid; gap: var(--space-8); }
+.slot {
+  display: grid;
+  gap: var(--space-4);
+  min-height: var(--control-height-sm);
+  padding: var(--space-8) var(--space-12);
+  border: 2px dashed var(--free);
+  border-radius: var(--radius-sm);
+  background: var(--free-soft);
+  color: var(--ink);
+  font: 500 16px/24px var(--font-sans);
+  text-align: left;
+  cursor: pointer;
+}
+.slot[aria-pressed='true'] { border-style: solid; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--free); }
+.slot-time { color: var(--free); font-weight: 600; }
+.slot-note { color: var(--ink-muted); }
+.slot-picked { color: var(--free); }
