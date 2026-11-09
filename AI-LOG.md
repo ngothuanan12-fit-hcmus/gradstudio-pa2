@@ -568,3 +568,12 @@ Kept: every visible element with its own text was measured at 360, 768 and 1280 
 Changed: nothing on the pages. The check found that Khánh's PR #2 entries say "only the badge stays at 14 px", while the unread count is 14 px too; the PR #2 review already lists it as item 5.
 Rejected: nothing.
 By hand: An's question. The 16 px rule is in `CLAUDE.md` *Done means* row 8 and in the rubric's criterion 4.
+
+## 2026-11-09 — where the project stands against each rubric criterion
+Commit: the commit that adds this entry, directly after cfb6af8.
+Tool: Claude Code (Claude Opus 5.5), with `git`, Playwright and the W3C Nu checker.
+Asked for: a reminder to recheck the 14 px text at the next review, and the current level for each rubric criterion and hand-in file.
+Kept: the reminder is saved for the next review. The estimate, criterion by criterion, is in the reply to An; the self-assessment file is not written yet. Evidence: `lich-chup.html` is still a placeholder; `screenshots/`, `checks/` and `SELF_ASSESSMENT_REPORT.md` do not exist; no commit is named as a responsive pass; the first commit is the rules file; W3C gave `quan-ly.html` 0 errors on 2026-11-08.
+Changed: a W3C run on all pages from a script failed: the checker answered 403 and then a "Just a moment…" challenge, so `index.html` and `lich-chup.html` have no W3C result yet. Their rendered HTML is saved for a manual paste, which is also the rubric's own method.
+Rejected: nothing.
+By hand: An's request.
