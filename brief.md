@@ -197,6 +197,8 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > Đồng ý đăng, điều chỉnh luật luôn
 
 > sửa hai lỗi trên trang chủ
+
+> mình cần bạn kiểm tra lại body text đang có kích thước tối thiểu là bao nhiêu, AI LOG có nhắc tới không
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

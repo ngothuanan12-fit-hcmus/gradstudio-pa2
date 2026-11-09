@@ -559,3 +559,12 @@ Kept: the landing chat now shows Linh's question from the brief and the studio's
 Changed: `ChatPanel` is a shared file, so it changed in its own commit, as the new team rule says. Checked on the built pages: on `index.html` Linh's message is on the right and the studio's on the left with its name, at 360 and 1280 px; on `quan-ly.html` every message keeps its side; the landing send still opens `quan-ly.html`; rubric checks pass for both pages at 360, 768 and 1280 px.
 Rejected: nothing yet.
 By hand: An's request. Problem 3, the send button and the link to the next page, waits until all three pages exist, as An decided.
+
+## 2026-11-08 — smallest text size measured on every page
+Commit: the commit that adds this entry, directly after 0c9bcdb.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built pages.
+Asked for: the smallest body text size now on the pages, and whether this log mentions it.
+Kept: every visible element with its own text was measured at 360, 768 and 1280 px, and the landing page also with the 3D story on. `index.html` and `lich-chup.html`: smallest 16 px. `quan-ly.html`: 16 px for content; 14 px only for the status badges and the unread counts (plus a screen-reader-only phrase that is not shown). The `.eyebrow` and `.meta` classes in `tokens.css` are 14 px but no page uses them.
+Changed: nothing on the pages. The check found that Khánh's PR #2 entries say "only the badge stays at 14 px", while the unread count is 14 px too; the PR #2 review already lists it as item 5.
+Rejected: nothing.
+By hand: An's question. The 16 px rule is in `CLAUDE.md` *Done means* row 8 and in the rubric's criterion 4.
