@@ -39,6 +39,7 @@
 .chat-dock { display: grid; gap: var(--space-12); scroll-margin-top: var(--space-16); }
 .chat-dock-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-8); }
 .chat-dock-bar p { font-weight: 500; }
+.chat-dock > .btn { justify-self: start; }
 
 @media (min-width: 768px) {
   .home-section { padding: var(--space-64) var(--space-24); }

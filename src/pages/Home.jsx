@@ -13,12 +13,12 @@ export default function Home() {
   const asking = packages.find((item) => item.id === askingId);
 
   function askAbout(id) {
-    // The chat must be open in the page before it can take focus.
+    // The chat must be open in the page before its status line can take focus.
     flushSync(() => {
       setAskingId(id);
       setChatOpen(true);
     });
-    document.getElementById('home-chat-input').focus();
+    document.getElementById('home-chat-status').focus();
   }
 
   return (
