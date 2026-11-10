@@ -2,7 +2,7 @@
 
 Team: Ngô Thuận An (23120206), Nguyễn Hữu Khánh (24120340).
 
-The prompts are pasted in order, in the language they were sent. Status lines and notes in English were added by the team. Prompts sent to Claude Code are in part 1, the design system set-up is in part 2, and the prompt for building the pages is in part 3.
+The prompts are pasted in order, in the language they were sent. Status lines and notes in English were added by the team. Part 1 holds An's prompts to Claude Code, by date and task. Part 2 is the design system set-up for Claude Design. Part 3 is a page-building prompt that was drafted and never sent; its constraints went into `CLAUDE.md` instead. Part 4 is Khánh's prompt for rebuilding his pages.
 
 ## Part 1 — Claude Code: rules and decisions (sent)
 
@@ -113,6 +113,8 @@ An also attached eight photos.
 > font thì theo bạn để xuất nhưng trình bày theo câu có các chữ kiểm tra lỗi font để mình xem ổn chưa
 > nhớ nhắc mình xóa các phần không cần thiết hoặc chuyển qua thư mục khác để không nộp dư thừa
 
+### 1.10 The 3D story, photos and the landing page (2026-11-07)
+
 > font ổn, duyệt phần 1
 
 > mình nghĩ không nên để mô hình người vào mà nên zoom lên bảng xong sẽ có các hình ghim các ảnh thật trên bảng, mỗi hình đại diện cho từng gói chụp luôn, zoom để thấy tổng quan các gói xong zoom từng hình, phần 2 này chắc mình sẽ reject để đổi ý tưởng
@@ -138,6 +140,8 @@ An also attached that photo.
 
 > đã xong việc hôm nay, nhớ ghi nhận ai log liên tục và song song
 
+### 1.11 Khánh's PR #1 and the updated rubric (2026-11-08)
+
 > kiểm tra pr của Khánh xem có làm đúng như mình giao chưa, Khánh có nêu các việc đã làm nhưng mình không nêu thẳng, bạn kiểm tra rồi báo lại với mình xem có khớp với ý của Khánh không
 
 > nghĩa là Khánh không vừa làm vừa commit ai log và brief đúng không, trong đề kêu nếu commit ai log mà không ghi who có sao không
@@ -153,6 +157,8 @@ An also pasted the lecturer's updated PA#2 announcement and attached the updated
 > đóng PR cho kèm lý do nghiêm trọng nhất là không tuân thủ AI LOG ngay từ đầu
 
 An also attached `GradStudio-final-project-brief.pdf`, the class brief with the three screens and the *Fix these* list.
+
+### 1.12 Fix these on the landing page, and writing rules (2026-11-08)
 
 > trong 3 lỗi trên thì lỗi nào nằm ở phần lading page của mình, ghi nguồn ảnh đầy đủ cho mình cái nào không rõ hoặc thiếu thì báo cho mình, cập nhật CLAUDE theo đề mới
 
@@ -188,6 +194,8 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > Câu đầu phần gói dùng như hiện tại Cần makeup, thuê áo, hay muốn chụp kiểu không có trong ba gói này, bạn hỏi studio trong chat.
 > các phần khác đã ổn
 
+### 1.13 Review of PR #2 and team rules (2026-11-08)
+
 > Review or #2 cho mình
 
 > Cho mình xem bình luận review trước khi làm
@@ -196,12 +204,18 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 
 > Đồng ý đăng, điều chỉnh luật luôn
 
+### 1.14 Landing chat and text size (2026-11-08)
+
 > sửa hai lỗi trên trang chủ
 
 > mình cần bạn kiểm tra lại body text đang có kích thước tối thiểu là bao nhiêu, AI LOG có nhắc tới không
 
+### 1.15 Where the project stands against the rubric (2026-11-09)
+
 > nhớ nhắc mình trong lần review tiếp theo kiểm tra lại
 > theo tiêu chí chấm ở các file của rubric thì hiện đang ở mức nào của từng file
+
+### 1.16 Repository status, PR #3 and the remaining landing work (2026-11-10)
 
 > kiểm tra trạng thái mới nhất của repo
 
@@ -221,7 +235,11 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 
 > bỏ bước này, sẽ làm lại sau
 
+### 1.17 brief.md language and numbering (2026-11-10)
+
 > kiểm tra lại brief có nên viết toàn bộ bằng tiếng Anh không và vì sao đang part 3 mà lại nhảy qua part 6
+
+> chọn b
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
@@ -280,9 +298,9 @@ Ràng buộc kỹ thuật:
 
 Suggested attachments: four frames from the reference video and the font files. Team to confirm what was uploaded.
 
-## Part 3 — Claude Code: building the pages
+## Part 3 — Claude Code: building the pages (drafted, never sent)
 
-**Status: NOT YET SENT.** Remove this line and record the date when it is sent. Edit the prompt first if needed, and keep here exactly what is sent.
+**Status: drafted on 2026-11-07 and never sent.** The pages were built through the prompts in Part 1 instead. The constraints below were moved into `CLAUDE.md`, the rules file the assistant reads at the start of every session: stack and no new dependency (NEVER 1), spacing scale, mobile first and breakpoints, semantic rules, relative links, and how done is checked. Some lines predate the updated rubric, for example "Changed since PA#1", which `PROTOTYPE.md` no longer has. Kept here as the team wrote it.
 
 ```text
 Dựng 3 trang GradStudio bằng React theo thiết kế Claude Design đính kèm và luật trong CLAUDE.md.
@@ -314,12 +332,7 @@ Done khi:
 Làm từng trang, dừng sau mỗi trang để nhóm kiểm tra và commit.
 ```
 
-## Still to add
-
-- The GradStudio screens in `docs/pa1/`, which Part 3 hands over.
-- Any later prompts, in order, including those sent by Khánh.
-
-## Part 6 — the two pages rebuilt after PR #1 was closed (sent 2026-11-08)
+## Part 4 — the two pages rebuilt after PR #1 was closed (sent 2026-11-08)
 
 **Nguyên văn prompt đã gửi.**
 
@@ -328,3 +341,5 @@ Sử dụng gh cli để lấy commnet review mới nhất trong pull request #1
 ```
 
 After this prompt, the owner chose the full redo in the review comment (one branch per page from the latest `main`, one commit per component, a PR per page into `main`, the log and `brief.md` kept at every step) and agreed to take the status names from the comment and `CLAUDE.md` rather than wait for the brief file.
+
+This part was headed "Part 6" when it was added in 67068c5; Parts 4 and 5 never existed, so it was renumbered on 2026-11-10.
