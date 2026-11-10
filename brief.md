@@ -247,6 +247,12 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > push luôn để Khánh xử lý conflict, thông báo cho Khánh
 
 An also attached a screenshot of the authors' Screen 2, with the resource calendar on the right of the chat.
+
+### 1.19 Ideas from a reference template for the landing page (2026-11-10)
+
+> bạn xem các thông tin trong file để lựa chọn áp dụng cho trang chủ
+
+An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "Coffee Shop" template: intro swirl, buttons, fullscreen menu, each section, tokens, easing, and sample code.
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

@@ -658,3 +658,12 @@ Kept: the answer to An. The brief lists three areas for Screen 2 (conversation l
 Changed: nothing on the pages. Pushed 46ff145 to this entry to `main`; a comment on PR #3 tells Khánh that `brief.md` and `AI-LOG.md` now conflict and that his part is Part 4.
 Rejected: nothing.
 By hand: An's question and the decision to push now.
+
+## 2026-11-10 — which ideas from the Webild "Coffee Shop" analysis suit the landing page
+Commit: the commit that adds this entry, directly after ae03cff.
+Tool: Claude Code (Claude Opus 5.5), reading An's analysis file against `CLAUDE.md` and the current landing CSS.
+Asked for: a choice of what to apply to the landing page from An's analysis of the Webild "Coffee Shop" template.
+Kept: a proposal, awaiting An's choice. Suggested: hover, pressed and focus states for buttons (the CSS has no hover or transition rule at all today), a slight top highlight on the primary button, one easing and duration token, `text-wrap: balance` on section titles, and, after a screenshot test, a one-time reveal of package cards and process steps on scroll without a library. All written with our own values, since `CLAUDE.md` allows reference sites for ideas only, never their code or a template. Not suggested: the swirl intro (copies the template's path, hides the page for 1.35 s before the 3D story), GSAP, Motion, Lenis, Tailwind and Lucide (NEVER 1; smooth scrolling would also fight the scroll-driven camera), the fullscreen menu, text stretched to full width (line height 0.8 clips stacked Vietnamese marks), word-by-word blur (screen readers and cost over WebGL), the blurred aurora layer (a full-screen blur over the 3D scene), cursor trail and floating cards (not in the brief's Screen 1), glass cards, the cream and brown palette, and 14 px tags (below the 16 px rule).
+Changed: nothing.
+Rejected: nothing yet.
+By hand: An's analysis file and request.
