@@ -206,6 +206,10 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > kiểm tra trạng thái mới nhất của repo
 
 > mở lại pr#3 rồi review, đánh giá điểm
+
+> 1. cho mình xem bản nháp trước, nếu muốn Khánh sửa AI LOG cho đúng là lại phải làm lại à
+
+> duyệt
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

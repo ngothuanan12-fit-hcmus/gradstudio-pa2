@@ -595,3 +595,12 @@ Kept: the branch `feature/lich-chup` was pushed back from the fetched `pr/3` (he
 Changed: nothing; findings for An. The time "09:00" itself is not struck out; only its title is, while the brief says the timeline strikes out 09:00. 24/10 is labelled "Hôm nay", which is not true of the shoot day. Weekday labels, "Hôm nay" and the tag "Đã bỏ vì trùng lịch" are 14 px, beyond the badge; the PR says only the badge is 14 px. `checks/validator-lich-chup.txt` is a written report, not the W3C checker's output, so it is not evidence; the assistant could not run the checker because it now answers with a challenge page. Process: the five page commits were authored within about two and a half minutes; Khánh asked An for a review and closed the PR himself 52 minutes later with no reason given.
 Rejected: nothing yet; An decides.
 By hand: An's request.
+
+## 2026-11-10 — review posted on PR #3
+Commit: the commit that adds this entry, directly after 65f1d0f.
+Tool: Claude Code (Claude Opus 5.5), with `gh`.
+Asked for: show the review draft first; answer whether correcting `AI-LOG.md` means Khánh redoes his work; then post once An approved.
+Kept: the comment is on PR #3, in English without pronouns, in the same form as the PR #2 review: what passes, three page problems named by place, not by fix, two evidence points and two process points. On the log question: no redo. Wrong claims are corrected in a new entry that names the claim, the check that caught it and the fix, and earlier entries stay as written, because the team rules forbid backdating.
+Changed: nothing in the code.
+Rejected: nothing.
+By hand: An approved the draft.
