@@ -220,6 +220,8 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > làm tiếp phần 2
 
 > bỏ bước này, sẽ làm lại sau
+
+> kiểm tra lại brief có nên viết toàn bộ bằng tiếng Anh không và vì sao đang part 3 mà lại nhảy qua part 6
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

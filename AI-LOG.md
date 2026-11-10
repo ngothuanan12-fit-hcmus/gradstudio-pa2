@@ -631,3 +631,12 @@ Kept: plain version at 360 and 1280 px: every text passed. 3D story at 1280 and 
 Changed: nothing on the page. Found and not yet explained: in the Tốt nghiệp close-up at 1280 px, the Kỷ yếu photo sometimes stays fully bright behind the words instead of fading, which drops the words to about 1.03:1. It appeared in some runs and not others, also on a fresh page with no measuring script, with no page error, no lost WebGL context, and the progress bar showing the right position (0.72). Seen only in software rendering so far; whether it happens on a real graphics card is unknown. The assistant first blamed its own measuring script, then a test showed the bright photo before the script ran, so that explanation was wrong.
 Rejected: nothing.
 By hand: An stopped this step.
+
+## 2026-11-10 — should brief.md be all English, and why does it jump from Part 3 to Part 6?
+Commit: the commit that adds this entry, directly after 4d24c1f.
+Tool: Claude Code (Claude Opus 5.5), reading `brief.md`, its git history and criterion 5 of the rubric.
+Asked for: whether `brief.md` should be written entirely in English, and why its parts go from 3 to 6.
+Kept: the answer to An. Criterion 5 says `brief.md` is "what you actually gave the assistant, not a summary written afterwards", so prompts stay in the language they were sent; translating them would make the file a rewrite. Only the team's headings and notes are in English. The jump: Parts 4 and 5 never existed; `## Part 6` was added in 67068c5 (Khánh, 2026-11-08) for his prompt after PR #1 was closed. Also found: Part 3 is a prompt marked "NOT YET SENT" that was never sent, the opening paragraph still describes only Parts 1 to 3, and An's prompts from 2026-11-07 to 2026-11-10 all sit under 1.9 "Skeleton and 3D (2026-11-07)".
+Changed: nothing yet; the fix waits for An's choice.
+Rejected: nothing.
+By hand: An's question.
