@@ -640,3 +640,12 @@ Kept: the answer to An. Criterion 5 says `brief.md` is "what you actually gave t
 Changed: nothing yet; the fix waits for An's choice.
 Rejected: nothing.
 By hand: An's question.
+
+## 2026-11-10 — brief.md renumbered, dated, and Part 3 marked as never sent
+Commit: cb3fd53 for `brief.md`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: option (b) from the previous entry: keep the unsent Part 3 prompt, labelled honestly.
+Kept: Part 3 is now headed "drafted, never sent", with a note that its constraints were moved into `CLAUDE.md` (NEVER 1, spacing scale, breakpoints, semantic rules, relative links, how done is checked) and that some lines predate the updated rubric. Khánh's "Part 6" is now Part 4, with a note on the renumbering. An's prompts from 2026-11-07 to 2026-11-10 are split into sections 1.10 to 1.17 by date and task. The opening paragraph describes the four parts. The "Still to add" list, which pointed to the unsent Part 3, was removed. No prompt text changed: the diff removes only headings, the old status line, the list and the opening paragraph.
+Changed: nothing.
+Rejected: nothing.
+By hand: An chose option (b).
