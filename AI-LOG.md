@@ -604,3 +604,12 @@ Kept: the comment is on PR #3, in English without pronouns, in the same form as 
 Changed: nothing in the code.
 Rejected: nothing.
 By hand: An approved the draft.
+
+## 2026-11-10 — Fix these, problem 3: the landing send button and the next-page link
+Commit: 64a55e5 for the page, d68e0aa for `PROTOTYPE.md`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built pages.
+Asked for: the landing page's remaining work, done one part at a time, starting with problem 3.
+Kept: awaiting An's review. On `index.html` the send button and the message box are disabled, with the note "Chưa gửi được tin nhắn trong bản mẫu." tied to the box. The main flow goes on through the link "Nhân viên studio: mở cuộc trò chuyện này" to `quan-ly.html`, placed outside the chat so it stays visible when the chat is folded. `PROTOTYPE.md` lists the new link and the disabled send under *Not wired yet*. An had planned to wait for all three pages; the assistant pointed out that this link only needs `quan-ly.html`, which is merged, and An chose to go ahead.
+Changed: "Tư vấn gói này" used to move focus into the message box, which a disabled box cannot take; it now opens the chat if folded and moves focus to the "Đang hỏi về: …" line. The rubric-check script's main-flow step was updated to the new link. Checks: send and box disabled with the note at 360, 768 and 1280 px; the link is 48 px tall, 66 px at 360 px where its label wraps; folded chat keeps the link; the link opens `quan-ly.html`; rubric checks pass for all three pages at all widths, FAILURES: 0; the main flow reaches `lich-chup.html`, also after reloads; Slow 4G about 0.6 s to the shell and 2.0 s to the page.
+Rejected: nothing yet.
+By hand: An's request and order of work.

@@ -210,6 +210,10 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > 1. cho mình xem bản nháp trước, nếu muốn Khánh sửa AI LOG cho đúng là lại phải làm lại à
 
 > duyệt
+
+> landing page của mình còn phải làm việc gì tiếp
+
+> làm lần lượt từng phần, bắt đầu với phần 1
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
