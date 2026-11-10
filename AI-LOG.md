@@ -586,3 +586,12 @@ Kept: `main` has nothing new since e5cb2e4 and matches the local copy. Khánh op
 Changed: nothing.
 Rejected: nothing.
 By hand: An's request. The reason PR #3 was closed is not recorded anywhere in the repository.
+
+## 2026-11-10 — PR #3 reopened and reviewed, the customer schedule page
+Commit: the commit that adds this entry, directly after 99c22df. No comment was posted on PR #3 and it was not merged.
+Tool: Claude Code (Claude Opus 5.5), with `git`, `gh`, and Playwright on a scratch copy of `main` merged with PR #3.
+Asked for: reopen PR #3, review it, and estimate the marks.
+Kept: the branch `feature/lich-chup` was pushed back from the fetched `pr/3` (head 80fc3ff) and PR #3 reopened. Merged onto current `main` in a scratch copy, it conflicts only in `AI-LOG.md`; lint and build pass. The page opens straight into GS-1024 waiting for the 30% deposit: week 19–25/10 with 24/10 marked, make-up 13:00–14:00 with Mai and the shoot 14:00–16:00 with Tuấn in Phòng B, the badge *Đã thống nhất lịch · Chờ cọc 30%*, package, price, deposit and remainder, and *Thanh toán cọc 30%* disabled with a note that the slot is held only after the deposit. No demo controls, no map link. No sideways scroll and nothing past the right edge at 360, 768 and 1280 px; controls 44 px or taller; one `h1`, no skipped level; one primary button. The flow from `quan-ly.html` opens it, also after a reload. One commit per component with `Who: Khánh`.
+Changed: nothing; findings for An. The time "09:00" itself is not struck out; only its title is, while the brief says the timeline strikes out 09:00. 24/10 is labelled "Hôm nay", which is not true of the shoot day. Weekday labels, "Hôm nay" and the tag "Đã bỏ vì trùng lịch" are 14 px, beyond the badge; the PR says only the badge is 14 px. `checks/validator-lich-chup.txt` is a written report, not the W3C checker's output, so it is not evidence; the assistant could not run the checker because it now answers with a challenge page. Process: the five page commits were authored within about two and a half minutes; Khánh asked An for a review and closed the PR himself 52 minutes later with no reason given.
+Rejected: nothing yet; An decides.
+By hand: An's request.
