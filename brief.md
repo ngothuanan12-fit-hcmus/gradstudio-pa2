@@ -216,6 +216,10 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > làm lần lượt từng phần, bắt đầu với phần 1
 
 > trang quản lý Khánh đang làm đang bị giống bản gốc qua đúng không với giao diện của cả quan-ly và lich-chụp bị quá đơn giản đúng không
+
+> làm tiếp phần 2
+
+> bỏ bước này, sẽ làm lại sau
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

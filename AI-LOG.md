@@ -622,3 +622,12 @@ Kept: the answer to An, from the screenshots already taken: the management page 
 Changed: nothing.
 Rejected: nothing.
 By hand: An's question.
+
+## 2026-11-10 — landing contrast check, stopped part way
+Commit: the commit that adds this entry, directly after e1a3ace.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL; contrast measured against the real pixels behind each text, worst 5 % of pixels.
+Asked for: part 2 of the landing work, contrast. An stopped it part way, to come back to later.
+Kept: plain version at 360 and 1280 px: every text passed. 3D story at 1280 and 768 px: every caption and button passed whenever the scene was in its normal state; lowest values were 4.57:1 for the 44 px accent "nơi câu chuyện bắt đầu" (large text, needs 3:1) and 8.09:1 for the 16 px price note.
+Changed: nothing on the page. Found and not yet explained: in the Tốt nghiệp close-up at 1280 px, the Kỷ yếu photo sometimes stays fully bright behind the words instead of fading, which drops the words to about 1.03:1. It appeared in some runs and not others, also on a fresh page with no measuring script, with no page error, no lost WebGL context, and the progress bar showing the right position (0.72). Seen only in software rendering so far; whether it happens on a real graphics card is unknown. The assistant first blamed its own measuring script, then a test showed the bright photo before the script ran, so that explanation was wrong.
+Rejected: nothing.
+By hand: An stopped this step.
