@@ -649,3 +649,12 @@ Kept: Part 3 is now headed "drafted, never sent", with a note that its constrain
 Changed: nothing.
 Rejected: nothing.
 By hand: An chose option (b).
+
+## 2026-11-10 — can the resource calendar move to its own tab? Push for Khánh
+Commit: the commit that adds this entry, directly after 7b4b76a.
+Tool: Claude Code (Claude Opus 5.5), reading Screen 2 and *Fix these* in the GradStudio brief and the brief section of `CLAUDE.md`; `gh` for the push notice.
+Asked for: whether taking the resource calendar out of the chat screen into a separate tab follows the rules, and a push of the brief changes with a notice to Khánh.
+Kept: the answer to An. The brief lists three areas for Screen 2 (conversation list, chat with the *Booking mới* form, resource calendar with suggested times) and says a difference in layout costs nothing, so a tab on `quan-ly.html` is allowed if the features stay: the 09:00 clash note must be visible when the page opens, since it is part of the required state; suggested times should stay next to the form so 14:00 can be picked without switching; every booking in the calendar stays readable at every width with the clash not shown by colour or hatching alone; the tab is a real control that switches content, not a dead item like the authors' "Lịch studio"; the choice goes under *Your design choices* in `PROTOTYPE.md`. A fourth page is not recommended, because it adds screenshots and a W3C check the rubric does not count. The page is Khánh's, so the change goes to him as a task.
+Changed: nothing on the pages. Pushed 46ff145 to this entry to `main`; a comment on PR #3 tells Khánh that `brief.md` and `AI-LOG.md` now conflict and that his part is Part 4.
+Rejected: nothing.
+By hand: An's question and the decision to push now.

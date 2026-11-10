@@ -240,6 +240,13 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > kiểm tra lại brief có nên viết toàn bộ bằng tiếng Anh không và vì sao đang part 3 mà lại nhảy qua part 6
 
 > chọn b
+
+### 1.18 Resource calendar in its own tab; pushing for Khánh (2026-11-10)
+
+> nếu bỏ hẳn lịch ở bên phải khỏi chat thì có đúng quy định không, mình muốn đổi giao diện phần lịch sang một tab riêng
+> push luôn để Khánh xử lý conflict, thông báo cho Khánh
+
+An also attached a screenshot of the authors' Screen 2, with the resource calendar on the right of the chat.
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
