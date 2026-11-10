@@ -613,3 +613,12 @@ Kept: awaiting An's review. On `index.html` the send button and the message box 
 Changed: "Tư vấn gói này" used to move focus into the message box, which a disabled box cannot take; it now opens the chat if folded and moves focus to the "Đang hỏi về: …" line. The rubric-check script's main-flow step was updated to the new link. Checks: send and box disabled with the note at 360, 768 and 1280 px; the link is 48 px tall, 66 px at 360 px where its label wraps; folded chat keeps the link; the link opens `quan-ly.html`; rubric checks pass for all three pages at all widths, FAILURES: 0; the main flow reaches `lich-chup.html`, also after reloads; Slow 4G about 0.6 s to the shell and 2.0 s to the page.
 Rejected: nothing yet.
 By hand: An's request and order of work.
+
+## 2026-11-10 — are Khánh's two pages too close to the original, or too plain?
+Commit: the commit that adds this entry, directly after d948c31.
+Tool: Claude Code (Claude Opus 5.5), comparing the review screenshots of PR #2 and PR #3 with the brief's Screen 2 and Screen 3.
+Asked for: whether `quan-ly.html` copies the original screen too closely, and whether both pages look too plain.
+Kept: the answer to An, from the screenshots already taken: the management page keeps the brief's three areas, which the brief itself asks for, but moves the form beside the chat and the resource calendar below as a list; the schedule page turns the week into a vertical list and drops the map. Neither copies the authors' code or images. The rubric does not mark resemblance or plainness; criterion 4 asks for one clearly most important thing on each page, which both pages carry only weakly.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's question.

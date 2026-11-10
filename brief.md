@@ -214,6 +214,8 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 > landing page của mình còn phải làm việc gì tiếp
 
 > làm lần lượt từng phần, bắt đầu với phần 1
+
+> trang quản lý Khánh đang làm đang bị giống bản gốc qua đúng không với giao diện của cả quan-ly và lich-chụp bị quá đơn giản đúng không
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
