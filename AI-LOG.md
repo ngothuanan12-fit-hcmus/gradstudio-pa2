@@ -577,3 +577,12 @@ Kept: the reminder is saved for the next review. The estimate, criterion by crit
 Changed: a W3C run on all pages from a script failed: the checker answered 403 and then a "Just a moment…" challenge, so `index.html` and `lich-chup.html` have no W3C result yet. Their rendered HTML is saved for a manual paste, which is also the rubric's own method.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-10 — repository status check
+Commit: the commit that adds this entry, directly after e5cb2e4.
+Tool: Claude Code (Claude Opus 5.5), with `git` and `gh`.
+Asked for: the latest state of the repository.
+Kept: `main` has nothing new since e5cb2e4 and matches the local copy. Khánh opened PR #3 for `lich-chup.html` on 2026-11-08 at 11:05, asked An for a review at 11:35, closed it himself at 12:27 with no comment, and deleted its branch on 2026-11-09, together with the old `feature/quan-ly-lich-chup`; `develop` is also gone. PR #3's seven commits are still on GitHub; fetched read-only as `pr/3`. They add the page, its components, `checks/validator-lich-chup.txt` and three screenshots. `lich-chup.html` on `main` is still the placeholder.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's request. The reason PR #3 was closed is not recorded anywhere in the repository.

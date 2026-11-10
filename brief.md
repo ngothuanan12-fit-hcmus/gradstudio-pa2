@@ -202,6 +202,8 @@ An also attached a screenshot of that line under "Chọn buổi chụp của b�
 
 > nhớ nhắc mình trong lần review tiếp theo kiểm tra lại
 > theo tiêu chí chấm ở các file của rubric thì hiện đang ở mức nào của từng file
+
+> kiểm tra trạng thái mới nhất của repo
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
