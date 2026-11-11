@@ -1,9 +1,11 @@
 /* Management page. Shared primitives live in ui.css. */
 
 .toolbar { display: grid; gap: var(--space-12); }
-/* Status filter as pressed buttons with counts; they wrap in the narrow column. */
+/* Status filter as pressed buttons with counts; they wrap in the narrow column. The pressed one is filled with the
+   body colour, not the primary style, so "Tạo booking" stays the page's one primary button. */
 .conv .status-badge { white-space: nowrap; }
 .filter-chips { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.filter-chips .btn[aria-pressed='true'] { color: var(--surface); background: var(--ink); border-color: var(--ink); }
 .filter-chips .btn { min-height: var(--control-height-sm); padding: var(--space-4) var(--space-12); border-radius: var(--radius-pill); font-weight: 500; }
 
 .conv-list { display: grid; align-content: start; margin: 0; padding: 0; list-style: none; }
@@ -35,7 +37,7 @@
   color: var(--accent);
   font-weight: 600;
 }
-.conv-body { display: grid; gap: 2px; min-width: 0; }
+.conv-body { display: grid; gap: var(--space-4); min-width: 0; }
 .conv-top { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); min-width: 0; }
 .conv-name { flex: 1 1 14ch; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
 .conv-last { color: var(--ink-muted); overflow-wrap: anywhere; }
@@ -119,7 +121,7 @@
 .sched-blocks { display: grid; gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
 .sched-block {
   display: grid;
-  gap: 2px;
+  gap: var(--space-4);
   padding: var(--space-8) var(--space-12);
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
@@ -228,7 +230,7 @@
 @media (min-width: 768px) {
   .tl { display: grid; gap: var(--space-8); }
   .tl-axis, .tl-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); column-gap: var(--space-12); }
-  .tl-axis { position: relative; height: 24px; margin-left: 132px; display: block; }
+  .tl-axis { position: relative; height: 24px; margin-left: calc(120px + var(--space-12)); display: block; }
   .tl-axis span { position: absolute; top: 0; transform: translateX(-50%); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
   .tl-axis span:first-child { transform: none; }
   .tl-axis span:last-child { transform: translateX(-100%); }
@@ -245,7 +247,7 @@
   /* When the start time changes, Linh's blocks slide to their new place; nothing moves with reduced motion. */
   .tl-block { transition: left 400ms var(--ease-out), width 400ms var(--ease-out), top 400ms var(--ease-out); }
   .tl-block {
-    position: absolute; top: calc(var(--lane) * 64px + 6px); height: 52px; display: flex; align-items: center; padding: 0 var(--space-8);
+    position: absolute; top: calc(var(--lane) * 64px + var(--space-8)); height: 48px; display: flex; align-items: center; padding: 0 var(--space-8);
     border-radius: var(--radius-sm); font-weight: 600; line-height: 20px; overflow-wrap: anywhere;
   }
 }

@@ -78,7 +78,7 @@ export default function QuanLy() {
                   return (
                     <Button
                       key={item.id}
-                      variant={filter === item.id ? 'primary' : 'secondary'}
+                      variant="secondary"
                       aria-pressed={filter === item.id}
                       onClick={() => setFilter(item.id)}
                     >
