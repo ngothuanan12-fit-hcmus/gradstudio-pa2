@@ -450,6 +450,14 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
     }
     return shot;
   }
+  // Opening: the chalk lines draw themselves in, part by part in the room's build order (walls, then windows, then
+  // desks), each one settling down from slightly above. The clock starts once the first frame is on screen.
+  let introStart = null;
+  const INTRO_STEP = 900, INTRO_EACH = 520;
+  const INTRO_MS = INTRO_STEP + INTRO_EACH;
+  function drawnIn(order) {
+    return introStart === null ? 0 : ease(clamp((performance.now() - introStart - order * INTRO_STEP) / INTRO_EACH));
+  }
   function draw(p) {
     const room = seg(p, 0, ROOM_END);
     renderer.shadowMap.needsUpdate = room < 1 || !shadowsDone;
@@ -457,7 +465,9 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
     parts.forEach(({ order, solids, lines, g }) => {
       const q = ease(seg(room, .1 + order * .42, .3 + order * .42));
       solids.forEach((m) => { m.opacity = q; m.depthWrite = q > .35; m.visible = q > .001; m.transparent = q < .999; });
-      lines.opacity = mix(.95, .08, q);
+      const r = drawnIn(order);
+      lines.opacity = mix(.95, .08, q) * r;
+      g.position.y = (1 - r) * .35;
       g.visible = true;
     });
     cameraAt(p);
@@ -514,13 +524,13 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
   function loop(now = last) {
     const t = target(), dt = Math.min(.05, (now - last) / 1000);
     last = now;
-    if (Math.abs(t - cur) > .00003 || dirty) {
+    if (Math.abs(t - cur) > .00003 || dirty || introStart === null || now - introStart < INTRO_MS + 50) {
       // Follow the scroll position by time, so fast and slow screens feel the same.
       cur += (t - cur) * (1 - Math.exp(-dt * 6));
       if (Math.abs(t - cur) <= .00003) cur = t;
       dirty = false;
       draw(cur);
-      if (!drawnOnce) { drawnOnce = true; canvas.classList.add('is-ready'); }
+      if (!drawnOnce) { drawnOnce = true; introStart = performance.now(); canvas.classList.add('is-ready'); }
     }
     frame = requestAnimationFrame(loop);
   }

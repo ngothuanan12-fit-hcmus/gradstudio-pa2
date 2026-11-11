@@ -1,6 +1,7 @@
 import { useLayoutEffect } from 'react';
 
-const DURATION = 1600;
+// The zoom takes 1.6 s; the second line is written until 1.8 s.
+const DURATION = 1800;
 let startedAt = null;
 
 // The landing title starts large and shrinks into place, once per page load. The plain first screen and the 3D stage
