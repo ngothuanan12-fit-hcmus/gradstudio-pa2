@@ -1101,3 +1101,12 @@ Kept: awaiting An's review. Answer: it breaks no rule while the status name stay
 Changed: the first try put the group in a fixed side column; at 360 px it squeezed the names to two to five lines (rows up to 290 px; "Nguyễn Thị Hoàng Phương Uyên" on five lines) though nothing overlapped. The group now wraps under the name instead. Checks: for every row at all three widths no overlap between the name or message and the group, no clipped name; rows 86–88 px at 768 px and 118–168 px at 360 px; no text under 16 px; overflow line 0; filters and search as before; rubric checks FAILURES: 0.
 Rejected: An rejected the plain badge under the name (from round 2) in favour of the dot and the badge by the time.
 By hand: An's idea.
+
+## 2026-11-11 — round 3: the chat on the management page
+Commit: a9473a0 (`QuanLy.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: round 3 as suggested; and a reminder later to rework the badge position (kept as a note for the style pass or before the pull request).
+Kept: awaiting An's review. The chat is a window like the landing page's, seen from the studio's side: a header with the customer's initial, the status dot, the name and the status name ("Nguyễn Thùy Linh · Đã chốt lịch"); rounded bubbles, the studio's on the right; a round message box with the placeholder "Nhập tin nhắn" (was "Bản mẫu chưa gửi được tin nhắn", cut off and repeating the note) and a round "Gửi", still disabled with the note "Chưa gửi được tin nhắn trong bản mẫu.". Choosing another conversation changes the header and shows the empty message. The five messages of the opening state are unchanged (Linh's question, the reply, Mai busy and the 13:00/14:00 proposal, the price, Linh agreeing to 14:00). Styles are in `admin.css` only; the shared `ChatPanel` is unchanged, so the landing chat is not affected.
+Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px in the chat, placeholder not cut off, send disabled with its note, overflow line 0; choosing Trần Minh Anh shows "Trần Minh Anh / Chưa trả lời" and "Chưa có tin nhắn trong hội thoại này."; rubric checks FAILURES: 0, main flow reaches `lich-chup.html`.
+Rejected: nothing yet.
+By hand: An's request.
