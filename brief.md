@@ -259,6 +259,10 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 > mình sẽ duyệt sau, mình cần kiểm tra trang quan-ly và lich-chup trên repo
 
 > push trước
+
+### 1.21 Zoom-in intro, photos that follow the cursor, and button states (2026-11-11)
+
+> mình muốn áp dụng intro theo kiểu zoom in  được không, với muốn ảnh theo theo chuột vì web gốc cũng có áp dụng kiểu tương tự, không cần sửa bảng màu, chỉ cần sửa vài nút được không
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

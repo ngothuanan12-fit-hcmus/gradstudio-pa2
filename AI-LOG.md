@@ -676,3 +676,12 @@ Kept: the report to An. No new commit from Khánh since 2026-11-08 on either bra
 Changed: nothing.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-11 — plan for a zoom-in intro, photos that follow the cursor, and button states
+Commit: the commit that adds this entry, directly after b62b7cc.
+Tool: Claude Code (Claude Opus 5.5), reading `Story.jsx`, `scene.js` and the landing CSS.
+Asked for: a zoom-in intro instead of the template's swirl, photos that follow the cursor like the template's About section, the palette unchanged, and a few button fixes.
+Kept: a plan, awaiting An's approval, in three small steps, each stopped for review: (1) button hover, pressed and keyboard focus states with a thin top highlight on the primary button, in `base.css` as its own commit; (2) the intro: the first-screen photo eases from slightly enlarged to normal size in about 1.2 s with CSS, and when the 3D story takes over its camera starts a little further back and settles on the first view, so the switch reads as one movement; words stay readable from the first frame; nothing plays with reduced motion; (3) the cursor trail in the package section at 768 px or wider, only with a mouse (`hover: hover` and `pointer: fine`), using the three package photos already on the page, decorative (`aria-hidden`, no pointer events), listening only while the section is on screen, fading after a short pause, never on touch screens. All in our own code, without GSAP or another library (NEVER 1). After the steps: contrast and rubric checks again, then W3C and screenshots.
+Changed: nothing.
+Rejected: nothing yet.
+By hand: An's request.
