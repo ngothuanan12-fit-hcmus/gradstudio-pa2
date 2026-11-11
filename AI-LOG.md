@@ -1128,3 +1128,12 @@ Kept: the answer for An. Folding is allowed, with conditions: the page must stil
 Changed: nothing.
 Rejected: nothing.
 By hand: An's question.
+
+## 2026-11-11 — round 4: the booking card inside the chat
+Commit: a4ef6eb (`ChatPanel.jsx`, shared: an optional slot after the messages, unused by the landing page) and a3731ff (`BookingForm.jsx`, `QuanLy.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: option A, the booking card right after Linh agrees, open on arrival and foldable.
+Kept: awaiting An's review. The *Booking mới* form is now a card in Linh's conversation, after "Dạ em chốt lịch 14:00 ạ.", a form of its own outside the message box's form, bordered in the accent colour. Top: "Booking mới cho Linh" and a "Thu gọn" / "Mở chi tiết" button (`aria-expanded`); a summary line "24/10/2026 · 14:00 · Makeup 13:00–14:00 · Chụp 14:00–16:00"; the note "09:00 Linh hỏi ban đầu bị trùng vì Mai (makeup) bận 08:00–12:00, nên đã đổi sang 14:00." Details in three groups (fieldsets): "Khách và gói" and "Thời gian", both marked "lấy từ hội thoại", and "Người và phòng" with a ✓ free line under Mai, Tuấn and Phòng B; the end times follow from the start time. Bottom: "Tạo booking · Khách hàng: mở lịch chụp GS-1024", the page's one primary button, opening `lich-chup.html`. Choosing 09:00 turns the note red ("09:00 trùng lịch … Chọn 14:00 để tạo booking."), marks Mai "⚠ Bận 08:00–12:00" and disables the submit. Folded, the details hide but the summary, the note and the submit stay. The *Chờ cọc 30%* badge shown before a booking existed is gone. The page grid loses its separate form area. The suggested free times move to round 5 with the resource calendar.
+Changed: on the screenshots the package select cut its text and the customer box stretched taller than its neighbours; the options now show the package name only (duration and price stay in the hint below) and fields no longer stretch. Checks at 360, 768 and 1280 px: card not inside the message box's form, no inner scrolling, no text under 16 px, controls 44–48 px, overflow line 0; 09:00 and back works; folded: details hidden, submit still enabled and opens `lich-chup.html`; the header link "Booking mới" brings the card to the top; rubric checks FAILURES: 0 with the main flow through the card.
+Rejected: nothing yet.
+By hand: An's choice of A, open on arrival and foldable.
