@@ -6,6 +6,7 @@
 .conv .status-badge { white-space: nowrap; }
 .filter-chips { display: flex; flex-wrap: wrap; gap: var(--space-4); }
 .filter-chips .btn[aria-pressed='true'] { color: var(--surface); background: var(--ink); border-color: var(--ink); }
+.filter-chips .btn[aria-pressed='true'] .conv-status { color: var(--surface); }
 .filter-chips .btn { min-height: var(--control-height-sm); padding: var(--space-4) var(--space-8); border-radius: var(--radius-pill); font-weight: 500; }
 
 .conv-list { display: grid; align-content: start; margin: 0; padding: 0; list-style: none; }
@@ -43,13 +44,13 @@
 .conv-last { color: var(--ink-muted); overflow-wrap: anywhere; }
 .conv-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); margin-left: auto; }
 /* Status dot: one colour per status, ringed so it stands apart from the avatar; the name is always beside the time. */
-.conv-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--surface); }
-.conv-avatar .conv-dot { position: absolute; right: -2px; bottom: -2px; }
-.filter-chips .conv-dot { border-color: transparent; margin-right: var(--space-4); }
-.conv-dot-new { background: var(--danger); }
-.conv-dot-advising { background: var(--accent); }
-.conv-dot-agreed { background: var(--free); }
-.conv-dot-done { background: var(--ink-muted); }
+.conv-status { display: inline-grid; place-items: center; line-height: 1; }
+.conv-avatar .conv-status { position: absolute; right: -4px; bottom: -4px; width: 20px; height: 20px; border-radius: 50%; background: var(--surface); font-size: 16px; box-shadow: 0 0 0 1px var(--line); }
+.filter-chips .conv-status { margin-right: var(--space-4); }
+.st-new { color: var(--danger); }
+.st-advising { color: var(--accent); }
+.st-agreed { color: var(--free); }
+.st-done { color: var(--ink-muted); }
 .conv-time { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
 .conv-unread {
   display: inline-grid;
@@ -189,7 +190,6 @@
 
 /* Header of the management page: who is working here, beside the brand. */
 .page-role { margin-right: auto; color: var(--ink-muted); }
-.filter-chips .btn-primary .conv-dot { border-color: var(--on-accent); }
 
 /* Booking card inside the chat, after Linh's last message: set apart from the bubbles by its border and background.
    Groups follow the order the manager thinks in; folded, the summary, the clash note and the submit stay. */

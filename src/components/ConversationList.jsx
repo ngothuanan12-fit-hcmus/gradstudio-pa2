@@ -1,7 +1,9 @@
 // Each row is a button, at least 44px tall. Selection is aria-current, so it
-// survives a screen reader and a greyscale screenshot. The status shows twice: a coloured dot on the avatar for a
-// quick scan, and its name beside the time, so it never rests on colour alone.
+// survives a screen reader and a greyscale screenshot. The status shows twice: an icon on the avatar for a quick
+// scan (its own shape per status), and its name beside the time, so it never rests on colour alone.
+import Icon from './Icon.jsx';
 import StatusBadge from './StatusBadge.jsx';
+import { STATUS_ICON } from '../utils/status.js';
 
 export default function ConversationList({ items = [], activeId, onSelect }) {
   if (!items.length) {
@@ -20,7 +22,7 @@ export default function ConversationList({ items = [], activeId, onSelect }) {
           >
             <span className="conv-avatar" aria-hidden="true">
               {item.name.charAt(0)}
-              <span className={`conv-dot conv-dot-${item.status}`} />
+              <span className={`conv-status st-${item.status}`}><Icon name={STATUS_ICON[item.status]} /></span>
             </span>
             <span className="conv-body">
               {/* Time and status travel together: beside the name when there is room, under it when there is not,

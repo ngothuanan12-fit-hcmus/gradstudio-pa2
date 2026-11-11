@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import AdminLayout from '../layouts/AdminLayout.jsx';
 import Button from '../components/Button.jsx';
+import Icon from '../components/Icon.jsx';
+import { STATUS_ICON } from '../utils/status.js';
 import BookingForm from '../components/BookingForm.jsx';
 import ChatPanel from '../components/ChatPanel.jsx';
 import ConversationList from '../components/ConversationList.jsx';
@@ -82,7 +84,7 @@ export default function QuanLy() {
                       aria-pressed={filter === item.id}
                       onClick={() => setFilter(item.id)}
                     >
-                      {item.id !== 'all' && <span className={`conv-dot conv-dot-${item.id}`} aria-hidden="true" />}
+                      {item.id !== 'all' && <span className={`conv-status st-${item.id}`}><Icon name={STATUS_ICON[item.id]} /></span>}
                       {item.label} ({count})
                     </Button>
                   );
@@ -102,7 +104,7 @@ export default function QuanLy() {
           <div className="chat-window-bar">
             <span className="conv-avatar" aria-hidden="true">
               {active.name.charAt(0)}
-              <span className={`conv-dot conv-dot-${active.status}`} />
+              <span className={`conv-status st-${active.status}`}><Icon name={STATUS_ICON[active.status]} /></span>
             </span>
             <div className="chat-window-who">
               <p className="chat-window-name">{active.name}</p>
