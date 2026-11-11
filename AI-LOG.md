@@ -883,3 +883,12 @@ Kept: proposals for An, nothing built. Open: left the heading, text, quick packa
 Changed: nothing.
 Rejected: nothing.
 By hand: An's questions.
+
+## 2026-11-11 — chat section rebuilt: quick choices left, chat right, staff link above the footer
+Commit: 29e767e for the page, 3a24f81 for `PROTOTYPE.md`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: An agreed to the proposals (quick package choice and "Nên kể cho studio" on the left, chat on the right, no folding, credits line removed, staff link moved, footer kept).
+Kept: awaiting An's review. Left card: heading, text, "Bạn muốn hỏi gói nào?" with three buttons (name and "Từ …" price) that do what "Tư vấn gói này" does and show as pressed, and "Nên kể cho studio" (which session, which day, how many people, make-up or gown rental). Right: the chat window, always open; its conversation fills the card's height from 1280 px. Below 1280 px the card comes first, then the chat. The fold button and the photo beside the chat are gone; the photo credits line is removed (sources stay in `PROTOTYPE.md` and `docs/IMAGE_SOURCES.md`); "Nhân viên studio: mở cuộc trò chuyện này" is in a strip above the footer after "Màn hình tiếp theo của bản mẫu:". `PROTOTYPE.md`: the index row and three design choices updated.
+Changed: at 1280 px the stretched conversation first stretched the bubbles too; the list now keeps its bubbles at their size. Checks at 360, 1280 and 1920 px: overflow line empty, no text under 16 px, controls 48 px, no inner scrolling; a quick button sets "Đang hỏi về: Tốt nghiệp", moves focus to it and presses the matching card button; the strip's link opens `quan-ly.html`; rubric checks FAILURES: 0 with the main flow through the moved link.
+Rejected: nothing yet.
+By hand: An's choices.
