@@ -1,0 +1,73 @@
+/* Customer schedule page. Shared primitives live in ui.css. */
+
+/* WeekCalendar: a strip of seven days, then the shoot day as a bar (overview) and a list (the readable record). */
+.week-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+.week-cell { position: relative; display: grid; justify-items: center; padding: var(--space-8) 0; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-raised); }
+.week-cell time { display: grid; justify-items: center; }
+.week-cell.is-shoot { border: 2px solid var(--accent); background: var(--accent-soft); }
+.week-dow { color: var(--ink-muted); font-size: 16px; line-height: 24px; font-weight: 600; }
+.week-num { font-family: var(--font-display); font-size: 24px; line-height: 28px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.week-mark { color: var(--accent); line-height: 16px; }
+.week-shoot-line { color: var(--accent); font-weight: 600; }
+
+.day-title { margin-top: var(--space-8); font-size: 18px; line-height: 28px; }
+.day-bar { display: grid; gap: var(--space-4); }
+.day-axis { position: relative; height: 24px; }
+.day-axis span { position: absolute; top: 0; transform: translateX(-50%); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.day-axis span:first-child { transform: none; }
+.day-axis span:last-child { transform: translateX(-100%); }
+/* At 360 px only the first, middle and last hours fit without touching. */
+.day-axis span:nth-child(2), .day-axis span:nth-child(4), .day-axis span:nth-child(5) { display: none; }
+.day-track {
+  position: relative; height: 32px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 10%), var(--surface-raised);
+}
+.day-block { position: absolute; top: 4px; bottom: 4px; border-radius: 4px; background: var(--accent); }
+.day-block.is-off {
+  background: repeating-linear-gradient(135deg, var(--danger) 0 3px, transparent 3px 7px);
+  border: 1px solid var(--danger);
+}
+
+.day-agenda { display: grid; gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
+.day-item {
+  display: grid; grid-template-columns: minmax(0, 7.5em) minmax(0, 1fr); gap: var(--space-12); align-items: start;
+  padding: var(--space-8) var(--space-12); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm); background: var(--surface-raised); overflow-wrap: anywhere;
+}
+.day-item.is-off {
+  border-left: 4px solid var(--danger);
+  background: repeating-linear-gradient(135deg, var(--danger-soft) 0 6px, var(--surface-raised) 6px 12px);
+}
+.day-time { font-weight: 600; font-variant-numeric: tabular-nums; }
+.day-time s { color: var(--danger); text-decoration-thickness: 2px; }
+.day-what { font-weight: 600; }
+.day-where { color: var(--ink-muted); }
+.day-item.is-off .day-where { color: var(--danger); }
+
+@media (min-width: 768px) {
+  .day-axis span:nth-child(n) { display: inline; }
+}
+
+/* BookingSummary on this page: label and value side by side in two columns, so a long value wraps under itself
+   instead of breaking the row; the package's duration sits under its name. */
+.schedule-side .summary-row { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: var(--space-12); }
+.schedule-side .summary-row dd { overflow-wrap: anywhere; }
+.summary-sub { display: block; color: var(--ink-muted); font-weight: 400; }
+/* DepositCard */
+.deposit { align-content: start; }
+.deposit-list { display: grid; gap: var(--space-8); }
+.deposit-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4) var(--space-16); }
+.deposit-row dt { color: var(--ink-muted); }
+.deposit-row dd { font-weight: 600; font-variant-numeric: tabular-nums; }
+.deposit-row-primary dd { color: var(--accent); font-family: var(--font-display); font-size: 32px; line-height: 40px; font-weight: 500; }
+.deposit-note { color: var(--ink-muted); }
+
+/* Page layout: one column at 360, the deposit beside the calendar at 1280. */
+.schedule-layout { display: grid; gap: var(--space-24); min-width: 0; }
+.schedule-main, .schedule-side { display: grid; align-content: start; gap: var(--space-24); min-width: 0; }
+
+@media (min-width: 1280px) {
+  .schedule-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 400px); align-items: start; }
+  .schedule-side { grid-column: 2; grid-row: 1; }
+  .schedule-main { grid-column: 1; grid-row: 1; }
+}

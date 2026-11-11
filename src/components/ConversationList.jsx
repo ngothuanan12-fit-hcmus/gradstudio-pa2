@@ -1,5 +1,6 @@
 // Each row is a button, at least 44px tall. Selection is aria-current, so it
-// survives a screen reader and a greyscale screenshot.
+// survives a screen reader and a greyscale screenshot. The status shows twice: a coloured dot on the avatar for a
+// quick scan, and its name beside the time, so it never rests on colour alone.
 import StatusBadge from './StatusBadge.jsx';
 
 export default function ConversationList({ items = [], activeId, onSelect }) {
@@ -17,22 +18,27 @@ export default function ConversationList({ items = [], activeId, onSelect }) {
             aria-current={item.id === activeId ? 'true' : undefined}
             onClick={() => onSelect(item.id)}
           >
-            <span className="conv-avatar" aria-hidden="true">{item.name.charAt(0)}</span>
+            <span className="conv-avatar" aria-hidden="true">
+              {item.name.charAt(0)}
+              <span className={`conv-dot conv-dot-${item.status}`} />
+            </span>
             <span className="conv-body">
+              {/* Time and status travel together: beside the name when there is room, under it when there is not,
+                  so the name is never squeezed. */}
               <span className="conv-top">
                 <span className="conv-name">{item.name}</span>
-                <StatusBadge tone={item.tone}>{item.statusLabel}</StatusBadge>
+                <span className="conv-meta">
+                  <span className="conv-time">{item.time}</span>
+                  <StatusBadge tone={item.tone}>{item.statusLabel}</StatusBadge>
+                  {item.unread ? (
+                    <span className="conv-unread">
+                      {item.unread}
+                      <span className="sr-only"> tin chưa đọc</span>
+                    </span>
+                  ) : null}
+                </span>
               </span>
               <span className="conv-last">{item.last}</span>
-            </span>
-            <span className="conv-meta">
-              <span className="conv-time">{item.time}</span>
-              {item.unread ? (
-                <span className="conv-unread">
-                  {item.unread}
-                  <span className="sr-only"> tin chưa đọc</span>
-                </span>
-              ) : null}
             </span>
           </button>
         </li>

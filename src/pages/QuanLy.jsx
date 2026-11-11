@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import AdminLayout from '../layouts/AdminLayout.jsx';
+import Button from '../components/Button.jsx';
 import BookingForm from '../components/BookingForm.jsx';
 import ChatPanel from '../components/ChatPanel.jsx';
 import ConversationList from '../components/ConversationList.jsx';
@@ -28,6 +29,7 @@ export default function QuanLy() {
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('all');
   const [start, setStart] = useState(booking.agreed);
+  const [cardOpen, setCardOpen] = useState(true);
 
   const conflict = start !== booking.agreed;
   const picked = conflict ? null : freeSlots[0].id;
@@ -54,7 +56,7 @@ export default function QuanLy() {
       <p className="status-line" role="status">{status}</p>
 
       <div className="admin-grid">
-        <section className="panel admin-convs" aria-labelledby="convs-title">
+        <section className="panel admin-convs" id="hoi-thoai" aria-labelledby="convs-title">
           <h2 id="convs-title">Hội thoại</h2>
           <div className="toolbar">
             <p className="field">
@@ -64,23 +66,29 @@ export default function QuanLy() {
                 id="conv-search"
                 type="search"
                 value={query}
-                placeholder="Tên khách hoặc tin nhắn"
+                placeholder="Tên hoặc tin nhắn"
                 onChange={(event) => setQuery(event.target.value)}
               />
             </p>
-            <p className="field">
-              <label className="field-label" htmlFor="conv-filter">Lọc trạng thái</label>
-              <select
-                className="input"
-                id="conv-filter"
-                value={filter}
-                onChange={(event) => setFilter(event.target.value)}
-              >
-                {FILTERS.map((item) => (
-                  <option key={item.id} value={item.id}>{item.label}</option>
-                ))}
-              </select>
-            </p>
+            <div className="field">
+              <p className="field-label" id="conv-filter-label">Lọc theo trạng thái</p>
+              <div className="filter-chips" role="group" aria-labelledby="conv-filter-label">
+                {FILTERS.map((item) => {
+                  const count = item.id === 'all' ? conversations.length : conversations.filter((c) => c.status === item.id).length;
+                  return (
+                    <Button
+                      key={item.id}
+                      variant="secondary"
+                      aria-pressed={filter === item.id}
+                      onClick={() => setFilter(item.id)}
+                    >
+                      {item.id !== 'all' && <span className={`conv-dot conv-dot-${item.id}`} aria-hidden="true" />}
+                      {item.label} ({count})
+                    </Button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
           <ConversationList
             items={visibleConversations}
@@ -89,33 +97,51 @@ export default function QuanLy() {
           />
         </section>
 
+        {/* The chat looks like the landing page's chat window, seen from the studio's side. */}
         <div className="admin-chat">
+          <div className="chat-window-bar">
+            <span className="conv-avatar" aria-hidden="true">
+              {active.name.charAt(0)}
+              <span className={`conv-dot conv-dot-${active.status}`} />
+            </span>
+            <div className="chat-window-who">
+              <p className="chat-window-name">{active.name}</p>
+              <p className="chat-window-status">{active.statusLabel}</p>
+            </div>
+          </div>
           <ChatPanel
             id="admin-chat"
             title={`Chat với ${active.name}`}
             label="Tin nhắn"
-            placeholder="Bản mẫu chưa gửi được tin nhắn"
+            placeholder="Nhập tin nhắn"
             messages={activeId === 'linh' ? messages : []}
             disabled
             note="Chưa gửi được tin nhắn trong bản mẫu."
+            afterMessages={activeId === 'linh' ? (
+              <BookingForm
+                booking={booking}
+                services={services}
+                conflict={conflict}
+                start={start}
+                onStartChange={setStart}
+                open={cardOpen}
+                onToggle={() => setCardOpen(!cardOpen)}
+              />
+            ) : null}
           />
         </div>
 
-        <BookingForm
-          booking={booking}
-          services={services}
-          conflict={conflict}
-          start={start}
-          onStartChange={setStart}
-          slots={freeSlots}
-          picked={picked}
-          onPickSlot={(slot) => setStart(slot.time)}
-        />
+
 
         <ResourceSchedule
           title="Lịch thợ và phòng"
           date="Thứ Bảy, 24/10/2026"
           rows={scheduleRows}
+          start={start}
+          slots={freeSlots}
+          picked={picked}
+          conflict={conflict}
+          onPick={(slot) => { setStart(slot.time); setCardOpen(true); }}
         />
       </div>
     </AdminLayout>

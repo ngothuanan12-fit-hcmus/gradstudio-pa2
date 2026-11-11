@@ -60,20 +60,20 @@ export const conversations = [
     id: 'anh',
     name: 'Trần Minh Anh',
     time: '07:50',
-    last: 'Em gửi ảnh chọn rồi ạ.',
+    last: 'Studio cho em hỏi giá gói chân dung CV ạ.',
     status: 'new',
     statusLabel: 'Chưa trả lời',
-    tone: 'neutral',
+    tone: 'new',
     unread: 2,
   },
   {
     id: 'bao',
     name: 'Lê Gia Bảo',
     time: 'Hôm qua',
-    last: 'Cảm ơn studio, hẹn gặp ngày 24/10.',
+    last: 'Em nhận đủ ảnh rồi, cảm ơn studio ạ.',
     status: 'done',
     statusLabel: 'Hoàn thành',
-    tone: 'confirmed',
+    tone: 'done',
   },
 ];
 
@@ -93,8 +93,6 @@ export const scheduleRows = [
     role: 'Thợ makeup',
     blocks: [
       { id: 'mai-busy', from: '08:00', to: '12:00', label: 'Đã kín', kind: 'busy' },
-      { id: 'mai-conflict', from: '09:00', to: '10:00', label: 'Linh yêu cầu 09:00', kind: 'conflict' },
-      { id: 'mai-proposed', from: '13:00', to: '14:00', label: 'Linh · makeup', kind: 'proposed' },
     ],
   },
   {
@@ -103,16 +101,13 @@ export const scheduleRows = [
     role: 'Thợ chụp',
     blocks: [
       { id: 'tuan-free', from: '11:00', to: '14:00', label: 'Trống', kind: 'free' },
-      { id: 'tuan-proposed', from: '14:00', to: '16:00', label: 'Linh · GS-1024', kind: 'proposed' },
     ],
   },
   {
     id: 'phong-b',
     name: 'Phòng B',
     role: 'Phòng chụp',
-    blocks: [
-      { id: 'phong-proposed', from: '14:00', to: '16:00', label: 'Linh · GS-1024', kind: 'proposed' },
-    ],
+    blocks: [],
   },
 ];
 
@@ -157,6 +152,43 @@ export const processSteps = [
   { id: 'coc', title: 'Cọc để giữ lịch', text: 'Lịch chỉ được giữ khi bạn cọc 30% thành công và studio kiểm tra lại lịch.' },
   { id: 'chup', title: 'Buổi chụp', text: 'Ekip chuẩn bị theo checklist của từng loại buổi chụp.' },
   { id: 'anh', title: 'Chọn ảnh và nhận file', text: 'Chọn ảnh cần chỉnh, thanh toán 70% còn lại, nhận file khi hoàn tất.' },
+];
+
+export const weekDays = [
+  { id: '2026-10-19', dow: 'T2', num: 19 },
+  { id: '2026-10-20', dow: 'T3', num: 20 },
+  { id: '2026-10-21', dow: 'T4', num: 21 },
+  { id: '2026-10-22', dow: 'T5', num: 22 },
+  { id: '2026-10-23', dow: 'T6', num: 23 },
+  {
+    id: '2026-10-24',
+    dow: 'T7',
+    num: 24,
+    events: [
+      {
+        id: 'ev-old',
+        from: '09:00',
+        title: 'Giờ bạn hỏi ban đầu',
+        where: 'Đã bỏ vì thợ makeup Mai bận 08:00–12:00',
+        struck: true,
+      },
+      {
+        id: 'ev-makeup',
+        from: '13:00',
+        to: '14:00',
+        title: 'Makeup với Mai',
+        where: 'GS-1024',
+      },
+      {
+        id: 'ev-shoot',
+        from: '14:00',
+        to: '16:00',
+        title: 'Chụp với Tuấn',
+        where: 'Phòng B · GS-1024',
+      },
+    ],
+  },
+  { id: '2026-10-25', dow: 'CN', num: 25 },
 ];
 
 export function formatVND(value) {

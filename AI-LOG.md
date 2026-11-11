@@ -983,3 +983,247 @@ Kept: a plan, awaiting An's approval. Base: `main` for `quan-ly.html` and Khánh
 Changed: nothing.
 Rejected: nothing.
 By hand: An's decision to take over both pages.
+
+## 2026-11-08 — customer schedule page: the week it opens on
+
+Who: Khánh (24120340).
+Commit: 949e79d.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the second page of the redo in `brief.md` Part 6, on its own branch after the management page.
+Changed: `src/data.js` gains the week 19–25/10/2026. Saturday 24/10 carries the old 09:00 request, struck through because it clashed with Mai, then make-up 13:00–14:00 and the shoot 14:00–16:00. Sunday 25/10 has no events, so the empty state has a real day to show. The booking data added with the management page already holds the rest of this page's state.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the booking summary
+
+Who: Khánh (24120340).
+Commit: e81dc98.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the booking information from screen 3 of the brief, in its one open state, with the exact status name.
+Changed: `src/components/BookingSummary.jsx` now reads GS-1024 with the package and its detail, the day, make-up 13:00–14:00 with Mai, the shoot 14:00–16:00 with Tuấn in Phòng B, and the package total. The badge reads *Đã thống nhất lịch · Chờ cọc 30%* with the dashed pending style, so the page never claims the slot is held.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the week view
+
+Who: Khánh (24120340).
+Commit: f2ef3b4.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: screen 3's week calendar, readable at every width, with the clash visible in text.
+Changed: `src/components/WeekCalendar.jsx` lists the seven days of 19–25/10/2026. Saturday 24/10 is marked *Hôm nay* and holds three events: the old 09:00 request, struck through and tagged *Đã bỏ vì trùng lịch*, then make-up 13:00–14:00 and the shoot 14:00–16:00. A day without events says *Không có lịch*. `src/styles/schedule.css` holds the rules in one column at every width, so no empty cell leaves a gap beside Saturday.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the 30% deposit
+
+Who: Khánh (24120340).
+Commit: 125d9b9.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: screen 3's deposit block, with the payment action disabled and a visible note, and no *Mô phỏng thanh toán*.
+Changed: `src/components/DepositCard.jsx` shows the 540.000đ deposit, the 1.260.000đ left after it and the 1.800.000đ package. *Thanh toán cọc 30%* is a disabled button described by a visible note: PA#2 has no payment, and the slot is kept only after the deposit succeeds and the studio checks the calendar again. `src/styles/schedule.css` gains the deposit rules.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the page itself
+
+Who: Khánh (24120340).
+Commit: 1f3382a.
+Tool: OpenCode (DeepSeek V4.1 Flash Free), with Chrome DevTools on the built page.
+Asked for: the brief's one state on direct open (GS-1024 waiting for the 30% deposit), no *Mô phỏng thanh toán*, exact status names, and the "Xem đường đi" Google Maps link gone.
+Changed: `src/pages/LichChup.jsx` puts the week, the booking summary and the deposit in one page, with a `role="status"` line that never promises the slot. The status tabs, the map panel and the *Xem đường đi* link are gone; no control leads outside the three pages. `src/styles/schedule.css` gains the page layout. `PROTOTYPE.md` records the screen, the disabled deposit and its *Not wired yet* row.
+Checks: `npm run lint` exits 0 with no output; `npm run build` exits 0. On the built page at 360, 768 and 1280 px, `clientWidth` equals `scrollWidth` at each width and no element passes either edge. The deposit button is 48 px high and disabled, the note is visible, the page has one `<h1>`, no skipped heading level, no `role="tab"`, no link to Google Maps, one `role="status"`, and content text measures 16 px.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: Done means checklist and screenshots
+
+Who: Khánh (24120340).
+Commit: 564a653.
+Tool: OpenCode (DeepSeek V4.1 Flash Free), with Chrome DevTools on the built page.
+Asked for: complete the 13-point Done means checklist in CLAUDE.md, align with the 7 new writing rules, save full-page screenshots, and record the W3C and accessibility checks.
+Changed: `checks/validator-lich-chup.txt` records 0 errors from W3C HTML5 validator and the DevTools accessibility audit (proper landmarks, one H1, no skipped heading levels, labeled buttons, valid DL/DT/DD lists). `screenshots/` gains `lich-chup-360.png`, `lich-chup-768.png`, and `lich-chup-1280.png`. `brief.md` records the prompts and instructions forwarded by Khánh following lead An's writing style.
+Checks:
+- #1 `npm run lint`: exit 0 with no warnings or errors.
+- #2 `npm run build` and preview: exit 0, three HTML files built, opened directly without 404.
+- #3 At 360, 768 and 1280 px: all content visible, links open `index.html` and `lich-chup.html`.
+- #4 Scroll width vs client width: `scrollWidth === clientWidth` at 360px (360/360), 768px (768/768), 1280px (1280/1280).
+- #5 Console: 0 errors, 0 warnings during interaction.
+- #6 Keyboard Tab/Enter: focus-visible outline active, deposit button disabled with visible note.
+- #7 W3C validator and accessibility tree: 0 errors, saved in `checks/validator-lich-chup.txt`.
+- #8 Text size and contrast: body text 16px, button height 48px, contrast >= 4.5:1.
+- #9 NEVER list: no framework beyond React/Vite, no inline style, keys are IDs, no localStorage.
+- #10 Slow 4G test: renders promptly with shell, no layout shifts.
+- #11 `git diff --stat`: only verification artifacts, docs and brief.
+- #12 Screenshots: `screenshots/lich-chup-360.png`, `screenshots/lich-chup-768.png`, `screenshots/lich-chup-1280.png` captured.
+- #13 GradStudio brief: one state on open (GS-1024 waiting 30% deposit), week 19–25/10 with 09:00 struck out, no demo switcher, no Google Maps link.
+By hand: none.
+
+## 2026-11-11 — round 0: working branch; theme contrast; options for round 1
+Commit: b912aa7 (merge of PR #3's branch into `redo/quan-ly-lich-chup`, made from `main` after pushing it), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), git; contrast computed from the token values in `tokens.css`.
+Asked for: An approved the plan, asked whether the theme suggestion holds up on contrast, and asked for options for round 1.
+Kept: round 0 done: branch `redo/quan-ly-lich-chup` from `main`, Khánh's PR #3 branch merged in; the conflicts in `AI-LOG.md` and `brief.md` were resolved by keeping both sides; the build passes. Contrast of the token pairs used for text: light "studio" theme lowest 5.0:1 (accent text on the page background), muted text 6.1:1 on the background and 5.3:1 on the busy grey, status colours on their soft backgrounds 5.4–5.6:1, input borders 3.1–3.4:1 (need 3:1); dark "cinema" theme lowest 5.9:1 (muted on busy grey), accent text 8.4–9.1:1, borders 4.1–4.4:1. Both pass; the dark theme has more margin, the light one is close to the limits for accent text and borders. All styles of both pages use tokens only (no colour values), so a theme is one attribute on the page. Options for round 1 given to An (theme, header and links, columns, the prototype's next-screen strip, footer).
+Changed: nothing on the pages.
+Rejected: nothing.
+By hand: An's approval of the plan.
+
+## 2026-11-11 — round 1: page frames
+Commit: 374ef61, and the commit that adds this entry (branch `redo/quan-ly-lich-chup`).
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built pages.
+Asked for: the suggested options for round 1: management page light, schedule page dark; a header with in-page links on the management page; two columns on both pages; no extra next-screen strip; the shared footer.
+Kept: awaiting An's review. `lich-chup.html` now uses the dark theme of the landing page, so both customer pages look alike; `quan-ly.html` keeps the light one. The management header shows "Quản lý studio · Thảo" and three links that open sections really on the page: "Hội thoại", "Booking mới", "Lịch tài nguyên" (the old self-link "Quản lý booking" is gone). Management layout: from 768 px the conversations beside the chat and the *Booking mới* form, the resource calendar across the full width below (was a third column at 1280 px). Schedule layout: the booking card and the deposit first, beside the week from 1280 px (the card moved from under the week). No other content changed in this round.
+Changed: nothing beyond the request. Checks: rubric checks FAILURES: 0 on all three pages and widths, main flow reaches `lich-chup.html`; no console errors. Still open for later rounds, measured now: 12 texts at 14 px on `quan-ly.html` (status badges, unread counts) and 11 on `lich-chup.html` (status badge, weekday labels, "Hôm nay", the tag on 09:00).
+Rejected: nothing yet.
+By hand: An's choices.
+
+## 2026-11-11 — round 2: the conversation list
+Commit: fdcf36d (`ui.css`, shared: status badges 16 px) and 382b858 (`data.js`, `QuanLy.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: round 2 with the suggested ideas: filter buttons with counts, 16 px badges, sample conversations that fit their status.
+Kept: awaiting An's review. The status filter is now a row of buttons with counts, "Tất cả (4)", "Chưa trả lời (1)", "Đang tư vấn (1)", "Đã chốt lịch (1)", "Hoàn thành (1)", the chosen one pressed (`aria-pressed`) and filled; the group is labelled "Lọc theo trạng thái". Status badges (shared, so also on `lich-chup.html`) and unread counts are 16 px. Trần Minh Anh (*Chưa trả lời*) now asks "Studio cho em hỏi giá gói chân dung CV ạ." and Lê Gia Bảo (*Hoàn thành*) says "Em nhận đủ ảnh rồi, cảm ơn studio ạ.", written for this page (the earlier lines did not fit their status). Search placeholder shortened to "Tên hoặc tin nhắn" so it is not cut off.
+Changed: at 768 px the list sat in a 280 px side column, where names and badges broke over several lines (rows up to 244 px tall); the list now spans the full width below 1280 px and sits beside the chat from 1280 px (both breakpoints are the team's), and badges in the list stay on one line. This also adjusts the round 1 layout at 768 px. Checks at 360, 768 and 1280 px: no text under 16 px in the list, filter buttons 44 px, search 48 px, rows 86–88 px at 768 px, overflow line 0; each filter shows exactly its conversation, "Tất cả" all four; search "chân dung" finds Trần Minh Anh, "xyz" shows the empty message; rubric checks FAILURES: 0, main flow reaches `lich-chup.html`.
+Rejected: nothing yet.
+By hand: An's approval of the ideas.
+
+## 2026-11-11 — round 2 follow-up: a status dot instead of the badge?
+Commit: the commit that adds this entry, directly after 869261d.
+Tool: Claude Code (Claude Opus 5.5); contrast of the dot colours computed from the tokens.
+Asked for: replace the status badges in the conversation list with a coloured dot on the avatar, one colour per status.
+Kept: the rule check, awaiting An's choice. A dot alone breaks two rules: the brief asks the status names to be shown exactly (*Chưa trả lời, Đang tư vấn, Đã chốt lịch, Hoàn thành*), and colour alone must not carry meaning (WCAG 1.4.1; the brief makes the same point for clashes); a green dot is also read as "online" in chat apps. Allowed version proposed: the dot on the avatar plus the status name as plain text in the row (no box), and the same dot in each filter button so the buttons act as the key. Colours from the tokens: *Chưa trả lời* red (`--danger`), *Đang tư vấn* amber (`--accent`), *Đã chốt lịch* green (`--free`), *Hoàn thành* grey (`--ink-muted`); each is 4.6–6.8:1 against the row and the avatar (non-text needs 3:1), with a white ring to separate it from the avatar.
+Changed: nothing yet.
+Rejected: nothing.
+By hand: An's idea.
+
+## 2026-11-11 — status dot on the avatar, status beside the time
+Commit: 75df81a (`ui.css` and `StatusBadge.jsx`, shared: two badge tones) and 3dbb02d (the list), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: overlap and clipping of every row at 360, 768 and 1280 px.
+Asked for: keep the status as a badge but move it beside the time, without it squeezing or covering the name; and whether that still breaks a rule.
+Kept: awaiting An's review. Answer: it breaks no rule while the status name stays visible next to the dot and nothing is cut off or covered. Each avatar carries a ringed dot in the status colour (red *Chưa trả lời*, amber *Đang tư vấn*, green *Đã chốt lịch*, grey *Hoàn thành*); the same dot leads each filter button, which works as the key. Time, badge and unread count travel as one group: beside the name when the row is wide (768 px, where the list spans the page), under the name and right-aligned when it is narrow (360 px and the 360 px column at 1280 px). Badges now match the dots: two new tones in the shared badge, red for *Chưa trả lời* and grey with a tick for *Hoàn thành*.
+Changed: the first try put the group in a fixed side column; at 360 px it squeezed the names to two to five lines (rows up to 290 px; "Nguyễn Thị Hoàng Phương Uyên" on five lines) though nothing overlapped. The group now wraps under the name instead. Checks: for every row at all three widths no overlap between the name or message and the group, no clipped name; rows 86–88 px at 768 px and 118–168 px at 360 px; no text under 16 px; overflow line 0; filters and search as before; rubric checks FAILURES: 0.
+Rejected: An rejected the plain badge under the name (from round 2) in favour of the dot and the badge by the time.
+By hand: An's idea.
+
+## 2026-11-11 — round 3: the chat on the management page
+Commit: a9473a0 (`QuanLy.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: round 3 as suggested; and a reminder later to rework the badge position (kept as a note for the style pass or before the pull request).
+Kept: awaiting An's review. The chat is a window like the landing page's, seen from the studio's side: a header with the customer's initial, the status dot, the name and the status name ("Nguyễn Thùy Linh · Đã chốt lịch"); rounded bubbles, the studio's on the right; a round message box with the placeholder "Nhập tin nhắn" (was "Bản mẫu chưa gửi được tin nhắn", cut off and repeating the note) and a round "Gửi", still disabled with the note "Chưa gửi được tin nhắn trong bản mẫu.". Choosing another conversation changes the header and shows the empty message. The five messages of the opening state are unchanged (Linh's question, the reply, Mai busy and the 13:00/14:00 proposal, the price, Linh agreeing to 14:00). Styles are in `admin.css` only; the shared `ChatPanel` is unchanged, so the landing chat is not affected.
+Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px in the chat, placeholder not cut off, send disabled with its note, overflow line 0; choosing Trần Minh Anh shows "Trần Minh Anh / Chưa trả lời" and "Chưa có tin nhắn trong hội thoại này."; rubric checks FAILURES: 0, main flow reaches `lich-chup.html`.
+Rejected: nothing yet.
+By hand: An's request.
+
+## 2026-11-11 — round 4 options: the booking form inside the chat
+Commit: the commit that adds this entry, directly after 50ea417.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: how a booking form inside the chat should be laid out so the manager records the details easily.
+Kept: options for An, nothing built. (A) A booking card in the conversation, right after Linh's "Dạ em chốt lịch 14:00 ạ.", the full width of the chat window: details already agreed in the chat filled in and marked as taken from the conversation, grouped as customer and package, time, and people and room, each person and room with its free or busy line, the end times worked out from the start time and the package, the 09:00 clash written under the time, and one submit button that says who continues. (B) The same card between the messages and the message box. (C) The current layout, chat then form, restyled. Recommended A. Rules for any option: not inside the message box's own form (a form in a form fails the W3C check), no inner scrolling, visible labels and 44 px controls at 360 px, the opening state (14:00 chosen, *Tạo booking* enabled, the 09:00 note), no *Chờ cọc 30%* before the booking exists, one primary button, the time still changeable so choosing 09:00 shows the clash.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's question.
+
+## 2026-11-11 — can the booking card fold away while chatting?
+Commit: the commit that adds this entry, directly after 91531e8.
+Tool: Claude Code (Claude Opus 5.5), checking the brief's Screen 2 state and *Fix these*.
+Asked for: whether the booking card may be folded while chatting and opened to fill it in.
+Kept: the answer for An. Folding is allowed, with conditions: the page must still open on the brief's state (14:00 chosen, *Tạo booking* enabled, the 09:00 note), and *Fix these* asks the whole *Booking mới* form to be readable by scrolling the page, so a form folded on arrival risks both. Proposed: open on arrival, with a fold button for the manager; folded, a one-line summary still shows the date and 14:00, the 09:00 clash and the *Tạo booking* button, so the main flow works either way; the fold button says whether it is open (`aria-expanded`); the card stays in the page flow, so it never covers the chat, it only makes the page longer.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's question.
+
+## 2026-11-11 — round 4: the booking card inside the chat
+Commit: a4ef6eb (`ChatPanel.jsx`, shared: an optional slot after the messages, unused by the landing page) and a3731ff (`BookingForm.jsx`, `QuanLy.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: option A, the booking card right after Linh agrees, open on arrival and foldable.
+Kept: awaiting An's review. The *Booking mới* form is now a card in Linh's conversation, after "Dạ em chốt lịch 14:00 ạ.", a form of its own outside the message box's form, bordered in the accent colour. Top: "Booking mới cho Linh" and a "Thu gọn" / "Mở chi tiết" button (`aria-expanded`); a summary line "24/10/2026 · 14:00 · Makeup 13:00–14:00 · Chụp 14:00–16:00"; the note "09:00 Linh hỏi ban đầu bị trùng vì Mai (makeup) bận 08:00–12:00, nên đã đổi sang 14:00." Details in three groups (fieldsets): "Khách và gói" and "Thời gian", both marked "lấy từ hội thoại", and "Người và phòng" with a ✓ free line under Mai, Tuấn and Phòng B; the end times follow from the start time. Bottom: "Tạo booking · Khách hàng: mở lịch chụp GS-1024", the page's one primary button, opening `lich-chup.html`. Choosing 09:00 turns the note red ("09:00 trùng lịch … Chọn 14:00 để tạo booking."), marks Mai "⚠ Bận 08:00–12:00" and disables the submit. Folded, the details hide but the summary, the note and the submit stay. The *Chờ cọc 30%* badge shown before a booking existed is gone. The page grid loses its separate form area. The suggested free times move to round 5 with the resource calendar.
+Changed: on the screenshots the package select cut its text and the customer box stretched taller than its neighbours; the options now show the package name only (duration and price stay in the hint below) and fields no longer stretch. Checks at 360, 768 and 1280 px: card not inside the message box's form, no inner scrolling, no text under 16 px, controls 44–48 px, overflow line 0; 09:00 and back works; folded: details hidden, submit still enabled and opens `lich-chup.html`; the header link "Booking mới" brings the card to the top; rubric checks FAILURES: 0 with the main flow through the card.
+Rejected: nothing yet.
+By hand: An's choice of A, open on arrival and foldable.
+
+## 2026-11-11 — round 5: resource calendar and suggested times
+Commit: b0e87d0 (`ResourceSchedule.jsx`, `QuanLy.jsx`, `admin.css`; `ConflictAlert.jsx` removed), and 203dcea, which added this entry before the code commit by mistake (a failed `git add` stopped the chain); the hash was filled in by the commit after it.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: clipping and overlap of every timeline block, hour labels, at 360, 768 and 1280 px.
+Asked for: round 5 with the suggested ideas; and whether a chat with no scrolling of its own differs from real use.
+Kept: awaiting An's review. Answer to the question: yes; a real chat keeps the message list in its own scrolling box with the newest at the bottom, but *Fix these* asks the chat and the whole form to be readable by scrolling the page, and with five messages the page is short enough, so the prototype keeps page scrolling. The calendar now opens with "Giờ gợi ý": 14:00 as a button, pressed and marked "Đã chọn cho Linh" on arrival; when 09:00 is chosen in the booking card it turns red, says Mai is busy 08:00–12:00 and offers "Chọn giờ này", which sets 14:00 back in the card and opens it. From 768 px a day timeline from 08:00 to 18:00 shows Mai, Tuấn and Phòng B, a gridline each hour and labels every two hours so they never run together; Mai's 09:00 request takes a second lane instead of covering her busy morning. The timeline repeats the list, so screen readers skip it; the list below stays the readable record at every width (kind as a word and a symbol, label, times).
+Changed: two problems found by the checks: (1) at 768 px the one-hour blocks cut their words ("⚠ Trùng", "◆ Đề xuất"), the very defect *Fix these* names; below 1280 px a one-hour block now shows only its symbol, which the key above explains, and the list gives the full entry; (2) at 1280 px that rule first won over the wide-screen rule, so the words stayed hidden; the wide rule now takes priority. Checks at all three widths: no clipped block, no overlapping blocks, no overlapping hour labels, no text under 16 px, overflow line 0; choosing 09:00 then "Chọn giờ này" brings back 14:00 and enables the submit; rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's approval of the ideas.
+
+## 2026-11-11 — which calendar techniques to use, and icons instead of symbol characters
+Commit: the commit that adds this entry, directly after 7837039.
+Tool: Claude Code (Claude Opus 5.5), reading An's notes on three MIT-licensed UI samples against the brief, *Fix these* and `CLAUDE.md`.
+Asked for: which techniques from the notes help the calendar rounds, taken in part and within the rules, not copied; and something more professional than the symbol characters.
+Kept: a proposal for An. Use, written in our own code: one shared time helper (times as minutes, turned into percentages only when drawn) for both calendars; hour gridlines drawn with a repeating gradient (already in round 5) for the schedule page's day; diagonal hatching for the unavailable morning and the dropped 09:00, always with a word and an icon (the brief forbids showing a clash by colour or hatching alone); on the management page, when 14:00 is chosen, Linh's block slides from 09:00 to its new place (transform, 0.4 s, none with reduced motion) and the change is announced; tabular figures for times. Not used: the notification bell (a header control with nothing behind it, which *Fix these* forbids, and a timed fake alert is a demo control); drag-to-edit (the brief does not ask for it, and it is hard to make work by keyboard and touch in the time left); the samples' reduced-motion block (it relies on `!important`, which `CLAUDE.md` forbids); container-query units (not needed). Icons: replace the symbol characters (✓ ⚠ ◆ ■ ○ ◷), which change look with the system font and some systems draw as colour emoji, by one small inline SVG icon component drawn for this project (check, warning, clock, empty circle, diamond for proposed, square for busy): same size as the text, `currentColor`, `aria-hidden` next to the word, no icon library (NEVER 1). Applied in the badges, schedule blocks, legend, booking card, suggested times and the schedule page.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's notes and request.
+
+## 2026-11-11 — icons and shared time helpers
+Commit: fc99758 (shared: `Icon.jsx`, `utils/time.js`, `ui.css`, `StatusBadge.jsx`) and 95638f0 (`ResourceSchedule.jsx`, `BookingForm.jsx`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: step 1 of the approved order: the icon component and the shared time helper, used on the management page.
+Kept: awaiting An's review. `Icon.jsx` draws six icons as inline SVG (check, warning triangle, clock, empty circle, filled diamond, filled square), as tall as the text, in its colour, hidden from screen readers since a word always stands next to them; no icon library. They replace the symbol characters in the status badges (shared, so also on the schedule page), the calendar legend, blocks and list, the suggested time, and the booking card's note and free/busy lines. `utils/time.js` keeps times as minutes and turns them into percentages for drawing; the calendar and the card's worked-out end times now use it. Every kind still has its own shape and word, so nothing rests on colour.
+Changed: nothing beyond the request. Checks: the round 2, 4 and 5 checks again at 360, 768 and 1280 px: no text under 16 px, no clipped or overlapping timeline block, controls 44–48 px, overflow line 0, 09:00 and back works; rubric checks FAILURES: 0. No symbol characters left in the components or data.
+Rejected: nothing yet.
+By hand: An's approval.
+
+## 2026-11-11 — rounds 6 and 7 together: the week and the shoot day
+Commit: af19d6a (`WeekCalendar.jsx`, `data.js`, `LichChup.jsx`, `schedule.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: An agreed to merge the four schedule-page rounds into two because of the time; this is the first, the week and the day.
+Kept: awaiting An's review. The week is a strip of seven days (T2 19 to CN 25), the shoot day outlined in the accent colour with a diamond icon (read out as "ngày chụp"), and under it "Thứ Bảy 24/10 · Ngày chụp GS-1024"; "Hôm nay", which was wrong for 24/10, is gone, and the weekday labels are 16 px. Then "Lịch trình ngày 24/10": a bar from 08:00 to 18:00 with hour gridlines for the overview (the dropped 09:00 hatched, make-up and the shoot filled; it repeats the list, so screen readers skip it) and the list, which is the readable record: 09:00 struck through, the time itself in a `<s>`, "Giờ bạn hỏi ban đầu" and, with the warning icon, "Đã bỏ vì thợ makeup Mai bận 08:00–12:00" on a hatched, red-edged row; then 13:00–14:00 "Makeup với Mai" and 14:00–16:00 "Chụp với Tuấn", "Phòng B · GS-1024". Texts are written for the customer ("Giờ bạn hỏi" instead of "Giờ khách yêu cầu"). At 360 px the bar shows only 08:00, 12:00 and 18:00 so the hour labels never touch.
+Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px on the page, 09:00 struck, no "Hôm nay", hour labels not touching, no cell or row cut off, overflow line 0; rubric checks FAILURES: 0, main flow reaches `lich-chup.html`.
+Rejected: nothing yet.
+By hand: An's agreement to merge the rounds.
+
+## 2026-11-11 — rounds 8 and 9 together: booking card and deposit
+Commit: f9856ec (`BookingSummary.jsx`, `DepositCard.jsx`, `schedule.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page; `check_pr3.py` for the brief's Screen 3 items.
+Asked for: the second merged round of the schedule page, as suggested.
+Kept: awaiting An's review. "Buổi chụp GS-1024" keeps the badge "Đã thống nhất lịch · Chờ cọc 30%" (now with the clock icon); its rows are two columns, label and value, so a long value wraps under itself instead of breaking the row, and the package's "2 giờ · 30 ảnh chỉnh" sits under its name; the total is a plain row since the deposit card shows the amounts. "Thanh toán cọc 30%" keeps 540.000đ large, 1.260.000đ remaining and 1.800.000đ total, and the disabled button; its note is now two short sentences: "Bản mẫu chưa có cổng thanh toán. Lịch chỉ được giữ sau khi cọc thành công và studio kiểm tra lại lịch."
+Changed: nothing beyond the request. Checks: every Screen 3 item present (24/10 marked, 09:00 struck, 13:00–14:00 Mai, 14:00–16:00 Tuấn in Phòng B, the status, package, 1.800.000đ, 540.000đ, 1.260.000đ, the disabled pay button with its note), no demo controls; at 360, 768 and 1280 px no text under 16 px, nothing cut off, overflow line 0; rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's approval.
+
+## 2026-11-11 — round 10 split; 10a: contrast on the two pages
+Commit: the commit that adds this entry, directly after 348c20d.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: `contrast_pages.py` (the landing page's method: each text against the real pixels behind it, worst 5 %), every 800 px of `quan-ly.html` (as opened and with 09:00 chosen) and `lich-chup.html`, at 360 and 1280 px.
+Asked for: round 10 in several smaller steps.
+Kept: split proposed: 10a contrast, 10b Linh's block sliding to 14:00, 10c the badge position (An's idea, as reminded), 10d consistency (spacing, primary buttons, remaining details). 10a result: every visible text passes on both pages in both states and widths; lowest 4.6:1 for the accent labels inside the light-theme "Đề xuất" blocks ("Linh · makeup", "Linh · GS-1024"; needs 4.5:1), then the muted lines; the red 09:00 row on the dark schedule page passes over its hatching.
+Changed: nothing. The only failures the script listed were the screen-reader-only "tin chưa đọc" texts, which are hidden on purpose (a 1 px box), so they are not real failures. The 4.6:1 labels are close to the limit; making them the body colour, with the accent kept for the border and icon, would give 13.9:1, offered to An rather than changed.
+Rejected: nothing.
+By hand: An's request to split the round.
+
+## 2026-11-11 — 10a follow-up: proposed blocks in the body colour
+Commit: 1dbc6fd (`admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), `contrast_pages.py` again on both pages.
+Asked for: An accepted the offer to write the "Đề xuất" blocks in the body colour.
+Kept: the words inside proposed blocks (list and timeline) are now the body colour on the soft accent background (13.9:1, was 4.6:1); the accent stays for the border and the diamond icon, so the kind still reads by shape and word. No real failure on either page; the lowest value is now 4.6:1 for the amber "Đang tư vấn" badge in the light theme (shared badge style), offered to An for the same treatment.
+Changed: nothing else.
+Rejected: nothing.
+By hand: An's choice.
+
+## 2026-11-11 — 10b: Linh's blocks slide with the chosen time
+Commit: 82ce757 (`data.js`, shared: Linh's three blocks taken out of the static schedule) and 5764e7d (`ResourceSchedule.jsx`, `QuanLy.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: block positions sampled 60, 200 and 500 ms after the change, with and without reduced motion.
+Asked for: 10b, Linh's block sliding between 09:00 and 14:00 on the resource calendar.
+Kept: awaiting An's review. Linh's blocks are now worked out from the start time chosen in the booking card: make-up the hour before with Mai, the two-hour shoot with Tuấn and in Phòng B. At 14:00 (on arrival) Mai's row shows the proposed 13:00–14:00; choosing 09:00 slides that block over 0.4 s to 08:00–09:00, where it overlaps Mai's busy morning, so it becomes "Trùng · Linh yêu cầu 09:00" in a second lane, and Tuấn's and the room's blocks slide to 09:00–11:00; "Chọn giờ này" or 14:00 slides them back. The list below changes with it. The booking card's note already announces the change to screen readers, so no second announcement was added. With reduced motion the blocks move at once.
+Changed: the static "Linh yêu cầu 09:00" block shown on arrival is gone with this change; the 09:00 clash on arrival is still stated in the booking card's note, which the brief's opening state asks for. Checks: on arrival Mai's proposed block at 50% of the day (13:00); after choosing 09:00 it is at 16% after 60 ms, 1% after 200 ms and 0% after 500 ms, in the second lane; with reduced motion at 0% after 60 ms; back to 14:00 restores it; round 5 checks again (no clipped or overlapping block, overflow line 0); rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's request.
+
+## 2026-11-11 — 10d: spacing and primary buttons
+Commit: ff98f80 (shared: `ui.css` badge padding, `ChatPanel.jsx` send button) and b0bc62b (`admin.css`, `QuanLy.jsx`), and the commit that adds this entry. 10c (badge position) was skipped by An for time.
+Tool: Claude Code (Claude Opus 5.5); a scan of the page styles for spacing off the 4–64 scale; Playwright for primary buttons and the round 5 checks.
+Asked for: 10d, then straight on to round 11.
+Kept: spacing values off the scale moved onto it: the 2 px gaps in the conversation rows and the schedule list to 4 px, the badge padding to 4 px, the timeline blocks' 6 px offset and 52 px height to 8 px and 48 px, the axis offset written from the tokens. One primary button per page: the pressed status filter is now filled with the body colour instead of the primary style, and the shared chat panel styles a disabled "Gửi" as secondary (on both the landing page and the management page). Primary buttons now: `index.html` "Xem gói chụp", `quan-ly.html` "Tạo booking · Khách hàng: mở lịch chụp GS-1024", `lich-chup.html` the disabled "Thanh toán cọc 30%".
+Changed: nothing beyond the request. Checks: round 5 checks again (no clipped or overlapping block); rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's choice to skip 10c.
+
+## 2026-11-11 — round 11: PROTOTYPE, checks and pull request #4
+Commit: 23921e7 (`PROTOTYPE.md`; `checks/validator-lich-chup.txt` removed), and the commit that adds this entry; pull request #4 from `redo/quan-ly-lich-chup` into `main`.
+Tool: Claude Code (Claude Opus 5.5), with Playwright; `gh` for the pull request.
+Asked for: round 11 straight after 10d.
+Kept: `PROTOTYPE.md`: the rows for `quan-ly.html` and `lich-chup.html` describe the rebuilt pages and their links; five design choices added (dark customer pages and light management page, the booking card in the chat, the calendar's timeline and list, the status dot with its name, the drawn icons). The hand-written `checks/validator-lich-chup.txt` is removed, since it was not W3C output; real results come with the hand-in. Checks on the branch: lint clean, build passes, rubric checks FAILURES: 0 on all three pages and widths with the main flow working, Slow 4G about 0.6 s to the shell and 2.0 s to the page, the landing chat still within the screen at 360 px after the shared chat change. Pull request #4 opened with a summary, the shared files changed and the checks, asking Khánh to review before merging; it says it replaces PR #3.
+Changed: one of the assistant's own test scripts still looked for the old package cards on the landing page and failed; the page itself was not affected (the turntable replaced the cards earlier today).
+Rejected: nothing.
+By hand: none.

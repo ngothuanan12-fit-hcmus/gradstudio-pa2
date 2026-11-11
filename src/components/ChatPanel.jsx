@@ -15,6 +15,7 @@ export default function ChatPanel({
   note,
   emptyText = 'Chưa có tin nhắn trong hội thoại này.',
   viewer = 'studio',
+  afterMessages = null,
 }) {
   const inputId = `${id}-input`;
   const noteId = `${id}-note`;
@@ -35,6 +36,8 @@ export default function ChatPanel({
           })}
         </ol>
       ) : <p className="empty">{emptyText}</p>}
+      {/* Something that belongs to the conversation, such as the management page's booking card. */}
+      {afterMessages}
       <form className="chat-form" action={action}>
         <label className="chat-label" htmlFor={inputId}>{label}</label>
         <div className="chat-row">
@@ -47,7 +50,8 @@ export default function ChatPanel({
             disabled={disabled}
             aria-describedby={note ? noteId : undefined}
           />
-          <Button type="submit" disabled={disabled}>Gửi</Button>
+          {/* While sending is not available the button is not styled as the page's primary action. */}
+          <Button variant={disabled ? 'secondary' : 'primary'} type="submit" disabled={disabled}>Gửi</Button>
         </div>
         {note ? <p className="chat-note" id={noteId}>{note}</p> : null}
       </form>

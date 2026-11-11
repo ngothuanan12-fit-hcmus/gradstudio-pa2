@@ -62,19 +62,24 @@
   gap: var(--space-4);
   max-width: 100%;
   min-height: 28px;
-  padding: 1px var(--space-8);
+  padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-sm);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 24px;
   font-weight: 600;
   white-space: normal;
   overflow-wrap: anywhere;
 }
 
-.status-badge-glyph { flex: none; }
+.status-badge-glyph { flex: none; display: inline-flex; }
+/* Icons (Icon.jsx): as tall as the text, in its colour. */
+.icon { flex: none; width: 1em; height: 1em; vertical-align: -0.125em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-square, .icon-diamond { fill: currentColor; }
 .status-badge-neutral { color: var(--ink-muted); background: var(--busy); border: 1px solid var(--line-strong); }
 .status-badge-pending { color: var(--accent); background: var(--accent-soft); border: 1px dashed var(--accent); }
 .status-badge-confirmed { color: var(--free); background: var(--free-soft); border: 2px solid var(--free); }
+.status-badge-new { color: var(--danger); background: var(--danger-soft); border: 1px solid var(--danger); }
+.status-badge-done { color: var(--ink-muted); background: var(--busy); border: 1px solid var(--line-strong); }
 .status-badge-conflict { color: var(--danger); background: var(--danger-soft); border: 2px dotted var(--danger); }
 
 /* Visually hidden, still read by a screen reader. */
