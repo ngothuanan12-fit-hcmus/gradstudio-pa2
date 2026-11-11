@@ -1299,3 +1299,12 @@ Kept: awaiting An's review. Each status has its own shape: *Chưa trả lời* a
 Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px, no overlap or clipped name, overflow line 0; rubric checks FAILURES: 0.
 Rejected: nothing yet.
 By hand: An's request.
+
+## 2026-11-11 — conversation rows like a messaging app; filter tabs in one row
+Commit: 64119d9 (`ConversationList.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: filter rows, sideways scrolling, row heights and the rubric's overflow line at 360, 768 and 1280 px.
+Asked for: a new layout for the small conversation rows, and the status filters in one row, with dots or sliding sideways, like a messaging app's tabs. (An's screenshots showed an older build with coloured dots; the current one already uses icons.)
+Kept: awaiting An's review. Each row now reads like a messaging app: the name and the time on the first line (only the short time sits beside the name, so a long name wraps instead of being squeezed), the last message and the unread count on the second, the status as its icon and name on the third, without a box. The filters are text tabs; the chosen one has a soft filled background. From 1280 px, where the list is a column inside the screen, they stay on one row and slide sideways; below that they wrap (2 rows at 768 px, 4 at 360 px).
+Changed: the first try let the row slide from 768 px; there the list spans the screen, so the tabs past the edge appeared in the rubric's overflow line (rubric checks FAILURES: 1 at 768 px). The sliding row now starts at 1280 px. Checks: overflow line empty at all three widths, rows 114 px at 768 px, no text under 16 px, no clipped name, the "Hoàn thành" tab shows Lê Gia Bảo; rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's request and screenshots.

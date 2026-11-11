@@ -405,6 +405,10 @@ An also attached `gradstudio-huong-cai-thien.md`, a list of improvements for the
 > cứ thực hiện sửa khi nào tới 8h45 thì chuẩn bị các bước nộp bài
 
 > đổi các trạng thái từ màu sắc thành các icon được không
+
+> thiết kế lại bố cục các thành phần của ô chat nhỏ, các trạng thái nên để theo dạng ngang xong có dấu chấm hoặc kéo sang ngang được
+
+An also attached screenshots of the conversation rows and the filter buttons (an older build with coloured dots), and of a messaging app's filter tabs ("Tất cả", "Chưa đọc", "Nhóm", "···").
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
