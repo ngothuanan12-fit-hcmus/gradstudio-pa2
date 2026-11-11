@@ -22,12 +22,20 @@
 .hero-text { display: grid; gap: var(--space-16); padding-inline: var(--space-16); }
 
 /* Packages */
-.package-list { display: grid; gap: var(--space-32); }
-.package { display: grid; gap: var(--space-8); align-content: start; justify-items: start; }
-.package-photo { display: block; width: 100%; height: auto; border: var(--space-8) solid var(--chalk); border-radius: var(--radius-sm); }
+.package-list { display: grid; gap: var(--space-24); }
+/* Each package is a card of its own; its price and button sit at the bottom, so the three line up side by side. */
+.package {
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-8);
+  padding: var(--space-16); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md);
+  transition: border-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+}
+.package.is-asking { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.package-photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; border: var(--space-8) solid var(--chalk); border-radius: var(--radius-sm); }
 .package-name { margin-top: var(--space-8); font-family: var(--font-display); font-size: 30px; line-height: 38px; font-weight: 500; }
 .package-line { color: var(--accent); font-family: var(--font-display); font-size: 22px; line-height: 30px; font-style: italic; }
-.package-price { font-size: 18px; line-height: 28px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.package-price { margin-top: auto; padding-top: var(--space-8); color: var(--accent); font-family: var(--font-display); font-size: 32px; line-height: 40px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.package-price span { display: block; color: var(--ink-muted); font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 400; }
+.package-asking { color: var(--accent); font-weight: 600; }
 
 /* Process */
 .process { display: grid; gap: var(--space-24); margin: 0; padding: 0; list-style: none; counter-reset: step; }
@@ -45,8 +53,10 @@
   .home-section { padding: var(--space-64) var(--space-24); }
   .section-heading { font-size: 40px; line-height: 48px; }
   .story-title { font-size: 64px; line-height: 72px; }
-  .package-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-24); align-items: start; }
-  .package-photo { aspect-ratio: 1; object-fit: cover; object-position: 50% 30%; }
+  .package-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-24); align-items: stretch; }
+  .package { padding: var(--space-24); }
+  .package-price { font-size: 26px; line-height: 34px; }
+  .package-photo { aspect-ratio: 1; }
   .process { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
   /* The same size as the 3D stage, so nothing jumps when the scene takes over. */
@@ -150,4 +160,5 @@
 @media (min-width: 1280px) {
   .home-section { padding-inline: var(--space-48); }
   .process { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .package-price { font-size: 32px; line-height: 40px; }
 }
