@@ -173,8 +173,8 @@ export const weekDays = [
       {
         id: 'ev-old',
         from: '09:00',
-        title: 'Giờ khách yêu cầu ban đầu',
-        where: 'Trùng với Mai (makeup) 08:00–12:00',
+        title: 'Giờ bạn hỏi ban đầu',
+        where: 'Đã bỏ vì thợ makeup Mai bận 08:00–12:00',
         struck: true,
       },
       {
@@ -189,7 +189,7 @@ export const weekDays = [
         from: '14:00',
         to: '16:00',
         title: 'Chụp với Tuấn',
-        where: 'GS-1024 · Phòng B',
+        where: 'Phòng B · GS-1024',
       },
     ],
   },

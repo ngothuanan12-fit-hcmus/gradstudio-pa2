@@ -1,53 +1,53 @@
 /* Customer schedule page. Shared primitives live in ui.css. */
 
-/* WeekCalendar: a list of days, so every event stays readable at 360 px. */
-.week-days { display: grid; align-items: start; gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
+/* WeekCalendar: a strip of seven days, then the shoot day as a bar (overview) and a list (the readable record). */
+.week-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+.week-cell { position: relative; display: grid; justify-items: center; padding: var(--space-8) 0; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-raised); }
+.week-cell time { display: grid; justify-items: center; }
+.week-cell.is-shoot { border: 2px solid var(--accent); background: var(--accent-soft); }
+.week-dow { color: var(--ink-muted); font-size: 16px; line-height: 24px; font-weight: 600; }
+.week-num { font-family: var(--font-display); font-size: 24px; line-height: 28px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.week-mark { color: var(--accent); line-height: 16px; }
+.week-shoot-line { color: var(--accent); font-weight: 600; }
 
-.week-day {
-  display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
-  gap: var(--space-12);
-  align-items: start;
-  padding: var(--space-8) var(--space-12);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--surface-raised);
+.day-title { margin-top: var(--space-8); font-size: 18px; line-height: 28px; }
+.day-bar { display: grid; gap: var(--space-4); }
+.day-axis { position: relative; height: 24px; }
+.day-axis span { position: absolute; top: 0; transform: translateX(-50%); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.day-axis span:first-child { transform: none; }
+.day-axis span:last-child { transform: translateX(-100%); }
+/* At 360 px only the first, middle and last hours fit without touching. */
+.day-axis span:nth-child(2), .day-axis span:nth-child(4), .day-axis span:nth-child(5) { display: none; }
+.day-track {
+  position: relative; height: 32px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 10%), var(--surface-raised);
+}
+.day-block { position: absolute; top: 4px; bottom: 4px; border-radius: 4px; background: var(--accent); }
+.day-block.is-off {
+  background: repeating-linear-gradient(135deg, var(--danger) 0 3px, transparent 3px 7px);
+  border: 1px solid var(--danger);
 }
 
-.week-day-today { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
-
-.week-date { display: grid; justify-items: center; gap: 2px; text-align: center; }
-.week-dow { display: block; color: var(--ink-muted); font-size: 14px; line-height: 20px; font-weight: 600; }
-.week-num { display: block; font-family: var(--font-display); font-size: 24px; line-height: 28px; font-weight: 500; }
-.week-today { color: var(--accent); font-size: 14px; line-height: 20px; font-weight: 600; }
-
-.week-events { display: grid; gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
-.week-event {
-  display: grid;
-  gap: 2px;
-  padding: var(--space-8) var(--space-12);
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--accent);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  overflow-wrap: anywhere;
+.day-agenda { display: grid; gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
+.day-item {
+  display: grid; grid-template-columns: minmax(0, 7.5em) minmax(0, 1fr); gap: var(--space-12); align-items: start;
+  padding: var(--space-8) var(--space-12); border: 1px solid var(--line); border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm); background: var(--surface-raised); overflow-wrap: anywhere;
 }
-.week-event-off { border-left: 4px dashed var(--line-strong); color: var(--ink-muted); }
-.week-event-off .week-event-title { text-decoration: line-through; }
-.week-event-time { font-weight: 600; font-variant-numeric: tabular-nums; }
-.week-event-title { font-weight: 600; }
-.week-event-where { color: var(--ink-muted); }
-.week-event-tag {
-  justify-self: start;
-  margin-top: var(--space-4);
-  padding: 0 var(--space-8);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-sm);
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
+.day-item.is-off {
+  border-left: 4px solid var(--danger);
+  background: repeating-linear-gradient(135deg, var(--danger-soft) 0 6px, var(--surface-raised) 6px 12px);
 }
-.week-empty { color: var(--ink-muted); }
+.day-time { font-weight: 600; font-variant-numeric: tabular-nums; }
+.day-time s { color: var(--danger); text-decoration-thickness: 2px; }
+.day-what { font-weight: 600; }
+.day-where { color: var(--ink-muted); }
+.day-item.is-off .day-where { color: var(--danger); }
+
+@media (min-width: 768px) {
+  .day-axis span:nth-child(n) { display: inline; }
+}
+
 /* DepositCard */
 .deposit { align-content: start; }
 .deposit-list { display: grid; gap: var(--space-8); }

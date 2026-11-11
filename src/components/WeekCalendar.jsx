@@ -1,45 +1,70 @@
-// The week of the story as a list, not a 7-column timetable: each day keeps its
-// date and every event in full, so nothing clips at 360 px. The old 09:00
-// request stays visible with a text tag; it is never hidden by colour alone.
-export default function WeekCalendar({ days = [], today }) {
+import Icon from './Icon.jsx';
+import { toPct } from '../utils/time.js';
+
+const DAY_FROM = 8 * 60, DAY_TO = 18 * 60;
+const HOURS = [8, 10, 12, 14, 16, 18];
+const hour = (t) => `${String(Number.parseInt(t, 10) + 1).padStart(2, '0')}:00`;
+
+// The week of the shoot as a strip of seven days, the shoot day marked with a word and an icon, then the day
+// itself: a bar from 08:00 to 18:00 for the overview (it repeats the list, so screen readers skip it) and the list,
+// which is the readable record. The 09:00 first asked for is struck through, the time itself included, and keeps
+// its reason in words; hatching is only an extra cue.
+export default function WeekCalendar({ days = [], shootDay }) {
+  const day = days.find((item) => item.id === shootDay) || { events: [] };
   return (
     <section className="panel week" aria-labelledby="week-title">
       <div className="panel-head">
         <h2 id="week-title">Tuần 19–25/10/2026</h2>
-        <p className="meta-line">Thứ Bảy 24/10 có buổi chụp GS-1024</p>
       </div>
 
-      <ol className="week-days">
-        {days.map((day) => {
-          const active = day.id === today;
-          const hasEvents = day.events && day.events.length > 0;
-          return (
-            <li className={active ? 'week-day week-day-today' : 'week-day'} key={day.id}>
-              <p className="week-date">
-                <time dateTime={day.id}>
-                  <span className="week-dow">{day.dow}</span>
-                  <span className="week-num">{day.num}</span>
-                </time>
-                {active ? <span className="week-today">Hôm nay</span> : null}
-              </p>
+      <ol className="week-strip">
+        {days.map((item) => (
+          <li className={item.id === shootDay ? 'week-cell is-shoot' : 'week-cell'} key={item.id}>
+            <time dateTime={item.id}>
+              <span className="week-dow">{item.dow}</span>
+              <span className="week-num">{item.num}</span>
+            </time>
+            {item.id === shootDay ? <span className="week-mark"><Icon name="diamond" /><span className="sr-only"> ngày chụp</span></span> : null}
+          </li>
+        ))}
+      </ol>
+      <p className="week-shoot-line"><Icon name="diamond" /> Thứ Bảy 24/10 · Ngày chụp GS-1024</p>
 
-              {hasEvents ? (
-                <ul className="week-events">
-                  {day.events.map((event) => (
-                    <li className={event.struck ? 'week-event week-event-off' : 'week-event'} key={event.id}>
-                      <p className="week-event-time">
-                        {event.from}{event.to ? `–${event.to}` : ''}
-                      </p>
-                      <p className="week-event-title">{event.title}</p>
-                      <p className="week-event-where">{event.where}</p>
-                      {event.struck ? <span className="week-event-tag">Đã bỏ vì trùng lịch</span> : null}
-                    </li>
-                  ))}
-                </ul>
-              ) : <p className="week-empty">Không có lịch</p>}
-            </li>
-          );
-        })}
+      <h3 className="day-title">Lịch trình ngày 24/10</h3>
+      <div className="day-bar" aria-hidden="true">
+        <div className="day-axis">
+          {HOURS.map((h) => (
+            <span key={h} style={{ left: `${((h * 60 - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100}%` }}>{String(h).padStart(2, '0')}:00</span>
+          ))}
+        </div>
+        <div className="day-track">
+          {day.events.map((event) => {
+            const to = event.to || hour(event.from);
+            return (
+              <span
+                key={event.id}
+                className={event.struck ? 'day-block is-off' : 'day-block'}
+                style={{ left: `${toPct(event.from, DAY_FROM, DAY_TO)}%`, width: `${toPct(to, DAY_FROM, DAY_TO) - toPct(event.from, DAY_FROM, DAY_TO)}%` }}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      <ol className="day-agenda">
+        {day.events.map((event) => (
+          <li className={event.struck ? 'day-item is-off' : 'day-item'} key={event.id}>
+            <p className="day-time">
+              {event.struck ? <s>{event.from}</s> : `${event.from}–${event.to}`}
+            </p>
+            <div className="day-body">
+              <p className="day-what">{event.title}</p>
+              <p className="day-where">
+                {event.struck ? <><Icon name="alert" /> {event.where}</> : event.where}
+              </p>
+            </div>
+          </li>
+        ))}
       </ol>
     </section>
   );

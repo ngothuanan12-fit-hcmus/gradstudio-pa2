@@ -26,7 +26,7 @@ export default function LichChup() {
           <DepositCard booking={booking} />
         </div>
         <div className="schedule-main">
-          <WeekCalendar days={weekDays} today="2026-10-24" />
+          <WeekCalendar days={weekDays} shootDay="2026-10-24" />
         </div>
       </div>
     </CustomerLayout>
