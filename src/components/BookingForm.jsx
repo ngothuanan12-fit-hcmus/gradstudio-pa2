@@ -42,12 +42,12 @@ export default function BookingForm({
           </select>
         </p>
 
-        <p className="field field-span">
+        <p className="field">
           <label className="field-label" htmlFor="bf-package">Gói chụp</label>
           <select className="input" id="bf-package" defaultValue={booking.pkg}>
             {services.map((service) => (
               <option key={service.id} value={service.name}>
-                {service.name} · {service.priceNote}
+                {service.name}
               </option>
             ))}
           </select>
