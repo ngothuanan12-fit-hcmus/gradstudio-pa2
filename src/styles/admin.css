@@ -5,8 +5,15 @@
    body colour, not the primary style, so "Tạo booking" stays the page's one primary button. */
 .conv .status-badge { white-space: nowrap; }
 .filter-chips { display: flex; flex-wrap: wrap; gap: var(--space-4); }
-.filter-chips .btn[aria-pressed='true'] { color: var(--surface); background: var(--ink); border-color: var(--ink); }
-.filter-chips .btn[aria-pressed='true'] .conv-status { color: var(--surface); }
+/* From 1280 px, where the list is a column well inside the screen, the filters stay on one row and slide sideways;
+   below that the list spans the screen, so a sliding row would reach past its edge (the rubric's overflow line):
+   there they wrap. */
+@media (min-width: 1280px) {
+  .filter-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; padding-bottom: var(--space-4); }
+  .filter-chips .btn { flex: none; }
+}
+.filter-chips .btn { border-color: transparent; background: transparent; }
+.filter-chips .btn[aria-pressed='true'] { color: var(--ink); background: var(--accent-soft); border-color: transparent; }
 .filter-chips .btn { min-height: var(--control-height-sm); padding: var(--space-4) var(--space-8); border-radius: var(--radius-pill); font-weight: 500; }
 
 .conv-list { display: grid; align-content: start; margin: 0; padding: 0; list-style: none; }
@@ -39,9 +46,12 @@
   font-weight: 600;
 }
 .conv-body { display: grid; gap: var(--space-4); min-width: 0; }
-.conv-top { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); min-width: 0; }
-.conv-name { flex: 1 1 14ch; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
-.conv-last { color: var(--ink-muted); overflow-wrap: anywhere; }
+.conv-line { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-8); min-width: 0; }
+.conv-name { flex: 1 1 auto; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+.conv-last { flex: 1 1 auto; min-width: 0; color: var(--ink-muted); overflow-wrap: anywhere; }
+.conv-time { flex: none; }
+.conv-unread { flex: none; }
+.conv-state { display: inline-flex; align-items: center; gap: var(--space-4); font-weight: 600; }
 .conv-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); margin-left: auto; }
 /* Status dot: one colour per status, ringed so it stands apart from the avatar; the name is always beside the time. */
 .conv-status { display: inline-grid; place-items: center; line-height: 1; }
