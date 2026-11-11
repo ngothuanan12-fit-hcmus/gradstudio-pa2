@@ -15,7 +15,11 @@ export default function Home() {
   function askAbout(id) {
     // The status line must show the new package before it takes focus, so it is read out with it.
     flushSync(() => setAskingId(id));
-    document.getElementById('home-chat-status').focus();
+    // Bring the whole chat window to the top of the screen (smoothly, unless motion is reduced), then move focus
+    // without a second jump; focusing alone centres the status line and leaves the message box below the fold.
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById('chat').scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+    document.getElementById('home-chat-status').focus({ preventScroll: true });
   }
 
   return (
