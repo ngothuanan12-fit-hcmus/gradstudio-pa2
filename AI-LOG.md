@@ -1344,3 +1344,12 @@ Kept: awaiting An's review. The W3C run had checked the file's path as text (3 m
 Changed: the first full-page captures of `index.html` at 768 and 1280 px showed only the first 3D frame and then 5000 px of dark page, with the packages, process, chat and footer missing (found by looking at the bottom of the image). The story's height follows the window, and a full-page capture stretches the window to the page. A capture through the browser protocol without resizing did the same. Those two files are now screen-height captures taken while scrolling and joined; the self-assessment says so under *What we did not manage*.
 Rejected: nothing.
 By hand: An's requests; An pastes each page into the W3C checker.
+
+## 2026-11-11 — W3C results saved in `checks/`
+Commit: the commit that adds this entry with `checks/`.
+Tool: none for the check: An pasted each rendered page into the W3C checker (Text input, vnu 26.11.10). Claude Code (Claude Opus 5.5) saved An's result screenshots in `checks/`.
+Asked for: save the results.
+Kept: `checks/validator-index.png`, `checks/validator-quan-ly.png` and `checks/validator-lich-chup.png`, each with "No errors or warnings to show". The second `index.html` result, the 360 px page without the 3D scene, gave the same result. It is not saved under its own name, because the two screenshots cannot be told apart.
+Changed: nothing on the pages.
+Rejected: nothing.
+By hand: An ran the checker.
