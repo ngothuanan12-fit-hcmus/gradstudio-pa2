@@ -952,6 +952,16 @@ Changed: removed `LUNCH_BG`, `CONFLICT_BG`, `PENDING_BG`, `background: '#E2D3BF'
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — Style sync Step 6: synchronize LichChup with index.html and remove AI slop
+
+Who: Khánh (24120340).
+Commit: 5795f20.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: synchronize `lich-chup.html` (`src/pages/LichChup.jsx`) with `index.html` and `design-system/README.md`, remove AI Slop (off-topic 3-slide gradient-overlay hero gallery, pulsing status dot, non-semantic folio rows, invented VietQR note), and verify all three pages at `360px`, `768px`, and `1280px`.
+Changed: replaced the 3-slide gradient-overlay hero gallery in `src/pages/LichChup.jsx` with a `--chalk`-framed graduation package card (`ps-package-card` / `ps-package-frame`) matching `index.html`'s `.package-photo`; replaced the pulsing dot status pill with `StatusBadge` (`◷ Đã thống nhất lịch · Chờ cọc 30%` → `✓ Đã đặt lịch`); converted the `#GS-1024` folio summary to semantic `<dl>`/`<dt>`/`<dd>` rows; used `<s className="ps-milestone-time is-struck">09:00</s>` for the conflicted initial slot; replaced the bare day dot on `24/10` with a text tag (`◷ Chờ cọc` / `✓ Đã đặt`); replaced the invented VietQR note with the brief's 30% deposit hold rule; and added `overflow: hidden` on `.st-timeline-track` / `.st-gantt-rows` and `font: 600 16px/24px var(--font-sans)` on `.st-close-btn` / `.st-icon-circle-btn` in `src/styles/admin.css`.
+Checks: `npm run lint` and `npm run build` exit 0; Chrome DevTools verification across `index.html`, `quan-ly.html`, and `lich-chup.html` at `360px`, `768px`, and `1280px` confirmed `horizontalOverflow: false`, `smallFontCount: 0` (no text `< 14px`), and full end-to-end interactive workflows on both `quan-ly.html` (`Chọn 14:00` → `Chốt giờ này` → `Gửi báo giá vào chat` → `Tạo booking`) and `lich-chup.html` (`Thanh toán cọc 540.000đ` → `✓ Đã đặt lịch`).
+By hand: none.
+
 
 
 
