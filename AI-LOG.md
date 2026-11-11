@@ -1139,7 +1139,7 @@ Rejected: nothing yet.
 By hand: An's choice of A, open on arrival and foldable.
 
 ## 2026-11-11 — round 5: resource calendar and suggested times
-Commit:  (`ResourceSchedule.jsx`, `QuanLy.jsx`, `admin.css`; `ConflictAlert.jsx` removed), and the commit that adds this entry.
+Commit: b0e87d0 (`ResourceSchedule.jsx`, `QuanLy.jsx`, `admin.css`; `ConflictAlert.jsx` removed), and 203dcea, which added this entry before the code commit by mistake (a failed `git add` stopped the chain); the hash was filled in by the commit after it.
 Tool: Claude Code (Claude Opus 5.5), with Playwright: clipping and overlap of every timeline block, hour labels, at 360, 768 and 1280 px.
 Asked for: round 5 with the suggested ideas; and whether a chat with no scrolling of its own differs from real use.
 Kept: awaiting An's review. Answer to the question: yes; a real chat keeps the message list in its own scrolling box with the newest at the bottom, but *Fix these* asks the chat and the whole form to be readable by scrolling the page, and with five messages the page is short enough, so the prototype keeps page scrolling. The calendar now opens with "Giờ gợi ý": 14:00 as a button, pressed and marked "Đã chọn cho Linh" on arrival; when 09:00 is chosen in the booking card it turns red, says Mai is busy 08:00–12:00 and offers "Chọn giờ này", which sets 14:00 back in the card and opens it. From 768 px a day timeline from 08:00 to 18:00 shows Mai, Tuấn and Phòng B, a gridline each hour and labels every two hours so they never run together; Mai's 09:00 request takes a second lane instead of covering her busy morning. The timeline repeats the list, so screen readers skip it; the list below stays the readable record at every width (kind as a word and a symbol, label, times).

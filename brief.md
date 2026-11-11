@@ -370,6 +370,9 @@ An also attached an example: a round avatar with a green dot at its lower right.
 > form nên làm kiểu ẩn hiện để không che quá nhiều khi đang chat không, nghĩa là khi chat thì form thu nhỏ và đóng còn muốn điền thì mở có vi phạm gì không
 
 > đồng ý phương án A
+
+> vì chat không có tự cuộn nên khi áp dụng thực tế sẽ khác đúng không
+> thực hiện lượt 5, bổ sung các đề xuất
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
