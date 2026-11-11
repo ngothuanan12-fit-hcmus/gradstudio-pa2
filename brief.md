@@ -326,6 +326,10 @@ An also attached a screenshot of the chat section folded at a wide window, with 
 > trước khi sửa xem thử file md để áp dụng cho ba thẻ như thế nào cho phù hợp, cho mình các phương án
 
 An also attached `phan-tich-bencho-carousel.md`, an analysis of a "turntable" card carousel (cards on an ellipse, drag with momentum and snap, a slow float, a press-in tilt with a dark and a light spot under the pointer).
+
+> 1 giữ nguyên
+> 2 đồng ý
+> phương án C nếu áp dụng thì ảnh bị dọc có dư thừa hai bên màn hình trên kích thước lớn và bị tràn khi ở kích thước nhỏ không
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

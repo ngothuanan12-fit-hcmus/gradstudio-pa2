@@ -901,3 +901,12 @@ Kept: findings and options for An, nothing changed. Note: the brief says an acti
 Changed: nothing.
 Rejected: nothing.
 By hand: An's requests and analysis file.
+
+## 2026-11-11 — the jump to the chat; would a turntable fit the screen?
+Commit: 3fc00a8 for `Home.jsx`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: keep the send note as it is; make choosing a package bring the chat into view; and whether option C (turntable) would leave empty space at wide screens and overflow at narrow ones.
+Kept: awaiting An's review. "Tư vấn gói này" and the quick buttons now scroll the chat window to the top of the screen (smoothly, at once with reduced motion), then move focus to the status line without another scroll. Answer on C: yes to both unless planned for: three cards on the turntable span only about 370 px (the front card plus two smaller ones behind), which leaves wide empty sides at 1280 px unless the front package's details stand beside it; at 360 px a fixed-size stage is wider than the 328 px of content, and the rubric's overflow line counts the cards' boxes even when the stage clips them, so the cards and spread would have to be sized from the stage width; and portrait cards would crop the Kỷ yếu photo down to a few students, so landscape cards would be needed.
+Changed: nothing else. Checks: after choosing a package at 360 and 1280 px, with and without 3D, the chat window's top is 16 px from the top of the screen and its message box is in view (was centred on the status line, with the box below the fold); focus on the status line; rubric checks FAILURES: 0.
+Rejected: An kept the note "Chưa gửi được tin nhắn trong bản mẫu." (the brief requires a visible note).
+By hand: An's choices.
