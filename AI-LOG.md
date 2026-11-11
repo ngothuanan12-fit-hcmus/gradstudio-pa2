@@ -1241,7 +1241,7 @@ By hand: An's decision to merge.
 Commit: the commit that adds this entry, directly after d31674c.
 Tool: Claude Code (Claude Opus 5.5), `gh`.
 Asked for: close PR #3, and nothing else for now.
-Kept: PR #3 closed with the comment "Replaced by #4, which rebuilds this page on the same base and fixes the review items." Its branch `feature/lich-chup` is kept.
-Changed: nothing.
+Kept: PR #3 could not be closed: GitHub already shows it as merged, because pull request #4 merged its branch `feature/lich-chup` (round 0). A comment on it now says: "This branch was merged through #4, which replaces this pull request and fixes the review items." The branch is kept.
+Changed: the first version of this entry said PR #3 was closed; `gh` refused, since it was already merged, so the entry was corrected in the next commit.
 Rejected: nothing.
 By hand: An's approval.
