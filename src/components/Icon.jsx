@@ -17,6 +17,12 @@ const PATHS = {
     </>
   ),
   circle: <circle cx="12" cy="12" r="7.5" />,
+  done: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M8 12.5l2.75 2.75L16 10" />
+    </>
+  ),
   diamond: <path d="M12 3.5l8.5 8.5-8.5 8.5L3.5 12 12 3.5z" />,
   square: <rect x="5" y="5" width="14" height="14" rx="2" />,
 };

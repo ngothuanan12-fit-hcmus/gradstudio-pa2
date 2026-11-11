@@ -5,7 +5,7 @@ import Icon from './Icon.jsx';
 const LABELS = {
   neutral: { icon: 'circle', text: 'Chưa trả lời' },
   new: { icon: 'circle', text: 'Chưa trả lời' },
-  done: { icon: 'check', text: 'Hoàn thành' },
+  done: { icon: 'done', text: 'Hoàn thành' },
   pending: { icon: 'clock', text: 'Đang tư vấn' },
   confirmed: { icon: 'check', text: 'Đã chốt lịch' },
   conflict: { icon: 'alert', text: 'Trùng lịch' },
