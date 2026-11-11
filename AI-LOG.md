@@ -865,3 +865,12 @@ Kept: awaiting An's review. From 1280 px the section is two panels of the same h
 Changed: the next-page link is centred in the card to match the centred heading. Checks at 360, 1280 and 1920 px, chat open and folded: overflow line empty, no text under 16 px, controls 48 px, no inner scrolling; rubric checks FAILURES: 0.
 Rejected: An rejected the layout from 67c87b2 at wide windows.
 By hand: An's reference screenshot.
+
+## 2026-11-11 — what could replace the photo beside the chat
+Commit: the commit that adds this entry, directly after 94401dd.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: keep the chat window on the right and suggest what could stand on the left instead of the photo.
+Kept: options for An, nothing built. (1) Quick choice of package: the three packages with their "Từ …" prices as buttons that do what "Tư vấn gói này" does (the chat header then reads "Đang hỏi về: …"), plus the heading and text; (2) a short list of what to tell the studio (which session, which day, how many people, make-up or gown rental), taken from the section's own text; (3) a chalk-line drawing of the classroom in the 3D story's style, decoration only; (4) what happens after the message (the studio checks make-up artist, photographer and room, proposes a time, the slot is held after the 30% deposit), which repeats the process section. Not suggested: opening hours, address, phone, reviews or reply times, because the brief gives none and they would be invented. Recommended 1 with 2.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's request.

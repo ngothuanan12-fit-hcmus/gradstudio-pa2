@@ -312,6 +312,8 @@ An also attached a screenshot of Khánh's management page in progress: conversat
 > khung chat khi mở rộng bố cục nhìn không hợp lý, có thể tham khảo trong ảnh
 
 An also attached a screenshot of a reference page (a booking form in a dark card beside a tall photo, two panels of the same height) and a screenshot of our chat section at a wide window.
+
+> bố cục vẫn nên giữ chat bên phải, nên thay ảnh bên cạnh khung chat bằng gì được không, gợi ý vài phương án
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
