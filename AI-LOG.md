@@ -882,6 +882,16 @@ Changed: rewrote `src/pages/QuanLy.jsx` with the full conflict resolution, slot 
 Checks: `npm run lint` and `npm run build` both pass with 0 warnings/errors.
 By hand: none.
 
+## 2026-11-11 — Full port Step 7: MyPhotoSessions editorial gallery, calendar, and folio on LichChup
+
+Who: Khánh (24120340).
+Commit: 824b88c.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: port `MyPhotoSessions.tsx` from `developer/quan-ly` into `src/pages/LichChup.jsx` and `src/styles/schedule.css` using local `public/photos/` WebP images and shared color tokens.
+Changed: rewrote `src/pages/LichChup.jsx` and `src/styles/schedule.css` with the customer header (`GradStudio · Khách hàng`, `Lịch chụp của tôi`, `Quản lý Studio`), underlined status tabs (`Tất cả`, `Chờ cọc`, `Đã đặt lịch`, `Hoàn thành`) + empty-state cards, 68%/32% asymmetric editorial grid with the 16:9 hero gallery + 3 interactive thumbnails (`tot-nghiep`, `ky-yeu`, `chan-dung`), October 2026 Week 43 strip, 3-milestone timeline (`09:00` struck through, `13:00` Makeup với Mai, `14:00` Chụp ảnh tốt nghiệp tại Phòng B), and sticky Resort Booking Folio (`Booking #GS-1024`) with interactive `Thanh toán cọc 540.000đ`.
+Checks: `npm run lint` and `npm run build` both pass with 0 warnings/errors.
+By hand: none.
+
 
 
 
