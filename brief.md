@@ -253,6 +253,10 @@ An also attached a screenshot of the authors' Screen 2, with the resource calend
 > bạn xem các thông tin trong file để lựa chọn áp dụng cho trang chủ
 
 An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "Coffee Shop" template: intro swirl, buttons, fullscreen menu, each section, tokens, easing, and sample code.
+
+### 1.20 Checking Khánh's two pages on the repository (2026-11-11)
+
+> mình sẽ duyệt sau, mình cần kiểm tra trang quan-ly và lich-chup trên repo
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

@@ -667,3 +667,12 @@ Kept: a proposal, awaiting An's choice. Suggested: hover, pressed and focus stat
 Changed: nothing.
 Rejected: nothing yet.
 By hand: An's analysis file and request.
+
+## 2026-11-11 — Khánh's two pages checked again on the repository
+Commit: the commit that adds this entry, directly after ad50ca1.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on `main` built locally (for `quan-ly.html`) and on a scratch copy of `main` merged with PR #3 (for `lich-chup.html`); `check_pr2.py` and `check_pr3.py` from the earlier reviews.
+Asked for: a check of `quan-ly.html` and `lich-chup.html` as they stand on the repository. An postponed the choice on the reference template ideas.
+Kept: the report to An. No new commit from Khánh since 2026-11-08 on either branch; PR #3 is still open and now conflicts with `main`. `main` still has the placeholder `lich-chup.html`. Both pages still pass the rubric checks at 360, 768 and 1280 px (no sideways scroll, one h1, no `#` link, disabled send and pay buttons with notes, main flow works after reloads). Every item from both reviews is still open. `quan-ly.html`: the form says "Không còn trùng lịch" but not that 09:00 clashed because Mai is busy 08:00–12:00; the form badge "✓ Chờ cọc 30%" before a booking exists; two buttons styled primary; "Trần Minh Anh · Chưa trả lời" with "Em gửi ảnh chọn rồi ạ" and "Lê Gia Bảo · Hoàn thành" with "hẹn gặp ngày 24/10"; 14 px badges and unread counts. `lich-chup.html`: only the line under 09:00 is struck, not 09:00; 24/10 labelled "Hôm nay"; 14 px weekday labels, "Hôm nay" and tag; the written checks file in place of the W3C output. Seen on the screenshots, not raised before: at 1280 px the conversation column is narrow, so names and the "Hoàn thành" badge wrap, and the space left of the resource calendar is empty; the search and message placeholders are cut off.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's request.
