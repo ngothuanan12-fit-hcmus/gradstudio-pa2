@@ -747,6 +747,17 @@ Changed: updated `src/components/ResourceSchedule.jsx` and `src/styles/admin.css
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — management page: QuanLy layout, filter counts, wider inbox and full-width schedule
+
+Who: Khánh (24120340).
+Commit: b954d29.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: updated `src/pages/QuanLy.jsx` and `src/styles/admin.css`. The top `role="status"` line now also states in the opening 14:00 state that 09:00 clashed because Mai (makeup) is busy 08:00–12:00. Added computed status counts to each filter option without storing them in `useState` (NEVER 6), wired the empty-state reset callback, shortened the search and chat placeholders so neither clips, widened the conversation column to 310 px at 768 px and 340 px at 1280 px, and made `ResourceSchedule` span the full row (`"sched sched"` at 768 px and `"sched sched sched"` at 1280 px) so no empty gap remains left of the resource calendar.
+Checks: `npm run lint` exits 0 with no output; `npm run build` exits 0.
+By hand: none.
+
+
 
 
 
