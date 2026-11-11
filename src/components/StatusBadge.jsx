@@ -2,6 +2,8 @@
 // its own border style and a visible symbol, so it survives greyscale.
 const LABELS = {
   neutral: { glyph: '○', text: 'Chưa trả lời' },
+  new: { glyph: '○', text: 'Chưa trả lời' },
+  done: { glyph: '✓', text: 'Hoàn thành' },
   pending: { glyph: '◷', text: 'Đang tư vấn' },
   confirmed: { glyph: '✓', text: 'Đã chốt lịch' },
   conflict: { glyph: '⚠', text: 'Trùng lịch' },

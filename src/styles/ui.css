@@ -75,6 +75,8 @@
 .status-badge-neutral { color: var(--ink-muted); background: var(--busy); border: 1px solid var(--line-strong); }
 .status-badge-pending { color: var(--accent); background: var(--accent-soft); border: 1px dashed var(--accent); }
 .status-badge-confirmed { color: var(--free); background: var(--free-soft); border: 2px solid var(--free); }
+.status-badge-new { color: var(--danger); background: var(--danger-soft); border: 1px solid var(--danger); }
+.status-badge-done { color: var(--ink-muted); background: var(--busy); border: 1px solid var(--line-strong); }
 .status-badge-conflict { color: var(--danger); background: var(--danger-soft); border: 2px dotted var(--danger); }
 
 /* Visually hidden, still read by a screen reader. */
