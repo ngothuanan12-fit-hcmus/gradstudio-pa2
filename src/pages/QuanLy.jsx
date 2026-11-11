@@ -6,6 +6,7 @@ import ConversationList from '../components/ConversationList.jsx';
 import ResourceSchedule from '../components/ResourceSchedule.jsx';
 import {
   booking,
+  bookingAddons,
   conversations,
   freeSlots,
   messages,
@@ -22,7 +23,8 @@ const FILTERS = [
   { id: 'done', label: 'Hoàn thành' },
 ];
 
-// The page opens in the state the brief asks for: Linh has agreed to 14:00.
+// The page opens in the state the brief asks for: Linh has agreed to 14:00,
+// with a visible note that 09:00 clashed because Mai is busy 08:00–12:00.
 export default function QuanLy() {
   const [activeId, setActiveId] = useState('linh');
   const [query, setQuery] = useState('');
@@ -34,7 +36,7 @@ export default function QuanLy() {
   const active = conversations.find((item) => item.id === activeId) || conversations[0];
   const status = conflict
     ? '09:00 trùng lịch: Mai (makeup) bận 08:00–12:00. Chọn 14:00 để tạo booking.'
-    : `GS-1024: Linh đã chốt ${booking.agreed} ngày ${booking.date}. Tạo booking để mở lịch chụp của khách.`;
+    : `GS-1024: Giờ 09:00 Linh hỏi ban đầu bị trùng vì Mai (makeup) bận 08:00–12:00. Linh đã chốt ${booking.agreed} ngày ${booking.date} — tạo booking để mở lịch chụp của khách.`;
 
   const visibleConversations = conversations.filter((item) => {
     const matchesFilter = filter === 'all' || item.status === filter;
@@ -45,17 +47,30 @@ export default function QuanLy() {
     return matchesFilter && matchesQuery;
   });
 
+  function countForFilter(filterId) {
+    if (filterId === 'all') return conversations.length;
+    return conversations.filter((item) => item.status === filterId).length;
+  }
+
+  function handleResetFilters() {
+    setQuery('');
+    setFilter('all');
+  }
+
   return (
     <AdminLayout>
       <h1 className="page-title">Quản lý booking</h1>
       <p className="page-lede">
-        Admin Thảo · Hội thoại, lịch thợ makeup, thợ chụp, phòng chụp và form booking mới của studio.
+        Admin {booking.admin} · Hội thoại khách hàng, xử lý trùng lịch 09:00 của thợ makeup Mai và tạo booking mới cho buổi chụp 14:00.
       </p>
       <p className="status-line" role="status">{status}</p>
 
       <div className="admin-grid">
         <section className="panel admin-convs" aria-labelledby="convs-title">
-          <h2 id="convs-title">Hội thoại</h2>
+          <div className="panel-head">
+            <h2 id="convs-title">Hội thoại</h2>
+            <p className="meta-line">{visibleConversations.length}/{conversations.length} cuộc trò chuyện</p>
+          </div>
           <div className="toolbar">
             <p className="field">
               <label className="field-label" htmlFor="conv-search">Tìm hội thoại</label>
@@ -64,7 +79,7 @@ export default function QuanLy() {
                 id="conv-search"
                 type="search"
                 value={query}
-                placeholder="Tên khách hoặc tin nhắn"
+                placeholder="Tìm tên hoặc tin nhắn"
                 onChange={(event) => setQuery(event.target.value)}
               />
             </p>
@@ -77,7 +92,9 @@ export default function QuanLy() {
                 onChange={(event) => setFilter(event.target.value)}
               >
                 {FILTERS.map((item) => (
-                  <option key={item.id} value={item.id}>{item.label}</option>
+                  <option key={item.id} value={item.id}>
+                    {item.label} ({countForFilter(item.id)})
+                  </option>
                 ))}
               </select>
             </p>
@@ -86,6 +103,7 @@ export default function QuanLy() {
             items={visibleConversations}
             activeId={activeId}
             onSelect={setActiveId}
+            onReset={handleResetFilters}
           />
         </section>
 
@@ -93,8 +111,9 @@ export default function QuanLy() {
           <ChatPanel
             id="admin-chat"
             title={`Chat với ${active.name}`}
-            label="Tin nhắn"
-            placeholder="Bản mẫu chưa gửi được tin nhắn"
+            subtitle={`${active.statusLabel} · ${active.time}`}
+            label="Tin nhắn trả lời khách"
+            placeholder="Nhập tin nhắn"
             messages={activeId === 'linh' ? messages : []}
             disabled
             note="Chưa gửi được tin nhắn trong bản mẫu."
@@ -104,6 +123,7 @@ export default function QuanLy() {
         <BookingForm
           booking={booking}
           services={services}
+          addons={bookingAddons}
           conflict={conflict}
           start={start}
           onStartChange={setStart}
@@ -115,6 +135,7 @@ export default function QuanLy() {
         <ResourceSchedule
           title="Lịch thợ và phòng"
           date="Thứ Bảy, 24/10/2026"
+          start={start}
           rows={scheduleRows}
         />
       </div>

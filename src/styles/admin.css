@@ -156,11 +156,11 @@
 
 @media (min-width: 768px) {
   .admin-grid {
-    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 310px) minmax(0, 1fr);
     grid-template-areas:
       "convs chat"
       "convs form"
-      "convs sched";
+      "sched sched";
     align-items: start;
   }
 
@@ -178,9 +178,9 @@
   .sched-rows { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
   .sched-blocks { grid-template-columns: minmax(0, 1fr); }
   .admin-grid {
-    grid-template-columns: minmax(0, 300px) minmax(0, 1fr) minmax(0, 380px);
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr) minmax(0, 380px);
     grid-template-areas:
       "convs chat form"
-      "convs sched sched";
+      "sched sched sched";
   }
 }
