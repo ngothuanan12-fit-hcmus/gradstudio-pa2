@@ -802,3 +802,12 @@ Kept: proposals, nothing built. (1) The opening title tracks in with the camera:
 Changed: nothing.
 Rejected: nothing.
 By hand: An's approval of C and D.
+
+## 2026-11-11 — words 1 + 3: the title tracks in, captions come in line by line
+Commit: d86c163 for the page, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL.
+Asked for: ideas 1 and 3 for the words; 2 only if An likes these.
+Kept: awaiting An's review. (1) On 3D screens the opening title's letters start 0.22 em apart and close up over 1.8 s as the camera moves in; the plain screen waiting for the scene uses the same spacing, so the takeover does not move it. (3) Every caption in the scroll story comes in line by line as the scroll reaches it: the heading, its second line, then the text and the price, each rising 18 px as it appears; the caption still leaves as one block. The scene now passes its progress to CSS as `--rise`; without it, every line is shown, so the plain screen and the moment before the first 3D frame are unchanged. Phones and reduced motion: unchanged.
+Changed: nothing beyond the request. Checks: title spacing settles to normal after the camera move at 1280 and 768 px, overflow line 0; caption lines measured at four scroll points each for "Trở lại lớp học" and "Kỷ yếu lớp": heading first (0.91 when the price is at 0.09), all at 1.00 once in place; title never below full opacity through the takeover; rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's choice.

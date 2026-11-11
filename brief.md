@@ -294,6 +294,8 @@ An also attached a screenshot of Khánh's management page in progress: conversat
 > mình thấy không được, bỏ hiệu ứng đó luôn, làm thử  c d
 
 > cả 2 đã ổn, nên cho các chữ có hiệu ứng như thế nào
+
+> làm 1 + 3 nếu mình thấy ổn sẽ làm thêm 2
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
