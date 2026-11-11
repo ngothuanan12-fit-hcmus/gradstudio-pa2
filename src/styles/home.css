@@ -52,10 +52,34 @@
 .process-title { font-size: 18px; line-height: 28px; font-weight: 600; }
 
 /* Chat */
-.chat-dock { display: grid; gap: var(--space-12); scroll-margin-top: var(--space-16); }
-.chat-dock-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-8); }
-.chat-dock-bar p { font-weight: 500; }
-.chat-dock > .btn { justify-self: start; }
+/* The chat looks like a live chat window, kept in the page: header, conversation, message box. */
+.chat-dock { display: grid; max-width: 560px; scroll-margin-top: var(--space-16); }
+.chat-dock-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-12); padding: var(--space-12) var(--space-16);
+  background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.chat-dock-bar:has(+ [hidden]) { border-radius: var(--radius-md); }
+.chat-avatar {
+  flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+  color: var(--on-accent); background: var(--accent); font-family: var(--font-display); font-size: 18px; font-weight: 600;
+}
+.chat-dock-who { flex: 1 1 160px; min-width: 0; }
+.chat-dock-name { font-weight: 600; }
+.chat-dock-who [role="status"] { color: var(--ink-muted); }
+.chat-dock .chat { gap: var(--space-16); border-top: 0; border-radius: 0 0 var(--radius-md) var(--radius-md); }
+/* The header already names the conversation; its heading stays for screen readers. */
+.chat-dock .chat > h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.chat-dock .chat-log { gap: var(--space-8); padding-block: var(--space-8); }
+.chat-dock .chat-msg { max-width: 85%; padding: var(--space-8) var(--space-16); border-radius: 18px 18px 18px var(--space-4); }
+.chat-dock .chat-msg-me { border-radius: 18px 18px var(--space-4) 18px; }
+.chat-dock .chat-time { color: var(--ink-muted); }
+.chat-dock .chat-msg-me .chat-time { text-align: right; }
+.chat-dock .chat-form { padding-top: var(--space-16); border-top: 1px solid var(--line); }
+.chat-dock .chat-row { flex-wrap: nowrap; }
+/* width: 0 so the box never sets the window's minimum width; it still grows to fill the row. */
+.chat-dock .chat-input { width: 0; border-radius: var(--radius-pill); padding-inline: var(--space-16); }
+.chat-dock .chat-row .btn { border-radius: var(--radius-pill); }
+.chat-dock > .btn { justify-self: start; margin-top: var(--space-16); }
 
 @media (min-width: 768px) {
   .home-section { padding: var(--space-64) var(--space-24); }
@@ -169,4 +193,8 @@
   .home-section { padding-inline: var(--space-48); }
   .process { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .package-price { font-size: 32px; line-height: 40px; }
+  /* The chat window sits beside its heading and text, as on a real studio page. */
+  .home-section:has(> .chat-dock) { grid-template-columns: minmax(0, 1fr) 560px; grid-template-rows: auto 1fr; column-gap: var(--space-64); align-items: start; }
+  .home-section:has(> .chat-dock) > :not(.chat-dock) { grid-column: 1; }
+  .home-section:has(> .chat-dock) > .chat-dock { grid-column: 2; grid-row: 1 / span 2; }
 }
