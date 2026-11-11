@@ -60,7 +60,7 @@ export const conversations = [
     id: 'anh',
     name: 'Trần Minh Anh',
     time: '07:50',
-    last: 'Em gửi ảnh chọn rồi ạ.',
+    last: 'Chào studio, bên mình còn lịch chụp chân dung CV cuối tuần không ạ?',
     status: 'new',
     statusLabel: 'Chưa trả lời',
     tone: 'neutral',
@@ -70,11 +70,16 @@ export const conversations = [
     id: 'bao',
     name: 'Lê Gia Bảo',
     time: 'Hôm qua',
-    last: 'Cảm ơn studio, hẹn gặp ngày 24/10.',
+    last: 'Mình đã nhận đủ bộ ảnh chỉnh màu, cảm ơn studio nhé.',
     status: 'done',
     statusLabel: 'Hoàn thành',
     tone: 'confirmed',
   },
+];
+
+export const bookingAddons = [
+  { id: 'makeup', label: 'Makeup (60 phút trước giờ chụp)', defaultChecked: true },
+  { id: 'costume', label: 'Thuê áo cử nhân', defaultChecked: false },
 ];
 
 // The only free time in the story: Mai's make-up block and Tuấn's shoot block do not overlap.
@@ -157,6 +162,46 @@ export const processSteps = [
   { id: 'coc', title: 'Cọc để giữ lịch', text: 'Lịch chỉ được giữ khi bạn cọc 30% thành công và studio kiểm tra lại lịch.' },
   { id: 'chup', title: 'Buổi chụp', text: 'Ekip chuẩn bị theo checklist của từng loại buổi chụp.' },
   { id: 'anh', title: 'Chọn ảnh và nhận file', text: 'Chọn ảnh cần chỉnh, thanh toán 70% còn lại, nhận file khi hoàn tất.' },
+];
+
+export const weekDays = [
+  { id: '2026-10-19', dow: 'T2', num: 19, dateLabel: '19/10' },
+  { id: '2026-10-20', dow: 'T3', num: 20, dateLabel: '20/10' },
+  { id: '2026-10-21', dow: 'T4', num: 21, dateLabel: '21/10' },
+  { id: '2026-10-22', dow: 'T5', num: 22, dateLabel: '22/10' },
+  { id: '2026-10-23', dow: 'T6', num: 23, dateLabel: '23/10' },
+  {
+    id: '2026-10-24',
+    dow: 'T7',
+    num: 24,
+    dateLabel: '24/10',
+    isShootDay: true,
+    events: [
+      {
+        id: 'ev-old',
+        from: '09:00',
+        title: 'Giờ bạn yêu cầu ban đầu',
+        where: 'Trùng lịch: Mai (makeup) bận 08:00–12:00',
+        tag: 'Đã đổi giờ vì trùng lịch',
+        struck: true,
+      },
+      {
+        id: 'ev-makeup',
+        from: '13:00',
+        to: '14:00',
+        title: 'Makeup với Mai',
+        where: 'GS-1024 · Có mặt sớm 10 phút',
+      },
+      {
+        id: 'ev-shoot',
+        from: '14:00',
+        to: '16:00',
+        title: 'Chụp với Tuấn tại Phòng B',
+        where: 'GS-1024 · Gói Tốt nghiệp Premium (2 giờ · 30 ảnh chỉnh)',
+      },
+    ],
+  },
+  { id: '2026-10-25', dow: 'CN', num: 25, dateLabel: '25/10' },
 ];
 
 export function formatVND(value) {
