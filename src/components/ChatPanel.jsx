@@ -15,6 +15,7 @@ export default function ChatPanel({
   note,
   emptyText = 'Chưa có tin nhắn trong hội thoại này.',
   viewer = 'studio',
+  afterMessages = null,
 }) {
   const inputId = `${id}-input`;
   const noteId = `${id}-note`;
@@ -35,6 +36,8 @@ export default function ChatPanel({
           })}
         </ol>
       ) : <p className="empty">{emptyText}</p>}
+      {/* Something that belongs to the conversation, such as the management page's booking card. */}
+      {afterMessages}
       <form className="chat-form" action={action}>
         <label className="chat-label" htmlFor={inputId}>{label}</label>
         <div className="chat-row">
