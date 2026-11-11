@@ -54,14 +54,19 @@
 /* Chat */
 /* The chat section: a panel with the heading, text and chat window; from 1280 px a photo stands beside it. */
 .chat-panel { display: grid; gap: var(--space-16); align-content: start; }
-.chat-photo { display: none; }
+.chat-panel-title { margin-top: var(--space-8); font-size: 18px; line-height: 28px; font-weight: 600; }
+.quick-packages { display: grid; gap: var(--space-8); }
+.quick-packages .btn { justify-content: space-between; flex-wrap: wrap; column-gap: var(--space-16); text-align: left; }
+.quick-price { font-weight: 400; font-variant-numeric: tabular-nums; }
+.tell-list { display: grid; gap: var(--space-4); margin: 0; padding-left: var(--space-24); }
+/* The link to the next screen of the prototype, kept apart from the customer's chat. */
+.home-section.next-screen { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-12); padding-block: var(--space-24); border-top: 1px solid var(--line); color: var(--ink-muted); }
 /* The chat looks like a live chat window, kept in the page: header, conversation, message box. */
 .chat-dock { display: grid; max-width: 560px; scroll-margin-top: var(--space-16); }
 .chat-dock-bar {
   display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-12); padding: var(--space-12) var(--space-16);
   background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
-.chat-dock-bar:has(+ [hidden]) { border-radius: var(--radius-md); }
 .chat-avatar {
   flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
   color: var(--on-accent); background: var(--accent); font-family: var(--font-display); font-size: 18px; font-weight: 600;
@@ -72,7 +77,7 @@
 .chat-dock .chat { gap: var(--space-16); border-top: 0; border-radius: 0 0 var(--radius-md) var(--radius-md); }
 /* The header already names the conversation; its heading stays for screen readers. */
 .chat-dock .chat > h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.chat-dock .chat-log { gap: var(--space-8); padding-block: var(--space-8); }
+.chat-dock .chat-log { gap: var(--space-8); align-content: start; padding-block: var(--space-8); }
 .chat-dock .chat-msg { max-width: 85%; padding: var(--space-8) var(--space-16); border-radius: 18px 18px 18px var(--space-4); }
 .chat-dock .chat-msg-me { border-radius: 18px 18px var(--space-4) 18px; }
 .chat-dock .chat-time { color: var(--ink-muted); }
@@ -82,7 +87,7 @@
 /* width: 0 so the box never sets the window's minimum width; it still grows to fill the row. */
 .chat-dock .chat-input { width: 0; border-radius: var(--radius-pill); padding-inline: var(--space-16); }
 .chat-dock .chat-row .btn { border-radius: var(--radius-pill); }
-.chat-dock > .btn { justify-self: start; margin-top: var(--space-16); }
+
 
 @media (min-width: 768px) {
   .home-section { padding: var(--space-64) var(--space-24); }
@@ -196,11 +201,10 @@
   .home-section { padding-inline: var(--space-48); }
   .process { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .package-price { font-size: 32px; line-height: 40px; }
-  /* Two panels of the same height: the heading, text and chat window in a card, the classroom photo beside it. */
+  /* Two panels: the heading, quick package choice and what to tell the studio in a card on the left, the chat
+     window on the right; the window's conversation fills the height of the card. */
   .chat-section { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-24); align-items: stretch; }
-  .chat-panel { padding: var(--space-48); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); }
-  .chat-panel > .section-heading, .chat-panel > p { text-align: center; text-wrap: balance; }
-  .chat-panel .chat-dock { max-width: none; }
-  .chat-panel .chat-dock > .btn { justify-self: center; }
-  .chat-photo { display: block; width: 100%; height: 100%; min-height: 0; object-fit: cover; border-radius: var(--radius-md); }
+  .chat-panel { padding: var(--space-32); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .chat-section > .chat-dock { max-width: none; grid-template-rows: auto 1fr; }
+  .chat-section > .chat-dock .chat { grid-template-rows: 1fr auto; }
 }

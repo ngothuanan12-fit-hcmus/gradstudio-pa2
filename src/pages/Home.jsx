@@ -1,23 +1,20 @@
 import { useState } from 'react';
 import { flushSync } from 'react-dom';
 import CustomerLayout from '../layouts/CustomerLayout.jsx';
+import Button from '../components/Button.jsx';
 import ChatDock from '../components/ChatDock.jsx';
 import PackageCard from '../components/PackageCard.jsx';
 import Story from '../components/Story.jsx';
-import { packages, processSteps } from '../data.js';
+import { formatVND, packages, processSteps } from '../data.js';
 import '../styles/home.css';
 
 export default function Home() {
   const [askingId, setAskingId] = useState(null);
-  const [chatOpen, setChatOpen] = useState(true);
   const asking = packages.find((item) => item.id === askingId);
 
   function askAbout(id) {
-    // The chat must be open in the page before its status line can take focus.
-    flushSync(() => {
-      setAskingId(id);
-      setChatOpen(true);
-    });
+    // The status line must show the new package before it takes focus, so it is read out with it.
+    flushSync(() => setAskingId(id));
     document.getElementById('home-chat-status').focus();
   }
 
@@ -52,23 +49,35 @@ export default function Home() {
         <div className="chat-panel">
           <h2 className="section-heading" id="hoi-studio-title">Nhắn cho studio</h2>
           <p>Kể studio bạn muốn chụp gì, ngày nào, đi mấy người. Studio xem lịch thợ chụp, makeup và phòng rồi trả lời trong chat.</p>
-          <ChatDock open={chatOpen} onToggle={() => setChatOpen(!chatOpen)} packageName={asking?.name} />
+          <h3 className="chat-panel-title" id="hoi-goi-title">Bạn muốn hỏi gói nào?</h3>
+          <div className="quick-packages" role="group" aria-labelledby="hoi-goi-title">
+            {packages.map((item) => (
+              <Button
+                key={item.id}
+                variant={item.id === askingId ? 'primary' : 'secondary'}
+                aria-pressed={item.id === askingId}
+                onClick={() => askAbout(item.id)}
+              >
+                <span className="quick-name">{item.name}</span>
+                <span className="quick-price">Từ {formatVND(item.price)}{item.unit}</span>
+              </Button>
+            ))}
+          </div>
+          <h3 className="chat-panel-title">Nên kể cho studio</h3>
+          <ul className="tell-list">
+            <li>Buổi chụp gì: kỷ yếu lớp, tốt nghiệp hay chân dung CV</li>
+            <li>Ngày bạn muốn chụp</li>
+            <li>Đi mấy người</li>
+            <li>Có cần makeup hay thuê áo không</li>
+          </ul>
         </div>
-        <img
-          className="chat-photo"
-          src="./photos/lop-hoc-800.webp"
-          srcSet="./photos/lop-hoc-800.webp 800w, ./photos/lop-hoc-1600.webp 1600w"
-          sizes="(min-width: 1280px) 600px, 1px"
-          width="1600"
-          height="1067"
-          alt=""
-          loading="lazy"
-        />
+        <ChatDock packageName={asking?.name} />
       </section>
 
-      <p className="home-section home-note">
-        Ảnh: Phú Lucas, Hưng Nguyễn và Darion Dewhirst (Unsplash), Nguyễn Tiến Thịnh (Pexels). Nguồn chi tiết trong docs/IMAGE_SOURCES.md.
-      </p>
+      <div className="home-section next-screen">
+        <p>Màn hình tiếp theo của bản mẫu:</p>
+        <Button variant="secondary" href="quan-ly.html">Nhân viên studio: mở cuộc trò chuyện này</Button>
+      </div>
     </CustomerLayout>
   );
 }
