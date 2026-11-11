@@ -748,3 +748,12 @@ Kept: proposals for An, nothing built. Opening: (A) the classroom's chalk lines 
 Changed: nothing.
 Rejected: nothing.
 By hand: An's questions.
+
+## 2026-11-11 — can the Booking mới form sit inside the chat?
+Commit: the commit that adds this entry, directly after d88f77f.
+Tool: Claude Code (Claude Opus 5.5), reading the brief's Screen 2 and *Fix these*, `CLAUDE.md`, `ChatPanel.jsx` and `BookingForm.jsx`.
+Asked for: whether moving the *Booking mới* form from below the chat into the chat breaks the brief.
+Kept: the answer to An. Allowed: "the chat with the Booking mới form below it" describes the authors' screen, and the brief says a difference in layout costs nothing. Conditions: the whole form stays readable by scrolling the page at every width, so the chat must not become a column with its own scrollbar (the authors' exact problem on *Fix these*); every field keeps a visible label and 44 px controls at 360 px, so a narrow message bubble will not do, the form needs the chat's full width; the opening state still shows 14:00 chosen, *Tạo booking* enabled and the 09:00 clash note; the form keeps `action="lich-chup.html"`; it must not go inside the message box's own `<form class="chat-form">`, because a form inside a form is invalid HTML and fails the W3C check; it goes in the message list after Linh's last message or between the list and the message box; the choice is recorded under *Your design choices* in `PROTOTYPE.md`. It is Khánh's page, so the change goes to him as a task.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's question.

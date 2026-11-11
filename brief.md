@@ -282,6 +282,8 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 > Khánh đang hỏi mình có ràng buộc nào khiến Khánh không resize sau khi bỏ lịch bên cạnh từ giao diện gốc không, bạn kiểm tra lại
 
 An also attached a screenshot of Khánh's management page in progress: conversation list and a full-width chat, with a "Lịch tài nguyên" button instead of the calendar column.
+
+> mình muốn đổi form booking không còn dưới chat mà nằm ngay trong chat được không, kiểm tra lại nếu đổi có sai quy định đề không
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
