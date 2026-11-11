@@ -920,3 +920,12 @@ Answers to An: one package at a time breaks no rule; the brief asks the page to 
 Changed: the first layout repeated the package name in the counter and put the turn buttons in the details column; the counter now shows "1/3" (the name only for screen readers) and the buttons sit under the photos. Checks at 360, 768, 1280 and 1920 px: overflow line empty, every card inside the turntable, no text under 16 px, no page error; ArrowRight, "Gói sau", "Gói trước", a click on the left photo and a 300 px drag each change the front package and keep the cards inside; the press-in tilt follows the pointer; "Tư vấn gói này" sets the chat status and brings the chat into view; reduced motion turns at once; rubric checks FAILURES: 0. The Tốt nghiệp and Chân dung photos are portrait and cropped to 4:3 until An chooses landscape photos, whose sources must then go into `PROTOTYPE.md` and `docs/IMAGE_SOURCES.md`.
 Rejected: nothing yet.
 By hand: An's requirements; the landscape photos to come from An.
+
+## 2026-11-11 — keep the portrait photos cropped to 4:3?
+Commit: the commit that adds this entry, directly after 12728bd.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: each package's front crop at 1280 and 360 px.
+Asked for: whether the portrait photos need replacing, since the 4:3 crops look fine to An.
+Kept: the answer: no need. On the crops the Tốt nghiệp photo keeps her face, gown and flowers and the Chân dung photo keeps the face, at both widths; keeping them means no new licences or sources, and the turntable shows the same photos as the board in the 3D story. The Tốt nghiệp alt text names the steps behind her, which the crop mostly hides; it still describes the photo, so it stays unless An wants it shortened.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's view of the crops.
