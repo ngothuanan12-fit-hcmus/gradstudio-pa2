@@ -346,6 +346,10 @@ An also attached `phan-tich-bencho-carousel.md`, an analysis of a "turntable" ca
 > Chụp cho mình xem ảnh của trang quản lý hiện tại
 
 > Nếu là code prototype của nhóm khác thì mình nên xử lý thế nào
+
+### 1.25 Rebuilding the management and schedule pages (2026-11-11)
+
+> Để mình sửa hết luôn, ghi Khánh đã có bố cục cơ bản nhưng chưa phù hợp với thiết kế của giao diện chung nên mình sẽ sửa lại toàn bộ, mỗi lượt sửa một phần nhỏ trên mỗi trang vì mình sẽ có những chỗ cần thay đổi trên mỗi trang, mình sẽ nêu ý tưởng thay đổi nếu vi phạm nguyên tắc nào thì báo mình, giờ lên kế hoạch sửa lại
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
