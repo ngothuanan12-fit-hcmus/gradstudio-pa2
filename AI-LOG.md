@@ -757,6 +757,17 @@ Changed: updated `src/pages/QuanLy.jsx` and `src/styles/admin.css`. The top `rol
 Checks: `npm run lint` exits 0 with no output; `npm run build` exits 0.
 By hand: none.
 
+## 2026-11-11 — customer schedule page: BookingSummary folio
+
+Who: Khánh (24120340).
+Commit: 72890da.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: ported the booking folio details from `MyPhotoSessions.tsx` into `src/components/BookingSummary.jsx`: booking ID `GS-1024`, customer `Nguyễn Thùy Linh`, session type `Tốt nghiệp cá nhân`, package `Gói Tốt nghiệp Premium · 2 giờ · 30 ảnh chỉnh`, shoot day `Thứ Bảy, 24/10/2026`, make-up `13:00–14:00 với Mai`, shoot `14:00–16:00 với Tuấn · Phòng B`, arrival note `Có mặt sớm 10 phút`, and total `1.800.000đ`, paired with the pending badge *Đã thống nhất lịch · Chờ cọc 30%*.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
 
 
 
