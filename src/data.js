@@ -63,7 +63,7 @@ export const conversations = [
     last: 'Studio cho em hỏi giá gói chân dung CV ạ.',
     status: 'new',
     statusLabel: 'Chưa trả lời',
-    tone: 'neutral',
+    tone: 'new',
     unread: 2,
   },
   {
@@ -73,7 +73,7 @@ export const conversations = [
     last: 'Em nhận đủ ảnh rồi, cảm ơn studio ạ.',
     status: 'done',
     statusLabel: 'Hoàn thành',
-    tone: 'confirmed',
+    tone: 'done',
   },
 ];
 

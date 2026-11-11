@@ -81,6 +81,7 @@ export default function QuanLy() {
                       aria-pressed={filter === item.id}
                       onClick={() => setFilter(item.id)}
                     >
+                      {item.id !== 'all' && <span className={`conv-dot conv-dot-${item.id}`} aria-hidden="true" />}
                       {item.label} ({count})
                     </Button>
                   );
