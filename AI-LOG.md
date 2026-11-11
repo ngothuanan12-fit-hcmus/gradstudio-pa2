@@ -852,6 +852,16 @@ Changed: created `src/components/ChatStream.jsx` with the sticky customer info h
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — Full port Step 4: BookingForm and AlertBox
+
+Who: Khánh (24120340).
+Commit: 0725cf0.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: port `BookingForm.tsx`, `FormField.tsx`, and `AlertBox.tsx` into `src/components/BookingForm.jsx` and `src/components/ConflictAlert.jsx`.
+Changed: updated `src/components/ConflictAlert.jsx` with the warning triangle alert box (`AlertBox`), and rewrote `src/components/BookingForm.jsx` with the 2-column studio booking form (`Khách hàng`, `Loại buổi chụp`, `Gói`, `Ngày chụp`, `Giờ bắt đầu chụp` with live conflict/ready helper text, `Makeup` and `Thuê áo cử nhân` checkboxes, `Giá chốt`, live `Phân công dự kiến` status dots for `Mai` / `Tuấn` / `Hà` / `Phòng B` / `Phòng A`, `Gửi báo giá vào chat`, `Tạo booking` with tooltip and spinner, plus `Hủy` / `Sửa booking` / `Mở Lịch chụp của Linh` after creation).
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
 
 
 
