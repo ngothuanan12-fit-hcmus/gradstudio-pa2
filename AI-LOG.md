@@ -1227,3 +1227,12 @@ Kept: `PROTOTYPE.md`: the rows for `quan-ly.html` and `lich-chup.html` describe 
 Changed: one of the assistant's own test scripts still looked for the old package cards on the landing page and failed; the page itself was not affected (the turntable replaced the cards earlier today).
 Rejected: nothing.
 By hand: none.
+
+## 2026-11-11 — pull request #4 merged without a prior review (exception)
+Commit: merge of pull request #4 into `main` (11:19 UTC, 18:19 local), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), `gh`.
+Asked for: An wanted to merge pull request #4 at once. The assistant pointed out the team rule in `CLAUDE.md` that a pull request waits for review and nobody merges their own; An chose to merge now and record the exception.
+Kept: pull request #4 merged with a merge commit, keeping every step's commit. Reason for the exception: the hand-in is due at 22:00 and the hand-in files (W3C output, screenshots, self-assessment, `dist/`) depend on the final pages. A comment on the pull request asks Khánh for a review after the merge, with fixes in new commits. PR #3 is still open; it is replaced by #4 and will be closed after An agrees.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's decision to merge.
