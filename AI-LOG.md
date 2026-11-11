@@ -1236,3 +1236,12 @@ Kept: pull request #4 merged with a merge commit, keeping every step's commit. R
 Changed: nothing.
 Rejected: nothing.
 By hand: An's decision to merge.
+
+## 2026-11-11 — pull request #3 closed
+Commit: the commit that adds this entry, directly after d31674c.
+Tool: Claude Code (Claude Opus 5.5), `gh`.
+Asked for: close PR #3, and nothing else for now.
+Kept: PR #3 closed with the comment "Replaced by #4, which rebuilds this page on the same base and fixes the review items." Its branch `feature/lich-chup` is kept.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's approval.
