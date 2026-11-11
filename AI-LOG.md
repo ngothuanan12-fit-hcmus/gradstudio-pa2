@@ -811,3 +811,12 @@ Kept: awaiting An's review. (1) On 3D screens the opening title's letters start 
 Changed: nothing beyond the request. Checks: title spacing settles to normal after the camera move at 1280 and 768 px, overflow line 0; caption lines measured at four scroll points each for "Trở lại lớp học" and "Kỷ yếu lớp": heading first (0.91 when the price is at 0.09), all at 1.00 once in place; title never below full opacity through the takeover; rubric checks FAILURES: 0.
 Rejected: nothing yet.
 By hand: An's choice.
+
+## 2026-11-11 — opening words appear with the camera; the band of light catches the title
+Commit: e765eee for `src/styles/home.css`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL; the glint checked on paused frames.
+Asked for: the opening words hidden at first and appearing with the camera, then idea 2.
+Kept: awaiting An's review. On 3D screens the title and the line under it start hidden; when the first 3D frame is drawn, the title fades in over 1.2 s while its letters close up over 1.8 s, and the line follows from 0.7 s. From 1 s, as the band of light crosses the room, a warm highlight runs through the title's letters in step with it (idea 2); outside the highlight the colours are the usual ones. If the scene is slow, the waiting screen shows its words after 1.5 s anyway; without WebGL, on phones and with reduced motion the words are shown at once as before.
+Changed: in the first try the title turned grey during the glint: the letters' dark shadow is painted above a background drawn through the letters, so it covered the highlight (seen on the screenshot). The shadow now rests for the 1.6 s of the glint, while the dark backing behind the opening words stays. Checks: title opacity 0 until the first 3D frame, 0.96 about 0.6 s later, 1.00 after; glint active between about 1 s and 2.6 s with the text fill restored after; scene file blocked: words visible at 1.5 s; no WebGL: words visible at once; lint clean; rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's request.
