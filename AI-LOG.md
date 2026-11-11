@@ -1164,3 +1164,12 @@ Kept: awaiting An's review. `Icon.jsx` draws six icons as inline SVG (check, war
 Changed: nothing beyond the request. Checks: the round 2, 4 and 5 checks again at 360, 768 and 1280 px: no text under 16 px, no clipped or overlapping timeline block, controls 44–48 px, overflow line 0, 09:00 and back works; rubric checks FAILURES: 0. No symbol characters left in the components or data.
 Rejected: nothing yet.
 By hand: An's approval.
+
+## 2026-11-11 — rounds 6 and 7 together: the week and the shoot day
+Commit: af19d6a (`WeekCalendar.jsx`, `data.js`, `LichChup.jsx`, `schedule.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: An agreed to merge the four schedule-page rounds into two because of the time; this is the first, the week and the day.
+Kept: awaiting An's review. The week is a strip of seven days (T2 19 to CN 25), the shoot day outlined in the accent colour with a diamond icon (read out as "ngày chụp"), and under it "Thứ Bảy 24/10 · Ngày chụp GS-1024"; "Hôm nay", which was wrong for 24/10, is gone, and the weekday labels are 16 px. Then "Lịch trình ngày 24/10": a bar from 08:00 to 18:00 with hour gridlines for the overview (the dropped 09:00 hatched, make-up and the shoot filled; it repeats the list, so screen readers skip it) and the list, which is the readable record: 09:00 struck through, the time itself in a `<s>`, "Giờ bạn hỏi ban đầu" and, with the warning icon, "Đã bỏ vì thợ makeup Mai bận 08:00–12:00" on a hatched, red-edged row; then 13:00–14:00 "Makeup với Mai" and 14:00–16:00 "Chụp với Tuấn", "Phòng B · GS-1024". Texts are written for the customer ("Giờ bạn hỏi" instead of "Giờ khách yêu cầu"). At 360 px the bar shows only 08:00, 12:00 and 18:00 so the hour labels never touch.
+Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px on the page, 09:00 struck, no "Hôm nay", hour labels not touching, no cell or row cut off, overflow line 0; rubric checks FAILURES: 0, main flow reaches `lich-chup.html`.
+Rejected: nothing yet.
+By hand: An's agreement to merge the rounds.

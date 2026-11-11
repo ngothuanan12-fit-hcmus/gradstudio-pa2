@@ -379,6 +379,8 @@ An also attached an example: a round avatar with a green dot at its lower right.
 An also attached `tai-lieu-ky-thuat-lich-va-thong-bao.md`, notes on three MIT-licensed UI samples (a schedule conflict fixer, a week duration editor, a notification bell).
 
 > duyệt
+
+> đồng ý
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
