@@ -277,6 +277,11 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 > ra trường" phóng kiểu zoom out thì phải là nó phải từ màn hình xong nhỏ lại dần chữ không phải ảnh lớp học
 
 > mình thấy chưa mượt, khi hiện từ ngoài vào mình thấy có một ảnh thật của lớp học, lúc hiện từ ngoài nên để nền trống rồi mới hiện nét vẽ của lớp học được không
+
+> nếu chỉ zoom out như vậy mình thấy chưa ấn tượng như web coffee lắm, bạn đề xuất hướng cho nó có chuyển động hơn một chút
+> Khánh đang hỏi mình có ràng buộc nào khiến Khánh không resize sau khi bỏ lịch bên cạnh từ giao diện gốc không, bạn kiểm tra lại
+
+An also attached a screenshot of Khánh's management page in progress: conversation list and a full-width chat, with a "Lịch tài nguyên" button instead of the calendar column.
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
