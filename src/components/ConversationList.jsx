@@ -1,10 +1,27 @@
-// Each row is a button, at least 44px tall. Selection is aria-current, so it
-// survives a screen reader and a greyscale screenshot.
+import Button from './Button.jsx';
 import StatusBadge from './StatusBadge.jsx';
 
-export default function ConversationList({ items = [], activeId, onSelect }) {
+function getInitials(name = '') {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'GS';
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return `${parts[0].charAt(0)}${parts[parts.length - 1].charAt(0)}`.toUpperCase();
+}
+
+// Each row is a button, at least 44px tall. Selection is aria-current, so it
+// survives a screen reader and a greyscale screenshot.
+export default function ConversationList({ items = [], activeId, onSelect, onReset }) {
   if (!items.length) {
-    return <p className="empty">Không có hội thoại khớp. Thử từ khóa khác hoặc bỏ bộ lọc.</p>;
+    return (
+      <div className="empty conv-empty">
+        <p>Không có hội thoại khớp. Thử từ khóa khác hoặc bỏ bộ lọc.</p>
+        {onReset ? (
+          <Button variant="secondary" onClick={onReset}>
+            Xem tất cả hội thoại
+          </Button>
+        ) : null}
+      </div>
+    );
   }
 
   return (
@@ -17,7 +34,7 @@ export default function ConversationList({ items = [], activeId, onSelect }) {
             aria-current={item.id === activeId ? 'true' : undefined}
             onClick={() => onSelect(item.id)}
           >
-            <span className="conv-avatar" aria-hidden="true">{item.name.charAt(0)}</span>
+            <span className="conv-avatar" aria-hidden="true">{getInitials(item.name)}</span>
             <span className="conv-body">
               <span className="conv-top">
                 <span className="conv-name">{item.name}</span>
