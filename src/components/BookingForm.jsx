@@ -106,7 +106,8 @@ export default function BookingForm({ booking, services = [], conflict, start, o
       </div>
 
       <Button variant="primary" type="submit" disabled={conflict}>
-        Tạo booking · Khách hàng: mở lịch chụp GS-1024
+        <span>Tạo booking GS-1024</span>
+        <span className="btn-sub">Khách hàng: mở lịch chụp</span>
       </Button>
     </form>
   );

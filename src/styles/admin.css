@@ -254,3 +254,17 @@
 @media (prefers-reduced-motion: reduce) {
   .tl-block { transition: none; }
 }
+
+/* Message groups: bubbles in a row from one side share their inner corners; the price is a small card. */
+.admin-chat .chat-msg:not(.chat-msg-me):not(.is-first) { border-top-left-radius: var(--space-4); }
+.admin-chat .chat-msg:not(.chat-msg-me):not(.is-last) { border-bottom-left-radius: var(--space-4); }
+.admin-chat .chat-msg-me:not(.is-first) { border-top-right-radius: var(--space-4); }
+.admin-chat .chat-msg-me:not(.is-last) { border-bottom-right-radius: var(--space-4); }
+.admin-chat .chat-log .chat-msg:not(.is-first) { margin-top: calc(var(--space-4) * -1); }
+.chat-quote-title { font-weight: 600; }
+.chat-quote { display: grid; gap: var(--space-4); margin: var(--space-4) 0 0; }
+.chat-quote div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4) var(--space-16); }
+.chat-quote dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+/* The main button in two lines: the action, then who continues. */
+.booking-card > .btn-primary { flex-direction: column; gap: 0; padding-block: var(--space-8); }
+.btn-sub { font-weight: 400; }
