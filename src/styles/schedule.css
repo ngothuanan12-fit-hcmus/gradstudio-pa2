@@ -1,12 +1,108 @@
 /* Customer schedule page. Shared primitives live in ui.css. Every text size is 16px or larger. */
 
+.schedule-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.schedule-showcase {
+  gap: var(--space-16);
+}
+
+.showcase-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.showcase-tabs .btn[aria-pressed='true'],
+.schedule-filter-bar .btn[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.showcase-body {
+  display: grid;
+  gap: var(--space-16);
+  align-items: center;
+}
+
+.showcase-photo {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface-raised);
+}
+
+.showcase-info {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-8);
+}
+
+.showcase-pkg-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 500;
+}
+
+.showcase-pkg-line {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 28px;
+  font-style: italic;
+}
+
+.showcase-pkg-price {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.schedule-filter-empty {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-12);
+}
+
+.schedule-grid {
+  display: grid;
+  gap: var(--space-16);
+  align-items: start;
+}
+
+.schedule-side {
+  display: grid;
+  gap: var(--space-16);
+  min-width: 0;
+}
+
+.schedule-links-title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
 .week-badge {
   display: inline-flex;
   align-items: center;
   min-height: 32px;
   padding: 2px var(--space-12);
   border: 1px solid var(--line-strong);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   background: var(--surface-raised);
   color: var(--ink-muted);
   font-size: 16px;
@@ -193,7 +289,23 @@
 }
 
 @media (min-width: 768px) {
+  .showcase-body {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: var(--space-24);
+  }
+
   .week-strip {
     grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  .schedule-grid {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: var(--space-24);
+  }
+}
+
+@media (min-width: 1280px) {
+  .schedule-grid {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
   }
 }

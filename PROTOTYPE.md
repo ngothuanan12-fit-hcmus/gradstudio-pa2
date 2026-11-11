@@ -32,7 +32,7 @@ Each page opens straight into its own state, as the GradStudio brief asks.
 |---|---|---|---|
 | `index.html` | Screen 1, Services and chat (customer) | Linh walks into the classroom story, sees the three services and their prices, asks about one, and reads the process and the chat | "Nhân viên studio: mở cuộc trò chuyện này" → `quan-ly.html`; menu → `lich-chup.html`; "Xem gói chụp" and "Chat với studio" move within the page |
 | `quan-ly.html` | Screen 2, Advice and clash handling (Admin) | Admin Thảo opens the moment after Linh agrees: 14:00 chosen, the conversation *Đã chốt lịch*, *Tạo booking* enabled, and a note that 09:00 clashed because Mai is busy 08:00–12:00. Search and the status filter work; choosing 09:00 brings the clash back | "Khách hàng: mở lịch chụp GS-1024" → `lich-chup.html` |
-| `lich-chup.html` | Screen 3, Review the appointment and pay the deposit (customer) | Being rebuilt. Planned state: Linh sees GS-1024 waiting for the 30% deposit | Menu → `index.html` |
+| `lich-chup.html` | Screen 3, Review the appointment and pay the deposit (customer) | Linh opens the schedule page after Admin Thảo creates booking GS-1024: sees the package showcase, the status filter tabs, the week 19–25/10/2026 with Saturday 24/10 marked *◆ Ngày chụp*, the struck-out `09:00` request (`Mai (makeup) bận 08:00–12:00`), the agreed 13:00–14:00 make-up with Mai and 14:00–16:00 shoot with Tuấn in Phòng B, the GS-1024 folio (*Đã thống nhất lịch · Chờ cọc 30%*), and the 30% deposit card (`540.000đ` of `1.800.000đ`, remaining `1.260.000đ`) with *Thanh toán cọc 30%* disabled and a note that the slot is held only after the deposit succeeds | "Nhân viên studio: mở lại trang quản lý" → `quan-ly.html`; "Khách hàng: về trang chủ" and menu → `index.html` |
 
 ## Your design choices
 
@@ -67,6 +67,7 @@ Controls that lead outside the three pages, or actions with no next page in PA#2
 |---|---|---|
 | "Gửi" in the customer chat | `index.html` | PA#2 has no server, so the send button is disabled with a note |
 | "Gửi" in the management chat | `quan-ly.html` | PA#2 has no server, so the send button is disabled with a note |
+| "Thanh toán cọc 30% (540.000đ)" | `lich-chup.html` | PA#2 has no payment screen in the brief, so the button is disabled with a note that the slot is held only after the deposit succeeds |
 
 ## CSS
 
