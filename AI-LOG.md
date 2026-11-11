@@ -1065,3 +1065,12 @@ Kept: round 0 done: branch `redo/quan-ly-lich-chup` from `main`, Khánh's PR #3 
 Changed: nothing on the pages.
 Rejected: nothing.
 By hand: An's approval of the plan.
+
+## 2026-11-11 — round 1: page frames
+Commit: 374ef61, and the commit that adds this entry (branch `redo/quan-ly-lich-chup`).
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built pages.
+Asked for: the suggested options for round 1: management page light, schedule page dark; a header with in-page links on the management page; two columns on both pages; no extra next-screen strip; the shared footer.
+Kept: awaiting An's review. `lich-chup.html` now uses the dark theme of the landing page, so both customer pages look alike; `quan-ly.html` keeps the light one. The management header shows "Quản lý studio · Thảo" and three links that open sections really on the page: "Hội thoại", "Booking mới", "Lịch tài nguyên" (the old self-link "Quản lý booking" is gone). Management layout: from 768 px the conversations beside the chat and the *Booking mới* form, the resource calendar across the full width below (was a third column at 1280 px). Schedule layout: the booking card and the deposit first, beside the week from 1280 px (the card moved from under the week). No other content changed in this round.
+Changed: nothing beyond the request. Checks: rubric checks FAILURES: 0 on all three pages and widths, main flow reaches `lich-chup.html`; no console errors. Still open for later rounds, measured now: 12 texts at 14 px on `quan-ly.html` (status badges, unread counts) and 11 on `lich-chup.html` (status badge, weekday labels, "Hôm nay", the tag on 09:00).
+Rejected: nothing yet.
+By hand: An's choices.

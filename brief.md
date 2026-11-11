@@ -352,6 +352,8 @@ An also attached `phan-tich-bencho-carousel.md`, an analysis of a "turntable" ca
 > Để mình sửa hết luôn, ghi Khánh đã có bố cục cơ bản nhưng chưa phù hợp với thiết kế của giao diện chung nên mình sẽ sửa lại toàn bộ, mỗi lượt sửa một phần nhỏ trên mỗi trang vì mình sẽ có những chỗ cần thay đổi trên mỗi trang, mình sẽ nêu ý tưởng thay đổi nếu vi phạm nguyên tắc nào thì báo mình, giờ lên kế hoạch sửa lại
 
 > Duyệt kế hoạch, theme xét lại các đề xuất của bạn có phù hợp về độ tương phản không, gợi ý lại các phương án cho lượt 1
+
+> Làm theo các đề xuất
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
