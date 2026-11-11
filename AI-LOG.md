@@ -784,3 +784,12 @@ Kept: awaiting An's review. "Lưu lại ngày" falls from above the screen, acce
 Changed: removed the canvas copy of the title and the written-on mask from 6168c4e and 89e25f3; `useZoomOut.js` is replaced by `useTitleDrop.js`, which only sets the start moment; the motion is CSS. The drop is vertical only, so nothing reaches past the side edge. Checks, every frame for 4 s at 1280 px with and without 3D and at 360 px: overflow line 0 elements, no sideways scroll, no page error; frames show the fall and the landing with both lines; title never below full opacity through the 3D takeover; rubric checks FAILURES: 0.
 Rejected: An rejected the pull-back from the dot (89e25f3) and, with it, the slow writing of "ra trường".
 By hand: An's review.
+
+## 2026-11-11 — title effect removed; opening C + D: camera move-in and a band of light
+Commit: fa2e78a for the page, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL.
+Asked for: An rejected the title drop and asked to remove the title effect altogether, then to try C and D.
+Kept: awaiting An's review. The title is still again, on every screen. In the 3D opening, while the chalk lines draw in (A), the camera starts outside the room, seeing the whole drawing, and moves in to the first view over 1.8 s (D); from 1 s after the first frame, a soft band of warm light crosses the room from left to right over 1.6 s, under the words (C, a decorative `.stage-sweep` layer with `aria-hidden`). Nothing moves with reduced motion.
+Changed: removed `useTitleDrop.js` and its CSS; the camera move reuses the clock that starts after the first 3D frame (the same fix as in 3a16d1b). Checks: frames show the camera outside the room at the first frame and inside by the end, the band crossing between about 1.3 s and 2.7 s; no page error; overflow line 0; title never below full opacity through the takeover and no photo shown; rubric checks FAILURES: 0. The band looks muted in software rendering; An judges it on a real screen.
+Rejected: An rejected the title drop (8942656).
+By hand: An's review.

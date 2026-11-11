@@ -290,6 +290,8 @@ An also attached a screenshot of Khánh's management page in progress: conversat
 > Lưu lại ngày hiện to hơn nữa, lúc đầu chỉ thấy dấu nặng của chữ lại, vì hiện to hơn nữa nên tốc độ nhỏ dần nên cho nhanh hơn một chút
 
 > cách này khá xấu, chắc cho "Lưu lại ngày" rơi từ trên xuống, khi vừa đến vị trí thì chữ ra trường cũng phải xuất hiện để người xem đọc được liên tục
+
+> mình thấy không được, bỏ hiệu ứng đó luôn, làm thử  c d
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
