@@ -1,36 +1,37 @@
 export function Avatar({ src, initials, alt = '', size = 40, className = '' }) {
-  const style = { width: `${size}px`, height: `${size}px` };
+  const sizeClass = size > 40 ? 'st-avatar st-avatar-lg' : 'st-avatar';
   if (src) {
     return (
       <img
         src={src}
         alt={alt}
-        style={style}
-        className={`st-avatar st-avatar-img ${className}`}
+        width={size}
+        height={size}
+        className={`${sizeClass} st-avatar-img ${className}`.trim()}
       />
     );
   }
   return (
-    <span style={style} className={`st-avatar st-avatar-initials ${className}`}>
+    <span className={`${sizeClass} st-avatar-initials ${className}`.trim()}>
       {initials}
     </span>
   );
 }
 
-const getStatusDot = (status) => {
+const getStatusBadgeInfo = (status) => {
   switch (status) {
     case 'unanswered':
-      return { tone: 'dot-conflict', label: 'Chưa trả lời' };
+      return { tone: 'st-badge-neutral', glyph: '○', label: 'Chưa trả lời' };
     case 'confirmed':
     case 'agreed':
-      return { tone: 'dot-success', label: 'Đã xác nhận' };
+      return { tone: 'st-badge-success', glyph: '✓', label: 'Đã chốt lịch' };
     case 'done':
-      return { tone: 'dot-muted', label: 'Hoàn thành' };
+      return { tone: 'st-badge-neutral', glyph: '✓', label: 'Hoàn thành' };
     case 'pending':
-      return { tone: 'dot-accent', label: 'Chờ thanh toán cọc' };
+      return { tone: 'st-badge-pending', glyph: '◷', label: 'Chờ cọc 30%' };
     case 'consulting':
     default:
-      return { tone: 'dot-warn', label: 'Đang tư vấn' };
+      return { tone: 'st-badge-pending', glyph: '◷', label: 'Đang tư vấn' };
   }
 };
 
@@ -53,27 +54,32 @@ export default function ConversationList({
   return (
     <aside className="st-inbox" aria-label="Danh sách khách hàng">
       <div className="st-inbox-toolbar">
-        <div className="st-search-box">
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 16 16"
-            fill="none"
-            className="st-search-icon"
-            aria-hidden="true"
-          >
-            <circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.4" />
-            <path d="m10.5 10.5 3 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-          </svg>
-          <input
-            type="search"
-            name="customer-search"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Tìm khách hàng…"
-            aria-label="Tìm khách hàng"
-            className="st-search-input"
-          />
+        <div className="st-search-field">
+          <label htmlFor="customer-search" className="st-search-label">
+            Tìm khách hàng
+          </label>
+          <div className="st-search-box">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              className="st-search-icon"
+              aria-hidden="true"
+            >
+              <circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.5" />
+              <path d="m10.5 10.5 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+            <input
+              id="customer-search"
+              type="search"
+              name="customer-search"
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              placeholder="Gõ tên khách hàng…"
+              className="st-search-input"
+            />
+          </div>
         </div>
 
         <div className="st-filter-pills" role="group" aria-label="Lọc trạng thái hội thoại">
@@ -81,11 +87,12 @@ export default function ConversationList({
             <button
               key={tabKey}
               type="button"
+              aria-pressed={filterTab === tabKey}
               onClick={() => onFilterChange(tabKey)}
               className={filterTab === tabKey ? 'st-pill is-active' : 'st-pill'}
             >
               <span>{label}</span>
-              <span className="st-pill-count">{count}</span>
+              <span className="st-pill-count">({count})</span>
             </button>
           ))}
         </div>
@@ -94,7 +101,7 @@ export default function ConversationList({
       <ul className="st-customer-list">
         {customers.map((c) => {
           const isActive = c.id === activeId;
-          const statusDot = getStatusDot(c.status);
+          const badge = getStatusBadgeInfo(c.status);
 
           return (
             <li key={c.id}>
@@ -105,26 +112,25 @@ export default function ConversationList({
               >
                 <span className="st-customer-bar" aria-hidden="true" />
                 <div className="st-avatar-wrap">
-                  <Avatar src={c.avatar} initials={c.initials} alt={c.name} size={40} />
-                  <span
-                    className={`st-status-dot ${statusDot.tone}`}
-                    title={statusDot.label}
-                    aria-label={statusDot.label}
-                  />
+                  <Avatar src={c.avatar} initials={c.initials} alt={`Ảnh đại diện ${c.name}`} size={40} />
                 </div>
                 <div className="st-customer-body">
                   <div className="st-customer-top">
-                    <span className={c.unread ? 'st-customer-name is-unread' : 'st-customer-name'}>
-                      {c.name}
-                    </span>
+                    <span className="st-customer-name">{c.name}</span>
                     <span className="st-customer-time">{c.time}</span>
                   </div>
+                  <p className={c.unread ? 'st-customer-last is-unread' : 'st-customer-last'}>
+                    {c.last}
+                  </p>
                   <div className="st-customer-bottom">
-                    <p className={c.unread ? 'st-customer-last is-unread' : 'st-customer-last'}>
-                      {c.last}
-                    </p>
+                    <span className={`st-badge ${badge.tone}`}>
+                      <span className="st-badge-glyph" aria-hidden="true">
+                        {badge.glyph}
+                      </span>
+                      <span>{badge.label}</span>
+                    </span>
                     {c.unread ? (
-                      <span className="st-unread-dot" title="Chưa đọc" aria-label="Chưa đọc" />
+                      <span className="st-unread-badge">Tin mới</span>
                     ) : null}
                   </div>
                 </div>
@@ -134,7 +140,7 @@ export default function ConversationList({
         })}
 
         {customers.length === 0 ? (
-          <li className="st-inbox-empty">Không tìm thấy khách hàng.</li>
+          <li className="st-inbox-empty">Không tìm thấy khách hàng phù hợp.</li>
         ) : null}
       </ul>
     </aside>

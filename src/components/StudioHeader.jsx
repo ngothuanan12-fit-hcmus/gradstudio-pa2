@@ -10,64 +10,49 @@ export default function StudioHeader({
     <header className="st-header">
       <div className="st-header-brand">
         <a href="index.html" className="st-logo">
-          Grad<span>Studio</span>
+          GradStudio
         </a>
-        <span className="st-brand-tag">Studio</span>
+        <span className="st-brand-tag">Quản lý studio</span>
       </div>
 
       <nav className="st-header-nav" aria-label="Điều hướng studio">
-        <button type="button" className="st-nav-item is-active">
+        <a href="quan-ly.html" aria-current="page" className="st-nav-item is-active">
           <span>Hội thoại</span>
-          <span className="st-nav-count">3</span>
-        </button>
+          <span className="st-nav-count">5</span>
+        </a>
 
         <button
           type="button"
           onClick={onToggleBooking}
+          aria-expanded={isBookingOpen}
           className={isBookingOpen ? 'st-nav-item is-active' : 'st-nav-item'}
         >
-          <span>Booking</span>
-          {isBookingOpen ? <span className="st-nav-dot" /> : null}
+          <span>Booking mới</span>
         </button>
 
         <button
           type="button"
           onClick={onToggleResource}
+          aria-expanded={isResourceOpen}
           className={isResourceOpen ? 'st-nav-item is-active' : 'st-nav-item'}
         >
-          <span>Lịch studio</span>
-          {isResourceOpen ? <span className="st-nav-dot" /> : null}
-        </button>
-
-        <button
-          type="button"
-          onClick={onToggleResource}
-          className={isResourceOpen ? 'st-nav-item is-active' : 'st-nav-item'}
-        >
-          <span>Tài nguyên</span>
+          <span>Lịch tài nguyên</span>
         </button>
 
         <a href="lich-chup.html" className="st-nav-item">
-          <span>Lịch chụp khách</span>
+          <span>Khách hàng: Lịch chụp GS-1024</span>
         </a>
       </nav>
 
       <div className="st-header-user">
-        <button type="button" aria-label="Thông báo" className="st-bell-btn">
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path
-              d="M5 8a5 5 0 0 1 10 0c0 4 1.5 5.5 1.5 5.5h-13S5 12 5 8ZM8.5 16.5a1.6 1.6 0 0 0 3 0"
-              stroke="currentColor"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="st-bell-dot" />
-        </button>
-
         <div className="st-staff-profile">
-          <img src={staffThaoAvatar} alt="Thảo" className="st-staff-avatar" />
+          <img
+            src={staffThaoAvatar}
+            alt="Ảnh đại diện nhân viên Thảo"
+            width="36"
+            height="36"
+            className="st-staff-avatar"
+          />
           <span className="st-staff-name">
             <strong>Thảo</strong>
             <span className="st-staff-role"> · Quản lý studio</span>

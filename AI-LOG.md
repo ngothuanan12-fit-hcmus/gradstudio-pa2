@@ -912,6 +912,16 @@ Changed: replaced all undefined CSS variables (`--border`, `--border-strong`, `-
 Checks: `npm run lint` exits 0 with no output.
 By hand: Khánh reviewed the pages and requested the style synchronization and AI-slop audit.
 
+## 2026-11-11 — Style sync Step 2: align statusConfig labels and studio reply wording in src/data.js
+
+Who: Khánh (24120340).
+Commit: 2d2bb68.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: synchronize status labels and studio voice with `index.html` and `CLAUDE.md`.
+Changed: `src/data.js` changed in its own commit as a shared file. Updated `statusConfig` so `confirmed` reads `Đã chốt lịch` and `pending` reads `Chờ cọc 30%` (matching the exact status names in `CLAUDE.md`), and aligned the studio's opening reply in `createInitialMessages` with `index.html` (`"Dạ để studio kiểm tra lịch thợ makeup, thợ chụp và phòng rồi báo lại ạ."`, using `"studio"` instead of `"mình"`).
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
 
 
 
