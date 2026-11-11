@@ -399,4 +399,12 @@ Bây giờ tôi cần bạn lên plan để làm trang Quản lý với Lịch c
 Xác nhận thực hiện
 ```
 
+```text
+Lên plan Bây giờ tôi cần bạn xem coi trang index.hmtl dùng những frontm, màu, style nào. Để đồng bộ lại với trang quan-ly.html và lich-chup.html. Sau đó audit lại 2 trang đó những chỗ nào còn AI Slop thì điều chỉnh lại 
+```
+
+```text
+Build cho tôi
+```
+
 
