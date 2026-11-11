@@ -49,11 +49,11 @@ export default function QuanLy() {
 
   return (
     <AdminLayout>
-      <h1 className="page-title">Quản lý booking</h1>
-      <p className="page-lede">
-        Admin Thảo · Hội thoại, lịch thợ makeup, thợ chụp, phòng chụp và form booking mới của studio.
-      </p>
-      <p className="status-line" role="status">{status}</p>
+      {/* A short page top: the heading and the pinned status of GS-1024 side by side on wide screens. */}
+      <div className="admin-top">
+        <h1 className="page-title">Quản lý booking</h1>
+        <p className="status-line" role="status">{status}</p>
+      </div>
 
       <div className="admin-grid">
         <section className="panel admin-convs" id="hoi-thoai" aria-labelledby="convs-title">

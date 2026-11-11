@@ -4,9 +4,9 @@
 /* Status filter as pressed buttons with counts; they wrap in the narrow column. The pressed one is filled with the
    body colour, not the primary style, so "Tạo booking" stays the page's one primary button. */
 .conv .status-badge { white-space: nowrap; }
-.filter-chips { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.filter-chips { display: flex; flex-wrap: wrap; gap: var(--space-4); }
 .filter-chips .btn[aria-pressed='true'] { color: var(--surface); background: var(--ink); border-color: var(--ink); }
-.filter-chips .btn { min-height: var(--control-height-sm); padding: var(--space-4) var(--space-12); border-radius: var(--radius-pill); font-weight: 500; }
+.filter-chips .btn { min-height: var(--control-height-sm); padding: var(--space-4) var(--space-8); border-radius: var(--radius-pill); font-weight: 500; }
 
 .conv-list { display: grid; align-content: start; margin: 0; padding: 0; list-style: none; }
 .conv-list li + li { border-top: 1px solid var(--line); }
@@ -183,8 +183,6 @@
     align-items: start;
   }
   .admin-convs { grid-area: convs; }
-  .tl .tl-block.is-short { justify-content: flex-start; padding: 0 var(--space-8); }
-  .tl .tl-block.is-short .tl-word { display: inline; }
   .admin-chat { grid-area: chat; }
   .sched { grid-area: sched; }
 }
@@ -240,8 +238,8 @@
     background: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 10%), var(--surface-raised);
     border: 1px solid var(--line); border-radius: var(--radius-sm);
   }
-  /* A one-hour block is too narrow for its word below 1280 px: it keeps its symbol (the key above explains it) and the
-     list below gives the full entry, so nothing is cut off. */
+  /* A one-hour block is too narrow for its word: it keeps its icon (the key above explains it) and the list below
+     gives the full entry, so nothing is cut off or broken over two lines. */
   .tl-block.is-short { justify-content: center; padding: 0; }
   .tl-block.is-short .tl-word { display: none; }
   /* When the start time changes, Linh's blocks slide to their new place; nothing moves with reduced motion. */
@@ -268,3 +266,14 @@
 /* The main button in two lines: the action, then who continues. */
 .booking-card > .btn-primary { flex-direction: column; gap: 0; padding-block: var(--space-8); }
 .btn-sub { font-weight: 400; }
+
+/* Page top and width: the management page uses more of a wide screen. */
+.admin-main { max-width: 1440px; gap: var(--space-16); padding-block: var(--space-24); }
+.admin-top { display: grid; gap: var(--space-8); }
+@media (min-width: 1280px) {
+  .admin-top { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--space-24); }
+}
+/* The schedule list, one line per block where there is room: kind, label, times. */
+.sched-block { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-4) var(--space-12); }
+/* A clash is hatched as well as named and marked with its icon. */
+.kind-conflict { background: repeating-linear-gradient(135deg, var(--danger-soft) 0 6px, var(--surface) 6px 12px); }

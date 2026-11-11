@@ -14,7 +14,7 @@ export default function AdminLayout({ children }) {
           </ul>
         </nav>
       </header>
-      <main className="page-main">{children}</main>
+      <main className="page-main admin-main">{children}</main>
       <footer className="page-footer">GradStudio. Bản mẫu cho môn CSC13008, dữ liệu minh họa.</footer>
     </>
   );
