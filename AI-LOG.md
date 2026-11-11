@@ -872,6 +872,16 @@ Changed: rewrote `src/components/ResourceSchedule.jsx` with the date switcher (`
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — Full port Step 6: QuanLy 3-pane workspace and admin stylesheet
+
+Who: Khánh (24120340).
+Commit: 736f53d.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: wire the complete 3-pane `StudioConversations.tsx` workspace and `Toast` into `src/pages/QuanLy.jsx` and write the studio stylesheet in `src/styles/admin.css`.
+Changed: rewrote `src/pages/QuanLy.jsx` with the full conflict resolution, slot suggestion selection, customer agreement simulation, quote sending, booking creation (`#GS-1024`), and toast notifications; rewrote `src/styles/admin.css` using the project's shared color tokens (`--ground`, `--surface`, `--ink`, `--accent`, `--free`, `--danger`) for the 3-pane layout (`CustomerInbox`, `ChatStream` + collapsible `BookingForm`, and `ResourceSchedule` Gantt drawer).
+Checks: `npm run lint` and `npm run build` both pass with 0 warnings/errors.
+By hand: none.
+
 
 
 
