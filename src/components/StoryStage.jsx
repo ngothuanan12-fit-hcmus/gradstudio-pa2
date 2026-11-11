@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Button from './Button.jsx';
+import useZoomOut from './useZoomOut.js';
 import { formatVND, packages } from '../data.js';
 
 const PLACES = ['at-right', 'at-left', 'at-lefttop'];
@@ -11,6 +12,8 @@ export default function StoryStage({ start }) {
   const canvasRef = useRef(null);
   const barRef = useRef(null);
   const veilRef = useRef(null);
+  const titleRef = useRef(null);
+  useZoomOut(titleRef);
 
   useEffect(() => {
     const story = storyRef.current;
@@ -30,7 +33,7 @@ export default function StoryStage({ start }) {
         <canvas className="stage-view" ref={canvasRef} aria-hidden="true" />
         <div className="stage-veil" ref={veilRef} />
         <div className="cap at-center">
-          <h1 className="story-title">Lưu lại ngày <em>ra trường</em></h1>
+          <h1 className="story-title" ref={titleRef}>Lưu lại ngày <em>ra trường</em></h1>
           <p>Cuộn xuống để bước vào lớp.</p>
         </div>
         <div className="cap at-top">

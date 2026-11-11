@@ -1,7 +1,11 @@
+import { useRef } from 'react';
 import Button from './Button.jsx';
+import useZoomOut from './useZoomOut.js';
 
 // The first screen without 3D: phones, reduced motion, no WebGL, or while the scene is still loading.
 export default function StoryHero() {
+  const titleRef = useRef(null);
+  useZoomOut(titleRef);
   return (
     <section className="hero">
       <img
@@ -14,7 +18,7 @@ export default function StoryHero() {
         alt="Phòng học trống với bàn gỗ, tường vàng và cửa sổ xanh"
       />
       <div className="hero-text">
-        <h1 className="story-title">Lưu lại ngày <em>ra trường</em></h1>
+        <h1 className="story-title" ref={titleRef}>Lưu lại ngày <em>ra trường</em></h1>
         <p>Studio chụp kỷ yếu lớp, ảnh tốt nghiệp và chân dung CV. Hỏi giá và lịch trống ngay trên web.</p>
         <div className="story-actions">
           <Button href="#goi-chup">Xem gói chụp</Button>

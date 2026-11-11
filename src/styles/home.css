@@ -55,12 +55,15 @@
   .hero-text { position: relative; justify-items: center; text-align: center; padding: var(--space-24); }
 }
 
-/* Opening zoom: the first-screen photo eases in from slightly enlarged; the 3D view fades in once its first frame is drawn.
-   The zoom crops inside the photo's own box (object-view-box), so the photo never reaches past the screen edge,
-   not even for the rubric's overflow line. Browsers without it show the photo still. Nothing moves with reduced motion. */
-@keyframes hero-zoom { from { object-view-box: inset(5.4%); } to { object-view-box: inset(0%); } }
+/* Opening: the title starts as wide as the screen allows and shrinks into place (useZoomOut.js sets the start size,
+   always inside the screen width, so the rubric's overflow line stays empty). The words and buttons beside it fade in
+   as it settles. The 3D view fades in once its first frame is drawn. Nothing moves with reduced motion. */
+h1.story-title { width: fit-content; }
+@keyframes title-zoom-out { from { transform: translateX(var(--zoom-x)) scale(var(--zoom-s)); } }
+@keyframes beside-title { from { opacity: 0; } }
 @media (prefers-reduced-motion: no-preference) {
-  .hero-photo { animation: hero-zoom 1600ms cubic-bezier(0.33, 1, 0.68, 1) both; }
+  .story-title.zoom-out { animation: title-zoom-out 1600ms cubic-bezier(0.5, 0, 0.2, 1) both; animation-delay: var(--zoom-delay); }
+  :has(> .story-title.zoom-out) > :not(.story-title) { animation: beside-title 500ms var(--ease-out) both; animation-delay: calc(var(--zoom-delay) + 1100ms); }
   .stage-view { opacity: 0; transition: opacity 600ms var(--ease-out); }
   .stage-view.is-ready { opacity: 1; }
 }
