@@ -270,6 +270,8 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 > vậy chắc bỏ luôn phần đặt ảnh chạy theo chuột mà cố gắng cải thiện giao diện của đặt gói, mình đồng ý với hướng đề của chat, theo bạn có nên thêm nút nhảy tới chat không và vì sao, xét thực tế sử dụng và giao diện thực tế có khớp không
 
 > mình đã báo cho Khánh rồi, giờ thực hiện bước 1
+
+> duyệt
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
