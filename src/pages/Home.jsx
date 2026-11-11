@@ -48,10 +48,22 @@ export default function Home() {
         </ol>
       </section>
 
-      <section className="home-section" aria-labelledby="hoi-studio-title">
-        <h2 className="section-heading" id="hoi-studio-title">Nhắn cho studio</h2>
-        <p>Kể studio bạn muốn chụp gì, ngày nào, đi mấy người. Studio xem lịch thợ chụp, makeup và phòng rồi trả lời trong chat.</p>
-        <ChatDock open={chatOpen} onToggle={() => setChatOpen(!chatOpen)} packageName={asking?.name} />
+      <section className="home-section chat-section" aria-labelledby="hoi-studio-title">
+        <div className="chat-panel">
+          <h2 className="section-heading" id="hoi-studio-title">Nhắn cho studio</h2>
+          <p>Kể studio bạn muốn chụp gì, ngày nào, đi mấy người. Studio xem lịch thợ chụp, makeup và phòng rồi trả lời trong chat.</p>
+          <ChatDock open={chatOpen} onToggle={() => setChatOpen(!chatOpen)} packageName={asking?.name} />
+        </div>
+        <img
+          className="chat-photo"
+          src="./photos/lop-hoc-800.webp"
+          srcSet="./photos/lop-hoc-800.webp 800w, ./photos/lop-hoc-1600.webp 1600w"
+          sizes="(min-width: 1280px) 600px, 1px"
+          width="1600"
+          height="1067"
+          alt=""
+          loading="lazy"
+        />
       </section>
 
       <p className="home-section home-note">
