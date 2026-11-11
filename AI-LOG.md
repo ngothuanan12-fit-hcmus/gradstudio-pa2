@@ -685,3 +685,12 @@ Kept: a plan, awaiting An's approval, in three small steps, each stopped for rev
 Changed: nothing.
 Rejected: nothing yet.
 By hand: An's request.
+
+## 2026-11-11 — where the cursor trail could go, and a chat that looks like a live chat widget
+Commit: the commit that adds this entry, directly after 85729aa.
+Tool: Claude Code (Claude Opus 5.5), reading the brief's *Fix these*, `CLAUDE.md` and `PROTOTYPE.md`.
+Asked for: other places for the cursor trail than the package section, which must stay clear, and a reminder to restyle the landing chat as a live chat box or chat widget.
+Kept: options for An, none built yet. Trail: (a) the closing moment of the 3D story, behind the closing words, desktop only; (b) a footer band with the studio name, next to the photo credits; (c) the process section; (d) a new photo band, which would need more licensed photos and their sources. Recommended (a) or (b), where no task is done. Chat: a real floating widget conflicts with the brief in two ways: *Fix these* says the floating chat covered content and must hide nothing at 360 px, and `index.html` must show Linh's question and the studio's reply when opened, which a closed widget does not. Proposed instead: the chat keeps its place in the page but looks like a live chat widget (a header with the studio's name and avatar, message bubbles, the typing bar at the bottom), optionally with a small "Chat với studio" button in the corner at 768 px or wider that only jumps to the chat and hides while the chat is on screen. `CLAUDE.md` ("the chat never floats over content") and the design choice in `PROTOTYPE.md` stay as they are unless An picks a floating button.
+Changed: nothing.
+Rejected: nothing yet.
+By hand: An's request.

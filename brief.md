@@ -263,6 +263,9 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 ### 1.21 Zoom-in intro, photos that follow the cursor, and button states (2026-11-11)
 
 > mình muốn áp dụng intro theo kiểu zoom in  được không, với muốn ảnh theo theo chuột vì web gốc cũng có áp dụng kiểu tương tự, không cần sửa bảng màu, chỉ cần sửa vài nút được không
+
+> ảnh chạy theo chuột mình nghĩ nên áp dụng đặt ở phần gói chụp vì phần đó cần rõ ràng, nếu được có thể gợi ý cho mình vài phương án để áp dụng hiệu ứng đó
+> bên cạnh đó cần phải nhớ phải sửa lại khung chat theo kiểu Live chat box, Chatbox / Chat widget,
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
