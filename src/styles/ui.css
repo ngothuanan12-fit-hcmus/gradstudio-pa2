@@ -62,7 +62,7 @@
   gap: var(--space-4);
   max-width: 100%;
   min-height: 28px;
-  padding: 2px var(--space-8);
+  padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-sm);
   font-size: 16px;
   line-height: 24px;

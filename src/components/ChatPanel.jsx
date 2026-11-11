@@ -50,7 +50,8 @@ export default function ChatPanel({
             disabled={disabled}
             aria-describedby={note ? noteId : undefined}
           />
-          <Button type="submit" disabled={disabled}>Gửi</Button>
+          {/* While sending is not available the button is not styled as the page's primary action. */}
+          <Button variant={disabled ? 'secondary' : 'primary'} type="submit" disabled={disabled}>Gửi</Button>
         </div>
         {note ? <p className="chat-note" id={noteId}>{note}</p> : null}
       </form>
