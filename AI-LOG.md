@@ -1317,3 +1317,12 @@ Kept: the answer: it breaks none. The brief's and `CLAUDE.md`'s no-inner-scrolli
 Changed: nothing.
 Rejected: nothing.
 By hand: An's question.
+
+## 2026-11-11 — full check of contrast and every rule before the export
+Commit: the commit that adds this entry, directly after 2cb1a2f.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built `dist/` (rubric checks, contrast against the real pixels at 360, 768 and 1280 px, the 3D story frames at 768 and 1280 px), `npm run lint`, and a search of `src/` against the NEVER list.
+Asked for: a check of contrast and of every rule on all pages before exporting for W3C.
+Kept: awaiting An's decision on the findings. Passed: lint with no output; rubric checks FAILURES: 0 (no sideways scroll, empty overflow line, controls 44 px, no text under 16 px, one `<h1>`, four landmarks, labels, `alt`, no console error or failed request, main flow with reloads, `dist/` from a subfolder, Slow 4G shell 0.7 s and page 2.0 s); one primary button per page; contrast: no failing text on any page (lowest 4.61:1 for body-size text, the avatar letters on `quan-ly.html`; lowest 3.93:1 for large text, "ra trường" over the 3D scene, which needs 3:1); status icons 4.5:1 or more on white. Found: (1) after *Tạo booking* the address carries the form fields (`lich-chup.html?customer=…&start=14:00…`), against NEVER 8, although `lich-chup.html` never reads them; (2) the two day timelines set `left` and `width` in inline `style`, computed from the data (NEVER 12 is about appearance; open to a strict reading); (3) `PROTOTYPE.md` still says "coloured dot" for the status and names the submit "Tạo booking · Khách hàng: mở lịch chụp GS-1024", and still has the draft line.
+Changed: the first contrast and button runs crashed while printing Vietnamese to a file (Windows code page), not on the page; rerun with UTF-8. The contrast script's "fails" on `span.sr-only` were text hidden for screen readers, measured by mistake, and were left out.
+Rejected: nothing.
+By hand: An's request.

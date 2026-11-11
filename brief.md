@@ -411,6 +411,9 @@ An also attached `gradstudio-huong-cai-thien.md`, a list of improvements for the
 An also attached screenshots of the conversation rows and the filter buttons (an older build with coloured dots), and of a messaging app's filter tabs ("Tất cả", "Chưa đọc", "Nhóm", "···").
 
 > trạng thái có ô trượt riêng có bị vi phạm không, nếu vi phạm thì không làm
+
+> kiểm tra lại độ tương phản và tất cả các ràng buộc của các trang xem có phù hợp và đúng quy định và giải quyết được hết chưa rồi mình mới xuất
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
