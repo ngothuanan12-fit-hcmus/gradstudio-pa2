@@ -260,19 +260,19 @@ export const initialCustomers = [
 export const defaultPackageTitle = 'Gói Tốt nghiệp Premium · 2 giờ · 30 ảnh chỉnh';
 
 export const statusConfig = {
-  consulting: { label: 'Đang tư vấn', tone: 'outline' },
-  unanswered: { label: 'Chưa trả lời', tone: 'dark' },
-  confirmed: { label: 'Đã xác nhận', tone: 'success' },
+  consulting: { label: 'Đang tư vấn', tone: 'pending' },
+  unanswered: { label: 'Chưa trả lời', tone: 'neutral' },
+  confirmed: { label: 'Đã chốt lịch', tone: 'success' },
   done: { label: 'Hoàn thành', tone: 'neutral' },
   agreed: { label: 'Đã chốt lịch', tone: 'success' },
-  pending: { label: 'Chờ thanh toán cọc 30%', tone: 'pending' },
+  pending: { label: 'Chờ cọc 30%', tone: 'pending' },
 };
 
 export const createInitialMessages = () => {
   const res = {
     linh: [
       { id: 1, kind: 'text', from: 'me', text: 'Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?', time: '17:20' },
-      { id: 2, kind: 'text', from: 'studio', text: 'Để mình kiểm tra lịch cho bạn nhé', time: '17:21' },
+      { id: 2, kind: 'text', from: 'studio', text: 'Dạ để studio kiểm tra lịch thợ makeup, thợ chụp và phòng rồi báo lại ạ.', time: '17:21' },
     ],
   };
   initialCustomers.slice(1).forEach((cust, idx) => {

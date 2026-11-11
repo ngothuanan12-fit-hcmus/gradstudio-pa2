@@ -902,6 +902,16 @@ Changed: imported `../styles/admin.css` in `src/pages/QuanLy.jsx` and `../styles
 Checks: `npm run lint` and `npm run build` both pass with 0 warnings/errors; Chrome DevTools verification at `1440x900` confirmed 0 console errors/issues, full 3-column `StudioConversations` workflow (`Chọn 14:00` → `Chốt giờ này` → `Gửi báo giá vào chat` → `Tạo booking`), and full `MyPhotoSessions` workflow (`Thanh toán cọc 540.000đ` → `Đã đặt lịch`).
 By hand: none.
 
+## 2026-11-11 — Style sync Step 1: synchronize admin.css and schedule.css tokens, fonts and radii with index.html
+
+Who: Khánh (24120340).
+Commit: fdf2f12.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: audit `index.html` (`tokens.css`, `base.css`, `ui.css`, `home.css`) for fonts, color tokens, and styles, synchronize `quan-ly.html` and `lich-chup.html` with `index.html`, and strip AI Slop across both pages while committing and logging each step in `AI-LOG.md`.
+Changed: replaced all undefined CSS variables (`--border`, `--border-strong`, `--ink-soft`, `--muted`, `--free-bg`, `--danger-bg`, `--accent-hover`) and hardcoded hex/rgba colors (`#E2D3BF`, `#C9A46A`, `#B68846`, `#FFFDF9`, `#FFFFFF`) in `src/styles/admin.css` and `src/styles/schedule.css` with the exact tokens from `src/styles/tokens.css` (`--ground`, `--surface`, `--surface-raised`, `--ink`, `--ink-muted`, `--accent`, `--on-accent`, `--accent-soft`, `--line`, `--line-strong`, `--chalk`, `--free`, `--free-soft`, `--danger`, `--danger-soft`, `--busy`, `--shadow-panel`). Synchronized the typography scale (`--font-display` only for headings ≥ 24px and 32px prices; `--font-sans` at 24px / 18px / 16px body / 14px meta, eliminating `10.5px–13.5px` micro-text), spacing tokens (`--space-4` to `--space-64`), control heights (`--control-height: 48px`, `--control-height-sm: 44px`), and border radii (`--radius-md: 8px`, `--radius-sm: 4px`), and removed `100vh overflow: hidden`, `max-height: 58vh` scroll traps, `backdrop-filter: blur`, `animate-pulse`, and `stSpin`.
+Checks: `npm run lint` exits 0 with no output.
+By hand: Khánh reviewed the pages and requested the style synchronization and AI-slop audit.
+
 
 
 
