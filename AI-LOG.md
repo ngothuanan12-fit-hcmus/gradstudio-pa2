@@ -703,3 +703,12 @@ Kept: the answer and a proposal, awaiting An's approval. Corner button: not reco
 Changed: nothing.
 Rejected: An rejected the cursor trail; the assistant's options (a) to (d) were dropped.
 By hand: An's decisions.
+
+## 2026-11-11 — step 1: button states
+Commit: 70ddfc4 for the styles (`src/styles/base.css`, a shared file, and `src/styles/home.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built pages.
+Asked for: step 1 of the plan, the button states. An had already told Khánh about PR #3.
+Kept: awaiting An's review. Every `.btn` eases its changes over 200 ms with one easing curve; with a mouse, a button lifts 1 px on hover, the primary one brightens slightly, secondary and ghost buttons get a faint fill and a light border; pressed, a button settles back and shrinks to 0.98; the primary button has a thin light edge on top. Hover rules apply only where the device can hover, so touch screens keep no stuck state. Disabled buttons do not change. With reduced motion, no movement and no transition. The keyboard focus ring was already in place and is unchanged. The easing and duration are new custom properties in `base.css`, not in `tokens.css`, which is generated from `design-system/tokens.json`. The change also reaches Khánh's pages through `base.css`.
+Changed: the new hover rule would have replaced the dark backing of the "Chat với studio" link over the 3D scene with a faint fill; the link now keeps its backing on hover. Checks: hover, pressed and focus measured on all three pages at 1280 px: label contrast on hover 11.6:1 for the landing primary button, 16.9:1 for the stage link, 5.1:1 for the management page's primary button (needs 4.5:1); disabled "Gửi" unchanged; reduced motion gives no transform and a 0 s transition; lint clean; rubric checks FAILURES: 0 on all three pages and widths; Slow 4G about 0.7 s to the shell and 2.0 s to the page.
+Rejected: nothing yet.
+By hand: An's request.
