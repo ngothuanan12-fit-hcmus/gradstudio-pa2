@@ -137,6 +137,7 @@ export default function QuanLy() {
           title="Lịch thợ và phòng"
           date="Thứ Bảy, 24/10/2026"
           rows={scheduleRows}
+          start={start}
           slots={freeSlots}
           picked={picked}
           conflict={conflict}

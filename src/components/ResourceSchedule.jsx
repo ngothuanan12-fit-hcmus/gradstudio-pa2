@@ -1,5 +1,5 @@
 import Icon from './Icon.jsx';
-import { toMinutes, toPct } from '../utils/time.js';
+import { fmtTime, toMinutes, toPct } from '../utils/time.js';
 
 const KINDS = {
   busy: { label: 'Bận', icon: 'square' },
@@ -23,10 +23,29 @@ function lanes(blocks) {
   });
 }
 
+// Linh's blocks follow the start time chosen in the booking card: make-up the hour before with Mai, the two-hour shoot
+// with Tuấn in Phòng B. A make-up hour that falls inside one of Mai's busy blocks is a clash.
+function withLinh(rows, start) {
+  const t = toMinutes(start);
+  const makeup = { from: fmtTime(t - 60), to: fmtTime(t) };
+  const shoot = { from: fmtTime(t), to: fmtTime(t + 120) };
+  const clash = (row) => row.blocks.some((b) => b.kind === 'busy' && toMinutes(b.from) < t && t - 60 < toMinutes(b.to));
+  const extra = {
+    mai: (row) => ({ id: 'linh-makeup', ...makeup, label: clash(row) ? `Linh yêu cầu ${start}` : 'Linh · makeup', kind: clash(row) ? 'conflict' : 'proposed' }),
+    tuan: () => ({ id: 'linh-shoot', ...shoot, label: 'Linh · GS-1024', kind: 'proposed' }),
+    'phong-b': () => ({ id: 'linh-room', ...shoot, label: 'Linh · GS-1024', kind: 'proposed' }),
+  };
+  return rows.map((row) => {
+    const blocks = extra[row.id] ? [...row.blocks, extra[row.id](row)] : row.blocks;
+    return { ...row, blocks: [...blocks].sort((a, b) => toMinutes(a.from) - toMinutes(b.from)) };
+  });
+}
+
 // The resource calendar with the suggested times. From 768 px a day timeline gives the overview; it repeats what the
 // list says, so screen readers skip it. The list below is the readable record at every width: each block keeps its
 // kind as a word and a symbol, its label and its times, so nothing rests on colour or is cut off.
-export default function ResourceSchedule({ title, date, rows = [], slots = [], picked, conflict, onPick }) {
+export default function ResourceSchedule({ title, date, rows: baseRows = [], start, slots = [], picked, conflict, onPick }) {
+  const rows = start ? withLinh(baseRows, start) : baseRows;
   return (
     <section className="panel sched" id="lich-tai-nguyen" aria-labelledby="sched-title">
       <div className="panel-head">

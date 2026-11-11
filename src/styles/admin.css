@@ -234,7 +234,7 @@
   .tl-axis span:last-child { transform: translateX(-100%); }
   .tl-name { align-self: center; font-weight: 600; }
   .tl-track {
-    position: relative; height: calc(var(--lanes) * 64px);
+    position: relative; height: calc(var(--lanes) * 64px); transition: height 400ms var(--ease-out);
     background: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 10%), var(--surface-raised);
     border: 1px solid var(--line); border-radius: var(--radius-sm);
   }
@@ -242,8 +242,13 @@
      list below gives the full entry, so nothing is cut off. */
   .tl-block.is-short { justify-content: center; padding: 0; }
   .tl-block.is-short .tl-word { display: none; }
+  /* When the start time changes, Linh's blocks slide to their new place; nothing moves with reduced motion. */
+  .tl-block { transition: left 400ms var(--ease-out), width 400ms var(--ease-out), top 400ms var(--ease-out); }
   .tl-block {
     position: absolute; top: calc(var(--lane) * 64px + 6px); height: 52px; display: flex; align-items: center; padding: 0 var(--space-8);
     border-radius: var(--radius-sm); font-weight: 600; line-height: 20px; overflow-wrap: anywhere;
   }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tl-block { transition: none; }
 }
