@@ -89,11 +89,34 @@
 .cap .story-title em { --i: 1; }
 .cap > :nth-child(2) { --i: 2; }
 .cap > :nth-child(n + 3) { --i: 3; }
-/* The opening title tracks in with the camera: its letters start a little apart and close up over the camera's
-   move (the plain screen waiting for the scene uses the same spacing, so nothing jumps at the takeover). */
+/* The opening words appear with the camera: hidden at first, the title fades in while its letters close up from
+   0.22 em apart over the camera's move, the line under it follows. Then the band of light catches the title as it
+   crosses (a highlight drawn through the letters; outside it the colours are the usual ones). If the scene is slow
+   to arrive, the waiting screen shows its words after 1.5 s anyway. */
+@keyframes words-late { to { opacity: 1; letter-spacing: 0; } }
+@keyframes glint {
+  /* The letters' shadow would be painted over a background drawn through them, so it rests during the glint. */
+  from { -webkit-text-fill-color: transparent; text-shadow: none; background-position: 100% 0; }
+  to { -webkit-text-fill-color: transparent; text-shadow: none; background-position: 0 0; }
+}
 @media (prefers-reduced-motion: no-preference) {
+  .hero-bare .hero-text > *, .cap-open > * { opacity: 0; }
   .hero-bare .story-title, .cap-open .story-title { letter-spacing: 0.22em; }
-  .stage-view.is-ready ~ .cap-open .story-title { letter-spacing: 0; transition: letter-spacing 1800ms cubic-bezier(0.45, 0, 0.2, 1); }
+  .hero-bare .hero-text > * { animation: words-late 500ms var(--ease-out) 1500ms both; }
+  .stage-view.is-ready ~ .cap-open > * { opacity: 1; transition: opacity 1200ms var(--ease-out) 700ms; }
+  .stage-view.is-ready ~ .cap-open .story-title {
+    letter-spacing: 0;
+    transition: opacity 1200ms var(--ease-out), letter-spacing 1800ms cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  .cap-open .story-title, .cap-open .story-title em {
+    background: linear-gradient(105deg, var(--ink) 40%, #ffd9a0 50%, var(--ink) 60%) no-repeat;
+    background-size: 250% 100%; background-position: 100% 0;
+    -webkit-background-clip: text; background-clip: text;
+  }
+  .cap-open .story-title em { background-image: linear-gradient(105deg, var(--accent) 40%, #fff1dc 50%, var(--accent) 60%); }
+  .stage-view.is-ready ~ .cap-open .story-title, .stage-view.is-ready ~ .cap-open .story-title em {
+    animation: glint 1600ms cubic-bezier(0.45, 0, 0.55, 1) 1000ms;
+  }
 }
 /* The opening words are on screen from the start, before the scene's first frame sets them. */
 .cap-open { opacity: 1; visibility: visible; }
