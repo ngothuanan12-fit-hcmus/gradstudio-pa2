@@ -1209,3 +1209,12 @@ Kept: awaiting An's review. Linh's blocks are now worked out from the start time
 Changed: the static "Linh yêu cầu 09:00" block shown on arrival is gone with this change; the 09:00 clash on arrival is still stated in the booking card's note, which the brief's opening state asks for. Checks: on arrival Mai's proposed block at 50% of the day (13:00); after choosing 09:00 it is at 16% after 60 ms, 1% after 200 ms and 0% after 500 ms, in the second lane; with reduced motion at 0% after 60 ms; back to 14:00 restores it; round 5 checks again (no clipped or overlapping block, overflow line 0); rubric checks FAILURES: 0.
 Rejected: nothing yet.
 By hand: An's request.
+
+## 2026-11-11 — 10d: spacing and primary buttons
+Commit: ff98f80 (shared: `ui.css` badge padding, `ChatPanel.jsx` send button) and b0bc62b (`admin.css`, `QuanLy.jsx`), and the commit that adds this entry. 10c (badge position) was skipped by An for time.
+Tool: Claude Code (Claude Opus 5.5); a scan of the page styles for spacing off the 4–64 scale; Playwright for primary buttons and the round 5 checks.
+Asked for: 10d, then straight on to round 11.
+Kept: spacing values off the scale moved onto it: the 2 px gaps in the conversation rows and the schedule list to 4 px, the badge padding to 4 px, the timeline blocks' 6 px offset and 52 px height to 8 px and 48 px, the axis offset written from the tokens. One primary button per page: the pressed status filter is now filled with the body colour instead of the primary style, and the shared chat panel styles a disabled "Gửi" as secondary (on both the landing page and the management page). Primary buttons now: `index.html` "Xem gói chụp", `quan-ly.html` "Tạo booking · Khách hàng: mở lịch chụp GS-1024", `lich-chup.html` the disabled "Thanh toán cọc 30%".
+Changed: nothing beyond the request. Checks: round 5 checks again (no clipped or overlapping block); rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's choice to skip 10c.
