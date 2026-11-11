@@ -737,6 +737,17 @@ Changed: ported the session-type field (`Tốt nghiệp cá nhân` / `Tốt nghi
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — management page: ResourceSchedule active-slot summary and 3-column layout
+
+Who: Khánh (24120340).
+Commit: 0389a1e.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: updated `src/components/ResourceSchedule.jsx` and `src/styles/admin.css` so the schedule header reflects the currently selected form time (`start`), the legend swatches render each kind's glyph (`■`, `⚠`, `✓`, `◆`) inside the swatch, and at 1280 px the three resource rows (`Mai`, `Tuấn`, `Phòng B`) sit side by side in three columns.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
 
 
 
