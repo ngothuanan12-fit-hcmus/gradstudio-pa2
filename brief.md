@@ -275,6 +275,8 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 
 > ý mình là chữ "Lưu lại ngày
 > ra trường" phóng kiểu zoom out thì phải là nó phải từ màn hình xong nhỏ lại dần chữ không phải ảnh lớp học
+
+> mình thấy chưa mượt, khi hiện từ ngoài vào mình thấy có một ảnh thật của lớp học, lúc hiện từ ngoài nên để nền trống rồi mới hiện nét vẽ của lớp học được không
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
