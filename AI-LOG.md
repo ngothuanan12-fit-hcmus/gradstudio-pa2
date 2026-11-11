@@ -1263,3 +1263,12 @@ Kept: the verdict for An. Break a rule: a full-height frame where each column sc
 Changed: nothing.
 Rejected: nothing yet; the choice is An's.
 By hand: An's list.
+
+## 2026-11-11 — allowed improvements, part 1: message groups, price card, two-line button
+Commit: 1e6cb80 (shared: `data.js`, `ChatPanel.jsx`) and caaea99 (`BookingForm.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built pages.
+Asked for: apply the allowed items until 20:45, then prepare the hand-in.
+Kept: awaiting An's review. Messages in a row from one side form a group: the sender's name only on the first, the time only on the last, and on the management page the bubbles of a group share their inner corners. The studio's price message is a small card ("Báo giá": Gói Tốt nghiệp Premium, Giá 1.800.000đ, Cọc 30% 540.000đ, Còn lại 1.260.000đ; the brief's figures). The booking button reads in two lines, "Tạo booking GS-1024" and "Khách hàng: mở lịch chụp", so it is shorter to read and still says who continues. The landing chat alternates senders, so it looks as before.
+Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px in the chat or the card, overflow line 0, send still disabled with its note, the card's submit 66 px tall and still opens `lich-chup.html`. One of the assistant's test scripts read the first submit button inside the chat, which is now the card's; the script was corrected to read the message box's own button.
+Rejected: nothing yet.
+By hand: An's time limit.
