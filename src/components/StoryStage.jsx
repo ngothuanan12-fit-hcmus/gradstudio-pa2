@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Button from './Button.jsx';
-import useZoomOut from './useZoomOut.js';
+import useTitleDrop from './useTitleDrop.js';
 import { formatVND, packages } from '../data.js';
 
 const PLACES = ['at-right', 'at-left', 'at-lefttop'];
@@ -13,7 +13,7 @@ export default function StoryStage({ start }) {
   const barRef = useRef(null);
   const veilRef = useRef(null);
   const titleRef = useRef(null);
-  useZoomOut(titleRef);
+  useTitleDrop(titleRef);
 
   useEffect(() => {
     const story = storyRef.current;

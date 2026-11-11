@@ -1,13 +1,13 @@
 import { useRef } from 'react';
 import Button from './Button.jsx';
-import useZoomOut from './useZoomOut.js';
+import useTitleDrop from './useTitleDrop.js';
 
 // The first screen without 3D: phones, reduced motion, no WebGL, or while the scene is still loading.
 // While the 3D scene is on its way (bare), the screen stays empty behind the words and is laid out like the scene's
 // first frame, so the classroom first appears as the scene's line drawing and nothing jumps when the scene takes over.
 export default function StoryHero({ bare = false }) {
   const titleRef = useRef(null);
-  useZoomOut(titleRef);
+  useTitleDrop(titleRef);
   const actions = (
     <div className={bare ? 'story-actions stage-links' : 'story-actions'}>
       <Button href="#goi-chup">Xem gói chụp</Button>
