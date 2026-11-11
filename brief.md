@@ -354,6 +354,8 @@ An also attached `phan-tich-bencho-carousel.md`, an analysis of a "turntable" ca
 > Duyệt kế hoạch, theme xét lại các đề xuất của bạn có phù hợp về độ tương phản không, gợi ý lại các phương án cho lượt 1
 
 > Làm theo các đề xuất
+
+> Làm lượt 2 bổ sung các ý tưởng bạn đề xuất
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

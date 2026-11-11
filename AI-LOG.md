@@ -1074,3 +1074,12 @@ Kept: awaiting An's review. `lich-chup.html` now uses the dark theme of the land
 Changed: nothing beyond the request. Checks: rubric checks FAILURES: 0 on all three pages and widths, main flow reaches `lich-chup.html`; no console errors. Still open for later rounds, measured now: 12 texts at 14 px on `quan-ly.html` (status badges, unread counts) and 11 on `lich-chup.html` (status badge, weekday labels, "Hôm nay", the tag on 09:00).
 Rejected: nothing yet.
 By hand: An's choices.
+
+## 2026-11-11 — round 2: the conversation list
+Commit: fdcf36d (`ui.css`, shared: status badges 16 px) and 382b858 (`data.js`, `QuanLy.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: round 2 with the suggested ideas: filter buttons with counts, 16 px badges, sample conversations that fit their status.
+Kept: awaiting An's review. The status filter is now a row of buttons with counts, "Tất cả (4)", "Chưa trả lời (1)", "Đang tư vấn (1)", "Đã chốt lịch (1)", "Hoàn thành (1)", the chosen one pressed (`aria-pressed`) and filled; the group is labelled "Lọc theo trạng thái". Status badges (shared, so also on `lich-chup.html`) and unread counts are 16 px. Trần Minh Anh (*Chưa trả lời*) now asks "Studio cho em hỏi giá gói chân dung CV ạ." and Lê Gia Bảo (*Hoàn thành*) says "Em nhận đủ ảnh rồi, cảm ơn studio ạ.", written for this page (the earlier lines did not fit their status). Search placeholder shortened to "Tên hoặc tin nhắn" so it is not cut off.
+Changed: at 768 px the list sat in a 280 px side column, where names and badges broke over several lines (rows up to 244 px tall); the list now spans the full width below 1280 px and sits beside the chat from 1280 px (both breakpoints are the team's), and badges in the list stay on one line. This also adjusts the round 1 layout at 768 px. Checks at 360, 768 and 1280 px: no text under 16 px in the list, filter buttons 44 px, search 48 px, rows 86–88 px at 768 px, overflow line 0; each filter shows exactly its conversation, "Tất cả" all four; search "chân dung" finds Trần Minh Anh, "xyz" shows the empty message; rubric checks FAILURES: 0, main flow reaches `lich-chup.html`.
+Rejected: nothing yet.
+By hand: An's approval of the ideas.
