@@ -983,3 +983,76 @@ Kept: a plan, awaiting An's approval. Base: `main` for `quan-ly.html` and Khánh
 Changed: nothing.
 Rejected: nothing.
 By hand: An's decision to take over both pages.
+
+## 2026-11-08 — customer schedule page: the week it opens on
+
+Who: Khánh (24120340).
+Commit: 949e79d.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the second page of the redo in `brief.md` Part 6, on its own branch after the management page.
+Changed: `src/data.js` gains the week 19–25/10/2026. Saturday 24/10 carries the old 09:00 request, struck through because it clashed with Mai, then make-up 13:00–14:00 and the shoot 14:00–16:00. Sunday 25/10 has no events, so the empty state has a real day to show. The booking data added with the management page already holds the rest of this page's state.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the booking summary
+
+Who: Khánh (24120340).
+Commit: e81dc98.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: the booking information from screen 3 of the brief, in its one open state, with the exact status name.
+Changed: `src/components/BookingSummary.jsx` now reads GS-1024 with the package and its detail, the day, make-up 13:00–14:00 with Mai, the shoot 14:00–16:00 with Tuấn in Phòng B, and the package total. The badge reads *Đã thống nhất lịch · Chờ cọc 30%* with the dashed pending style, so the page never claims the slot is held.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the week view
+
+Who: Khánh (24120340).
+Commit: f2ef3b4.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: screen 3's week calendar, readable at every width, with the clash visible in text.
+Changed: `src/components/WeekCalendar.jsx` lists the seven days of 19–25/10/2026. Saturday 24/10 is marked *Hôm nay* and holds three events: the old 09:00 request, struck through and tagged *Đã bỏ vì trùng lịch*, then make-up 13:00–14:00 and the shoot 14:00–16:00. A day without events says *Không có lịch*. `src/styles/schedule.css` holds the rules in one column at every width, so no empty cell leaves a gap beside Saturday.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the 30% deposit
+
+Who: Khánh (24120340).
+Commit: 125d9b9.
+Tool: OpenCode (DeepSeek V4.1 Flash Free).
+Asked for: screen 3's deposit block, with the payment action disabled and a visible note, and no *Mô phỏng thanh toán*.
+Changed: `src/components/DepositCard.jsx` shows the 540.000đ deposit, the 1.260.000đ left after it and the 1.800.000đ package. *Thanh toán cọc 30%* is a disabled button described by a visible note: PA#2 has no payment, and the slot is kept only after the deposit succeeds and the studio checks the calendar again. `src/styles/schedule.css` gains the deposit rules.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: the page itself
+
+Who: Khánh (24120340).
+Commit: 1f3382a.
+Tool: OpenCode (DeepSeek V4.1 Flash Free), with Chrome DevTools on the built page.
+Asked for: the brief's one state on direct open (GS-1024 waiting for the 30% deposit), no *Mô phỏng thanh toán*, exact status names, and the "Xem đường đi" Google Maps link gone.
+Changed: `src/pages/LichChup.jsx` puts the week, the booking summary and the deposit in one page, with a `role="status"` line that never promises the slot. The status tabs, the map panel and the *Xem đường đi* link are gone; no control leads outside the three pages. `src/styles/schedule.css` gains the page layout. `PROTOTYPE.md` records the screen, the disabled deposit and its *Not wired yet* row.
+Checks: `npm run lint` exits 0 with no output; `npm run build` exits 0. On the built page at 360, 768 and 1280 px, `clientWidth` equals `scrollWidth` at each width and no element passes either edge. The deposit button is 48 px high and disabled, the note is visible, the page has one `<h1>`, no skipped heading level, no `role="tab"`, no link to Google Maps, one `role="status"`, and content text measures 16 px.
+By hand: none.
+
+## 2026-11-08 — customer schedule page: Done means checklist and screenshots
+
+Who: Khánh (24120340).
+Commit: 564a653.
+Tool: OpenCode (DeepSeek V4.1 Flash Free), with Chrome DevTools on the built page.
+Asked for: complete the 13-point Done means checklist in CLAUDE.md, align with the 7 new writing rules, save full-page screenshots, and record the W3C and accessibility checks.
+Changed: `checks/validator-lich-chup.txt` records 0 errors from W3C HTML5 validator and the DevTools accessibility audit (proper landmarks, one H1, no skipped heading levels, labeled buttons, valid DL/DT/DD lists). `screenshots/` gains `lich-chup-360.png`, `lich-chup-768.png`, and `lich-chup-1280.png`. `brief.md` records the prompts and instructions forwarded by Khánh following lead An's writing style.
+Checks:
+- #1 `npm run lint`: exit 0 with no warnings or errors.
+- #2 `npm run build` and preview: exit 0, three HTML files built, opened directly without 404.
+- #3 At 360, 768 and 1280 px: all content visible, links open `index.html` and `lich-chup.html`.
+- #4 Scroll width vs client width: `scrollWidth === clientWidth` at 360px (360/360), 768px (768/768), 1280px (1280/1280).
+- #5 Console: 0 errors, 0 warnings during interaction.
+- #6 Keyboard Tab/Enter: focus-visible outline active, deposit button disabled with visible note.
+- #7 W3C validator and accessibility tree: 0 errors, saved in `checks/validator-lich-chup.txt`.
+- #8 Text size and contrast: body text 16px, button height 48px, contrast >= 4.5:1.
+- #9 NEVER list: no framework beyond React/Vite, no inline style, keys are IDs, no localStorage.
+- #10 Slow 4G test: renders promptly with shell, no layout shifts.
+- #11 `git diff --stat`: only verification artifacts, docs and brief.
+- #12 Screenshots: `screenshots/lich-chup-360.png`, `screenshots/lich-chup-768.png`, `screenshots/lich-chup-1280.png` captured.
+- #13 GradStudio brief: one state on open (GS-1024 waiting 30% deposit), week 19–25/10 with 09:00 struck out, no demo switcher, no Google Maps link.
+By hand: none.

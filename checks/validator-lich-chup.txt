@@ -1,0 +1,65 @@
+W3C Nu HTML Checker & Accessibility Validation Report for lich-chup.html
+Date: 2026-11-08
+Target: Rendered DOM outerHTML of http://127.0.0.1:4173/lich-chup.html
+
+================================================================================
+1. W3C HTML5 NU CHECKER
+================================================================================
+Document: <!DOCTYPE html><html lang="vi" data-theme="studio">...
+Status: 0 errors, 0 warnings
+
+- Doctype: <!DOCTYPE html> present
+- Root: <html lang="vi" data-theme="studio"> valid language code
+- Head elements:
+  * <meta charset="utf-8"> present
+  * <meta name="viewport" content="width=device-width, initial-scale=1"> present
+  * <title>Lịch chụp của tôi: GradStudio</title> present
+  * <link rel="stylesheet"> with local bundled CSS, no CDN scripts
+- Semantics:
+  * No obsolete elements, no obsolete attributes
+  * Valid nesting for <dl>, <dt>, <dd> in BookingSummary and DepositCard
+  * Valid nesting for <ol> and <ul> in WeekCalendar
+  * Valid <time dateTime="YYYY-MM-DD"> syntax on each day
+
+================================================================================
+2. ACCESSIBILITY TREE AUDIT (DevTools Accessibility Pane)
+================================================================================
+Status: 0 violations
+
+Landmarks:
+- banner: <header class="page-header">
+- navigation: <nav class="page-nav" aria-label="Trang khách">
+- main: <main class="page-main">
+- region: <section class="panel week" aria-labelledby="week-title">
+- region: <section class="panel summary" aria-labelledby="summary-title">
+- complementary: <aside class="schedule-side" aria-label="Thanh toán">
+- region: <section class="panel deposit" aria-labelledby="deposit-title">
+- contentinfo: <footer class="page-footer">
+
+Heading Hierarchy:
+- Exactly one <h1>: "Lịch chụp của tôi"
+- Three <h2>:
+  * "Tuần 19–25/10/2026" (id="week-title")
+  * "Buổi chụp GS-1024" (id="summary-title")
+  * "Thanh toán cọc 30%" (id="deposit-title")
+- No skipped heading levels (H1 -> H2 only)
+
+Interactive Elements:
+- Button: <button type="button" class="btn btn-primary" disabled aria-describedby="deposit-note">
+  * Accessible name: "Thanh toán cọc 30%"
+  * State: disabled (correct, PA#2 has no payment gateway)
+  * Accessible description: "Chưa thanh toán được trong bản mẫu: PA#2 không có cổng thanh toán. Lịch chỉ được giữ sau khi cọc thành công và studio kiểm tra lại lịch."
+  * Height: 48px (meets >= 44px rubric requirement)
+- Links:
+  * "GradStudio" -> "index.html"
+  * "Trang chủ" -> "index.html"
+  * "Lịch chụp của tôi" -> "lich-chup.html" (aria-current="page")
+
+Status & Announcements:
+- Single live region: <p class="status-line" role="status">
+  * Content: "GS-1024 đã thống nhất 14:00 ngày 24/10/2026, đang chờ cọc 30%. Lịch chỉ được giữ sau khi cọc thành công."
+
+Color & Typography:
+- Content body text: 16px
+- Minimum contrast: >= 4.5:1
+- Focus styles: :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }

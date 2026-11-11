@@ -32,7 +32,7 @@ Each page opens straight into its own state, as the GradStudio brief asks.
 |---|---|---|---|
 | `index.html` | Screen 1, Services and chat (customer) | Linh walks into the classroom story, sees the three services and their prices, asks about one (on its card or with the quick choice beside the chat), and reads the process and the chat | "Nhân viên studio: mở cuộc trò chuyện này", in a strip above the footer → `quan-ly.html`; menu → `lich-chup.html`; "Xem gói chụp" and "Chat với studio" move within the page |
 | `quan-ly.html` | Screen 2, Advice and clash handling (Admin) | Admin Thảo opens the moment after Linh agrees: 14:00 chosen, the conversation *Đã chốt lịch*, *Tạo booking* enabled, and a note that 09:00 clashed because Mai is busy 08:00–12:00. Search and the status filter work; choosing 09:00 brings the clash back | "Khách hàng: mở lịch chụp GS-1024" → `lich-chup.html` |
-| `lich-chup.html` | Screen 3, Review the appointment and pay the deposit (customer) | Being rebuilt. Planned state: Linh sees GS-1024 waiting for the 30% deposit | Menu → `index.html` |
+| `lich-chup.html` | Screen 3, Review the appointment and pay the deposit (customer) | Linh opens GS-1024 waiting for the 30% deposit: the week 19–25/10 with the old 09:00 request struck out, make-up 13:00–14:00 and shoot 14:00–16:00, the booking details and the 540.000đ deposit left to pay | Menu → `index.html`; the deposit button is disabled with a note |
 
 ## Your design choices
 
@@ -69,6 +69,7 @@ Controls that lead outside the three pages, or actions with no next page in PA#2
 |---|---|---|
 | "Gửi" in the customer chat | `index.html` | PA#2 has no server, so the send button is disabled with a note |
 | "Gửi" in the management chat | `quan-ly.html` | PA#2 has no server, so the send button is disabled with a note |
+| "Thanh toán cọc 30%" | `lich-chup.html` | PA#2 has no payment gateway, so the button is disabled with a note |
 
 ## CSS
 

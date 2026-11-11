@@ -159,6 +159,43 @@ export const processSteps = [
   { id: 'anh', title: 'Chọn ảnh và nhận file', text: 'Chọn ảnh cần chỉnh, thanh toán 70% còn lại, nhận file khi hoàn tất.' },
 ];
 
+export const weekDays = [
+  { id: '2026-10-19', dow: 'T2', num: 19 },
+  { id: '2026-10-20', dow: 'T3', num: 20 },
+  { id: '2026-10-21', dow: 'T4', num: 21 },
+  { id: '2026-10-22', dow: 'T5', num: 22 },
+  { id: '2026-10-23', dow: 'T6', num: 23 },
+  {
+    id: '2026-10-24',
+    dow: 'T7',
+    num: 24,
+    events: [
+      {
+        id: 'ev-old',
+        from: '09:00',
+        title: 'Giờ khách yêu cầu ban đầu',
+        where: 'Trùng với Mai (makeup) 08:00–12:00',
+        struck: true,
+      },
+      {
+        id: 'ev-makeup',
+        from: '13:00',
+        to: '14:00',
+        title: 'Makeup với Mai',
+        where: 'GS-1024',
+      },
+      {
+        id: 'ev-shoot',
+        from: '14:00',
+        to: '16:00',
+        title: 'Chụp với Tuấn',
+        where: 'GS-1024 · Phòng B',
+      },
+    ],
+  },
+  { id: '2026-10-25', dow: 'CN', num: 25 },
+];
+
 export function formatVND(value) {
   return value.toLocaleString('vi-VN') + 'đ';
 }
