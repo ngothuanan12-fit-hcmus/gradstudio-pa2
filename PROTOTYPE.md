@@ -31,8 +31,8 @@ Each page opens straight into its own state, as the GradStudio brief asks.
 | Path | GradStudio screen | What the user does there | Links open |
 |---|---|---|---|
 | `index.html` | Screen 1, Services and chat (customer) | Linh walks into the classroom story, sees the three services and their prices, asks about one (on its card or with the quick choice beside the chat), and reads the process and the chat | "Nhân viên studio: mở cuộc trò chuyện này", in a strip above the footer → `quan-ly.html`; menu → `lich-chup.html`; "Xem gói chụp" and "Chat với studio" move within the page |
-| `quan-ly.html` | Screen 2, Advice and clash handling (Admin) | Admin Thảo opens the moment after Linh agrees: 14:00 chosen, the conversation *Đã chốt lịch*, *Tạo booking* enabled, and a note that 09:00 clashed because Mai is busy 08:00–12:00. Search and the status filter work; choosing 09:00 brings the clash back | "Khách hàng: mở lịch chụp GS-1024" → `lich-chup.html` |
-| `lich-chup.html` | Screen 3, Review the appointment and pay the deposit (customer) | Linh opens GS-1024 waiting for the 30% deposit: the week 19–25/10 with the old 09:00 request struck out, make-up 13:00–14:00 and shoot 14:00–16:00, the booking details and the 540.000đ deposit left to pay | Menu → `index.html`; the deposit button is disabled with a note |
+| `quan-ly.html` | Screen 2, Advice and clash handling (Admin) | Admin Thảo opens the moment after Linh agrees: the conversation *Đã chốt lịch*, and in the chat a booking card with 14:00 chosen, *Tạo booking* enabled and a note that 09:00 clashed because Mai is busy 08:00–12:00. Search and the status filter work; the card can fold to one line; choosing 09:00 brings the clash back and moves Linh's blocks on the resource calendar, where the suggested 14:00 sets it right again | "Tạo booking · Khách hàng: mở lịch chụp GS-1024" → `lich-chup.html`; header links "Hội thoại", "Booking mới", "Lịch tài nguyên" move within the page |
+| `lich-chup.html` | Screen 3, Review the appointment and pay the deposit (customer) | Linh opens GS-1024 waiting for the 30% deposit: the booking card and the deposit (540.000đ, 1.260.000đ left), the week 19–25/10 with Saturday 24/10 marked, and the day with the 09:00 first asked for struck through, make-up 13:00–14:00 with Mai and the shoot 14:00–16:00 with Tuấn in Phòng B | Menu → `index.html`; the deposit button is disabled with a note |
 
 ## Your design choices
 
@@ -48,6 +48,11 @@ Each page opens straight into its own state, as the GradStudio brief asks.
 | The link to the management page sits in a strip above the footer, marked as the prototype's next screen | A real customer site would not have it, but PA#2 moves along the flow by a real link that says who continues |
 | No separate photo gallery or reviews on `index.html` | The brief's Screen 1 asks for the studio, the three services and the chat; the service photos show the style |
 | Separate layouts for customer and management pages | The lecturer's remark in class. It is not access control |
+| The customer pages use the dark theme, the management page the light one | Both pass contrast; the colour says at a glance whose side of the flow a page is on, and the management page is long reading |
+| On `quan-ly.html` the *Booking mới* form is a card inside the chat, right after Linh agrees; open on arrival, it can fold to a line that keeps the time, the clash note and the submit | The manager fills it in where the details were agreed; folded or not, the brief's opening state and the main flow stay on screen |
+| The resource calendar has a day timeline from 768 px for the overview and a list that is the readable record at every width; below 1280 px a one-hour block shows only its icon | The brief asks every booking to be readable at every width; the authors' timeline cut its labels |
+| A conversation's status is a coloured dot on the avatar plus its name beside the time | Quick to scan, and never colour alone |
+| Status and calendar icons are small SVG drawings next to their words, not symbol characters | Symbol characters change with the system font and can turn into colour emoji |
 | No demo switcher between screens | Pages link along the main flow instead |
 
 ## Image sources
