@@ -1308,3 +1308,12 @@ Kept: awaiting An's review. Each row now reads like a messaging app: the name an
 Changed: the first try let the row slide from 768 px; there the list spans the screen, so the tabs past the edge appeared in the rubric's overflow line (rubric checks FAILURES: 1 at 768 px). The sliding row now starts at 1280 px. Checks: overflow line empty at all three widths, rows 114 px at 768 px, no text under 16 px, no clipped name, the "Hoàn thành" tab shows Lê Gia Bảo; rubric checks FAILURES: 0.
 Rejected: nothing yet.
 By hand: An's request and screenshots.
+
+## 2026-11-11 — does the sliding filter row break a rule?
+Commit: the commit that adds this entry, directly after 00db788.
+Tool: Claude Code (Claude Opus 5.5), checking `CLAUDE.md`, the brief and the rubric against the measured page.
+Asked for: whether the filter row with its own sideways scrolling breaks a rule; if so, drop it.
+Kept: the answer: it breaks none. The brief's and `CLAUDE.md`'s no-inner-scrolling rule is about the chat and the *Booking mới* form, not the filters; NEVER 9 forbids `overflow-x: hidden` used to hide overflow, while this row uses `overflow-x: auto`, so every tab can be reached by swiping, the scrollbar, or Tab, which brings a focused tab into view; the rubric's overflow line stays empty, because the row slides only from 1280 px, inside a column that ends well before the screen edge; each tab is 44 px tall and 16 px text; the status names also stay visible in every row. Kept as it is.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's question.
