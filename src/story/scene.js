@@ -462,13 +462,21 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
   function drawnIn(order) {
     return introStart === null ? 0 : ease(clamp((performance.now() - introStart - order * INTRO_STEP) / INTRO_EACH));
   }
+  // three.js builds a different shader for an opaque material (it forces alpha to 1), so switching between
+  // see-through and opaque must ask for a new one. Without it, a photo first drawn opaque, as happens when frames are
+  // skipped, kept ignoring its opacity: the Kỷ yếu photo stayed bright behind the Tốt nghiệp close-up.
+  function seeThrough(m, on) {
+    if (m.transparent === on) return;
+    m.transparent = on;
+    m.needsUpdate = true;
+  }
   function draw(p) {
     const room = seg(p, 0, ROOM_END);
     renderer.shadowMap.needsUpdate = room < 1 || !shadowsDone;
     shadowsDone = room >= 1;
     parts.forEach(({ order, solids, lines, g }) => {
       const q = ease(seg(room, .1 + order * .42, .3 + order * .42));
-      solids.forEach((m) => { m.opacity = q; m.depthWrite = q > .35; m.visible = q > .001; m.transparent = q < .999; });
+      solids.forEach((m) => { m.opacity = q; m.depthWrite = q > .35; m.visible = q > .001; seeThrough(m, q < .999); });
       const r = drawnIn(order);
       lines.opacity = mix(.95, .08, q) * r;
       g.position.y = (1 - r) * .35;
@@ -485,7 +493,7 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
     const closeUp = Math.max(...shot.focus), closing = smooth(seg(p, .91, .965));
     pins.forEach((f, i) => {
       const w = shot.focus[i], q = ease(seg(p, f.at, f.at + .04)), o = q * (1 - (closeUp - w) * .98);
-      f.mats.forEach((m) => { m.opacity = o; m.transparent = o < .999; m.depthWrite = o > .35; });
+      f.mats.forEach((m) => { m.opacity = o; seeThrough(m, o < .999); m.depthWrite = o > .35; });
       f.shade.opacity = o * o * .7;
       f.chalk.opacity = ease(seg(p, f.at + .012, f.at + .04)) * (1 - closeUp) * (1 - closing);
       f.g.visible = o > .001;
