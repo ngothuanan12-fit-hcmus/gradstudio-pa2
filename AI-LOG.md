@@ -892,6 +892,16 @@ Changed: rewrote `src/pages/LichChup.jsx` and `src/styles/schedule.css` with the
 Checks: `npm run lint` and `npm run build` both pass with 0 warnings/errors.
 By hand: none.
 
+## 2026-11-11 — Full port Step 8: CSS bundle imports, gallery WebP paths, and browser verification
+
+Who: Khánh (24120340).
+Commit: 0546081.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: verify `quan-ly.html` and `lich-chup.html` in the browser with screenshots and fix any visual or console issues.
+Changed: imported `../styles/admin.css` in `src/pages/QuanLy.jsx` and `../styles/schedule.css` in `src/pages/LichChup.jsx` so Vite bundles both page stylesheets; updated `GALLERY_IMAGES` in `src/pages/LichChup.jsx` to match the exact filenames in `public/photos/` (`tot-nghiep-900.webp`, `ky-yeu-1350.webp`, `ky-yeu-640.webp`, `chan-dung-900.webp`); added `name` attributes to form inputs in `ConversationList.jsx`, `ChatStream.jsx`, and `BookingForm.jsx`; tuned desktop breakpoints in `src/styles/admin.css` and `src/styles/schedule.css`.
+Checks: `npm run lint` and `npm run build` both pass with 0 warnings/errors; Chrome DevTools verification at `1440x900` confirmed 0 console errors/issues, full 3-column `StudioConversations` workflow (`Chọn 14:00` → `Chốt giờ này` → `Gửi báo giá vào chat` → `Tạo booking`), and full `MyPhotoSessions` workflow (`Thanh toán cọc 540.000đ` → `Đã đặt lịch`).
+By hand: none.
+
 
 
 
