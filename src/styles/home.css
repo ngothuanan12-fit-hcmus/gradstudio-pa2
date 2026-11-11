@@ -55,23 +55,15 @@
   .hero-text { position: relative; justify-items: center; text-align: center; padding: var(--space-24); }
 }
 
-/* Opening: "Lưu lại ngày" drops in from above the screen, lands with a small bounce, and "ra trường" appears the
-   moment it lands, so the title reads in one go; the words and buttons beside it follow. The drop is vertical only,
-   so nothing reaches past the screen's side edge. The 3D view fades in once its first frame is drawn.
-   Nothing moves with reduced motion. */
-h1.story-title { width: fit-content; }
-@keyframes title-drop {
-  0% { transform: translateY(-110vh); animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
-  68% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1); }
-  82% { transform: translateY(-12px); animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
-  100% { transform: translateY(0); }
-}
-@keyframes title-land { from { opacity: 0; transform: translateY(8px); } }
-@keyframes beside-title { from { opacity: 0; } }
+/* Opening of the 3D story: the view fades in once its first frame is drawn, the chalk lines draw themselves in while
+   the camera moves into the room (scene.js), and a band of warm light crosses the room as the drawing finishes.
+   The band sits under the words and is decoration only. Nothing moves with reduced motion. */
+.stage-sweep { position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: screen;
+  background: linear-gradient(105deg, transparent 35%, rgba(232, 165, 92, 0.22) 47%, rgba(255, 236, 200, 0.3) 50%, rgba(232, 165, 92, 0.22) 53%, transparent 65%) no-repeat;
+  background-size: 250% 100%; background-position: 100% 0; }
+@keyframes sweep { 0% { opacity: 0; background-position: 100% 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; background-position: 0 0; } }
 @media (prefers-reduced-motion: no-preference) {
-  .story-title.title-drop { animation: title-drop 900ms both; animation-delay: var(--drop-delay); }
-  .story-title.title-drop em { animation: title-land 300ms var(--ease-out) both; animation-delay: calc(var(--drop-delay) + 610ms); }
-  :has(> .story-title.title-drop) > :not(.story-title) { animation: beside-title 500ms var(--ease-out) both; animation-delay: calc(var(--drop-delay) + 900ms); }
+  .stage-view.is-ready ~ .stage-sweep { animation: sweep 1600ms cubic-bezier(0.45, 0, 0.55, 1) 1000ms both; }
   .stage-view { opacity: 0; transition: opacity 600ms var(--ease-out); }
   .stage-view.is-ready { opacity: 1; }
 }

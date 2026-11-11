@@ -453,8 +453,12 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
   // Opening: the chalk lines draw themselves in, part by part in the room's build order (walls, then windows, then
   // desks), each one settling down from slightly above. The clock starts once the first frame is on screen.
   let introStart = null;
-  const INTRO_STEP = 900, INTRO_EACH = 520;
-  const INTRO_MS = INTRO_STEP + INTRO_EACH;
+  const INTRO_STEP = 900, INTRO_EACH = 520, CAMERA_MS = 1800;
+  const INTRO_MS = Math.max(INTRO_STEP + INTRO_EACH, CAMERA_MS);
+  // Meanwhile the camera starts outside the room, seeing the whole drawing, and moves in to the first view.
+  function stillOutside() {
+    return introStart === null ? 1 : 1 - smooth(clamp((performance.now() - introStart) / CAMERA_MS));
+  }
   function drawnIn(order) {
     return introStart === null ? 0 : ease(clamp((performance.now() - introStart - order * INTRO_STEP) / INTRO_EACH));
   }
@@ -471,6 +475,8 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
       g.visible = true;
     });
     cameraAt(p);
+    const outside = stillOutside();
+    shot.z += outside * 3.2; shot.y += outside * .3;
     fill.intensity = 1.5 * smooth(seg(p, ROOM_END, STOPS[0].from));
     camera.position.set(shot.x, shot.y, shot.z);
     lookTo.set(shot.lx, shot.ly, -D);
