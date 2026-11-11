@@ -304,6 +304,8 @@ An also attached a screenshot of Khánh's management page in progress: conversat
 ### 1.22 The package section (2026-11-11)
 
 > Khi bấm "Tư vấn gói này", cả thẻ có viền cam và hiện dòng "Đang hỏi về gói này trong chat", khớp với dòng trạng thái trong khung chat. mình thấy không cần thiết, có thể làm thêm hover cả thẻ thì hợp lý hơn
+
+> duyệt
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
