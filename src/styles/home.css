@@ -79,6 +79,22 @@
 .stage-bar i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
 
 .cap { position: absolute; display: grid; gap: var(--space-12); opacity: 0; visibility: hidden; font-size: 18px; line-height: 28px; text-shadow: 0 1px 3px rgba(0, 0, 0, .65), 0 2px 22px rgba(0, 0, 0, .6); }
+/* Each caption comes in line by line: the heading, its second line, then the text, as the scene raises --rise
+   from 0 to 1. Without --rise (before the first frame) every line is simply shown. */
+.cap > *, .cap .story-title em {
+  --line: clamp(0, calc((var(--rise, 1) - var(--i, 0) * 0.15) / 0.55), 1);
+  opacity: var(--line); transform: translateY(calc((1 - var(--line)) * 18px));
+}
+.cap > :nth-child(1) { --i: 0; }
+.cap .story-title em { --i: 1; }
+.cap > :nth-child(2) { --i: 2; }
+.cap > :nth-child(n + 3) { --i: 3; }
+/* The opening title tracks in with the camera: its letters start a little apart and close up over the camera's
+   move (the plain screen waiting for the scene uses the same spacing, so nothing jumps at the takeover). */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-bare .story-title, .cap-open .story-title { letter-spacing: 0.22em; }
+  .stage-view.is-ready ~ .cap-open .story-title { letter-spacing: 0; transition: letter-spacing 1800ms cubic-bezier(0.45, 0, 0.2, 1); }
+}
 /* The opening words are on screen from the start, before the scene's first frame sets them. */
 .cap-open { opacity: 1; visibility: visible; }
 /* The plain screen while the scene loads: the same sizes and spacing as the scene's opening words. */

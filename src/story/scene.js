@@ -498,12 +498,13 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
     sun.intensity = 3.1 * ease(seg(room, .2, .7));
     shafts.forEach((m) => { m.opacity = .2 * ease(seg(room, .45, .8)); });
     bar.style.transform = `scaleX(${p})`;
-    // Words fade and drift with the scroll instead of switching.
+    // Words come in line by line with the scroll (home.css reads --rise) and leave together.
     caps.forEach((c, i) => {
       const [a, b, e, g] = WORDS[i], rise = smooth(seg(p, a, b)), fall = smooth(seg(p, e, g)), o = rise * (1 - fall);
-      c.style.opacity = o;
+      c.style.setProperty('--rise', rise.toFixed(3));
+      c.style.opacity = 1 - fall;
       c.style.visibility = o > .002 ? 'visible' : 'hidden';
-      c.style.transform = `translateY(${(1 - rise) * 28 - fall * 28}px)`;
+      c.style.transform = `translateY(${-fall * 28}px)`;
     });
     veil.style.opacity = .62 * smooth(seg(p, .91, .965));
     renderer.render(scene, camera);
