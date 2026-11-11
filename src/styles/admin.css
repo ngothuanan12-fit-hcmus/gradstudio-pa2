@@ -138,7 +138,7 @@
 
 /* Management page layout: one column below 1280 (at 768 a side column would be too narrow for the list); from
    1280 the conversations beside the chat and the form, with the resource calendar across the full width below. Sections leave room above them when a header link opens them. */
-.admin-grid > section, .admin-grid > form { scroll-margin-top: var(--space-16); }
+.admin-grid > section, .admin-grid > form, .booking-card { scroll-margin-top: var(--space-16); }
 .admin-grid { display: grid; gap: var(--space-24); min-width: 0; }
 .admin-convs { align-content: start; }
 .admin-chat { display: grid; align-content: start; min-width: 0; }
@@ -175,16 +175,38 @@
     grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
     grid-template-areas:
       "convs chat"
-      "convs form"
       "sched sched";
     align-items: start;
   }
   .admin-convs { grid-area: convs; }
   .admin-chat { grid-area: chat; }
-  .booking-form { grid-area: form; }
   .sched { grid-area: sched; }
 }
 
 /* Header of the management page: who is working here, beside the brand. */
 .page-role { margin-right: auto; color: var(--ink-muted); }
 .filter-chips .btn-primary .conv-dot { border-color: var(--on-accent); }
+
+/* Booking card inside the chat, after Linh's last message: set apart from the bubbles by its border and background.
+   Groups follow the order the manager thinks in; folded, the summary, the clash note and the submit stay. */
+.booking-card { display: grid; gap: var(--space-12); padding: var(--space-16); background: var(--surface); border: 2px solid var(--accent); border-radius: var(--radius-md); }
+.booking-card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-8); }
+.booking-card-head h3 { font-size: 20px; line-height: 28px; }
+.booking-card-head .btn { min-height: var(--control-height-sm); }
+.booking-card-summary { font-weight: 600; font-variant-numeric: tabular-nums; }
+.booking-card-note { padding: var(--space-8) var(--space-12); color: var(--ink); background: var(--accent-soft); border-radius: var(--radius-sm); }
+.booking-card-note.is-conflict { color: var(--danger); background: var(--danger-soft); border: 1px solid var(--danger); }
+.booking-card-details { display: grid; gap: var(--space-16); }
+.booking-card-details[hidden] { display: none; }
+.bf-group { display: grid; gap: var(--space-8); min-width: 0; margin: 0; padding: var(--space-12) 0 0; border: 0; border-top: 1px solid var(--line); }
+.bf-group legend { float: left; width: 100%; padding: 0; margin-bottom: var(--space-8); font-weight: 600; }
+.bf-from { color: var(--ink-muted); font-weight: 400; }
+.bf-grid { display: grid; gap: var(--space-12); align-items: start; clear: both; }
+.bf-grid .field { align-content: start; }
+.bf-avail.is-free { color: var(--free); font-weight: 600; }
+.bf-avail.is-busy { color: var(--danger); font-weight: 600; }
+.booking-card > .btn-primary { justify-self: stretch; }
+@media (min-width: 768px) {
+  .bf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .booking-card > .btn-primary { justify-self: start; }
+}

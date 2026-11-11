@@ -1,112 +1,112 @@
 import Button from './Button.jsx';
-import ConflictAlert from './ConflictAlert.jsx';
-import StatusBadge from './StatusBadge.jsx';
 import { formatVND } from '../data.js';
 
-// A real form. The page opens at 14:00, the time Linh agreed, so the submit is
-// enabled; changing back to 09:00 brings the clash and disables it again.
-export default function BookingForm({
-  booking,
-  services = [],
-  conflict,
-  start,
-  onStartChange,
-  slots,
-  picked,
-  onPickSlot,
-}) {
+const pad = (h) => `${String(h).padStart(2, '0')}:00`;
+
+// The booking card inside the chat, right after Linh agrees. A real form of its own (never inside the message box's
+// form). Details agreed in the chat are filled in; the end times follow from the start time and the 2-hour package.
+// The page opens at 14:00, so the submit is enabled; choosing 09:00 brings back the clash and disables it.
+// The card can fold to one line, which still shows the time, the clash note and the submit.
+export default function BookingForm({ booking, services = [], conflict, start, onStartChange, open, onToggle }) {
+  const h = Number.parseInt(start, 10);
+  const makeup = `${pad(h - 1)}–${pad(h)}`;
+  const shoot = `${pad(h)}–${pad(h + 2)}`;
   return (
-    <form className="panel booking-form" id="booking-moi" action="lich-chup.html" aria-labelledby="booking-form-title">
-      <div className="panel-head">
-        <h2 id="booking-form-title">Booking mới</h2>
-        <StatusBadge tone={conflict ? 'conflict' : 'confirmed'}>
-          {conflict ? 'Trùng lịch' : 'Chờ cọc 30%'}
-        </StatusBadge>
-      </div>
-      <p className="form-lede">
-        {booking.customer} · {booking.sessionType} · {booking.pkg} · {formatVND(booking.price)}
-      </p>
-
-      <div className="form-grid">
-        <p className="field">
-          <label className="field-label" htmlFor="bf-customer">Khách hàng</label>
-          <input className="input" id="bf-customer" type="text" defaultValue={booking.customer} autoComplete="off" />
-        </p>
-
-        <p className="field">
-          <label className="field-label" htmlFor="bf-package">Gói chụp</label>
-          <select className="input" id="bf-package" defaultValue={booking.pkg}>
-            {services.map((service) => (
-              <option key={service.id} value={service.name}>
-                {service.name} · {service.priceNote}
-              </option>
-            ))}
-          </select>
-          <span className="field-hint">{booking.pkgDetail}</span>
-        </p>
-
-        <p className="field">
-          <label className="field-label" htmlFor="bf-date">Ngày chụp</label>
-          <input className="input" id="bf-date" type="text" defaultValue={booking.date} />
-        </p>
-
-        <p className="field">
-          <label className="field-label" htmlFor="bf-start">Giờ bắt đầu</label>
-          <select
-            className="input"
-            id="bf-start"
-            value={start}
-            aria-invalid={conflict ? 'true' : 'false'}
-            aria-describedby={conflict ? 'bf-start-error' : undefined}
-            onChange={(event) => onStartChange(event.target.value)}
-          >
-            <option value={booking.requested}>{booking.requested}</option>
-            <option value={booking.agreed}>{booking.agreed}</option>
-          </select>
-          {conflict ? (
-            <span className="field-error" id="bf-start-error">⚠ Mai (makeup) bận 08:00–12:00</span>
-          ) : null}
-        </p>
-
-        <p className="field">
-          <label className="field-label" htmlFor="bf-makeup">Thợ makeup</label>
-          <select className="input" id="bf-makeup" defaultValue={booking.makeup.who}>
-            <option value={booking.makeup.who}>{booking.makeup.who}</option>
-          </select>
-        </p>
-
-        <p className="field">
-          <label className="field-label" htmlFor="bf-photographer">Thợ chụp</label>
-          <select className="input" id="bf-photographer" defaultValue={booking.shoot.who}>
-            <option value={booking.shoot.who}>{booking.shoot.who}</option>
-          </select>
-        </p>
-
-        <p className="field">
-          <label className="field-label" htmlFor="bf-room">Phòng chụp</label>
-          <select className="input" id="bf-room" defaultValue={booking.shoot.room}>
-            <option value={booking.shoot.room}>{booking.shoot.room}</option>
-          </select>
-        </p>
-      </div>
-
-      <ConflictAlert
-        conflict={conflict}
-        slots={slots}
-        picked={picked}
-        onPick={onPickSlot}
-      />
-
-      <div className="form-actions">
-        <Button variant="primary" type="submit" disabled={conflict}>
-          Khách hàng: mở lịch chụp GS-1024
+    <form className="booking-card" id="booking-moi" action="lich-chup.html" aria-labelledby="booking-card-title">
+      <div className="booking-card-head">
+        <h3 id="booking-card-title">Booking mới cho Linh</h3>
+        <Button variant="secondary" aria-expanded={open} aria-controls="booking-card-details" onClick={onToggle}>
+          {open ? 'Thu gọn' : 'Mở chi tiết'}
         </Button>
       </div>
-      <p className="form-note">
-        {conflict
-          ? 'Chọn giờ không trùng để tạo booking.'
-          : `GS-1024 · Linh đã chốt ${booking.agreed} ngày ${booking.date}.`}
+      <p className="booking-card-summary">
+        {booking.date} · {start} · Makeup {makeup} · Chụp {shoot}
       </p>
+      <p className={conflict ? 'booking-card-note is-conflict' : 'booking-card-note'} role="status">
+        <span aria-hidden="true">⚠ </span>
+        {conflict
+          ? `09:00 trùng lịch: Mai (makeup) bận 08:00–12:00. Chọn ${booking.agreed} để tạo booking.`
+          : `09:00 Linh hỏi ban đầu bị trùng vì Mai (makeup) bận 08:00–12:00, nên đã đổi sang ${booking.agreed}.`}
+      </p>
+
+      <div id="booking-card-details" className="booking-card-details" hidden={!open}>
+        <fieldset className="bf-group">
+          <legend>Khách và gói <span className="bf-from">· lấy từ hội thoại</span></legend>
+          <div className="bf-grid">
+            <p className="field">
+              <label className="field-label" htmlFor="bf-customer">Khách hàng</label>
+              <input className="input" id="bf-customer" name="customer" type="text" defaultValue={booking.customer} autoComplete="off" />
+            </p>
+            <p className="field">
+              <label className="field-label" htmlFor="bf-package">Gói chụp</label>
+              <select className="input" id="bf-package" name="package" defaultValue={booking.pkg}>
+                {services.map((service) => (
+                  <option key={service.id} value={service.name}>{service.name}</option>
+                ))}
+              </select>
+              <span className="field-hint">{booking.pkgDetail} · {formatVND(booking.price)}</span>
+            </p>
+          </div>
+        </fieldset>
+
+        <fieldset className="bf-group">
+          <legend>Thời gian <span className="bf-from">· lấy từ hội thoại</span></legend>
+          <div className="bf-grid">
+            <p className="field">
+              <label className="field-label" htmlFor="bf-date">Ngày chụp</label>
+              <input className="input" id="bf-date" name="date" type="text" defaultValue={booking.date} />
+            </p>
+            <p className="field">
+              <label className="field-label" htmlFor="bf-start">Giờ chụp</label>
+              <select
+                className="input"
+                id="bf-start"
+                name="start"
+                value={start}
+                aria-invalid={conflict ? 'true' : 'false'}
+                onChange={(event) => onStartChange(event.target.value)}
+              >
+                <option value={booking.requested}>{booking.requested}</option>
+                <option value={booking.agreed}>{booking.agreed}</option>
+              </select>
+              <span className="field-hint">Makeup {makeup} · Chụp {shoot}</span>
+            </p>
+          </div>
+        </fieldset>
+
+        <fieldset className="bf-group">
+          <legend>Người và phòng</legend>
+          <div className="bf-grid">
+            <p className="field">
+              <label className="field-label" htmlFor="bf-makeup">Thợ makeup</label>
+              <select className="input" id="bf-makeup" name="makeup" defaultValue={booking.makeup.who}>
+                <option value={booking.makeup.who}>{booking.makeup.who}</option>
+              </select>
+              <span className={conflict ? 'bf-avail is-busy' : 'bf-avail is-free'}>
+                {conflict ? `⚠ Bận 08:00–12:00` : `✓ Trống ${makeup}`}
+              </span>
+            </p>
+            <p className="field">
+              <label className="field-label" htmlFor="bf-photographer">Thợ chụp</label>
+              <select className="input" id="bf-photographer" name="photographer" defaultValue={booking.shoot.who}>
+                <option value={booking.shoot.who}>{booking.shoot.who}</option>
+              </select>
+              {conflict ? null : <span className="bf-avail is-free">✓ Trống {shoot}</span>}
+            </p>
+            <p className="field">
+              <label className="field-label" htmlFor="bf-room">Phòng chụp</label>
+              <select className="input" id="bf-room" name="room" defaultValue={booking.shoot.room}>
+                <option value={booking.shoot.room}>{booking.shoot.room}</option>
+              </select>
+              {conflict ? null : <span className="bf-avail is-free">✓ Trống {shoot}</span>}
+            </p>
+          </div>
+        </fieldset>
+      </div>
+
+      <Button variant="primary" type="submit" disabled={conflict}>
+        Tạo booking · Khách hàng: mở lịch chụp GS-1024
+      </Button>
     </form>
   );
 }

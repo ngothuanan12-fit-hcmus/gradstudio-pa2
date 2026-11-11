@@ -8,7 +8,6 @@ import ResourceSchedule from '../components/ResourceSchedule.jsx';
 import {
   booking,
   conversations,
-  freeSlots,
   messages,
   services,
   scheduleRows,
@@ -29,9 +28,9 @@ export default function QuanLy() {
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('all');
   const [start, setStart] = useState(booking.agreed);
+  const [cardOpen, setCardOpen] = useState(true);
 
   const conflict = start !== booking.agreed;
-  const picked = conflict ? null : freeSlots[0].id;
   const active = conversations.find((item) => item.id === activeId) || conversations[0];
   const status = conflict
     ? '09:00 trùng lịch: Mai (makeup) bận 08:00–12:00. Chọn 14:00 để tạo booking.'
@@ -116,19 +115,21 @@ export default function QuanLy() {
             messages={activeId === 'linh' ? messages : []}
             disabled
             note="Chưa gửi được tin nhắn trong bản mẫu."
+            afterMessages={activeId === 'linh' ? (
+              <BookingForm
+                booking={booking}
+                services={services}
+                conflict={conflict}
+                start={start}
+                onStartChange={setStart}
+                open={cardOpen}
+                onToggle={() => setCardOpen(!cardOpen)}
+              />
+            ) : null}
           />
         </div>
 
-        <BookingForm
-          booking={booking}
-          services={services}
-          conflict={conflict}
-          start={start}
-          onStartChange={setStart}
-          slots={freeSlots}
-          picked={picked}
-          onPickSlot={(slot) => setStart(slot.time)}
-        />
+
 
         <ResourceSchedule
           title="Lịch thợ và phòng"
