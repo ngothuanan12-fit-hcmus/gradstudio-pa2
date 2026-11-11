@@ -373,6 +373,10 @@ An also attached an example: a round avatar with a green dot at its lower right.
 
 > vì chat không có tự cuộn nên khi áp dụng thực tế sẽ khác đúng không
 > thực hiện lượt 5, bổ sung các đề xuất
+
+> bạn xem các kỹ thuật có thể áp dụng cho các lượt làm lịch được không, không áp dụng giống y chang mà chỉ áp dụng phần nào hiệu quả và đảm bảo đúng quy định, ngoài ra thay vì dùng các emoji thì nên dùng cách khác chuyên nghiệp hơn
+
+An also attached `tai-lieu-ky-thuat-lich-va-thong-bao.md`, notes on three MIT-licensed UI samples (a schedule conflict fixer, a week duration editor, a notification bell).
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
