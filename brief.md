@@ -362,3 +362,24 @@ Sử dụng gh cli để lấy commnet review mới nhất trong pull request #1
 After this prompt, the owner chose the full redo in the review comment (one branch per page from the latest `main`, one commit per component, a PR per page into `main`, the log and `brief.md` kept at every step) and agreed to take the status names from the comment and `CLAUDE.md` rather than wait for the brief file.
 
 This part was headed "Part 6" when it was added in 67068c5; Parts 4 and 5 never existed, so it was renumbered on 2026-11-10.
+
+## Part 5 — editorial UI port and PR #2 / PR #3 review fixes (sent 2026-11-11)
+
+**Nguyên văn các prompt đã gửi.**
+
+```text
+Đây mới chính là folder cần tôi cần làm UI cho trang quản lý và trang lịch chụp giống như nãy giờ bạn làm 2 màn hình vậy đó
+```
+
+```text
+Trước khi move code dần từ develop/quan-ly sang bên này bạn hãy đọc hết yêu cầu của codebase đã   đặc biệt là CLAUDE.md, AI-LOG.md, và brief.md phải luôn được tuần thủ. Trước hết là phải tuần thủ lại bảng màu và frontend đã chuẩn bị, sau đó phải tuần thủ là khi code xong 1 layout, component gì đó phải commit và viết theo AI-LOG.md (không gom lại 1 cục commit) tức là làm xong là commit rồi làm tiếp. Còn những rule còn lại bạn đọc hết rồi nên lại cho tôi thử coi
+```
+
+```text
+Khi triển khai kế hoạch bạn sẽ move từng codebase bên develop/quan-ly qua đây rồi thực hiện đúng theo rule đúng không
+```
+
+```text
+Thực thi cho tôi
+```
+

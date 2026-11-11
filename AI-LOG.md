@@ -676,3 +676,14 @@ Kept: the report to An. No new commit from Khánh since 2026-11-08 on either bra
 Changed: nothing.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-11 — shared data: conversation previews, addons and week schedule
+
+Who: Khánh (24120340).
+Commit: e758903.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5 — port the two-screen UI from the practice folder into `gradstudio-pa2` one component at a time while following `CLAUDE.md`, `tokens.css`, `AI-LOG.md` and `brief.md`, and fixing the open items from the PR #2 and PR #3 reviews.
+Changed: `src/data.js` changed in its own commit as a shared file. Fixed two sample conversations flagged in the PR #2 review: Trần Minh Anh (*Chưa trả lời*) now asks whether the studio has a weekend slot for CV portraits instead of saying she already sent her chosen photos, and Lê Gia Bảo (*Hoàn thành*) now confirms he received all edited photos instead of saying "hẹn gặp ngày 24/10". Added `bookingAddons` (make-up 60 minutes before the shoot and graduation gown rental, from the brief) and `weekDays` for 19–25/10/2026 with Saturday 24/10 carrying the struck-out 09:00 request and the agreed 13:00–14:00 make-up and 14:00–16:00 shoot. All data used by `index.html` is untouched.
+Checks: `npm run lint` exits 0 with no output.
+By hand: Khánh directed the step-by-step commit and logging order.
+
