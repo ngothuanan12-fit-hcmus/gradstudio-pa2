@@ -820,3 +820,12 @@ Kept: awaiting An's review. On 3D screens the title and the line under it start 
 Changed: in the first try the title turned grey during the glint: the letters' dark shadow is painted above a background drawn through the letters, so it covered the highlight (seen on the screenshot). The shadow now rests for the 1.6 s of the glint, while the dark backing behind the opening words stays. Checks: title opacity 0 until the first 3D frame, 0.96 about 0.6 s later, 1.00 after; glint active between about 1 s and 2.6 s with the text fill restored after; scene file blocked: words visible at 1.5 s; no WebGL: words visible at once; lint clean; rubric checks FAILURES: 0.
 Rejected: nothing yet.
 By hand: An's request.
+
+## 2026-11-11 — opening approved and pushed
+Commit: the commit that adds this entry, directly after b3b1b91.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: An approved the opening as it stands after e765eee (empty screen, chalk lines drawing in, camera move-in, band of light, the title appearing with the camera and catching the light, captions line by line).
+Kept: all of it; pushed to `main`. Next: step 3, the package section.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's approval after viewing on a real machine.
