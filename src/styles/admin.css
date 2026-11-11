@@ -130,7 +130,9 @@
 .kind-busy { color: var(--ink); background: var(--busy); border-color: var(--busy); }
 .kind-conflict { color: var(--danger); background: var(--danger-soft); border: 2px solid var(--danger); }
 .kind-free { color: var(--free); background: var(--free-soft); border: 2px dashed var(--free); }
-.kind-proposed { color: var(--accent); background: var(--accent-soft); border: 2px solid var(--accent); }
+.kind-proposed { color: var(--ink); background: var(--accent-soft); border: 2px solid var(--accent); }
+/* Proposed blocks: words in the body colour (13.9:1), the accent kept for the border and the icon. */
+.kind-proposed .icon { color: var(--accent); }
 .sched-swatch.kind-busy { border: 1px solid var(--line-strong); }
 .sched-swatch.kind-conflict { border: 2px solid var(--danger); }
 .sched-swatch.kind-free { border: 2px dashed var(--free); }
