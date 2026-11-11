@@ -383,3 +383,20 @@ Khi triển khai kế hoạch bạn sẽ move từng codebase bên develop/quan-
 Thực thi cho tôi
 ```
 
+```text
+Tôi có 1 câu hỏi là tại sao trang Quản lý không thay đổi gì hết vậy. Hay rule yêu cầu nó phải như vây
+```
+
+```text
+Vậy nãy giờ bạn làm cái gì?
+```
+
+```text
+Bây giờ tôi cần bạn lên plan để làm trang Quản lý với Lịch chụp của tôi giống bên developer/quan-ly. Chỉ cần tuân thủ theo bảng màu + style chung thôi còn lại không có ràng buộc gì. Và vẫn thực hiện ghi commit + AI-LOG.md
+```
+
+```text
+Xác nhận thực hiện
+```
+
+

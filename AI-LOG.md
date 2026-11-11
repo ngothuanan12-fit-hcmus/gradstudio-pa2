@@ -822,6 +822,17 @@ Checks:
 - Chrome DevTools check across `quan-ly.html`, `lich-chup.html` and `index.html` at `360x800`, `768x900` and `1280x900`: `overflowX: 0` on all 9 page×viewport runs; `h1Count: 1` on every page; `badLinks: []`; `unlabeledInputs: []`; `smallControls: []` (every interactive control ≥ 44 px tall); `smallTextNodes: []` (every visible text node ≥ 16 px); 0 console errors or warnings; exactly 1 `.btn-primary` per page (`"Tạo booking · Khách hàng: mở lịch chụp GS-1024"` on `quan-ly.html`, `"Thanh toán cọc 30% (540.000đ)"` on `lich-chup.html`, `"Xem gói chụp"` on `index.html`).
 By hand: none.
 
+## 2026-11-11 — Full port Step 1: studio fixtures and scheduling conflict engine
+
+Who: Khánh (24120340).
+Commit: 19a891a.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: Khánh requested porting the full `StudioConversations.tsx` and `MyPhotoSessions.tsx` UI and interactions from `developer/quan-ly` using the shared color palette and styles, committing and logging each step in `AI-LOG.md`.
+Changed: created `src/utils/scheduling.js` (`studioResources`, `scheduledEventsByDay`, `checkScheduleConflict`, `generateSlotSuggestions`, `timelineMinuteToPercent`, `formatTimeMinutes`) and added `initialCustomers`, `defaultPackageTitle`, `statusConfig`, and `createInitialMessages` to `src/data.js` while keeping all existing exports used by `index.html`.
+Checks: `npm run lint` exits 0 with no output.
+By hand: Khánh's direction.
+
+
 
 
 
