@@ -842,6 +842,16 @@ Changed: created `src/components/StudioHeader.jsx` with the studio brand bar, na
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — Full port Step 3: ChatStream, ChatBubble, and ChatInput
+
+Who: Khánh (24120340).
+Commit: 3cef6d7.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: port `ChatStream.tsx`, `ChatBubble.tsx`, and `ChatInput.tsx` into `src/components/ChatStream.jsx`.
+Changed: created `src/components/ChatStream.jsx` with the sticky customer info header (`linh.nguyen@email.com · 0901 234 567`, `Lịch tài nguyên` toggle with conflict dot, `StatusBadge`), two-sided `ChatBubble` messages, system notices, caramel `Báo giá` quote cards, simulated customer response strip (`Mô phỏng phản hồi của Linh`: `Chốt giờ này` / `Từ chối`), collapsible `BookingForm` drawer slot, and bottom `ChatInput` with `Tạo booking` toggle.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
 
 
 
