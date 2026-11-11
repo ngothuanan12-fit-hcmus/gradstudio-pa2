@@ -397,6 +397,10 @@ An also attached `tai-lieu-ky-thuat-lich-va-thong-bao.md`, notes on three MIT-li
 > đồng ý đóng pr#3, chưa làm thêm gì khác
 
 > hướng dẫn thực hiện xuất 3 trang để dán vào W3C
+
+> bạn xem hướng cải thiện và xem có gì vi phạm không áp dụng được và cái nào áp dụng ổn
+
+An also attached `gradstudio-huong-cai-thien.md`, a list of improvements for the management page (three-column app frame, Messenger-style chat, form in a side tab, timeline clean-up, notifications, visual style, technique).
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

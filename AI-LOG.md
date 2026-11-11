@@ -1254,3 +1254,12 @@ Kept: the steps for An: build and preview, open each path, wait for the page to 
 Changed: nothing.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-11 — review of An's improvement list for the management page
+Commit: the commit that adds this entry, directly after 9e90f32.
+Tool: Claude Code (Claude Opus 5.5), checking each item against the brief, *Fix these*, the rubric and `CLAUDE.md`.
+Asked for: which items break a rule or cannot be applied, and which are fine.
+Kept: the verdict for An. Break a rule: a full-height frame where each column scrolls on its own (the authors' exact *Fix these* problem: chat and form must be readable by scrolling the page); hiding the form or calendar in a drawer or showing one column at a time on small screens (the opening state must be on screen); removing the page's h1 (one h1 per page); a notification bell (a header control with nothing behind it); a "failed, retry" message (sending must be a disabled button with a note, and a fake failure is a demo); tooltips instead of the calendar list (every booking must be readable at every width, also on touch); more suggested times than 14:00 (the story has no other free time); relative times and live data (not in the brief, and invented); shortening the button to "Tạo booking GS-1024" alone (the label must say who continues); a filter row that scrolls sideways (the rubric's overflow line counts the chips beyond the screen). Not worth it tonight: drag-to-edit, an undo toast (the submit opens the next page), an auto-growing message box (it is disabled). Fine: message groups (time once per group, avatar on the last message, no repeated names), the price message as a small card, wider page on large screens, a smaller page heading area that keeps the h1, compact filter buttons in fewer rows, the calendar list made compact (one line per block), one-hour blocks that do not wrap, hatching on the clash block, the button in two lines ("Tạo booking GS-1024" and who continues), the visual details already in the design system. Recommended a short list of quick wins, given the time.
+Changed: nothing.
+Rejected: nothing yet; the choice is An's.
+By hand: An's list.
