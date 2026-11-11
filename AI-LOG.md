@@ -775,3 +775,12 @@ Kept: awaiting An's review. The opening starts with the dot under "ạ" filling 
 Changed: the earlier way (scaling the heading with CSS, capped at the screen width) cannot go this large without the heading reaching past the screen edge, which the rubric's overflow line lists. The large words are now painted on a decorative canvas the size of the screen (`aria-hidden`, no pointer events, removed when done); the real heading stays in the page, hidden only while its copy moves and shown at the same place. If the fonts take longer than 0.8 s, the heading simply appears without the zoom. Checks, sampled every frame for 4 s at 1280 px with and without 3D and at 360 px: overflow line 0 elements, no sideways scroll, the canvas present for about 1.2 s, the heading never left hidden after it, no page error; frames show the dot, the word, then the title in place; rubric checks FAILURES: 0.
 Rejected: An asked for a larger start and a faster move than in 6168c4e.
 By hand: An's review.
+
+## 2026-11-11 — the title drops in instead of zooming
+Commit: 8942656 for the page, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright, sampling the rubric's overflow line on every animation frame.
+Asked for: An found the pull-back from the dot ugly; "Lưu lại ngày" should drop in from above, and "ra trường" should appear the moment it lands so the title reads without a pause.
+Kept: awaiting An's review. "Lưu lại ngày" falls from above the screen, accelerating, lands at 0.61 s with a 12 px bounce and settles at 0.9 s; "ra trường" appears at the landing, in 0.3 s with a short rise; the line and buttons fade in from 0.9 s. If the 3D stage takes over mid-way, its title continues from the same moment. Nothing moves with reduced motion. The chalk lines drawing in (A) stay as they were.
+Changed: removed the canvas copy of the title and the written-on mask from 6168c4e and 89e25f3; `useZoomOut.js` is replaced by `useTitleDrop.js`, which only sets the start moment; the motion is CSS. The drop is vertical only, so nothing reaches past the side edge. Checks, every frame for 4 s at 1280 px with and without 3D and at 360 px: overflow line 0 elements, no sideways scroll, no page error; frames show the fall and the landing with both lines; title never below full opacity through the 3D takeover; rubric checks FAILURES: 0.
+Rejected: An rejected the pull-back from the dot (89e25f3) and, with it, the slow writing of "ra trường".
+By hand: An's review.
