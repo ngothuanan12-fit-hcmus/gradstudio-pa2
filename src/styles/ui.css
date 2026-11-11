@@ -71,7 +71,10 @@
   overflow-wrap: anywhere;
 }
 
-.status-badge-glyph { flex: none; }
+.status-badge-glyph { flex: none; display: inline-flex; }
+/* Icons (Icon.jsx): as tall as the text, in its colour. */
+.icon { flex: none; width: 1em; height: 1em; vertical-align: -0.125em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.icon-square, .icon-diamond { fill: currentColor; }
 .status-badge-neutral { color: var(--ink-muted); background: var(--busy); border: 1px solid var(--line-strong); }
 .status-badge-pending { color: var(--accent); background: var(--accent-soft); border: 1px dashed var(--accent); }
 .status-badge-confirmed { color: var(--free); background: var(--free-soft); border: 2px solid var(--free); }
