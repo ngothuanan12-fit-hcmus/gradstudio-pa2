@@ -767,6 +767,17 @@ Changed: ported the booking folio details from `MyPhotoSessions.tsx` into `src/c
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — customer schedule page: WeekCalendar with struck 09:00 and shoot-day label
+
+Who: Khánh (24120340).
+Commit: 28c1593.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: created `src/components/WeekCalendar.jsx` and `src/styles/schedule.css` by porting the October 2026 week strip and 3-event timeline from `MyPhotoSessions.tsx` into plain CSS with `tokens.css` variables. Fixed all three open items from the PR #3 review: the clashing time itself is wrapped in `<s>09:00</s>` (not only its title), Saturday 24/10 is labelled *◆ Ngày chụp* instead of *Hôm nay*, and every label (`week-dow`, `week-shoot-tag`, `week-event-tag`, `week-badge`) is 16 px or larger. Clicking any other day of the week shows a clear empty state with a button to return to Saturday 24/10.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
 
 
 
