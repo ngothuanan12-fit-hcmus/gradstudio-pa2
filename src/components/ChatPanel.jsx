@@ -7,6 +7,7 @@ import Button from './Button.jsx';
 export default function ChatPanel({
   id,
   title = 'Chat với studio',
+  subtitle,
   label,
   messages = [],
   action,
@@ -20,7 +21,10 @@ export default function ChatPanel({
   const noteId = `${id}-note`;
   return (
     <section className="chat" aria-labelledby={`${id}-title`}>
-      <h2 id={`${id}-title`} className="summary-title">{title}</h2>
+      <div className="panel-head">
+        <h2 id={`${id}-title`} className="summary-title">{title}</h2>
+        {subtitle ? <p className="meta-line">{subtitle}</p> : null}
+      </div>
       {messages.length ? (
         <ol className="chat-log">
           {messages.map((message) => {
@@ -47,7 +51,9 @@ export default function ChatPanel({
             disabled={disabled}
             aria-describedby={note ? noteId : undefined}
           />
-          <Button type="submit" disabled={disabled}>Gửi</Button>
+          <Button variant={disabled ? 'secondary' : 'primary'} type="submit" disabled={disabled}>
+            Gửi
+          </Button>
         </div>
         {note ? <p className="chat-note" id={noteId}>{note}</p> : null}
       </form>
