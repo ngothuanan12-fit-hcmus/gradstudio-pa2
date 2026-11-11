@@ -807,6 +807,22 @@ Changed: on `quan-ly.html`, the two-column `.form-grid` inside the 380 px bookin
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — Responsive polish and Done means verification at 360, 768 and 1280 px
+
+Who: Khánh (24120340).
+Commit: 6386b2c, 70fa37e.
+Tool: Antigravity (Gemini 4 Argon Medium) + Chrome DevTools MCP.
+Asked for: visual inspection and *Done means* verification across `quan-ly.html`, `lich-chup.html`, and `index.html` at 360, 768 and 1280 px.
+Changed:
+- `6386b2c` (`src/styles/schedule.css`): at 768 px, let `WeekCalendar` span the full page width so all 7 day cells have ~96 px each (`◆ Ngày chụp` no longer wraps narrowly into 3 lines), and placed `BookingSummary` and `DepositCard` side by side below it before switching to the asymmetric 2-column layout (`1.6fr 1fr`) at 1280 px.
+- `70fa37e` (`src/components/ConversationList.jsx`, `src/styles/admin.css`): switched `.conv` from 3 columns (`40px minmax(0, 1fr) auto`) to the 2-column layout from `CustomerInbox.tsx` (`40px minmax(0, 1fr)`), placing `.conv-time` on the first row opposite `.conv-name` and `.conv-unread` opposite the `StatusBadge` on the second row so `✓ Hoàn thành` stays on a single line at 360, 768 and 1280 px.
+Checks:
+- `npm run lint` exits 0 with no output.
+- `npm run build` exits 0 and builds `dist/index.html`, `dist/quan-ly.html` and `dist/lich-chup.html`.
+- Chrome DevTools check across `quan-ly.html`, `lich-chup.html` and `index.html` at `360x800`, `768x900` and `1280x900`: `overflowX: 0` on all 9 page×viewport runs; `h1Count: 1` on every page; `badLinks: []`; `unlabeledInputs: []`; `smallControls: []` (every interactive control ≥ 44 px tall); `smallTextNodes: []` (every visible text node ≥ 16 px); 0 console errors or warnings; exactly 1 `.btn-primary` per page (`"Tạo booking · Khách hàng: mở lịch chụp GS-1024"` on `quan-ly.html`, `"Thanh toán cọc 30% (540.000đ)"` on `lich-chup.html`, `"Xem gói chụp"` on `index.html`).
+By hand: none.
+
+
 
 
 
