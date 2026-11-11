@@ -21,29 +21,27 @@
 .hero-photo { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
 .hero-text { display: grid; gap: var(--space-16); padding-inline: var(--space-16); }
 
-/* Packages */
-.package-list { display: grid; gap: var(--space-24); }
-/* Each package is a card of its own; its price and button sit at the bottom, so the three line up side by side. */
-.package {
-  display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-8);
-  padding: var(--space-16); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md);
-  transition: transform var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+/* Packages: a turntable of the three photos, the front package's words beside it from 1280 px, below it before.
+   PackageCarousel.jsx sizes and places the cards from the turntable's width. */
+.pkg-show { display: grid; gap: var(--space-24); }
+.pkg-visual { display: grid; gap: var(--space-16); }
+.pkg-stage { position: relative; min-height: 160px; cursor: grab; touch-action: pan-y; user-select: none; }
+.pkg-stage[data-held="true"] { cursor: grabbing; }
+.pkg-slot { position: absolute; top: 0; left: 50%; transform-origin: 50% 50%; perspective: 900px; }
+.pkg-card {
+  position: relative; width: 100%; height: 100%; overflow: hidden;
+  border: var(--space-8) solid var(--chalk); border-radius: var(--radius-sm);
+  box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6);
 }
-/* Pointing at a card lifts it a little; the same light-up when its button has keyboard focus. The card itself is not
-   a button: "Tư vấn gói này" stays the one action. */
-@media (hover: hover) {
-  .package:hover { transform: translateY(-4px); border-color: var(--line-strong); box-shadow: var(--shadow-panel); }
-}
-.package:focus-within { border-color: var(--line-strong); }
-@media (prefers-reduced-motion: reduce) {
-  .package { transition: none; }
-  .package:hover { transform: none; }
-}
-.package-photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; border: var(--space-8) solid var(--chalk); border-radius: var(--radius-sm); }
-.package-name { margin-top: var(--space-8); font-family: var(--font-display); font-size: 30px; line-height: 38px; font-weight: 500; }
+.pkg-card img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; pointer-events: none; }
+.pkg-sheen { position: absolute; inset: 0; pointer-events: none; }
+.pkg-detail { display: grid; gap: var(--space-8); align-content: start; justify-items: start; }
+.pkg-count { min-width: var(--space-48); color: var(--ink-muted); text-align: center; font-variant-numeric: tabular-nums; }
+.package-name { font-family: var(--font-display); font-size: 30px; line-height: 38px; font-weight: 500; }
 .package-line { color: var(--accent); font-family: var(--font-display); font-size: 22px; line-height: 30px; font-style: italic; }
-.package-price { margin-top: auto; padding-top: var(--space-8); color: var(--accent); font-family: var(--font-display); font-size: 32px; line-height: 40px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.package-price { padding-top: var(--space-8); color: var(--accent); font-family: var(--font-display); font-size: 32px; line-height: 40px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .package-price span { display: block; color: var(--ink-muted); font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 400; }
+.pkg-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-12); }
 
 /* Process */
 .process { display: grid; gap: var(--space-24); margin: 0; padding: 0; list-style: none; counter-reset: step; }
@@ -93,10 +91,6 @@
   .home-section { padding: var(--space-64) var(--space-24); }
   .section-heading { font-size: 40px; line-height: 48px; }
   .story-title { font-size: 64px; line-height: 72px; }
-  .package-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-24); align-items: stretch; }
-  .package { padding: var(--space-24); }
-  .package-price { font-size: 26px; line-height: 34px; }
-  .package-photo { aspect-ratio: 1; }
   .process { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
   /* The same size as the 3D stage, so nothing jumps when the scene takes over. */
@@ -200,7 +194,7 @@
 @media (min-width: 1280px) {
   .home-section { padding-inline: var(--space-48); }
   .process { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .package-price { font-size: 32px; line-height: 40px; }
+  .pkg-show { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: center; gap: var(--space-48); }
   /* Two panels: the heading, quick package choice and what to tell the studio in a card on the left, the chat
      window on the right; the window's conversation fills the height of the card. */
   .chat-section { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-24); align-items: stretch; }

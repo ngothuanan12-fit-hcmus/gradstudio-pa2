@@ -3,7 +3,7 @@ import { flushSync } from 'react-dom';
 import CustomerLayout from '../layouts/CustomerLayout.jsx';
 import Button from '../components/Button.jsx';
 import ChatDock from '../components/ChatDock.jsx';
-import PackageCard from '../components/PackageCard.jsx';
+import PackageCarousel from '../components/PackageCarousel.jsx';
 import Story from '../components/Story.jsx';
 import { formatVND, packages, processSteps } from '../data.js';
 import '../styles/home.css';
@@ -29,11 +29,7 @@ export default function Home() {
       <section className="home-section" id="goi-chup" aria-labelledby="goi-chup-title">
         <h2 className="section-heading" id="goi-chup-title">Chọn buổi chụp của bạn</h2>
         <p>Cần makeup, thuê áo, hay muốn chụp kiểu không có trong ba gói này, bạn hỏi studio trong chat.</p>
-        <div className="package-list">
-          {packages.map((item) => (
-            <PackageCard key={item.id} item={item} asking={item.id === askingId} onAsk={askAbout} />
-          ))}
-        </div>
+        <PackageCarousel items={packages} askingId={askingId} onAsk={askAbout} />
         <p className="home-note">Giá tham khảo. Giá chốt được ghi trên booking sau khi tư vấn.</p>
       </section>
 
