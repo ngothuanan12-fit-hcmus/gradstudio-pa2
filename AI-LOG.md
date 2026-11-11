@@ -717,6 +717,17 @@ Changed: ported the two-letter avatar initials (`NL`, `PU`, `MA`, `GB`) and empt
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — management page: explicit 09:00 Mai clash note in ConflictAlert
+
+Who: Khánh (24120340).
+Commit: 5aaa51e.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: updated `src/components/ConflictAlert.jsx` so its opening 14:00 state explicitly says "Giờ 09:00 Linh hỏi ban đầu bị trùng vì Mai (makeup) bận 08:00–12:00. Khung 14:00 đã chọn có đủ thợ makeup Mai, thợ chụp Tuấn và Phòng B." instead of only "Không còn trùng lịch" (fixing item 1 of the PR #2 review). Also ported the nearest-slot label from `SlotSuggestion.tsx` into the 14:00 button.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
 
 
 
