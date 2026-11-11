@@ -7,6 +7,8 @@ import { fmtTime, toMinutes } from '../utils/time.js';
 // form). Details agreed in the chat are filled in; the end times follow from the start time and the 2-hour package.
 // The page opens at 14:00, so the submit is enabled; choosing 09:00 brings back the clash and disables it.
 // The card can fold to one line, which still shows the time, the clash note and the submit.
+// The fields have no `name`: submitting only opens lich-chup.html, which reads its booking from data.js, so no booking
+// detail travels in the address.
 export default function BookingForm({ booking, services = [], conflict, start, onStartChange, open, onToggle }) {
   // Make-up takes the hour before the shoot; the Premium package shoots for two hours.
   const t = toMinutes(start);
@@ -36,11 +38,11 @@ export default function BookingForm({ booking, services = [], conflict, start, o
           <div className="bf-grid">
             <p className="field">
               <label className="field-label" htmlFor="bf-customer">Khách hàng</label>
-              <input className="input" id="bf-customer" name="customer" type="text" defaultValue={booking.customer} autoComplete="off" />
+              <input className="input" id="bf-customer" type="text" defaultValue={booking.customer} autoComplete="off" />
             </p>
             <p className="field">
               <label className="field-label" htmlFor="bf-package">Gói chụp</label>
-              <select className="input" id="bf-package" name="package" defaultValue={booking.pkg}>
+              <select className="input" id="bf-package" defaultValue={booking.pkg}>
                 {services.map((service) => (
                   <option key={service.id} value={service.name}>{service.name}</option>
                 ))}
@@ -55,14 +57,14 @@ export default function BookingForm({ booking, services = [], conflict, start, o
           <div className="bf-grid">
             <p className="field">
               <label className="field-label" htmlFor="bf-date">Ngày chụp</label>
-              <input className="input" id="bf-date" name="date" type="text" defaultValue={booking.date} />
+              <input className="input" id="bf-date" type="text" defaultValue={booking.date} />
             </p>
             <p className="field">
               <label className="field-label" htmlFor="bf-start">Giờ chụp</label>
               <select
                 className="input"
                 id="bf-start"
-                name="start"
+               
                 value={start}
                 aria-invalid={conflict ? 'true' : 'false'}
                 onChange={(event) => onStartChange(event.target.value)}
@@ -80,7 +82,7 @@ export default function BookingForm({ booking, services = [], conflict, start, o
           <div className="bf-grid">
             <p className="field">
               <label className="field-label" htmlFor="bf-makeup">Thợ makeup</label>
-              <select className="input" id="bf-makeup" name="makeup" defaultValue={booking.makeup.who}>
+              <select className="input" id="bf-makeup" defaultValue={booking.makeup.who}>
                 <option value={booking.makeup.who}>{booking.makeup.who}</option>
               </select>
               <span className={conflict ? 'bf-avail is-busy' : 'bf-avail is-free'}>
@@ -89,14 +91,14 @@ export default function BookingForm({ booking, services = [], conflict, start, o
             </p>
             <p className="field">
               <label className="field-label" htmlFor="bf-photographer">Thợ chụp</label>
-              <select className="input" id="bf-photographer" name="photographer" defaultValue={booking.shoot.who}>
+              <select className="input" id="bf-photographer" defaultValue={booking.shoot.who}>
                 <option value={booking.shoot.who}>{booking.shoot.who}</option>
               </select>
               {conflict ? null : <span className="bf-avail is-free"><Icon name="check" /> Trống {shoot}</span>}
             </p>
             <p className="field">
               <label className="field-label" htmlFor="bf-room">Phòng chụp</label>
-              <select className="input" id="bf-room" name="room" defaultValue={booking.shoot.room}>
+              <select className="input" id="bf-room" defaultValue={booking.shoot.room}>
                 <option value={booking.shoot.room}>{booking.shoot.room}</option>
               </select>
               {conflict ? null : <span className="bf-avail is-free"><Icon name="check" /> Trống {shoot}</span>}
