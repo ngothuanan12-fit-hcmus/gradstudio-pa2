@@ -286,6 +286,8 @@ An also attached a screenshot of Khánh's management page in progress: conversat
 > mình muốn đổi form booking không còn dưới chat mà nằm ngay trong chat được không, kiểm tra lại nếu đổi có sai quy định đề không
 
 > có thể áp dụng cả a b c d không, áp dụng a + b trước
+
+> Lưu lại ngày hiện to hơn nữa, lúc đầu chỉ thấy dấu nặng của chữ lại, vì hiện to hơn nữa nên tốc độ nhỏ dần nên cho nhanh hơn một chút
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

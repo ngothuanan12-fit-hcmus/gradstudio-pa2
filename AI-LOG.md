@@ -766,3 +766,12 @@ Kept: awaiting An's review. (A) Once the 3D view's first frame is on screen, the
 Changed: the fade of the words beside the title moved from 1.1 s to 1.5 s so it follows the writing. Checks: title frames at 1280 and 360 px show the sequence; the rubric's overflow line stays `[]` at every sampled moment at 360, 768 and 1280 px; 3D: no page error, words never below full opacity through the takeover, no photo shown; rubric checks FAILURES: 0; Slow 4G about 0.6 s to the shell and 2.0 s to the page. Software rendering draws too few frames to judge the line draw-in; An checks it on a real graphics card.
 Rejected: nothing yet.
 By hand: An's choice of A + B first.
+
+## 2026-11-11 — the title starts from the dot under "ạ"
+Commit: 89e25f3 for the page, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright, sampling the rubric's overflow line on every animation frame.
+Asked for: "Lưu lại ngày" much larger at the start, so that only the dot under "lại" shows, and a faster pull-back.
+Kept: awaiting An's review. The opening starts with the dot under "ạ" filling about 40% of the screen height and pulls back to the heading's place in 1.2 s (was 1.6 s), the scale changing by ratio so the move looks even; "ra trường" is written from 1.15 s, the line and buttons fade in from 1.8 s.
+Changed: the earlier way (scaling the heading with CSS, capped at the screen width) cannot go this large without the heading reaching past the screen edge, which the rubric's overflow line lists. The large words are now painted on a decorative canvas the size of the screen (`aria-hidden`, no pointer events, removed when done); the real heading stays in the page, hidden only while its copy moves and shown at the same place. If the fonts take longer than 0.8 s, the heading simply appears without the zoom. Checks, sampled every frame for 4 s at 1280 px with and without 3D and at 360 px: overflow line 0 elements, no sideways scroll, the canvas present for about 1.2 s, the heading never left hidden after it, no page error; frames show the dot, the word, then the title in place; rubric checks FAILURES: 0.
+Rejected: An asked for a larger start and a faster move than in 6168c4e.
+By hand: An's review.
