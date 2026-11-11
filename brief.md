@@ -334,6 +334,12 @@ An also attached `phan-tich-bencho-carousel.md`, an analysis of a "turntable" ca
 > khắc phục các vấn đề về kích thước, có thể đổi sang thẻ ngang nhưng hiện trên điện thoại ổn không, mình sẽ lựa hình ngang khác, mỗi lúc chỉ thấy một gói có vi phạm gì không vì các gói có mục đích khác nhau nên không cần đặt cạnh nhau để so sánh nhưng cần xét các khía cạnh để căn chỉnh cho phù hợp chứ không áp dụng y chang thông số
 
 > mình thấy các ảnh dọc bị cắt về 4:3 vẫn ổn thì có cần đổi không
+
+### 1.24 Hand-in checks: contrast; Khánh's new branch (2026-11-11)
+
+> thực hiện việc 1
+
+> kiểm tra pr mới nhất đã có
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

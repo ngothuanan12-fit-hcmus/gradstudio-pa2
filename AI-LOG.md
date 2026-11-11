@@ -929,3 +929,21 @@ Kept: the answer: no need. On the crops the Tốt nghiệp photo keeps her face,
 Changed: nothing.
 Rejected: nothing.
 By hand: An's view of the crops.
+
+## 2026-11-11 — hand-in task 1: contrast on the landing page, and the fade problem found
+Commit: cb3a3a5 (`home.css`) and 33bc4c2 (`scene.js`), and the commit that adds this entry. An moved on from the turntable to this task.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: `contrast.py` (every visible text against the pixels behind it, worst 5 %), plain pass with WebGL off at 360 and 1280 px, 3D pass at 1280 and 768 px at seven points of the story; `debug_fade3.py` for the Tốt nghiệp close-up.
+Asked for: task 1 of the hand-in list, the contrast check, which was stopped on 2026-11-10 with an open fade problem.
+Kept: every text passes on the plain page at 360 and 1280 px and in the 3D story at both widths; lowest values 7.0:1 for the 44 px accent second lines in the captions (large text, needs 3:1) and 8.1:1 for the 16 px price note.
+Changed: two problems, both the assistant's. (1) The first pass failed the opening title at 1.2–1.3:1: the glint's gradient was kept on the title at rest, drawn through the letters, so when the script hid the text colour to photograph the background, the letters were still in the background. The gradient now exists only while the glint runs (two keyframe sets, one per colour); the opening title then measures 15.6:1 and "ra trường" 7.4:1 at 1280 px. (2) The open problem from 2026-11-10: the Kỷ yếu photo sometimes stayed bright behind the Tốt nghiệp close-up (3 of 5 fresh tries today). Cause: three.js builds a separate shader for an opaque material that forces alpha to 1, and the scene switched `transparent` on the photos and walls without asking for a new shader, so a photo first drawn while opaque, as happens when frames are skipped, ignored its opacity afterwards. Switching now sets `needsUpdate`. After the fix: 6 of 6 tries faded (left edge brightness 44–46, was 140 when stuck). Rubric checks FAILURES: 0. The memory note about this open problem is removed.
+Rejected: nothing.
+By hand: An's request.
+
+## 2026-11-11 — Khánh's new branch checked (no new pull request)
+Commit: the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), `gh` and git; Playwright on a scratch copy of `main` merged with `origin/refactor/quan-ly-lich-chup`, built; `check_pages.py` and a text-size and screenshot script.
+Asked for: a check of the latest pull request.
+Kept: the report to An. No new pull request: PR #3 is unchanged since 2026-11-08 and still conflicts. New branch `refactor/quan-ly-lich-chup`: 45 commits today from 13:18 to 15:00, 20 files, 4131 lines added; not based on the latest `main` (merging it conflicts in `AI-LOG.md`). Its log says the pages were ported from `StudioConversations.tsx` and `MyPhotoSessions.tsx` in `developer/quan-ly`, called a "practice project"; where that code comes from is not stated, and if it is the authors' prototype, `CLAUDE.md` forbids copying a reference's code. On the merged build: `quan-ly.html` opens on the Screen 1 conversation (*Đang tư vấn*, Linh's question and the "kiểm tra lịch" reply) instead of the required state after Linh agrees; the main flow to `lich-chup.html` is broken (no form with that action); the rubric's overflow line lists the timeline blocks at 360, 768 and 1280 px; 13 texts under 16 px on `quan-ly.html` and 14 on `lich-chup.html` (badges, times, counts, week labels), while its log reports none; no footer landmark on either page; one input without a label; details the brief does not give (phone 0901 234 567, "Hôm nay · 23/10", a 25/10 08:00 suggestion). It changes the shared `ChatPanel.jsx`: the heading moves into a new wrapper, which would show "Chat với studio" inside the landing chat window, so the landing CSS needs a matching change if it is merged. Good: badges in `ui.css` are now 16 px; the schedule page uses the exact status names, strikes 09:00 itself and no longer calls 24/10 "Hôm nay".
+Changed: nothing in the repository; the scratch copy is outside it.
+Rejected: nothing.
+By hand: An's request.
