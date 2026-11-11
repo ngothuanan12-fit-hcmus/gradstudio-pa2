@@ -1056,3 +1056,12 @@ Checks:
 - #12 Screenshots: `screenshots/lich-chup-360.png`, `screenshots/lich-chup-768.png`, `screenshots/lich-chup-1280.png` captured.
 - #13 GradStudio brief: one state on open (GS-1024 waiting 30% deposit), week 19–25/10 with 09:00 struck out, no demo switcher, no Google Maps link.
 By hand: none.
+
+## 2026-11-11 — round 0: working branch; theme contrast; options for round 1
+Commit: b912aa7 (merge of PR #3's branch into `redo/quan-ly-lich-chup`, made from `main` after pushing it), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), git; contrast computed from the token values in `tokens.css`.
+Asked for: An approved the plan, asked whether the theme suggestion holds up on contrast, and asked for options for round 1.
+Kept: round 0 done: branch `redo/quan-ly-lich-chup` from `main`, Khánh's PR #3 branch merged in; the conflicts in `AI-LOG.md` and `brief.md` were resolved by keeping both sides; the build passes. Contrast of the token pairs used for text: light "studio" theme lowest 5.0:1 (accent text on the page background), muted text 6.1:1 on the background and 5.3:1 on the busy grey, status colours on their soft backgrounds 5.4–5.6:1, input borders 3.1–3.4:1 (need 3:1); dark "cinema" theme lowest 5.9:1 (muted on busy grey), accent text 8.4–9.1:1, borders 4.1–4.4:1. Both pass; the dark theme has more margin, the light one is close to the limits for accent text and borders. All styles of both pages use tokens only (no colour values), so a theme is one attribute on the page. Options for round 1 given to An (theme, header and links, columns, the prototype's next-screen strip, footer).
+Changed: nothing on the pages.
+Rejected: nothing.
+By hand: An's approval of the plan.
