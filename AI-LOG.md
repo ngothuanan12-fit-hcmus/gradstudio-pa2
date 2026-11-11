@@ -1218,3 +1218,12 @@ Kept: spacing values off the scale moved onto it: the 2 px gaps in the conversat
 Changed: nothing beyond the request. Checks: round 5 checks again (no clipped or overlapping block); rubric checks FAILURES: 0.
 Rejected: nothing yet.
 By hand: An's choice to skip 10c.
+
+## 2026-11-11 — round 11: PROTOTYPE, checks and pull request #4
+Commit: 23921e7 (`PROTOTYPE.md`; `checks/validator-lich-chup.txt` removed), and the commit that adds this entry; pull request #4 from `redo/quan-ly-lich-chup` into `main`.
+Tool: Claude Code (Claude Opus 5.5), with Playwright; `gh` for the pull request.
+Asked for: round 11 straight after 10d.
+Kept: `PROTOTYPE.md`: the rows for `quan-ly.html` and `lich-chup.html` describe the rebuilt pages and their links; five design choices added (dark customer pages and light management page, the booking card in the chat, the calendar's timeline and list, the status dot with its name, the drawn icons). The hand-written `checks/validator-lich-chup.txt` is removed, since it was not W3C output; real results come with the hand-in. Checks on the branch: lint clean, build passes, rubric checks FAILURES: 0 on all three pages and widths with the main flow working, Slow 4G about 0.6 s to the shell and 2.0 s to the page, the landing chat still within the screen at 360 px after the shared chat change. Pull request #4 opened with a summary, the shared files changed and the checks, asking Khánh to review before merging; it says it replaces PR #3.
+Changed: one of the assistant's own test scripts still looked for the old package cards on the landing page and failed; the page itself was not affected (the turntable replaced the cards earlier today).
+Rejected: nothing.
+By hand: none.
