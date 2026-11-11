@@ -947,3 +947,12 @@ Kept: the report to An. No new pull request: PR #3 is unchanged since 2026-11-08
 Changed: nothing in the repository; the scratch copy is outside it.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-11 — plan for fixing Khánh's branch and aligning its style
+Commit: the commit that adds this entry, directly after 2472073.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: An wants to fix the problems on Khánh's branch one by one and bring its style and colours into line, and asked for the order.
+Kept: a plan, awaiting An's decisions. First ask Khánh where `developer/quan-ly` comes from and to stop pushing to the branch. Then a new branch from Khánh's, with the latest `main` merged in (the `AI-LOG.md` conflict resolved by keeping both sides in order). Then the blockers in this order, one commit and one log entry each: the opening state of `quan-ly.html`, the main flow to `lich-chup.html`, the timeline overflow, footer and the unlabelled input, the details the brief does not give. Then style: the design-system tokens instead of hard-coded values, text 16 px or more, the spacing scale, one primary button per page, contrast. Then the shared `ChatPanel.jsx` change matched on the landing page, every check again on all three pages, `PROTOTYPE.md` rows, a pull request reviewed by Khánh, and PR #3 closed as replaced. Decisions for An: the theme of the two pages (they use the light "studio" theme, the landing page the dark "cinema" one); who reviews, since nobody merges their own pull request; and what to do if the ported code is the authors'.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's request.
