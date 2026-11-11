@@ -5,7 +5,7 @@ import { formatVND } from '../data.js';
 export default function PackageCard({ item, asking, onAsk }) {
   const { name, small, large, width, height } = item.photo;
   return (
-    <article className={asking ? 'package is-asking' : 'package'}>
+    <article className="package">
       <img
         className="package-photo"
         src={`./photos/${name}-${small}.webp`}
@@ -20,7 +20,6 @@ export default function PackageCard({ item, asking, onAsk }) {
       <p className="package-line">{item.line}</p>
       <p>{item.text}</p>
       <p className="package-price"><span>Từ</span> {formatVND(item.price)}<wbr />{item.unit}</p>
-      {asking && <p className="package-asking">Đang hỏi về gói này trong chat</p>}
       <Button variant={asking ? 'primary' : 'secondary'} aria-pressed={asking} onClick={() => onAsk(item.id)}>
         Tư vấn gói này
       </Button>
