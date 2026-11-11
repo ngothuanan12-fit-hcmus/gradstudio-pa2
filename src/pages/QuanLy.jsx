@@ -8,6 +8,7 @@ import ResourceSchedule from '../components/ResourceSchedule.jsx';
 import {
   booking,
   conversations,
+  freeSlots,
   messages,
   services,
   scheduleRows,
@@ -31,6 +32,7 @@ export default function QuanLy() {
   const [cardOpen, setCardOpen] = useState(true);
 
   const conflict = start !== booking.agreed;
+  const picked = conflict ? null : freeSlots[0].id;
   const active = conversations.find((item) => item.id === activeId) || conversations[0];
   const status = conflict
     ? '09:00 trùng lịch: Mai (makeup) bận 08:00–12:00. Chọn 14:00 để tạo booking.'
@@ -135,6 +137,10 @@ export default function QuanLy() {
           title="Lịch thợ và phòng"
           date="Thứ Bảy, 24/10/2026"
           rows={scheduleRows}
+          slots={freeSlots}
+          picked={picked}
+          conflict={conflict}
+          onPick={(slot) => { setStart(slot.time); setCardOpen(true); }}
         />
       </div>
     </AdminLayout>

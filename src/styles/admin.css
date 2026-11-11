@@ -179,6 +179,8 @@
     align-items: start;
   }
   .admin-convs { grid-area: convs; }
+  .tl .tl-block.is-short { justify-content: flex-start; padding: 0 var(--space-8); }
+  .tl .tl-block.is-short .tl-word { display: inline; }
   .admin-chat { grid-area: chat; }
   .sched { grid-area: sched; }
 }
@@ -209,4 +211,37 @@
 @media (min-width: 768px) {
   .bf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .booking-card > .btn-primary { justify-self: start; }
+}
+
+/* Suggested times, at the top of the resource calendar. */
+.sched-suggest { display: grid; gap: var(--space-8); padding: var(--space-12); background: var(--free-soft); border: 2px dashed var(--free); border-radius: var(--radius-sm); }
+.sched-suggest h3 { color: var(--free); font-size: 18px; line-height: 28px; }
+.sched-suggest.is-conflict { background: var(--danger-soft); border: 2px solid var(--danger); }
+.sched-suggest.is-conflict h3 { color: var(--danger); }
+.sched-suggest .slot { background: var(--surface); }
+
+/* Day timeline, from 768 px: one row per person or room, 08:00 to 18:00, a gridline each hour, hour labels every
+   two hours so they never run into each other. Overlapping blocks take a second lane. */
+.tl { display: none; }
+@media (min-width: 768px) {
+  .tl { display: grid; gap: var(--space-8); }
+  .tl-axis, .tl-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); column-gap: var(--space-12); }
+  .tl-axis { position: relative; height: 24px; margin-left: 132px; display: block; }
+  .tl-axis span { position: absolute; top: 0; transform: translateX(-50%); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+  .tl-axis span:first-child { transform: none; }
+  .tl-axis span:last-child { transform: translateX(-100%); }
+  .tl-name { align-self: center; font-weight: 600; }
+  .tl-track {
+    position: relative; height: calc(var(--lanes) * 64px);
+    background: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 10%), var(--surface-raised);
+    border: 1px solid var(--line); border-radius: var(--radius-sm);
+  }
+  /* A one-hour block is too narrow for its word below 1280 px: it keeps its symbol (the key above explains it) and the
+     list below gives the full entry, so nothing is cut off. */
+  .tl-block.is-short { justify-content: center; padding: 0; }
+  .tl-block.is-short .tl-word { display: none; }
+  .tl-block {
+    position: absolute; top: calc(var(--lane) * 64px + 6px); height: 52px; display: flex; align-items: center; padding: 0 var(--space-8);
+    border-radius: var(--radius-sm); font-weight: 600; line-height: 20px; overflow-wrap: anywhere;
+  }
 }
