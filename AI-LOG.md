@@ -956,3 +956,12 @@ Kept: a plan, awaiting An's decisions. First ask Khánh where `developer/quan-ly
 Changed: nothing.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-11 — screenshots of the management page on Khánh's branch
+Commit: the commit that adds this entry, directly after c429180.
+Tool: Claude Code (Claude Opus 5.5), screenshots from the scratch copy of `main` merged with `refactor/quan-ly-lich-chup`.
+Asked for: a look at the current management page.
+Kept: full-page screenshots at 1280 and 360 px sent to An. Seen on them, beyond the earlier report: the timeline cuts its labels ("Tốt…", "N…", "Gia đì…", "Cặ…") and its hour labels overlap ("08:0010:00"), which is the authors' problem on the brief's *Fix these* list; "Tạo booking" sits in the message row with no form around it; the header carries "Booking mới", "Lịch tài nguyên" and the customer link as tabs; the avatars are photos of people whose source is not given.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's request.
