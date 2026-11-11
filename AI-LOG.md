@@ -1272,3 +1272,12 @@ Kept: awaiting An's review. Messages in a row from one side form a group: the se
 Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px in the chat or the card, overflow line 0, send still disabled with its note, the card's submit 66 px tall and still opens `lich-chup.html`. One of the assistant's test scripts read the first submit button inside the chat, which is now the card's; the script was corrected to read the message box's own button.
 Rejected: nothing yet.
 By hand: An's time limit.
+
+## 2026-11-11 — allowed improvements, part 2: page top, width, schedule list, clash, filters
+Commit: 6b2558b (`QuanLy.jsx`, `AdminLayout.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: the remaining allowed items before 20:45.
+Kept: awaiting An's review. The page top is shorter: the h1 "Quản lý booking" stays, the descriptive line under it is gone (the header already says "Quản lý studio · Thảo"), and from 1280 px the GS-1024 status sits beside the heading as a pinned line. The management page may now be 1440 px wide on large screens (was 1200). The schedule list shows each block on one line where there is room (kind, label, times). Clash blocks are hatched as well as named and marked with the warning icon. One-hour timeline blocks show only their icon at every width (at 1280 px "Đề xuất" broke over two lines). Filter buttons are tighter: 2 rows at 768 px, 3 in the 1280 px column, 4 at 360 px, all 44 px tall.
+Changed: nothing beyond the request. Checks: round 5 checks (no clipped or overlapping block, overflow line 0); no text under 16 px on either page; rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: none.
