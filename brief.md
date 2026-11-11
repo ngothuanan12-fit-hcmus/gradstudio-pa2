@@ -344,6 +344,8 @@ An also attached `phan-tich-bencho-carousel.md`, an analysis of a "turntable" ca
 > Mình muốn fix lần lượt các lỗi của nhánh Khánh làm và điều chỉnh chuẩn style và màu sắc luôn thì nên làm lần lượt thế nào
 
 > Chụp cho mình xem ảnh của trang quản lý hiện tại
+
+> Nếu là code prototype của nhóm khác thì mình nên xử lý thế nào
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

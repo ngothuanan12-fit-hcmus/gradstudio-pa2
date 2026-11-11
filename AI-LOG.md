@@ -965,3 +965,12 @@ Kept: full-page screenshots at 1280 and 360 px sent to An. Seen on them, beyond 
 Changed: nothing.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-11 — where Khánh's ported code comes from, and what to do
+Commit: the commit that adds this entry, directly after cb320c3.
+Tool: Claude Code (Claude Opus 5.5); `gh api` on the authors' repository; `curl` of the authors' published prototype (`proxy-swept-63177389.figma.site`, a Figma Make app), searched as text only.
+Asked for: how to handle Khánh's branch if it copies the other team's prototype code.
+Kept: the finding and a recommendation for An. The authors' repository (`NhatVy177/gradstudio`, no licence) holds only screenshots, but their published Figma Make bundle contains the component names `StudioConversations` and `MyPhotoSessions` that Khánh's log says were ported, and the same texts that are on the branch: the phone number "0901 234 567", "Ngày khác, đủ nhân sự", "Gần nhất", "Đủ thợ chụp, thợ makeup và phòng", "Makeup (60 phút trước giờ chụp)", "Trùng lịch tài nguyên", "Có mặt sớm 10 phút" and the sample messages "Cảm ơn studio, ảnh đẹp lắm", "Gói gia đình 4 người giá sao", "Lớp mình chốt 24/10 nha studio". So the branch is, in large part, the authors' prototype code turned from TSX into JSX. Recommended: do not merge it; record it as rejected; rebuild the two pages on our own code (`quan-ly.html` from PR #2 on `main`, `lich-chup.html` from PR #3), fixing the review items and taking only layout ideas, written afresh; keep the branch's history rather than hiding it, since this entry explains it; confirm with Khánh before acting.
+Changed: nothing.
+Rejected: nothing yet; the decision is An's.
+By hand: An's question.
