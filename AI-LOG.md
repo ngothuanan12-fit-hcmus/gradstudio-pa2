@@ -932,6 +932,16 @@ Changed: aligned `StudioHeader.jsx` brand logo (`GradStudio`) with `index.html`,
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — Style sync Step 4: de-slop ChatStream, BookingForm and QuanLy
+
+Who: Khánh (24120340).
+Commit: 78f3844.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: synchronize chat stream and booking form on `quan-ly.html` with `index.html` and remove AI Slop (dot-only status badges, unlabeled inputs, fake submit spinner, hover-only disabled tooltip, and bare resource dots).
+Changed: updated `StatusBadge` in `ChatStream.jsx` to render glyph+border status badges (`✓`, `⚠`, `◷`, `○`), added speaker headers (`Studio · Thảo` vs customer name) in `ChatBubble`, added `aria-expanded` on `Tạo booking` and `Lịch tài nguyên` toggles, replaced the bare red dot on `Lịch tài nguyên` with `⚠ Trùng lịch`, and gave the send button a visible `Gửi` label. Updated `BookingForm.jsx` to use `<label htmlFor>` on form fields, `aria-invalid` on `start-time`, `✓`/`⚠` glyphs in helper text and `Phân công dự kiến`, and visible helper text (`st-disabled-reason`) instead of a hover-only tooltip and fake spinner. Removed the artificial `600ms` `isSubmitting` delay in `QuanLy.jsx`.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
 
 
 

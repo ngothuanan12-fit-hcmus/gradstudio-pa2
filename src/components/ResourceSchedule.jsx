@@ -1,5 +1,3 @@
-import { useLayoutEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import {
   formatDateDisplay,
   formatTimeMinutes,
@@ -13,10 +11,6 @@ import {
 } from '../utils/scheduling.js';
 import ConflictAlert from './ConflictAlert.jsx';
 
-const LUNCH_BG = 'repeating-linear-gradient(135deg, rgba(35,28,22,0.07) 0 4px, transparent 4px 9px)';
-const CONFLICT_BG = 'repeating-linear-gradient(135deg, rgba(180,35,24,0.55) 0 3px, rgba(254,243,242,0.92) 3px 7px)';
-const PENDING_BG = 'repeating-linear-gradient(135deg, rgba(154,85,24,0.22) 0 4px, rgba(242,235,223,0.95) 4px 9px)';
-
 export function TimelineRow({ label, children }) {
   return (
     <div className="st-timeline-row">
@@ -26,65 +20,23 @@ export function TimelineRow({ label, children }) {
   );
 }
 
+const BLOCK_CLASS_BY_STATE = {
+  busy: 'st-block-bar st-block-busy',
+  conflict: 'st-block-bar st-block-conflict',
+  free: 'st-block-bar st-block-free',
+  proposed: 'st-block-bar st-block-proposed',
+};
+
 export function TimelineBlock({
   start,
   end,
   label,
   status,
-  variant = 'request',
-  conflicts = [],
-  showConflict = true,
+  state = 'busy',
 }) {
   const duration = end - start;
-  const blockRef = useRef(null);
-  const [widthPx, setWidthPx] = useState(0);
-  const [tooltip, setTooltip] = useState(null);
-
-  useLayoutEffect(() => {
-    const el = blockRef.current;
-    if (!el) return undefined;
-    const observer = new ResizeObserver(() => {
-      setWidthPx(el.offsetWidth);
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  const handleMouseEnter = () => {
-    const el = blockRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const timelineRect = el.closest('[data-timeline]')?.getBoundingClientRect();
-    const asideRect = el.closest('aside')?.getBoundingClientRect();
-    const minTop = Math.max(timelineRect ? timelineRect.top + 24 : 0, asideRect ? asideRect.top : 0);
-    const below = rect.top - 68 < minTop;
-    setTooltip({
-      x: rect.left + rect.width / 2,
-      y: below ? rect.bottom : rect.top,
-      below,
-    });
-  };
-
-  const getStyle = () => {
-    if (variant === 'confirmed') {
-      return { background: '#E2D3BF' };
-    }
-    if (variant === 'lunch') {
-      return { background: LUNCH_BG };
-    }
-    if (variant === 'pending') {
-      return {
-        background: PENDING_BG,
-        border: '1px solid rgba(154,85,24,0.55)',
-      };
-    }
-    return {
-      background: 'rgba(250,246,240,0.88)',
-      border: '1.5px dashed var(--accent)',
-    };
-  };
-
-  const showLabel = variant !== 'lunch' && widthPx >= 56;
+  const blockClass = BLOCK_CLASS_BY_STATE[state] ?? BLOCK_CLASS_BY_STATE.busy;
+  const timeRange = `${formatTimeMinutes(start)}–${formatTimeMinutes(end)}`;
 
   return (
     <div
@@ -92,58 +44,15 @@ export function TimelineBlock({
       style={{ transform: `translateX(${timelineMinuteToPercent(start)}%)` }}
     >
       <div
-        ref={blockRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={() => setTooltip(null)}
-        className="st-block-bar"
+        title={`${label} (${timeRange} · ${status})`}
+        className={blockClass}
         style={{
-          ...getStyle(),
           width: `${(duration / TOTAL_MINUTES) * 100}%`,
-          zIndex: variant === 'lunch' ? 0 : 1,
+          zIndex: state === 'busy' ? 1 : 2,
         }}
       >
-        {variant === 'request' ? (
-          <span className="st-block-conflicts" aria-hidden="true">
-            {conflicts.map(([cStart, cEnd], idx) => (
-              <span
-                key={idx}
-                className="st-block-conflict-slice"
-                style={{
-                  left: `${((cStart - start) / duration) * 100}%`,
-                  width: `${((cEnd - cStart) / duration) * 100}%`,
-                  background: CONFLICT_BG,
-                  opacity: showConflict ? 1 : 0,
-                }}
-              />
-            ))}
-          </span>
-        ) : null}
-
-        {showLabel ? (
-          <span className={variant === 'confirmed' ? 'st-block-text is-confirmed' : 'st-block-text is-request'}>
-            {label}
-          </span>
-        ) : null}
+        <span className="st-block-text">{label}</span>
       </div>
-
-      {tooltip
-        ? createPortal(
-            <div
-              className="st-portal-tooltip"
-              style={{
-                left: tooltip.x,
-                top: tooltip.below ? tooltip.y + 8 : tooltip.y - 8,
-                transform: tooltip.below ? 'translate(-50%, 0)' : 'translate(-50%, -100%)',
-              }}
-            >
-              <p className="st-portal-tooltip-title">{label}</p>
-              <p className="st-portal-tooltip-sub">
-                {formatTimeMinutes(start)}–{formatTimeMinutes(end)} · {status}
-              </p>
-            </div>,
-            document.body
-          )
-        : null}
     </div>
   );
 }
@@ -154,7 +63,7 @@ export function SlotSuggestion({ title, detail, nearest, onPick, disabled }) {
       <div className="st-slot-info">
         <div className="st-slot-head">
           <span className="st-slot-title">{title}</span>
-          {nearest ? <span className="st-slot-badge">Gần nhất</span> : null}
+          {nearest ? <span className="st-slot-badge">✓ Gần nhất</span> : null}
         </div>
         <p className="st-slot-detail">{detail}</p>
       </div>
@@ -186,32 +95,19 @@ export default function ResourceSchedule({
   const isSameDay = timelineDate === bookingDate;
   const dayEvents = scheduledEventsByDay[timelineDate] ?? [];
   const hoursAxis = [8, 10, 12, 14, 16, 18];
-  const requestVariant = isBookingCreated ? 'pending' : 'request';
 
   const legendItems = [
-    ['Đã xác nhận', { background: '#E2D3BF' }],
-    ['Yêu cầu đang xét', { border: '1.5px dashed var(--accent)' }],
-    [
-      'Trùng lịch',
-      {
-        background: 'repeating-linear-gradient(135deg, rgba(180,35,24,0.6) 0 2px, #FEF3F2 2px 4px)',
-      },
-    ],
-    [
-      'Nghỉ',
-      {
-        background: LUNCH_BG,
-        border: '1px solid rgba(35,28,22,0.12)',
-      },
-    ],
+    ['busy', '—', 'Đã kín lịch'],
+    ['proposed', '◷', 'Đang chọn'],
+    ['conflict', '⚠', 'Trùng lịch'],
+    ['free', '✓', 'Gợi ý trống'],
   ];
 
   return (
     <aside className="st-resource-aside" aria-label="Lịch tài nguyên studio">
-      {/* Date header & controls */}
       <div className="st-res-head">
         <div>
-          <p className="st-kicker">Lịch tài nguyên</p>
+          <p className="st-kicker">Kiểm tra thợ chụp, makeup và phòng</p>
           <h2 className="st-res-date-title">
             {getDayOfWeek(timelineDate)}, {timelineDate}/10
           </h2>
@@ -226,21 +122,7 @@ export default function ResourceSchedule({
               aria-label={delta < 0 ? 'Ngày trước' : 'Ngày sau'}
               className="st-icon-circle-btn"
             >
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                fill="none"
-                style={delta < 0 ? { transform: 'rotate(180deg)' } : undefined}
-                aria-hidden="true"
-              >
-                <path
-                  d="m4.5 2.5 3.5 3.5-3.5 3.5"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <span aria-hidden="true">{delta < 0 ? '←' : '→'}</span>
             </button>
           ))}
 
@@ -251,27 +133,24 @@ export default function ResourceSchedule({
               aria-label="Đóng lịch tài nguyên"
               className="st-icon-circle-btn"
             >
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M4 4l8 8M12 4l-8 8" strokeLinecap="round" />
-              </svg>
+              <span aria-hidden="true">✕</span>
             </button>
           ) : null}
         </div>
       </div>
 
-      {/* Swatch legend */}
       <div className="st-res-legend">
-        {legendItems.map(([legendLabel, legendStyle]) => (
-          <span key={legendLabel} className="st-legend-item">
-            <span className="st-legend-swatch" style={legendStyle} />
+        {legendItems.map(([key, glyph, legendLabel]) => (
+          <span key={key} className="st-legend-item">
+            <span className={`st-legend-swatch st-swatch-${key}`} aria-hidden="true">
+              {glyph}
+            </span>
             <span>{legendLabel}</span>
           </span>
         ))}
       </div>
 
-      {/* Gantt Timeline */}
       <div className="st-gantt-wrap" data-timeline>
-        {/* Hourly axis labels */}
         <div className="st-gantt-axis">
           <div className="st-gantt-axis-spacer" />
           <div className="st-gantt-axis-track">
@@ -290,9 +169,7 @@ export default function ResourceSchedule({
           </div>
         </div>
 
-        {/* Rows container */}
         <div className="st-gantt-rows">
-          {/* Vertical grid lines */}
           <div className="st-gantt-grid-lines" aria-hidden="true">
             {Array.from({ length: 11 }, (_, idx) => (
               <span
@@ -303,7 +180,6 @@ export default function ResourceSchedule({
             ))}
           </div>
 
-          {/* Resource rows */}
           {studioResources.map((res) => {
             const currentReqSegments =
               isSameDay && isLinh
@@ -312,16 +188,14 @@ export default function ResourceSchedule({
 
             return (
               <TimelineRow key={res.id} label={res.label}>
-                {/* Lunch break */}
                 <TimelineBlock
                   start={LUNCH_BREAK[0]}
                   end={LUNCH_BREAK[1]}
                   label="Nghỉ trưa"
-                  status="Nghỉ"
-                  variant="lunch"
+                  status="Đã kín lịch"
+                  state="busy"
                 />
 
-                {/* Confirmed existing sessions */}
                 {dayEvents
                   .filter((ev) => ev.resource === res.id)
                   .map((ev) => (
@@ -330,41 +204,47 @@ export default function ResourceSchedule({
                       start={ev.start}
                       end={ev.end}
                       label={ev.title}
-                      status="Đã xác nhận"
-                      variant="confirmed"
+                      status="Đã chốt lịch"
+                      state="busy"
                     />
                   ))}
 
-                {/* Candidate requested booking segments */}
-                {currentReqSegments.map((seg) => (
-                  <TimelineBlock
-                    key={seg.kind}
-                    start={seg.start}
-                    end={seg.end}
-                    variant={requestVariant}
-                    label={
-                      isBookingCreated
-                        ? 'Chờ xác nhận'
-                        : seg.kind === 'makeup'
-                        ? 'Makeup · Linh'
-                        : 'Linh · yêu cầu'
-                    }
-                    status={
-                      isBookingCreated
-                        ? 'Chờ xác nhận'
-                        : seg.conflicts.length
-                        ? 'Trùng lịch'
-                        : 'Yêu cầu đang xét'
-                    }
-                    conflicts={seg.conflicts}
-                    showConflict={seg.conflicts.length > 0}
-                  />
-                ))}
+                {currentReqSegments.map((seg) => {
+                  const hasSegConflict = seg.conflicts.length > 0;
+                  const segState = hasSegConflict
+                    ? 'conflict'
+                    : isBookingCreated
+                    ? 'free'
+                    : 'proposed';
+                  return (
+                    <TimelineBlock
+                      key={seg.kind}
+                      start={seg.start}
+                      end={seg.end}
+                      state={segState}
+                      label={
+                        hasSegConflict
+                          ? `⚠ Trùng · Linh`
+                          : isBookingCreated
+                          ? '✓ #GS-1024 · Linh'
+                          : seg.kind === 'makeup'
+                          ? '◷ Makeup · Linh'
+                          : '◷ Chụp · Linh'
+                      }
+                      status={
+                        hasSegConflict
+                          ? 'Trùng lịch'
+                          : isBookingCreated
+                          ? 'Chờ cọc 30%'
+                          : 'Đang chọn'
+                      }
+                    />
+                  );
+                })}
               </TimelineRow>
             );
           })}
 
-          {/* Active slot indicator needle */}
           {isSameDay && isLinh ? (
             <div className="st-needle-layer" aria-hidden="true">
               <div
@@ -382,18 +262,25 @@ export default function ResourceSchedule({
           <p className="st-gantt-empty-note">
             Chưa có lịch nào trong ngày — đủ nhân sự cả ngày.
           </p>
-        ) : null}
+        ) : (
+          <ul className="st-resource-summary-list" aria-label="Chi tiết ca bận trong ngày">
+            {dayEvents.map((ev) => (
+              <li key={`${ev.resource}-${ev.start}`} className="st-resource-summary-item">
+                <strong>{getResourceName(ev.resource)}</strong>
+                <span>
+                  {formatTimeMinutes(ev.start)}–{formatTimeMinutes(ev.end)} · {ev.title}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
-      {/* Alert or confirmation box */}
       <div className="st-res-status-section">
         {isLinh && !isBookingCreated ? (
           validation.ok ? (
             <div className="st-ok-banner">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.3" />
-                <path d="m5 8.2 2 2 4-4.4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
+              <span aria-hidden="true">✓</span>
               <span>
                 {formatDateDisplay(bookingDate).slice(0, 5)} · {formatTimeMinutes(startTime)} — Đủ thợ chụp, thợ makeup và phòng
               </span>
@@ -409,16 +296,15 @@ export default function ResourceSchedule({
 
         {isLinh && isBookingCreated ? (
           <div className="st-pending-banner">
-            Đang giữ chỗ tạm cho #GS-1024 · {formatTimeMinutes(startTime)} — chờ Linh xác nhận.
+            ◷ Đã tạo #GS-1024 ({formatTimeMinutes(startTime)}) — lịch được giữ chính thức khi Linh thanh toán cọc 30%.
           </div>
         ) : null}
       </div>
 
-      {/* Smart Slot Suggestions */}
       {isLinh ? (
         <div className="st-suggestions-section">
-          <p className="st-kicker">Gợi ý</p>
-          <h3 className="st-suggestions-title">Gợi ý giờ trống</h3>
+          <p className="st-kicker">Gợi ý khung giờ trống</p>
+          <h3 className="st-suggestions-title">Đủ thợ chụp, thợ makeup và phòng</h3>
 
           <div className="st-suggestions-list">
             {suggestions.map((sug) => {
