@@ -757,3 +757,12 @@ Kept: the answer to An. Allowed: "the chat with the Booking mới form below it"
 Changed: nothing.
 Rejected: nothing.
 By hand: An's question.
+
+## 2026-11-11 — opening A + B: chalk lines draw in, the second title line is written
+Commit: 6168c4e for the page, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and software WebGL.
+Asked for: all four opening ideas, A and B first.
+Kept: awaiting An's review. (A) Once the 3D view's first frame is on screen, the room's chalk lines appear part by part in the room's existing build order, walls first, then windows, then desks, each settling down from slightly above, over about 1.4 s; after that the scene is exactly as before. (B) The title starts with "Lưu lại ngày" large; "ra trường" is written on from left to right by a soft-edged mask from 0.9 s to 1.8 s; the line under the title and the buttons then fade in. The words stay whole in the page for screen readers and the W3C check. C and D are still to do.
+Changed: the fade of the words beside the title moved from 1.1 s to 1.5 s so it follows the writing. Checks: title frames at 1280 and 360 px show the sequence; the rubric's overflow line stays `[]` at every sampled moment at 360, 768 and 1280 px; 3D: no page error, words never below full opacity through the takeover, no photo shown; rubric checks FAILURES: 0; Slow 4G about 0.6 s to the shell and 2.0 s to the page. Software rendering draws too few frames to judge the line draw-in; An checks it on a real graphics card.
+Rejected: nothing yet.
+By hand: An's choice of A + B first.

@@ -284,6 +284,8 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 An also attached a screenshot of Khánh's management page in progress: conversation list and a full-width chat, with a "Lịch tài nguyên" button instead of the calendar column.
 
 > mình muốn đổi form booking không còn dưới chat mà nằm ngay trong chat được không, kiểm tra lại nếu đổi có sai quy định đề không
+
+> có thể áp dụng cả a b c d không, áp dụng a + b trước
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
