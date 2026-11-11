@@ -257,6 +257,8 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 ### 1.20 Checking Khánh's two pages on the repository (2026-11-11)
 
 > mình sẽ duyệt sau, mình cần kiểm tra trang quan-ly và lich-chup trên repo
+
+> push trước
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
