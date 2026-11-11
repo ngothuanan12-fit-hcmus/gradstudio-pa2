@@ -777,6 +777,17 @@ Changed: created `src/components/WeekCalendar.jsx` and `src/styles/schedule.css`
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — customer schedule page: DepositCard and disabled payment note
+
+Who: Khánh (24120340).
+Commit: b8e9a34.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: created `src/components/DepositCard.jsx` and added its styles to `src/styles/schedule.css` by porting the deposit folio section from `MyPhotoSessions.tsx`. Shows the 30% deposit (`540.000đ`), total package price (`1.800.000đ`), and remaining 70% (`1.260.000đ`), while keeping *Thanh toán cọc 30% (540.000đ)* disabled with a visible `aria-describedby` note that the 14:00 slot on 24/10/2026 is held only after the 30% deposit succeeds (omitting the practice project's invented VietQR line per NEVER 4).
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
 
 
 
