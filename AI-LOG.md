@@ -1281,3 +1281,12 @@ Kept: awaiting An's review. The page top is shorter: the h1 "Quản lý booking"
 Changed: nothing beyond the request. Checks: round 5 checks (no clipped or overlapping block, overflow line 0); no text under 16 px on either page; rubric checks FAILURES: 0.
 Rejected: nothing yet.
 By hand: none.
+
+## 2026-11-11 — rendered pages exported for the W3C checker
+Commit: the commit that adds this entry, directly after 5691d99.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built pages (software WebGL so the landing page's 3D state is the one exported).
+Asked for: getting ready for the W3C step, as offered.
+Kept: four rendered documents written outside the repository for An to paste into the Nu checker's text input: the landing page at 1280 px (3D stage) and at 360 px (plain screen), `quan-ly.html` and `lich-chup.html`, each the `outerHTML` after the page settled, with the doctype. A local copy of the checker could not be used (downloading and running it was blocked by the session's permissions), so the check stays manual, as planned.
+Changed: the first export script failed on a line break inside the page-side expression; fixed and rerun.
+Rejected: nothing.
+By hand: the pasting into the checker, by An.
