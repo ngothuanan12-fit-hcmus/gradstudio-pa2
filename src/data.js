@@ -207,3 +207,78 @@ export const weekDays = [
 export function formatVND(value) {
   return value.toLocaleString('vi-VN') + 'đ';
 }
+
+// Studio fixtures ported from developer/quan-ly
+export const staffThaoAvatar = './photos/chan-dung-480.webp';
+
+export const initialCustomers = [
+  {
+    id: 'linh',
+    name: 'Nguyễn Thùy Linh',
+    avatar: './photos/tot-nghiep-480.webp',
+    initials: 'NL',
+    last: 'Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?',
+    time: '17:21',
+    status: 'consulting',
+  },
+  {
+    id: 'khoa',
+    name: 'Trần Minh Khoa',
+    avatar: './photos/chan-dung-480.webp',
+    initials: 'MK',
+    last: 'Chụp chân dung CV mất bao lâu ạ?',
+    time: '16:58',
+    status: 'unanswered',
+    unread: true,
+  },
+  {
+    id: '12a3',
+    name: 'Hồ Gia Bảo · Lớp 12A3',
+    initials: '12A3',
+    last: 'Lớp mình chốt 24/10 nha studio',
+    time: 'Hôm qua',
+    status: 'confirmed',
+  },
+  {
+    id: 'han',
+    name: 'Lê Ngọc Hân',
+    initials: 'NH',
+    last: 'Gói gia đình 4 người giá sao ạ?',
+    time: '2 ngày trước',
+    status: 'unanswered',
+  },
+  {
+    id: 'anh',
+    name: 'Phạm Hoàng Anh',
+    initials: 'HA',
+    last: 'Cảm ơn studio, ảnh đẹp lắm!',
+    time: '3 ngày trước',
+    status: 'done',
+  },
+];
+
+export const defaultPackageTitle = 'Gói Tốt nghiệp Premium · 2 giờ · 30 ảnh chỉnh';
+
+export const statusConfig = {
+  consulting: { label: 'Đang tư vấn', tone: 'outline' },
+  unanswered: { label: 'Chưa trả lời', tone: 'dark' },
+  confirmed: { label: 'Đã xác nhận', tone: 'success' },
+  done: { label: 'Hoàn thành', tone: 'neutral' },
+  agreed: { label: 'Đã chốt lịch', tone: 'success' },
+  pending: { label: 'Chờ thanh toán cọc 30%', tone: 'pending' },
+};
+
+export const createInitialMessages = () => {
+  const res = {
+    linh: [
+      { id: 1, kind: 'text', from: 'me', text: 'Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?', time: '17:20' },
+      { id: 2, kind: 'text', from: 'studio', text: 'Để mình kiểm tra lịch cho bạn nhé', time: '17:21' },
+    ],
+  };
+  initialCustomers.slice(1).forEach((cust, idx) => {
+    res[cust.id] = [
+      { id: 10 + idx, kind: 'text', from: 'me', text: cust.last, time: /\d/.test(cust.time[0]) ? cust.time : '10:15' },
+    ];
+  });
+  return res;
+};
