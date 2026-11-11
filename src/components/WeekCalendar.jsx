@@ -34,7 +34,7 @@ export default function WeekCalendar({ days = [], shootDay }) {
       <div className="day-bar" aria-hidden="true">
         <div className="day-axis">
           {HOURS.map((h) => (
-            <span key={h} style={{ left: `${((h * 60 - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100}%` }}>{String(h).padStart(2, '0')}:00</span>
+            <span key={h} style={{ '--at': ((h * 60 - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100 }}>{String(h).padStart(2, '0')}:00</span>
           ))}
         </div>
         <div className="day-track">
@@ -44,7 +44,7 @@ export default function WeekCalendar({ days = [], shootDay }) {
               <span
                 key={event.id}
                 className={event.struck ? 'day-block is-off' : 'day-block'}
-                style={{ left: `${toPct(event.from, DAY_FROM, DAY_TO)}%`, width: `${toPct(to, DAY_FROM, DAY_TO) - toPct(event.from, DAY_FROM, DAY_TO)}%` }}
+                style={{ '--at': toPct(event.from, DAY_FROM, DAY_TO), '--len': toPct(to, DAY_FROM, DAY_TO) - toPct(event.from, DAY_FROM, DAY_TO) }}
               />
             );
           })}

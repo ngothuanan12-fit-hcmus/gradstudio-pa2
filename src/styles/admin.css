@@ -239,7 +239,7 @@
   .tl { display: grid; gap: var(--space-8); }
   .tl-axis, .tl-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); column-gap: var(--space-12); }
   .tl-axis { position: relative; height: 24px; margin-left: calc(120px + var(--space-12)); display: block; }
-  .tl-axis span { position: absolute; top: 0; transform: translateX(-50%); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+  .tl-axis span { position: absolute; top: 0; left: calc(var(--at) * 1%); transform: translateX(-50%); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
   .tl-axis span:first-child { transform: none; }
   .tl-axis span:last-child { transform: translateX(-100%); }
   .tl-name { align-self: center; font-weight: 600; }
@@ -255,7 +255,7 @@
   /* When the start time changes, Linh's blocks slide to their new place; nothing moves with reduced motion. */
   .tl-block { transition: left 400ms var(--ease-out), width 400ms var(--ease-out), top 400ms var(--ease-out); }
   .tl-block {
-    position: absolute; top: calc(var(--lane) * 64px + var(--space-8)); height: 48px; display: flex; align-items: center; padding: 0 var(--space-8);
+    position: absolute; top: calc(var(--lane) * 64px + var(--space-8)); left: calc(var(--at) * 1%); width: calc(var(--len) * 1%); height: 48px; display: flex; align-items: center; padding: 0 var(--space-8);
     border-radius: var(--radius-sm); font-weight: 600; line-height: 20px; overflow-wrap: anywhere;
   }
 }

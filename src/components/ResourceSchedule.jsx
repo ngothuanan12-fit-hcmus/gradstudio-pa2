@@ -41,6 +41,7 @@ function withLinh(rows, start) {
   });
 }
 
+// Inline styles carry only data (start, length, lane) as custom properties; admin.css turns them into position and size.
 // The resource calendar with the suggested times. From 768 px a day timeline gives the overview; it repeats what the
 // list says, so screen readers skip it. The list below is the readable record at every width: each block keeps its
 // kind as a word and a symbol, its label and its times, so nothing rests on colour or is cut off.
@@ -85,7 +86,7 @@ export default function ResourceSchedule({ title, date, rows: baseRows = [], sta
       <div className="tl" aria-hidden="true">
         <div className="tl-axis">
           {HOURS.map((h) => (
-            <span key={h} style={{ left: `${((h * 60 - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100}%` }}>{String(h).padStart(2, '0')}:00</span>
+            <span key={h} style={{ '--at': pct(fmtTime(h * 60)) }}>{String(h).padStart(2, '0')}:00</span>
           ))}
         </div>
         {rows.map((row) => {
@@ -102,7 +103,7 @@ export default function ResourceSchedule({ title, date, rows: baseRows = [], sta
                     <span
                       key={block.id}
                       className={`tl-block kind-${block.kind || 'busy'}${short ? ' is-short' : ''}`}
-                      style={{ left: `${pct(block.from)}%`, width: `${pct(block.to) - pct(block.from)}%`, '--lane': block.lane }}
+                      style={{ '--at': pct(block.from), '--len': pct(block.to) - pct(block.from), '--lane': block.lane }}
                     >
                       <Icon name={kind.icon} /><span className="tl-word"> {kind.label}</span>
                     </span>
