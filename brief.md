@@ -266,6 +266,8 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 
 > ảnh chạy theo chuột mình nghĩ nên áp dụng đặt ở phần gói chụp vì phần đó cần rõ ràng, nếu được có thể gợi ý cho mình vài phương án để áp dụng hiệu ứng đó
 > bên cạnh đó cần phải nhớ phải sửa lại khung chat theo kiểu Live chat box, Chatbox / Chat widget,
+
+> vậy chắc bỏ luôn phần đặt ảnh chạy theo chuột mà cố gắng cải thiện giao diện của đặt gói, mình đồng ý với hướng đề của chat, theo bạn có nên thêm nút nhảy tới chat không và vì sao, xét thực tế sử dụng và giao diện thực tế có khớp không
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

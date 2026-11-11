@@ -694,3 +694,12 @@ Kept: options for An, none built yet. Trail: (a) the closing moment of the 3D st
 Changed: nothing.
 Rejected: nothing yet.
 By hand: An's request.
+
+## 2026-11-11 — cursor trail dropped; package section to improve; no corner chat button
+Commit: the commit that adds this entry, directly after 7e666b3.
+Tool: Claude Code (Claude Opus 5.5), with Playwright screenshots of the package section at 1280 and 360 px.
+Asked for: An dropped the cursor trail and asked instead for a better package section; agreed to the in-page chat styled as a widget; asked whether a corner button that jumps to the chat is worth adding.
+Kept: the answer and a proposal, awaiting An's approval. Corner button: not recommended. Real studio sites use a corner button that opens a chat (Zalo or Messenger); one that only scrolls would not do what people expect, and the page already has three ways to the chat (the "Chat với studio" link that stays on screen through the 3D story, "Tư vấn gói này" on each package, and the chat two sections below the packages); it would also need the rule in `CLAUDE.md` changed and could read as the floating chat on the brief's *Fix these* list. Package section, from the screenshots: at 1280 px the Chân dung/CV price and button sit higher than the other two because its text is shorter; the three packages have no surface of their own, so they do not read as three choices; the price is 18 px, close to the body text; choosing "Tư vấn gói này" changes only the button, not the package; at 360 px the photos have different shapes (the Tốt nghiệp photo is much taller), which makes the list long and uneven. Proposed: a card surface for each package, price and button aligned at the bottom, a larger price in the display font, a clear chosen state on the whole card, and one photo shape at every width. No new facts or prices.
+Changed: nothing.
+Rejected: An rejected the cursor trail; the assistant's options (a) to (d) were dropped.
+By hand: An's decisions.
