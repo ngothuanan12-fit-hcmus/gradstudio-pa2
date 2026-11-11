@@ -1155,3 +1155,12 @@ Kept: a proposal for An. Use, written in our own code: one shared time helper (t
 Changed: nothing.
 Rejected: nothing.
 By hand: An's notes and request.
+
+## 2026-11-11 — icons and shared time helpers
+Commit: fc99758 (shared: `Icon.jsx`, `utils/time.js`, `ui.css`, `StatusBadge.jsx`) and 95638f0 (`ResourceSchedule.jsx`, `BookingForm.jsx`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: step 1 of the approved order: the icon component and the shared time helper, used on the management page.
+Kept: awaiting An's review. `Icon.jsx` draws six icons as inline SVG (check, warning triangle, clock, empty circle, filled diamond, filled square), as tall as the text, in its colour, hidden from screen readers since a word always stands next to them; no icon library. They replace the symbol characters in the status badges (shared, so also on the schedule page), the calendar legend, blocks and list, the suggested time, and the booking card's note and free/busy lines. `utils/time.js` keeps times as minutes and turns them into percentages for drawing; the calendar and the card's worked-out end times now use it. Every kind still has its own shape and word, so nothing rests on colour.
+Changed: nothing beyond the request. Checks: the round 2, 4 and 5 checks again at 360, 768 and 1280 px: no text under 16 px, no clipped or overlapping timeline block, controls 44–48 px, overflow line 0, 09:00 and back works; rubric checks FAILURES: 0. No symbol characters left in the components or data.
+Rejected: nothing yet.
+By hand: An's approval.
