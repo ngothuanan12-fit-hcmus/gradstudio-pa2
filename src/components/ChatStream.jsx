@@ -2,21 +2,34 @@ import { useState } from 'react';
 import { statusConfig } from '../data.js';
 import { Avatar } from './ConversationList.jsx';
 
+const BADGE_GLYPHS = {
+  conflict: '⚠',
+  success: '✓',
+  pending: '◷',
+  outline: '◷',
+  neutral: '○',
+  dark: '○',
+};
+
 export function StatusBadge({ tone = 'neutral', children, className = '' }) {
+  const glyph = BADGE_GLYPHS[tone] ?? '○';
   return (
-    <span className={`st-badge st-badge-${tone} ${className}`}>
-      <span className="st-badge-dot" />
+    <span className={`st-badge st-badge-${tone} ${className}`.trim()}>
+      <span className="st-badge-glyph" aria-hidden="true">
+        {glyph}
+      </span>
       <span>{children}</span>
     </span>
   );
 }
 
-export function ChatBubble({ message, viewer = 'studio' }) {
+export function ChatBubble({ message, customerName = 'Khách hàng', viewer = 'studio' }) {
   const isSelf = message.from === viewer;
   return (
     <div className={isSelf ? 'st-bubble-row is-self' : 'st-bubble-row is-other'}>
       <div className={isSelf ? 'st-bubble is-self' : 'st-bubble is-other'}>
-        {message.text}
+        <strong className="st-bubble-who">{isSelf ? 'Studio · Thảo' : customerName}</strong>
+        <span>{message.text}</span>
       </div>
       <span className="st-bubble-time">{message.time}</span>
     </div>
@@ -25,7 +38,7 @@ export function ChatBubble({ message, viewer = 'studio' }) {
 
 export function ChatInput({
   onSend,
-  placeholder = 'Nhập tin nhắn…',
+  placeholder = 'Nhập tin nhắn trả lời khách…',
   isBookingOpen = false,
   onToggleBookingForm,
 }) {
@@ -50,36 +63,26 @@ export function ChatInput({
         <button
           type="button"
           onClick={onToggleBookingForm}
+          aria-expanded={isBookingOpen}
           className={isBookingOpen ? 'st-booking-toggle is-active' : 'st-booking-toggle'}
         >
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <rect x="2.2" y="3" width="11.6" height="10.8" rx="1.8" stroke="currentColor" strokeWidth="1.35" />
-            <path d="M5.2 1.8v2.2M10.8 1.8v2.2M2.2 6.2h11.6" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" />
-          </svg>
           <span>Tạo booking</span>
         </button>
       ) : null}
 
       <input
+        id="studio-chat-message"
         type="text"
         name="chat-message"
         value={val}
         onChange={(e) => setVal(e.target.value)}
         placeholder={placeholder}
-        aria-label={placeholder}
+        aria-label="Tin nhắn trả lời khách"
         className="st-chat-text-input"
       />
 
-      <button type="submit" aria-label="Gửi tin nhắn" className="st-chat-send-btn">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path
-            d="M3 8h10m-4-4 4 4-4 4"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+      <button type="submit" className="st-chat-send-btn">
+        <span>Gửi</span>
       </button>
     </form>
   );
@@ -106,13 +109,17 @@ export default function ChatStream({
 
   return (
     <div className="st-chat-stream">
-      {/* Top sticky customer info bar */}
       <div className="st-chat-header">
-        <Avatar src={customer.avatar} initials={customer.initials} alt={customer.name} size={42} />
+        <Avatar
+          src={customer.avatar}
+          initials={customer.initials}
+          alt={`Ảnh đại diện ${customer.name}`}
+          size={44}
+        />
         <div className="st-chat-cust-info">
           <h1 className="st-chat-cust-name">{customer.name}</h1>
           <p className="st-chat-cust-meta">
-            {isLinh ? 'linh.nguyen@email.com · 0901 234 567' : 'Khách hàng GradStudio'}
+            {isLinh ? '0901 234 567 · Gói Tốt nghiệp Premium' : 'Khách hàng GradStudio'}
           </p>
         </div>
 
@@ -120,26 +127,20 @@ export default function ChatStream({
           <button
             type="button"
             onClick={onToggleResource}
+            aria-expanded={isResourceOpen}
             className={isResourceOpen ? 'st-res-toggle is-active' : 'st-res-toggle'}
           >
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path
-                d="M2 4h12M2 8h8M2 12h10"
-                stroke="currentColor"
-                strokeWidth="1.4"
-                strokeLinecap="round"
-              />
-            </svg>
             <span className="st-res-toggle-label">Lịch tài nguyên</span>
-            {hasConflict && !isResourceOpen ? <span className="st-res-conflict-dot" /> : null}
+            {hasConflict && !isResourceOpen ? (
+              <span className="st-res-conflict-flag">⚠ Trùng lịch</span>
+            ) : null}
           </button>
         ) : null}
 
         <StatusBadge tone={statusInfo.tone}>{statusInfo.label}</StatusBadge>
       </div>
 
-      {/* Scrollable message history */}
-      <div className="st-chat-messages">
+      <div className="st-chat-messages" aria-live="polite">
         <div className="st-chat-day-divider">
           <span className="st-chat-day-line" />
           <span className="st-chat-day-label">Hôm nay · 23/10</span>
@@ -152,6 +153,7 @@ export default function ChatStream({
               <ChatBubble
                 key={msg.id}
                 viewer="studio"
+                customerName={customer.name}
                 message={{
                   id: msg.id,
                   from: msg.from ?? 'me',
@@ -165,7 +167,9 @@ export default function ChatStream({
           if (msg.kind === 'system') {
             return (
               <div key={msg.id} className="st-system-msg-row">
-                <span className="st-system-msg">{msg.text}</span>
+                <p role="status" className="st-system-msg">
+                  {msg.text}
+                </p>
               </div>
             );
           }
@@ -174,13 +178,13 @@ export default function ChatStream({
             return (
               <div key={msg.id} className="st-bubble-row is-self">
                 <div className="st-quote-card">
-                  <p className="st-quote-kicker">Báo giá</p>
+                  <p className="st-quote-kicker">Báo giá gửi khách</p>
                   <p className="st-quote-title">Chụp ảnh tốt nghiệp</p>
                   <dl className="st-quote-dl">
                     {[
                       ['Gói', msg.pkg],
-                      ['Ngày', msg.date],
-                      ['Giờ', msg.start],
+                      ['Ngày chụp', msg.date],
+                      ['Giờ chụp', msg.start],
                     ].map(([dtLabel, ddVal]) => (
                       <div key={dtLabel} className="st-quote-dl-row">
                         <dt>{dtLabel}</dt>
@@ -189,7 +193,7 @@ export default function ChatStream({
                     ))}
                   </dl>
                   <div className="st-quote-footer">
-                    <span className="st-quote-note">Giá chốt sẽ ghi trên booking</span>
+                    <span className="st-quote-note">Cọc 30% để giữ lịch</span>
                     <span className="st-quote-price">{msg.price}</span>
                   </div>
                 </div>
@@ -204,35 +208,32 @@ export default function ChatStream({
         <div ref={scrollBottomRef} />
       </div>
 
-      {/* Simulated customer response strip */}
       {isLinh && proposedTime !== null && !isAgreed ? (
         <div className="st-sim-bar">
-          <span className="st-sim-kicker">Mô phỏng phản hồi của Linh</span>
+          <span className="st-sim-kicker">Phản hồi của Linh trong chat:</span>
           <button
             type="button"
             onClick={() => onSimulateAgree(true)}
             className="st-sim-btn-agree"
           >
-            Chốt giờ này
+            ✓ Chốt giờ này
           </button>
           <button
             type="button"
             onClick={() => onSimulateAgree(false)}
             className="st-sim-btn-reject"
           >
-            Từ chối
+            Đổi giờ khác
           </button>
         </div>
       ) : null}
 
-      {/* Booking Form collapsible panel */}
       {bookingFormNode ? (
         <div className={isBookingOpen ? 'st-booking-drawer is-open' : 'st-booking-drawer'}>
           {bookingFormNode}
         </div>
       ) : null}
 
-      {/* Chat input box anchored at bottom */}
       <div className="st-chat-footer">
         <ChatInput
           onSend={onSendMessage}

@@ -24,16 +24,8 @@ function Toast({ text }) {
   if (!text) return null;
   return (
     <div role="status" className="st-toast">
-      <span className="st-toast-icon">
-        <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-          <path
-            d="m2.5 6.2 2.3 2.3 4.7-5"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+      <span className="st-toast-icon" aria-hidden="true">
+        ✓
       </span>
       <span className="st-toast-text">{text}</span>
     </div>
@@ -41,16 +33,13 @@ function Toast({ text }) {
 }
 
 export default function QuanLy() {
-  // Customer selection & filtering
   const [activeId, setActiveId] = useState('linh');
   const [filterTab, setFilterTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [linhStatus, setLinhStatus] = useState('consulting');
 
-  // Chat messages
   const [chatMap, setChatMap] = useState(createInitialMessages);
 
-  // Booking parameters
   const [bookingDate, setBookingDate] = useState(24);
   const [timelineDate, setTimelineDate] = useState(24);
   const [startTime, setStartTime] = useState(540); // 09:00
@@ -59,23 +48,18 @@ export default function QuanLy() {
   const [hasCostume, setHasCostume] = useState(false);
   const [price, setPrice] = useState('1.800.000đ');
 
-  // Conflict resolution & simulation states
   const [proposedTime, setProposedTime] = useState(null);
   const [isCustomerAgreed, setIsCustomerAgreed] = useState(false);
   const [rejectedSlots, setRejectedSlots] = useState(() => new Set());
   const [isBookingCreated, setIsBookingCreated] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
-  // DOM Refs
   const chatBottomRef = useRef(null);
   const bookingFormRef = useRef(null);
 
-  // Panels visibility state
   const [isResourceOpen, setIsResourceOpen] = useState(true);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
-  // Validation
   const validation = useMemo(
     () => checkScheduleConflict(startTime, bookingDate, hasMakeup),
     [startTime, bookingDate, hasMakeup]
@@ -91,7 +75,6 @@ export default function QuanLy() {
     [startTime, bookingDate, hasMakeup, rejectedSlots]
   );
 
-  // Customers data with dynamic Linh status
   const customers = useMemo(() => {
     return initialCustomers.map((c) =>
       c.id === 'linh' ? { ...c, status: linhStatus } : c
@@ -202,7 +185,7 @@ export default function QuanLy() {
 
     setTimeout(() => {
       bookingFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 120);
+    }, 100);
   };
 
   const handleSendQuote = () => {
@@ -218,22 +201,17 @@ export default function QuanLy() {
   };
 
   const handleCreateBooking = () => {
-    setIsSubmitting(true);
+    setIsBookingCreated(true);
+    setLinhStatus('pending');
+
+    appendMessage('linh', {
+      id: messageSeq++,
+      kind: 'system',
+      text: `Đã tạo Booking #GS-1024 · Chụp ảnh tốt nghiệp · ${formatDateDisplay(bookingDate)} ${formatTimeMinutes(startTime)} · Chờ cọc 30%`,
+    });
+
+    setToastMessage('Đã tạo Booking #GS-1024 và gửi tới Lịch chụp của Linh');
     bookingFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsBookingCreated(true);
-      setLinhStatus('pending');
-
-      appendMessage('linh', {
-        id: messageSeq++,
-        kind: 'system',
-        text: `Booking #GS-1024 · Chụp ảnh tốt nghiệp · ${formatDateDisplay(bookingDate)} ${formatTimeMinutes(startTime)} · Chờ thanh toán cọc 30%`,
-      });
-
-      setToastMessage('Đã tạo Booking #GS-1024 và gửi tới Lịch chụp của Linh');
-    }, 600);
   };
 
   const handleCancelBooking = (canceled) => {
@@ -313,7 +291,6 @@ export default function QuanLy() {
                 initialValidation={initialValidation}
                 isAgreed={isCustomerAgreed}
                 isBookingCreated={isBookingCreated}
-                isSubmitting={isSubmitting}
                 onSendQuote={handleSendQuote}
                 onCreateBooking={handleCreateBooking}
                 onCancelBooking={handleCancelBooking}
@@ -323,14 +300,6 @@ export default function QuanLy() {
             }
           />
         </main>
-
-        {isResourceOpen ? (
-          <div
-            onClick={() => setIsResourceOpen(false)}
-            className="st-drawer-backdrop"
-            aria-hidden="true"
-          />
-        ) : null}
 
         <div className={isResourceOpen ? 'st-right-pane is-open' : 'st-right-pane'}>
           <div className="st-right-pane-inner">

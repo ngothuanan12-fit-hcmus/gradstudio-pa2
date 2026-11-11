@@ -8,10 +8,16 @@ import {
 } from '../utils/scheduling.js';
 import { StatusBadge } from './ChatStream.jsx';
 
-export function FormField({ label, children, helper, className = '' }) {
+export function FormField({ label, htmlFor, children, helper, className = '' }) {
   return (
-    <div className={`st-form-field ${className}`}>
-      <span className="st-form-label">{label}</span>
+    <div className={`st-form-field ${className}`.trim()}>
+      {htmlFor ? (
+        <label htmlFor={htmlFor} className="st-form-label">
+          {label}
+        </label>
+      ) : (
+        <span className="st-form-label">{label}</span>
+      )}
       {children}
       {helper ? <span className="st-form-helper">{helper}</span> : null}
     </div>
@@ -33,14 +39,13 @@ export default function BookingForm({
   initialValidation,
   isAgreed,
   isBookingCreated,
-  isSubmitting,
   onSendQuote,
   onCreateBooking,
   onCancelBooking,
   formRef,
   onClose,
 }) {
-  const isLocked = isBookingCreated || isSubmitting;
+  const isLocked = isBookingCreated;
   const currentValidation = isAgreed ? validation : initialValidation;
   const isMaiConflict = hasMakeup && !currentValidation.makeupArtist;
 
@@ -54,9 +59,7 @@ export default function BookingForm({
             aria-label="Đóng form booking"
             className="st-close-btn st-close-abs"
           >
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6">
-              <path d="M4 4l8 8M12 4l-8 8" strokeLinecap="round" />
-            </svg>
+            ✕
           </button>
         ) : null}
         <p className="st-kicker">Booking</p>
@@ -72,14 +75,14 @@ export default function BookingForm({
     <section ref={formRef} className="st-card st-booking-card">
       <div className="st-booking-head">
         <div>
-          <p className="st-kicker">Booking mới</p>
+          <p className="st-kicker">Booking mới từ hội thoại</p>
           <h2 className="st-card-title">Chụp ảnh tốt nghiệp</h2>
         </div>
         <div className="st-booking-head-right">
           {isBookingCreated ? (
             <div className="st-booking-code-wrap">
               <span className="st-booking-code">#GS-1024</span>
-              <StatusBadge tone="pending">Chờ thanh toán cọc 30%</StatusBadge>
+              <StatusBadge tone="pending">Chờ cọc 30%</StatusBadge>
             </div>
           ) : null}
           {onClose ? (
@@ -89,9 +92,7 @@ export default function BookingForm({
               aria-label="Đóng form booking"
               className="st-close-btn"
             >
-              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6">
-                <path d="M4 4l8 8M12 4l-8 8" strokeLinecap="round" />
-              </svg>
+              ✕
             </button>
           ) : null}
         </div>
@@ -99,7 +100,7 @@ export default function BookingForm({
 
       {isBookingCreated ? (
         <p className="st-booking-created-note">
-          Đã gửi tới Lịch chụp của Linh. Khách đã chốt lịch trong chat — lịch được giữ chính thức khi khách thanh toán cọc 30%.
+          Đã chuyển sang Lịch chụp của Linh. Khách đã thống nhất giờ trong chat — lịch chỉ được giữ chính thức khi khách thanh toán cọc 30%.
         </p>
       ) : null}
 
@@ -111,15 +112,27 @@ export default function BookingForm({
           </div>
         </FormField>
 
-        <FormField label="Loại buổi chụp">
-          <select name="shoot-type" disabled={isLocked} defaultValue="ca-nhan" aria-label="Loại buổi chụp" className="st-select">
+        <FormField label="Loại buổi chụp" htmlFor="booking-shoot-type">
+          <select
+            id="booking-shoot-type"
+            name="shoot-type"
+            disabled={isLocked}
+            defaultValue="ca-nhan"
+            className="st-select"
+          >
             <option value="ca-nhan">Tốt nghiệp cá nhân</option>
             <option value="nhom">Tốt nghiệp nhóm</option>
           </select>
         </FormField>
 
-        <FormField label="Gói" className="is-span-2">
-          <select name="package-id" disabled={isLocked} defaultValue="premium" aria-label="Gói chụp" className="st-select">
+        <FormField label="Gói chụp" htmlFor="booking-package-id" className="is-span-2">
+          <select
+            id="booking-package-id"
+            name="package-id"
+            disabled={isLocked}
+            defaultValue="premium"
+            className="st-select"
+          >
             <option value="premium">{defaultPackageTitle}</option>
             <option value="basic">Gói Tốt nghiệp Cơ bản · 1 giờ · 15 ảnh chỉnh</option>
           </select>
@@ -133,22 +146,26 @@ export default function BookingForm({
 
         <FormField
           label="Giờ bắt đầu chụp"
+          htmlFor="booking-start-time"
           helper={
             <span className={currentValidation.ok ? 'st-helper-status is-ok' : 'st-helper-status is-conflict'}>
-              <span className="st-helper-dot" />
-              {currentValidation.ok
-                ? 'Đủ thợ chụp, thợ makeup và phòng'
-                : isMaiConflict
-                ? 'Trùng lịch: thợ makeup Mai đang bận'
-                : 'Trùng lịch tài nguyên'}
+              <span aria-hidden="true">{currentValidation.ok ? '✓' : '⚠'}</span>
+              <span>
+                {currentValidation.ok
+                  ? 'Đủ thợ chụp, thợ makeup và phòng'
+                  : isMaiConflict
+                  ? 'Trùng lịch: thợ makeup Mai đang bận (08:00–11:00)'
+                  : 'Trùng lịch tài nguyên'}
+              </span>
             </span>
           }
         >
           <select
+            id="booking-start-time"
             name="start-time"
             disabled={isLocked}
             value={startTime}
-            aria-label="Giờ bắt đầu chụp"
+            aria-invalid={!currentValidation.ok}
             onChange={(e) => onStartTimeChange(Number(e.target.value))}
             className={currentValidation.ok ? 'st-select' : 'st-select is-conflict'}
           >
@@ -188,13 +205,13 @@ export default function BookingForm({
           </div>
         </FormField>
 
-        <FormField label="Giá chốt" helper="Giá tham khảo: từ 1.800.000đ">
+        <FormField label="Giá chốt" htmlFor="booking-final-price" helper="Giá tham khảo: từ 1.800.000đ">
           <input
+            id="booking-final-price"
             type="text"
             name="final-price"
             value={price}
             disabled={isLocked}
-            aria-label="Giá chốt"
             onChange={(e) => onPriceChange(e.target.value)}
             className="st-input"
           />
@@ -204,17 +221,38 @@ export default function BookingForm({
           <div className="st-allocation-row">
             {hasMakeup ? (
               <span className="st-alloc-item">
-                <span className={validation.makeupArtist ? 'st-alloc-dot is-ok' : 'st-alloc-dot is-conflict'} />
-                Makeup: <strong>Mai</strong>
+                <span
+                  aria-hidden="true"
+                  className={validation.makeupArtist ? 'st-alloc-glyph is-ok' : 'st-alloc-glyph is-conflict'}
+                >
+                  {validation.makeupArtist ? '✓' : '⚠'}
+                </span>
+                <span>
+                  Makeup: <strong>Mai</strong>
+                </span>
               </span>
             ) : null}
             <span className="st-alloc-item">
-              <span className={validation.photographer ? 'st-alloc-dot is-ok' : 'st-alloc-dot is-conflict'} />
-              Thợ chụp: <strong>{getResourceName(validation.photographer)}</strong>
+              <span
+                aria-hidden="true"
+                className={validation.photographer ? 'st-alloc-glyph is-ok' : 'st-alloc-glyph is-conflict'}
+              >
+                {validation.photographer ? '✓' : '⚠'}
+              </span>
+              <span>
+                Thợ chụp: <strong>{getResourceName(validation.photographer)}</strong>
+              </span>
             </span>
             <span className="st-alloc-item">
-              <span className={validation.room ? 'st-alloc-dot is-ok' : 'st-alloc-dot is-conflict'} />
-              Phòng: <strong>{validation.room ? getResourceName(validation.room) : '—'}</strong>
+              <span
+                aria-hidden="true"
+                className={validation.room ? 'st-alloc-glyph is-ok' : 'st-alloc-glyph is-conflict'}
+              >
+                {validation.room ? '✓' : '⚠'}
+              </span>
+              <span>
+                Phòng: <strong>{validation.room ? getResourceName(validation.room) : '—'}</strong>
+              </span>
             </span>
           </div>
         </FormField>
@@ -228,7 +266,7 @@ export default function BookingForm({
               onClick={() => onCancelBooking(true)}
               className="st-btn-ghost"
             >
-              Hủy
+              Hủy booking
             </button>
             <button
               type="button"
@@ -243,6 +281,16 @@ export default function BookingForm({
           </>
         ) : (
           <>
+            {!validation.ok ? (
+              <span className="st-disabled-reason">
+                ⚠ Chưa thể tạo booking vì còn trùng lịch tài nguyên.
+              </span>
+            ) : !isAgreed ? (
+              <span className="st-disabled-reason">
+                ◷ Chọn khung giờ trống bên phải và chờ khách chốt giờ trong chat.
+              </span>
+            ) : null}
+
             <button
               type="button"
               onClick={onSendQuote}
@@ -251,19 +299,14 @@ export default function BookingForm({
               Gửi báo giá vào chat
             </button>
 
-            <span className="st-tooltip-wrap">
-              <button
-                type="button"
-                disabled={!validation.ok || isSubmitting || !isAgreed}
-                onClick={onCreateBooking}
-                className="st-btn-filled"
-              >
-                {isSubmitting ? <span className="st-spinner" /> : 'Tạo booking'}
-              </button>
-              {!validation.ok ? (
-                <span className="st-btn-tooltip">Còn trùng lịch tài nguyên</span>
-              ) : null}
-            </span>
+            <button
+              type="button"
+              disabled={!validation.ok || !isAgreed}
+              onClick={onCreateBooking}
+              className="st-btn-filled"
+            >
+              Tạo booking
+            </button>
           </>
         )}
       </div>

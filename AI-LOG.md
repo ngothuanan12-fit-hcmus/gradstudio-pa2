@@ -922,6 +922,16 @@ Changed: `src/data.js` changed in its own commit as a shared file. Updated `stat
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — Style sync Step 3: de-slop StudioHeader and ConversationList
+
+Who: Khánh (24120340).
+Commit: bdc381d.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: synchronize header and customer inbox list on `quan-ly.html` with `index.html` and remove AI Slop (dead notification bell, duplicate resource button, inline styles, unlabeled search input, and bare 8px status/unread dots).
+Changed: aligned `StudioHeader.jsx` brand logo (`GradStudio`) with `index.html`, removed the fake notification bell and duplicate right-side `Tài nguyên` button, and added `aria-expanded` on toggle buttons. Updated `ConversationList.jsx` to remove inline `style={{...}}` on `Avatar`, added a visible `<label htmlFor="customer-search">` for the search input, and replaced bare 8px status and unread dots with glyph+border status badges (`✓` / `◷` / `○`) and a `Tin mới` badge.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
 
 
 
