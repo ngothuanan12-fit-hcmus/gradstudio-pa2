@@ -366,6 +366,8 @@ An also attached an example: a round avatar with a green dot at its lower right.
 > nhắc mình sửa lại các badge với vị trí căn chỉnh khác, giờ làm tiếp lượt 3
 
 > form trong khung chat nên có bố cục thế nào và hiển thị như thế nào cho người quản lý dễ dàng ghi nhận thông tin
+
+> form nên làm kiểu ẩn hiện để không che quá nhiều khi đang chat không, nghĩa là khi chat thì form thu nhỏ và đóng còn muốn điền thì mở có vi phạm gì không
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

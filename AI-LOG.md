@@ -1119,3 +1119,12 @@ Kept: options for An, nothing built. (A) A booking card in the conversation, rig
 Changed: nothing.
 Rejected: nothing.
 By hand: An's question.
+
+## 2026-11-11 — can the booking card fold away while chatting?
+Commit: the commit that adds this entry, directly after 91531e8.
+Tool: Claude Code (Claude Opus 5.5), checking the brief's Screen 2 state and *Fix these*.
+Asked for: whether the booking card may be folded while chatting and opened to fill it in.
+Kept: the answer for An. Folding is allowed, with conditions: the page must still open on the brief's state (14:00 chosen, *Tạo booking* enabled, the 09:00 note), and *Fix these* asks the whole *Booking mới* form to be readable by scrolling the page, so a form folded on arrival risks both. Proposed: open on arrival, with a fold button for the manager; folded, a one-line summary still shows the date and 14:00, the 09:00 clash and the *Tạo booking* button, so the main flow works either way; the fold button says whether it is open (`aria-expanded`); the card stays in the page flow, so it never covers the chat, it only makes the page longer.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's question.
