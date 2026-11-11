@@ -793,3 +793,12 @@ Kept: awaiting An's review. The title is still again, on every screen. In the 3D
 Changed: removed `useTitleDrop.js` and its CSS; the camera move reuses the clock that starts after the first 3D frame (the same fix as in 3a16d1b). Checks: frames show the camera outside the room at the first frame and inside by the end, the band crossing between about 1.3 s and 2.7 s; no page error; overflow line 0; title never below full opacity through the takeover and no photo shown; rubric checks FAILURES: 0. The band looks muted in software rendering; An judges it on a real screen.
 Rejected: An rejected the title drop (8942656).
 By hand: An's review.
+
+## 2026-11-11 — C and D approved; ideas for the words
+Commit: the commit that adds this entry, directly after f9bfe29.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: An approved the camera move-in and the band of light (fa2e78a) and asked what effect the words should have.
+Kept: proposals, nothing built. (1) The opening title tracks in with the camera: letters start a little apart and slightly soft, and close up and sharpen as the camera arrives. (2) The band of light glints across the title as it passes. (3) Captions in the scroll story come in line by line (heading, then its second line, then the text) instead of as one block; the lines are already separate elements, so no word splitting and nothing changes for screen readers. Recommended 1 + 3, with 2 if time allows; 3D screens only, phones stay plain, nothing with reduced motion; every word stays real text, and the rubric's overflow line and contrast at rest are checked after.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's approval of C and D.
