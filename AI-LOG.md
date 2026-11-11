@@ -787,6 +787,17 @@ Changed: created `src/components/DepositCard.jsx` and added its styles to `src/s
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — customer schedule page: editorial LichChup layout, local showcase and status tabs
+
+Who: Khánh (24120340).
+Commit: 020216e.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: built `src/pages/LichChup.jsx`, completed `src/styles/schedule.css`, and updated `PROTOTYPE.md`. Ported the editorial layout from `MyPhotoSessions.tsx`: a package showcase using the local licensed WebP photos (`public/photos/`) from `packages` in `src/data.js` instead of external Unsplash URLs (obeying NEVER 1), status filter buttons (`Tất cả (1)`, `Chờ thanh toán cọc (1)`, `Đã xác nhận (0)`, `Hoàn thành (0)`) with an empty state and reset button when `0`-count tabs are selected, and the asymmetric desktop grid combining `WeekCalendar` on the left with `BookingSummary`, `DepositCard`, and explicit role-labelled links (`quan-ly.html`, `index.html`) on the right. Kept *Thanh toán cọc 30% (540.000đ)* as the single `.btn-primary` on the page.
+Checks: `npm run lint` exits 0 with no output; `npm run build` exits 0.
+By hand: none.
+
+
 
 
 
