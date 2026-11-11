@@ -32,7 +32,7 @@ export default function StoryStage({ start }) {
       <div className="stage">
         <canvas className="stage-view" ref={canvasRef} aria-hidden="true" />
         <div className="stage-veil" ref={veilRef} />
-        <div className="cap at-center">
+        <div className="cap at-center cap-open">
           <h1 className="story-title" ref={titleRef}>Lưu lại ngày <em>ra trường</em></h1>
           <p>Cuộn xuống để bước vào lớp.</p>
         </div>

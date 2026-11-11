@@ -79,6 +79,11 @@ h1.story-title { width: fit-content; }
 .stage-bar i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
 
 .cap { position: absolute; display: grid; gap: var(--space-12); opacity: 0; visibility: hidden; font-size: 18px; line-height: 28px; text-shadow: 0 1px 3px rgba(0, 0, 0, .65), 0 2px 22px rgba(0, 0, 0, .6); }
+/* The opening words are on screen from the start, before the scene's first frame sets them. */
+.cap-open { opacity: 1; visibility: visible; }
+/* The plain screen while the scene loads: the same sizes and spacing as the scene's opening words. */
+.hero-bare .hero-text { gap: var(--space-12); padding: var(--space-32); font-size: 18px; line-height: 28px; }
+.hero-bare .story-title { font-size: clamp(44px, 5.2vw, 76px); line-height: 1.08; text-wrap: balance; }
 .cap .story-title { font-size: clamp(44px, 5.2vw, 76px); line-height: 1.08; text-wrap: balance; }
 .cap p { text-wrap: balance; }
 .cap-price { margin-top: var(--space-4); font-size: 22px; line-height: 32px; font-weight: 600; }

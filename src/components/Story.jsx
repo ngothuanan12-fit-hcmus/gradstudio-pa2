@@ -13,16 +13,22 @@ export default function Story() {
   const wide = useMediaQuery('(min-width: 768px)');
   const calm = useMediaQuery('(prefers-reduced-motion: reduce)');
   const [startScene, setStartScene] = useState(null);
+  const [webgl] = useState(hasWebGL);
+  const [gaveUp, setGaveUp] = useState(false);
   const suits = wide && !calm;
+  // The scene is expected: the plain screen waits without its photo. If the scene cannot come, the photo returns.
+  const waiting = suits && webgl && !gaveUp && window.scrollY <= 100;
 
   useEffect(() => {
-    if (!suits || startScene || window.scrollY > 100 || !hasWebGL()) return undefined;
+    if (!suits || startScene || gaveUp || window.scrollY > 100 || !webgl) return undefined;
     let cancelled = false;
     import('../story/scene.js').then(({ startStory }) => {
-      if (!cancelled && window.scrollY <= 100) setStartScene(() => startStory);
-    });
+      if (cancelled) return;
+      if (window.scrollY <= 100) setStartScene(() => startStory);
+      else setGaveUp(true);
+    }, () => { if (!cancelled) setGaveUp(true); });
     return () => { cancelled = true; };
-  }, [suits, startScene]);
+  }, [suits, startScene, gaveUp, webgl]);
 
-  return suits && startScene ? <StoryStage start={startScene} /> : <StoryHero />;
+  return suits && startScene ? <StoryStage start={startScene} /> : <StoryHero bare={waiting} />;
 }
