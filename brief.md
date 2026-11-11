@@ -306,6 +306,12 @@ An also attached a screenshot of Khánh's management page in progress: conversat
 > Khi bấm "Tư vấn gói này", cả thẻ có viền cam và hiện dòng "Đang hỏi về gói này trong chat", khớp với dòng trạng thái trong khung chat. mình thấy không cần thiết, có thể làm thêm hover cả thẻ thì hợp lý hơn
 
 > duyệt
+
+### 1.23 The chat section (2026-11-11)
+
+> khung chat khi mở rộng bố cục nhìn không hợp lý, có thể tham khảo trong ảnh
+
+An also attached a screenshot of a reference page (a booking form in a dark card beside a tall photo, two panels of the same height) and a screenshot of our chat section at a wide window.
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

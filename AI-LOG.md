@@ -856,3 +856,12 @@ Kept: awaiting An's review. The chat is one window: a header with a "GS" avatar,
 Changed: three problems found on the screenshots and measurements, fixed before this commit: (1) at 360 px the whole section reached past the screen edge, because the message box's natural width set the window's minimum width once the row stopped wrapping (overflow line listed the heading, the window and the link); the box now has `width: 0` and grows to fill the row; (2) the placeholder "Nhập tin nhắn cho studio" was cut off at 360 px; (3) at 1280 px the section text first sat halfway down beside the window; it now stays under the heading. Checks at 360 and 1280 px, open and folded: overflow line empty, no text under 16 px, controls 48 px (the link 66 px where it wraps), no inner scrolling; contrast: muted time on Linh's bubble 7.0:1, muted status on the header 7.6:1, avatar letters 8.8:1; lint clean; rubric checks FAILURES: 0 on all three pages and widths.
 Rejected: nothing yet.
 By hand: none.
+
+## 2026-11-11 — chat section in two panels beside the classroom photo
+Commit: 9bcd08a for `Home.jsx` and `home.css`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: An found the wide layout unbalanced (the text alone on the left, the window on the right) and showed a reference page with a form card beside a tall photo.
+Kept: awaiting An's review. From 1280 px the section is two panels of the same height: a card holding the heading, the text (centred) and the chat window, and beside it the classroom photo already on the site (Phú Lucas, Unsplash, listed in `PROTOTYPE.md`), cropped to fill. Below 1280 px the photo is not shown and not downloaded (`loading="lazy"` while hidden); the section is as before. The photo is decorative here (`alt=""`); it is described on the first screen. Only the layout idea comes from the reference; no text, image or code from it.
+Changed: the next-page link is centred in the card to match the centred heading. Checks at 360, 1280 and 1920 px, chat open and folded: overflow line empty, no text under 16 px, controls 48 px, no inner scrolling; rubric checks FAILURES: 0.
+Rejected: An rejected the layout from 67c87b2 at wide windows.
+By hand: An's reference screenshot.
