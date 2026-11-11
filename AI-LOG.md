@@ -797,6 +797,17 @@ Changed: built `src/pages/LichChup.jsx`, completed `src/styles/schedule.css`, an
 Checks: `npm run lint` exits 0 with no output; `npm run build` exits 0.
 By hand: none.
 
+## 2026-11-11 — management page: full-width form fields and stacked conversation badge
+
+Who: Khánh (24120340).
+Commit: 72dbdc1.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: visual inspection of the 360, 768 and 1280 px screenshots.
+Changed: on `quan-ly.html`, the two-column `.form-grid` inside the 380 px booking sidebar squeezed `<input>` and `<select>` controls to ~165 px and clipped `"Thứ Bảy, 24/10/2026"`, `"Tốt nghiệp cá nhân"`, and `"14:00 (giờ đã chốt)"`. Kept `.form-grid` single-column, shortened the `#bf-package` `<option>` label to `service.name` (since the detail and price sit on the hint line below), and stacked `.conv-top` (`display: grid; justify-items: start`) so `✓ Hoàn thành` on Lê Gia Bảo's row never wraps mid-badge at 768 px.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
 
 
 
