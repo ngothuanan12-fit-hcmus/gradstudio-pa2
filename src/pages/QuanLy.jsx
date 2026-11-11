@@ -96,12 +96,23 @@ export default function QuanLy() {
           />
         </section>
 
+        {/* The chat looks like the landing page's chat window, seen from the studio's side. */}
         <div className="admin-chat">
+          <div className="chat-window-bar">
+            <span className="conv-avatar" aria-hidden="true">
+              {active.name.charAt(0)}
+              <span className={`conv-dot conv-dot-${active.status}`} />
+            </span>
+            <div className="chat-window-who">
+              <p className="chat-window-name">{active.name}</p>
+              <p className="chat-window-status">{active.statusLabel}</p>
+            </div>
+          </div>
           <ChatPanel
             id="admin-chat"
             title={`Chat với ${active.name}`}
             label="Tin nhắn"
-            placeholder="Bản mẫu chưa gửi được tin nhắn"
+            placeholder="Nhập tin nhắn"
             messages={activeId === 'linh' ? messages : []}
             disabled
             note="Chưa gửi được tin nhắn trong bản mẫu."

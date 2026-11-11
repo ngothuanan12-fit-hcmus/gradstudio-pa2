@@ -141,7 +141,27 @@
 .admin-grid > section, .admin-grid > form { scroll-margin-top: var(--space-16); }
 .admin-grid { display: grid; gap: var(--space-24); min-width: 0; }
 .admin-convs { align-content: start; }
-.admin-chat { display: grid; align-content: start; gap: var(--space-16); min-width: 0; }
+.admin-chat { display: grid; align-content: start; min-width: 0; }
+/* Chat window, as on the landing page: a header with the customer and the status, rounded bubbles, a round
+   message box. The panel's own heading stays for screen readers; the header names the conversation on screen. */
+.chat-window-bar {
+  display: flex; align-items: center; gap: var(--space-12); padding: var(--space-12) var(--space-16);
+  background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.chat-window-who { min-width: 0; }
+.chat-window-name { font-weight: 600; overflow-wrap: anywhere; }
+.chat-window-status { color: var(--ink-muted); }
+.admin-chat .chat { gap: var(--space-16); border-top: 0; border-radius: 0 0 var(--radius-md) var(--radius-md); }
+.admin-chat .chat > h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.admin-chat .chat-log { gap: var(--space-8); padding-block: var(--space-8); }
+.admin-chat .chat-msg { max-width: 85%; padding: var(--space-8) var(--space-16); border-radius: 18px 18px 18px var(--space-4); }
+.admin-chat .chat-msg-me { border-radius: 18px 18px var(--space-4) 18px; }
+.admin-chat .chat-time { color: var(--ink-muted); }
+.admin-chat .chat-msg-me .chat-time { text-align: right; }
+.admin-chat .chat-form { padding-top: var(--space-16); border-top: 1px solid var(--line); }
+.admin-chat .chat-row { flex-wrap: nowrap; }
+.admin-chat .chat-input { width: 0; border-radius: var(--radius-pill); padding-inline: var(--space-16); }
+.admin-chat .chat-row .btn { border-radius: var(--radius-pill); }
 
 @media (min-width: 768px) {
 
