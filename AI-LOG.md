@@ -1092,3 +1092,12 @@ Kept: the rule check, awaiting An's choice. A dot alone breaks two rules: the br
 Changed: nothing yet.
 Rejected: nothing.
 By hand: An's idea.
+
+## 2026-11-11 — status dot on the avatar, status beside the time
+Commit: 75df81a (`ui.css` and `StatusBadge.jsx`, shared: two badge tones) and 3dbb02d (the list), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: overlap and clipping of every row at 360, 768 and 1280 px.
+Asked for: keep the status as a badge but move it beside the time, without it squeezing or covering the name; and whether that still breaks a rule.
+Kept: awaiting An's review. Answer: it breaks no rule while the status name stays visible next to the dot and nothing is cut off or covered. Each avatar carries a ringed dot in the status colour (red *Chưa trả lời*, amber *Đang tư vấn*, green *Đã chốt lịch*, grey *Hoàn thành*); the same dot leads each filter button, which works as the key. Time, badge and unread count travel as one group: beside the name when the row is wide (768 px, where the list spans the page), under the name and right-aligned when it is narrow (360 px and the 360 px column at 1280 px). Badges now match the dots: two new tones in the shared badge, red for *Chưa trả lời* and grey with a tick for *Hoàn thành*.
+Changed: the first try put the group in a fixed side column; at 360 px it squeezed the names to two to five lines (rows up to 290 px; "Nguyễn Thị Hoàng Phương Uyên" on five lines) though nothing overlapped. The group now wraps under the name instead. Checks: for every row at all three widths no overlap between the name or message and the group, no clipped name; rows 86–88 px at 768 px and 118–168 px at 360 px; no text under 16 px; overflow line 0; filters and search as before; rubric checks FAILURES: 0.
+Rejected: An rejected the plain badge under the name (from round 2) in favour of the dot and the badge by the time.
+By hand: An's idea.
