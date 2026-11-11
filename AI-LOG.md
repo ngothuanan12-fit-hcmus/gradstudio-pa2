@@ -942,6 +942,16 @@ Changed: updated `StatusBadge` in `ChatStream.jsx` to render glyph+border status
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — Style sync Step 5: de-slop ResourceSchedule and ConflictAlert
+
+Who: Khánh (24120340).
+Commit: 25eca0e.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: synchronize `ResourceSchedule.jsx` and `ConflictAlert.jsx` with `design-system/README.md` and remove inline hex/gradient styles and hover-only portal tooltips.
+Changed: removed `LUNCH_BG`, `CONFLICT_BG`, `PENDING_BG`, `background: '#E2D3BF'`, `ResizeObserver` label hiding, and `createPortal` hover-only tooltips from `src/components/ResourceSchedule.jsx`. Replaced them with the 4-state `design-system/README.md` schedule block classes (`.st-block-busy`, `.st-block-conflict`, `.st-block-free`, `.st-block-proposed`) and legend swatches (`.st-swatch-busy`, `.st-swatch-conflict`, `.st-swatch-free`, `.st-swatch-proposed`) with visible glyphs (`—`, `◷`, `⚠`, `✓`), always-rendered block labels, and a readable `.st-resource-summary-list` below the Gantt chart so every resource's busy intervals are legible at 360px/768px/1280px without hovering. Simplified `ConflictAlert.jsx` to use the `⚠` symbol and token-backed alert styles.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
 
 
 

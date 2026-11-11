@@ -1,26 +1,6 @@
 import { useState } from 'react';
+import StatusBadge from '../components/StatusBadge.jsx';
 import '../styles/schedule.css';
-
-const GALLERY_IMAGES = [
-  {
-    url: './photos/tot-nghiep-900.webp',
-    thumb: './photos/tot-nghiep-480.webp',
-    title: 'Tốt nghiệp cá nhân',
-    category: 'Gói Chụp Premium · Cử nhân',
-  },
-  {
-    url: './photos/ky-yeu-1350.webp',
-    thumb: './photos/ky-yeu-640.webp',
-    title: 'Ảnh kỷ yếu tập thể',
-    category: 'Kỷ yếu nhóm & Bạn bè · Ngoài trời',
-  },
-  {
-    url: './photos/chan-dung-900.webp',
-    thumb: './photos/chan-dung-480.webp',
-    title: 'Ảnh CV & Profile chuyên nghiệp',
-    category: 'Studio Portrait · Chân dung công sở',
-  },
-];
 
 const DAYS_IN_WEEK = [
   { label: 'T2', date: 19 },
@@ -35,9 +15,6 @@ const DAYS_IN_WEEK = [
 export default function LichChup() {
   const [activeTab, setActiveTab] = useState('all');
   const [isDepositPaid, setIsDepositPaid] = useState(false);
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-
-  const currentImage = GALLERY_IMAGES[activeImageIndex];
 
   const tabCounts = {
     all: 1,
@@ -53,70 +30,63 @@ export default function LichChup() {
 
   const tabs = [
     ['all', 'Tất cả', tabCounts.all],
-    ['pending', 'Chờ cọc', tabCounts.pending],
+    ['pending', 'Chờ cọc 30%', tabCounts.pending],
     ['confirmed', 'Đã đặt lịch', tabCounts.confirmed],
     ['done', 'Hoàn thành', tabCounts.done],
   ];
 
   return (
     <div className="ps-page">
-      {/* Header */}
       <header className="ps-header">
         <div className="ps-header-brand">
           <a href="index.html" className="ps-logo">
-            Grad<span>Studio</span>
+            GradStudio
           </a>
-          <span className="ps-brand-tag">Khách hàng</span>
+          <span className="ps-brand-tag">Khách hàng · Nguyễn Thùy Linh</span>
         </div>
 
         <nav className="ps-header-nav" aria-label="Điều hướng khách hàng">
           <a href="index.html" className="ps-nav-link">
             Trang chủ
           </a>
-          <span className="ps-nav-active">Lịch chụp của tôi</span>
+          <a href="lich-chup.html" aria-current="page" className="ps-nav-active">
+            Lịch chụp của tôi
+          </a>
           <a href="quan-ly.html" className="ps-nav-studio-pill">
-            Quản lý Studio
+            Quản lý studio
           </a>
         </nav>
       </header>
 
-      {/* Main Content */}
       <main className="ps-main">
-        {/* Title & Introduction */}
         <div className="ps-title-row">
           <div>
             <h1 className="ps-title">Lịch chụp của tôi</h1>
             <p className="ps-subtitle">
-              Xem lại lịch đã thống nhất với studio và thanh toán cọc để giữ lịch.
+              Xem lại lịch đã thống nhất với studio và thanh toán cọc 30% để giữ lịch chính thức.
             </p>
           </div>
         </div>
 
-        {/* Tab filters */}
-        <div role="tablist" aria-label="Lọc trạng thái lịch chụp" className="ps-tabs">
+        <div role="group" aria-label="Lọc trạng thái lịch chụp" className="ps-tabs">
           {tabs.map(([tabKey, tabLabel, count]) => (
             <button
               key={tabKey}
               type="button"
-              role="tab"
-              aria-selected={activeTab === tabKey}
+              aria-pressed={activeTab === tabKey}
               onClick={() => setActiveTab(tabKey)}
               className={activeTab === tabKey ? 'ps-tab is-active' : 'ps-tab'}
             >
               <span>{tabLabel}</span>
-              <span className="ps-tab-count">{count}</span>
+              <span className="ps-tab-count">({count})</span>
             </button>
           ))}
         </div>
 
-        {/* Content Section or Empty State */}
         {!hasItemsForTab ? (
           <div className="ps-empty-card">
-            <div className="ps-empty-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <path d="M16 2v4M8 2v4M3 10h18" />
-              </svg>
+            <div className="ps-empty-icon" aria-hidden="true">
+              ◷
             </div>
             <h2 className="ps-empty-title">
               {activeTab === 'done'
@@ -127,10 +97,10 @@ export default function LichChup() {
             </h2>
             <p className="ps-empty-desc">
               {activeTab === 'done'
-                ? 'Sau khi buổi chụp diễn ra và studio bàn giao ảnh hoàn thiện, các bộ ảnh lưu niệm sẽ được lưu tại đây.'
+                ? 'Sau khi buổi chụp diễn ra và studio bàn giao ảnh hoàn thiện, buổi chụp sẽ hiển thị tại đây.'
                 : activeTab === 'confirmed'
-                ? 'Hãy hoàn tất thanh toán cọc 30% cho booking đang chờ để xác nhận giữ lịch chính thức.'
-                : 'Bạn đã hoàn tất thanh toán cọc hoặc chưa có yêu cầu chụp nào đang chờ xử lý.'}
+                ? 'Hãy thanh toán cọc 30% cho booking #GS-1024 để giữ lịch chính thức.'
+                : 'Bạn đã thanh toán cọc 30% cho buổi chụp ngày 24/10.'}
             </p>
             <button
               type="button"
@@ -141,55 +111,38 @@ export default function LichChup() {
             </button>
           </div>
         ) : (
-          /* Editorial 2-column layout: 68% Left | 32% Right */
           <div className="ps-editorial-grid">
-            {/* Left Column (68%): Editorial Hero Gallery + Week Calendar & Timeline */}
             <div className="ps-left-col">
-              {/* Hero Image Gallery */}
-              <div className="ps-hero-gallery">
+              <section className="ps-package-card" aria-label="Gói chụp đã chọn">
                 <img
-                  src={currentImage.url}
-                  alt={currentImage.title}
-                  key={currentImage.url}
-                  className="ps-hero-img"
+                  src="./photos/tot-nghiep-900.webp"
+                  srcSet="./photos/tot-nghiep-480.webp 480w, ./photos/tot-nghiep-900.webp 900w"
+                  sizes="(min-width: 1280px) 720px, 100vw"
+                  width="900"
+                  height="1350"
+                  alt="Nữ sinh mặc áo cử nhân ôm bó hoa trước bậc thềm sân trường"
+                  className="ps-package-frame"
                 />
-
-                {/* Editorial bottom gradient & title */}
-                <div className="ps-hero-overlay">
-                  <div className="ps-hero-caption">
-                    <p className="ps-hero-kicker">{currentImage.category}</p>
-                    <p className="ps-hero-title">{currentImage.title}</p>
+                <div className="ps-package-caption">
+                  <div>
+                    <h2 className="ps-package-title">Tốt nghiệp cá nhân</h2>
+                    <p className="ps-package-line">một mình hoặc cùng nhóm bạn thân</p>
                   </div>
-
-                  {/* 3 Thumbnails in bottom right corner */}
-                  <div className="ps-hero-thumbs">
-                    {GALLERY_IMAGES.map((img, idx) => (
-                      <button
-                        key={img.title}
-                        type="button"
-                        onClick={() => setActiveImageIndex(idx)}
-                        className={activeImageIndex === idx ? 'ps-thumb-btn is-active' : 'ps-thumb-btn'}
-                        aria-label={`Xem ảnh: ${img.title}`}
-                      >
-                        <img src={img.thumb} alt={img.title} className="ps-thumb-img" />
-                      </button>
-                    ))}
-                  </div>
+                  <p className="ps-package-meta">
+                    Gói Tốt nghiệp Premium · 2 giờ · 30 ảnh chỉnh
+                  </p>
                 </div>
-              </div>
+              </section>
 
-              {/* Weekly Calendar & Timeline */}
-              <div className="ps-calendar-section">
-                {/* Month & Week Row */}
+              <section className="ps-calendar-section" aria-label="Lịch trình ngày chụp">
                 <div className="ps-month-head">
                   <div>
                     <h2 className="ps-month-title">Tháng 10, 2026</h2>
-                    <p className="ps-month-sub">Lịch chụp dự kiến tại Studio</p>
+                    <p className="ps-month-sub">Lịch chụp tại studio · Thứ Bảy, 24/10</p>
                   </div>
-                  <span className="ps-week-tag">Tuần 43</span>
+                  <span className="ps-week-tag">Tuần 19/10 – 25/10</span>
                 </div>
 
-                {/* Week Days Strip */}
                 <div className="ps-week-strip">
                   {DAYS_IN_WEEK.map((d) => {
                     const isSelected = Boolean(d.isShootDay);
@@ -202,114 +155,147 @@ export default function LichChup() {
                       <div key={d.date} className={cellClass}>
                         <span className="ps-day-label">{d.label}</span>
                         <span className="ps-day-num">{d.date}</span>
-                        <span className={isSelected ? 'ps-day-dot is-visible' : 'ps-day-dot'} />
+                        {isSelected ? (
+                          <span className="ps-day-tag">
+                            {isDepositPaid ? '✓ Đã đặt' : '◷ Chờ cọc'}
+                          </span>
+                        ) : null}
                       </div>
                     );
                   })}
                 </div>
 
-                {/* Timeline Milestones */}
                 <div className="ps-milestones-section">
                   <div className="ps-milestones-head">
-                    <p className="ps-milestones-kicker">
+                    <h3 className="ps-milestones-kicker">
                       Thứ Bảy, 24/10 · Lịch trình của Linh
-                    </p>
+                    </h3>
                     <span className="ps-milestones-count">3 mốc thời gian</span>
                   </div>
 
                   <div className="ps-milestones-list">
-                    {/* 09:00 Initial slot */}
                     <div className="ps-milestone-row">
-                      <span className="ps-milestone-time is-struck">09:00</span>
+                      <s className="ps-milestone-time is-struck">09:00</s>
                       <div className="ps-milestone-body is-dashed">
-                        <p className="ps-milestone-title is-muted">Giờ bạn yêu cầu ban đầu</p>
-                        <p className="ps-milestone-sub is-muted">Thợ makeup đã kín lịch lúc này</p>
+                        <p className="ps-milestone-title is-muted">
+                          ⚠ Giờ bạn yêu cầu ban đầu (09:00)
+                        </p>
+                        <p className="ps-milestone-sub">
+                          Thợ makeup Mai đã kín lịch lúc này — bạn và studio đã thống nhất đổi sang 14:00.
+                        </p>
                       </div>
                     </div>
 
-                    {/* 13:00 Makeup */}
                     <div className="ps-milestone-row">
-                      <span className={isDepositPaid ? 'ps-milestone-time is-paid' : 'ps-milestone-time is-gold'}>
+                      <span
+                        className={
+                          isDepositPaid
+                            ? 'ps-milestone-time is-paid'
+                            : 'ps-milestone-time is-accent'
+                        }
+                      >
                         13:00
                       </span>
-                      <div className="ps-milestone-body is-gold">
+                      <div
+                        className={
+                          isDepositPaid
+                            ? 'ps-milestone-body is-paid'
+                            : 'ps-milestone-body is-accent'
+                        }
+                      >
                         <div className="ps-milestone-top">
                           <p className="ps-milestone-title">Makeup với Mai</p>
                           <span className="ps-milestone-range">13:00 – 14:00</span>
                         </div>
                         <p className="ps-milestone-sub">
-                          Có mặt sớm 10 phút để chuẩn bị trang phục
+                          60 phút trước giờ chụp · Đến sớm 10 phút để chọn trang phục
                         </p>
                       </div>
                     </div>
 
-                    {/* 14:00 Shoot */}
                     <div className="ps-milestone-row">
-                      <span className={isDepositPaid ? 'ps-milestone-time is-paid' : 'ps-milestone-time is-accent'}>
+                      <span
+                        className={
+                          isDepositPaid
+                            ? 'ps-milestone-time is-paid'
+                            : 'ps-milestone-time is-accent'
+                        }
+                      >
                         14:00
                       </span>
-                      <div className="ps-milestone-body is-accent">
+                      <div
+                        className={
+                          isDepositPaid
+                            ? 'ps-milestone-body is-paid'
+                            : 'ps-milestone-body is-accent'
+                        }
+                      >
                         <div className="ps-milestone-top">
                           <p className="ps-milestone-title">Chụp ảnh tốt nghiệp tại Phòng B</p>
                           <span className="ps-milestone-range">14:00 – 16:00</span>
                         </div>
                         <p className="ps-milestone-sub">
-                          Thợ chụp: Tuấn · Gói Premium 2 giờ · 30 ảnh chỉnh
+                          Thợ chụp: Tuấn · Gói Tốt nghiệp Premium (2 giờ, 30 ảnh chỉnh)
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
 
-            {/* Right Column (32%): Resort Booking Folio */}
-            <aside className="ps-folio" aria-label="Thông tin đặt lịch #GS-1024">
+            <aside className="ps-folio" aria-label="Tóm tắt đặt lịch #GS-1024">
               <div className="ps-folio-head">
                 <div>
-                  <p className="ps-folio-kicker">Mã đặt lịch</p>
-                  <h3 className="ps-folio-code">Booking #GS-1024</h3>
+                  <p className="ps-folio-kicker">Phiếu đặt lịch</p>
+                  <h2 className="ps-folio-code">Booking #GS-1024</h2>
                 </div>
                 <div className="ps-folio-status">
                   {isDepositPaid ? (
-                    <span className="ps-status-pill is-paid">
-                      <span className="ps-status-dot" />
-                      Đã đặt lịch
-                    </span>
+                    <StatusBadge tone="confirmed">Đã đặt lịch</StatusBadge>
                   ) : (
-                    <span className="ps-status-pill is-pending">
-                      <span className="ps-status-dot is-pulse" />
-                      Chờ cọc 30%
-                    </span>
+                    <StatusBadge tone="pending">Đã thống nhất lịch · Chờ cọc 30%</StatusBadge>
                   )}
                 </div>
               </div>
 
-              {/* Booking Details */}
-              <div className="ps-folio-details">
+              <dl className="ps-folio-details">
                 <div className="ps-folio-row">
-                  <span>Khách hàng</span>
-                  <strong>Nguyễn Thùy Linh</strong>
+                  <dt>Khách hàng</dt>
+                  <dd>Nguyễn Thùy Linh</dd>
                 </div>
                 <div className="ps-folio-row">
-                  <span>Gói dịch vụ</span>
-                  <strong>Tốt nghiệp Premium</strong>
+                  <dt>Loại buổi chụp</dt>
+                  <dd>Tốt nghiệp cá nhân</dd>
                 </div>
                 <div className="ps-folio-row">
-                  <span>Tổng giá trị</span>
-                  <strong>1.800.000đ</strong>
+                  <dt>Gói chụp</dt>
+                  <dd>Gói Tốt nghiệp Premium · 2 giờ · 30 ảnh chỉnh</dd>
+                </div>
+                <div className="ps-folio-row">
+                  <dt>Giờ chụp đã chốt</dt>
+                  <dd>
+                    <s>09:00</s> → 14:00 (Makeup 13:00), Thứ Bảy 24/10
+                  </dd>
+                </div>
+                <div className="ps-folio-row">
+                  <dt>Nhân sự & phòng</dt>
+                  <dd>Makeup Mai · Thợ chụp Tuấn · Phòng B</dd>
+                </div>
+                <div className="ps-folio-row">
+                  <dt>Tổng giá chốt</dt>
+                  <dd>1.800.000đ</dd>
                 </div>
                 <div className="ps-folio-total-row">
-                  <span>Cọc giữ lịch (30%)</span>
-                  <strong className="ps-folio-deposit">540.000đ</strong>
+                  <dt>Cọc giữ lịch (30%)</dt>
+                  <dd className="ps-folio-deposit">540.000đ</dd>
                 </div>
-              </div>
+              </dl>
 
-              {/* Payment Action */}
-              <div className="ps-folio-action">
+              <div className="ps-folio-action" aria-live="polite">
                 {isDepositPaid ? (
-                  <div className="ps-paid-box">
-                    ✓ Đã thanh toán cọc thành công! Lịch của bạn đã được xác nhận chính thức.
+                  <div role="status" className="ps-paid-box">
+                    ✓ Đã nhận cọc 540.000đ — lịch chụp 14:00 ngày 24/10 của bạn đã được giữ chính thức.
                   </div>
                 ) : (
                   <button
@@ -323,7 +309,7 @@ export default function LichChup() {
               </div>
 
               <p className="ps-folio-note">
-                Hỗ trợ thanh toán chuyển khoản ngân hàng qua mã QR VietQR.
+                Lịch chỉ được giữ chính thức sau khi bạn thanh toán cọc 30%.
               </p>
             </aside>
           </div>

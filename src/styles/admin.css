@@ -578,6 +578,7 @@
   border: 1px solid var(--line-strong);
   background: var(--surface);
   color: var(--ink);
+  font: 600 16px/24px var(--font-sans);
   cursor: pointer;
 }
 .st-close-btn:hover { background: var(--surface-raised); }
@@ -764,6 +765,7 @@
   border: 1px solid var(--line-strong);
   background: var(--surface);
   color: var(--ink);
+  font: 600 16px/24px var(--font-sans);
   cursor: pointer;
 }
 .st-icon-circle-btn:hover { background: var(--surface-raised); }
@@ -807,6 +809,7 @@
 
 .st-gantt-rows {
   position: relative;
+  overflow: hidden;
   border-top: 1px solid var(--line);
   background: var(--surface);
   border-radius: var(--radius-sm);
@@ -840,7 +843,7 @@
   border-right: 1px solid var(--line);
 }
 
-.st-timeline-track { position: relative; flex: 1; min-width: 0; }
+.st-timeline-track { position: relative; flex: 1; min-width: 0; overflow: hidden; }
 
 .st-block-pos {
   position: absolute;
