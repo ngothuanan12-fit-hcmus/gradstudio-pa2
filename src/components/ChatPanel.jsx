@@ -24,13 +24,26 @@ export default function ChatPanel({
       <h2 id={`${id}-title`} className="summary-title">{title}</h2>
       {messages.length ? (
         <ol className="chat-log">
-          {messages.map((message) => {
+          {messages.map((message, i) => {
             const own = viewer === 'studio' ? message.me : !message.me;
+            // Messages in a row from the same side form a group: the name only on the first, the time only on the last.
+            const first = !messages[i - 1] || messages[i - 1].me !== message.me;
+            const last = !messages[i + 1] || messages[i + 1].me !== message.me;
+            const place = `${first ? ' is-first' : ''}${last ? ' is-last' : ''}`;
             return (
-              <li key={message.id} className={own ? 'chat-msg chat-msg-me' : 'chat-msg'}>
-                {!own && message.who ? <span className="chat-who">{message.who}</span> : null}
-                <p>{message.text}</p>
-                {message.time ? <time className="chat-time">{message.time}</time> : null}
+              <li key={message.id} className={`${own ? 'chat-msg chat-msg-me' : 'chat-msg'}${place}`}>
+                {!own && message.who && first ? <span className="chat-who">{message.who}</span> : null}
+                {message.quote ? (
+                  <>
+                    <p className="chat-quote-title">Báo giá</p>
+                    <dl className="chat-quote">
+                      {message.quote.map(([term, value]) => (
+                        <div key={term}><dt>{term}</dt><dd>{value}</dd></div>
+                      ))}
+                    </dl>
+                  </>
+                ) : <p>{message.text}</p>}
+                {message.time && last ? <time className="chat-time">{message.time}</time> : null}
               </li>
             );
           })}
