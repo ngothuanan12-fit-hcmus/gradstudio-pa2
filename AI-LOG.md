@@ -697,4 +697,15 @@ Changed: `src/styles/ui.css` changed in its own commit as a shared file. Raised 
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — shared ChatPanel: secondary style on disabled send button
+
+Who: Khánh (24120340).
+Commit: 3aeee50.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: `src/components/ChatPanel.jsx` changed in its own commit as a shared file. When `disabled` is true, the "Gửi" button now uses `variant="secondary"` instead of the default `"primary"`, fixing the PR #2 review finding that both the disabled "Gửi" button and the booking submit carried the primary button style. Also added an optional `subtitle` prop in `.panel-head` for the active customer's status line on the management page while leaving `index.html` unchanged.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
 
