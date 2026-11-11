@@ -356,6 +356,10 @@ An also attached `phan-tich-bencho-carousel.md`, an analysis of a "turntable" ca
 > Làm theo các đề xuất
 
 > Làm lượt 2 bổ sung các ý tưởng bạn đề xuất
+
+> mình muốn bỏ badge trạng thái mà hiện chấm tròn trạng thái với màu sắc mỗi trạng thái khác nhau, như kiểu xanh là trạng thái gì, lựa chọn màu cho phù hợp
+
+An also attached an example: a round avatar with a green dot at its lower right.
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

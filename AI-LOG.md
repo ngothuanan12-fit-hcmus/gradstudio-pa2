@@ -1083,3 +1083,12 @@ Kept: awaiting An's review. The status filter is now a row of buttons with count
 Changed: at 768 px the list sat in a 280 px side column, where names and badges broke over several lines (rows up to 244 px tall); the list now spans the full width below 1280 px and sits beside the chat from 1280 px (both breakpoints are the team's), and badges in the list stay on one line. This also adjusts the round 1 layout at 768 px. Checks at 360, 768 and 1280 px: no text under 16 px in the list, filter buttons 44 px, search 48 px, rows 86–88 px at 768 px, overflow line 0; each filter shows exactly its conversation, "Tất cả" all four; search "chân dung" finds Trần Minh Anh, "xyz" shows the empty message; rubric checks FAILURES: 0, main flow reaches `lich-chup.html`.
 Rejected: nothing yet.
 By hand: An's approval of the ideas.
+
+## 2026-11-11 — round 2 follow-up: a status dot instead of the badge?
+Commit: the commit that adds this entry, directly after 869261d.
+Tool: Claude Code (Claude Opus 5.5); contrast of the dot colours computed from the tokens.
+Asked for: replace the status badges in the conversation list with a coloured dot on the avatar, one colour per status.
+Kept: the rule check, awaiting An's choice. A dot alone breaks two rules: the brief asks the status names to be shown exactly (*Chưa trả lời, Đang tư vấn, Đã chốt lịch, Hoàn thành*), and colour alone must not carry meaning (WCAG 1.4.1; the brief makes the same point for clashes); a green dot is also read as "online" in chat apps. Allowed version proposed: the dot on the avatar plus the status name as plain text in the row (no box), and the same dot in each filter button so the buttons act as the key. Colours from the tokens: *Chưa trả lời* red (`--danger`), *Đang tư vấn* amber (`--accent`), *Đã chốt lịch* green (`--free`), *Hoàn thành* grey (`--ink-muted`); each is 4.6–6.8:1 against the row and the avatar (non-text needs 3:1), with a white ring to separate it from the avatar.
+Changed: nothing yet.
+Rejected: nothing.
+By hand: An's idea.
