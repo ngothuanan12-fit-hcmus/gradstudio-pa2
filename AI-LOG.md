@@ -1200,3 +1200,12 @@ Kept: the words inside proposed blocks (list and timeline) are now the body colo
 Changed: nothing else.
 Rejected: nothing.
 By hand: An's choice.
+
+## 2026-11-11 — 10b: Linh's blocks slide with the chosen time
+Commit: 82ce757 (`data.js`, shared: Linh's three blocks taken out of the static schedule) and 5764e7d (`ResourceSchedule.jsx`, `QuanLy.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: block positions sampled 60, 200 and 500 ms after the change, with and without reduced motion.
+Asked for: 10b, Linh's block sliding between 09:00 and 14:00 on the resource calendar.
+Kept: awaiting An's review. Linh's blocks are now worked out from the start time chosen in the booking card: make-up the hour before with Mai, the two-hour shoot with Tuấn and in Phòng B. At 14:00 (on arrival) Mai's row shows the proposed 13:00–14:00; choosing 09:00 slides that block over 0.4 s to 08:00–09:00, where it overlaps Mai's busy morning, so it becomes "Trùng · Linh yêu cầu 09:00" in a second lane, and Tuấn's and the room's blocks slide to 09:00–11:00; "Chọn giờ này" or 14:00 slides them back. The list below changes with it. The booking card's note already announces the change to screen readers, so no second announcement was added. With reduced motion the blocks move at once.
+Changed: the static "Linh yêu cầu 09:00" block shown on arrival is gone with this change; the 09:00 clash on arrival is still stated in the booking card's note, which the brief's opening state asks for. Checks: on arrival Mai's proposed block at 50% of the day (13:00); after choosing 09:00 it is at 16% after 60 ms, 1% after 200 ms and 0% after 500 ms, in the second lane; with reduced motion at 0% after 60 ms; back to 14:00 restores it; round 5 checks again (no clipped or overlapping block, overflow line 0); rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's request.
