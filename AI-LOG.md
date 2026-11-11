@@ -1173,3 +1173,12 @@ Kept: awaiting An's review. The week is a strip of seven days (T2 19 to CN 25), 
 Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px on the page, 09:00 struck, no "Hôm nay", hour labels not touching, no cell or row cut off, overflow line 0; rubric checks FAILURES: 0, main flow reaches `lich-chup.html`.
 Rejected: nothing yet.
 By hand: An's agreement to merge the rounds.
+
+## 2026-11-11 — rounds 8 and 9 together: booking card and deposit
+Commit: f9856ec (`BookingSummary.jsx`, `DepositCard.jsx`, `schedule.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page; `check_pr3.py` for the brief's Screen 3 items.
+Asked for: the second merged round of the schedule page, as suggested.
+Kept: awaiting An's review. "Buổi chụp GS-1024" keeps the badge "Đã thống nhất lịch · Chờ cọc 30%" (now with the clock icon); its rows are two columns, label and value, so a long value wraps under itself instead of breaking the row, and the package's "2 giờ · 30 ảnh chỉnh" sits under its name; the total is a plain row since the deposit card shows the amounts. "Thanh toán cọc 30%" keeps 540.000đ large, 1.260.000đ remaining and 1.800.000đ total, and the disabled button; its note is now two short sentences: "Bản mẫu chưa có cổng thanh toán. Lịch chỉ được giữ sau khi cọc thành công và studio kiểm tra lại lịch."
+Changed: nothing beyond the request. Checks: every Screen 3 item present (24/10 marked, 09:00 struck, 13:00–14:00 Mai, 14:00–16:00 Tuấn in Phòng B, the status, package, 1.800.000đ, 540.000đ, 1.260.000đ, the disabled pay button with its note), no demo controls; at 360, 768 and 1280 px no text under 16 px, nothing cut off, overflow line 0; rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's approval.

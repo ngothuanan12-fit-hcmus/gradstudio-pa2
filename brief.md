@@ -381,6 +381,8 @@ An also attached `tai-lieu-ky-thuat-lich-va-thong-bao.md`, notes on three MIT-li
 > duyệt
 
 > đồng ý
+
+> duyệt
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
