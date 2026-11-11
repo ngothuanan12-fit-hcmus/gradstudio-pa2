@@ -55,6 +55,16 @@
   .hero-text { position: relative; justify-items: center; text-align: center; padding: var(--space-24); }
 }
 
+/* Opening zoom: the first-screen photo eases in from slightly enlarged; the 3D view fades in once its first frame is drawn.
+   The zoom crops inside the photo's own box (object-view-box), so the photo never reaches past the screen edge,
+   not even for the rubric's overflow line. Browsers without it show the photo still. Nothing moves with reduced motion. */
+@keyframes hero-zoom { from { object-view-box: inset(5.4%); } to { object-view-box: inset(0%); } }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-photo { animation: hero-zoom 1600ms cubic-bezier(0.33, 1, 0.68, 1) both; }
+  .stage-view { opacity: 0; transition: opacity 600ms var(--ease-out); }
+  .stage-view.is-ready { opacity: 1; }
+}
+
 /* 3D story. Only shown at 768 px or wider. Words live in the scene: each moment has its own place. */
 .story { position: relative; height: 1400vh; }
 .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: clip; background: var(--ground); }

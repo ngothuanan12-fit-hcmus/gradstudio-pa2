@@ -461,6 +461,9 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
       g.visible = true;
     });
     cameraAt(p);
+    // Opening move: the camera starts a little further back and settles, so the switch from the photo reads as one zoom.
+    const back = introLeft(performance.now());
+    shot.z += back * 3; shot.y += back * .25;
     fill.intensity = 1.5 * smooth(seg(p, ROOM_END, STOPS[0].from));
     camera.position.set(shot.x, shot.y, shot.z);
     lookTo.set(shot.lx, shot.ly, -D);
@@ -509,15 +512,21 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
   }
   let last = performance.now();
   let frame = 0;
+  // The opening clock starts after the first frame is on screen: that frame compiles the shaders and can take
+  // half a second, which would otherwise eat most of the move.
+  let introStart = null;
+  const INTRO_MS = 1600;
+  function introLeft(now) { return introStart === null ? 1 : 1 - smooth(clamp((now - introStart) / INTRO_MS)); }
   function loop(now = last) {
     const t = target(), dt = Math.min(.05, (now - last) / 1000);
     last = now;
-    if (Math.abs(t - cur) > .00003 || dirty) {
+    if (Math.abs(t - cur) > .00003 || dirty || introStart === null || now - introStart < INTRO_MS + 50) {
       // Follow the scroll position by time, so fast and slow screens feel the same.
       cur += (t - cur) * (1 - Math.exp(-dt * 6));
       if (Math.abs(t - cur) <= .00003) cur = t;
       dirty = false;
       draw(cur);
+      if (introStart === null) { introStart = performance.now(); canvas.classList.add('is-ready'); }
     }
     frame = requestAnimationFrame(loop);
   }
