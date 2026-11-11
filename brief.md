@@ -320,6 +320,12 @@ An also attached a screenshot of a reference page (a booking form in a dark card
 An also attached a screenshot of the chat section folded at a wide window, with the photo credits line and the footer below.
 
 > đồng ý với các đề xuất, nhớ chuyển chat về bên phải
+
+> bỏ Chưa gửi được tin nhắn trong bản mẫu.
+> nút tư vấn gói trên ba thẻ bấm chưa tự nhảy xuống chat
+> trước khi sửa xem thử file md để áp dụng cho ba thẻ như thế nào cho phù hợp, cho mình các phương án
+
+An also attached `phan-tich-bencho-carousel.md`, an analysis of a "turntable" card carousel (cards on an ellipse, drag with momentum and snap, a slow float, a press-in tilt with a dark and a light spot under the pointer).
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

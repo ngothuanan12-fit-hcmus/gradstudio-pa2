@@ -892,3 +892,12 @@ Kept: awaiting An's review. Left card: heading, text, "Bạn muốn hỏi gói n
 Changed: at 1280 px the stretched conversation first stretched the bubbles too; the list now keeps its bubbles at their size. Checks at 360, 1280 and 1920 px: overflow line empty, no text under 16 px, controls 48 px, no inner scrolling; a quick button sets "Đang hỏi về: Tốt nghiệp", moves focus to it and presses the matching card button; the strip's link opens `quan-ly.html`; rubric checks FAILURES: 0 with the main flow through the moved link.
 Rejected: nothing yet.
 By hand: An's choices.
+
+## 2026-11-11 — the send note, the jump to the chat, and the carousel analysis
+Commit: the commit that adds this entry, directly after c3991b2.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page; reading the brief and An's analysis of the Bencho carousel.
+Asked for: remove the note "Chưa gửi được tin nhắn trong bản mẫu.", make "Tư vấn gói này" jump to the chat, and options for using the carousel analysis on the three package cards, before changing anything.
+Kept: findings and options for An, nothing changed. Note: the brief says an action with no next page, sending a message included, is a disabled button with a short visible note, so removing it breaks a rule; a shorter note is possible. Jump: measured at 360 and 1280 px, with and without 3D: the page does move and focus lands on the chat's status line, but the browser centres that line, so the chat window starts halfway down the screen and its message box is below the fold; proposed: scroll the chat window to the top of the screen, smoothly, then move focus without a second scroll. Carousel: (A) keep the three cards side by side and take only the press-in tilt with the dark and light spot under the pointer, in place of the current lift; (B) give each card photo a slight fixed tilt like the photos pinned on the board in the 3D story, straightening and pressing in under the pointer; (C) a real turntable of the three photos with the front package's details beside it, drag, arrows and keys; it would hide two of the three prices at any moment and takes longer to build and check. Recommended B with A. No library in any option.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's requests and analysis file.
