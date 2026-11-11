@@ -1,16 +1,17 @@
 import Button from './Button.jsx';
+import Icon from './Icon.jsx';
 import { formatVND } from '../data.js';
-
-const pad = (h) => `${String(h).padStart(2, '0')}:00`;
+import { fmtTime, toMinutes } from '../utils/time.js';
 
 // The booking card inside the chat, right after Linh agrees. A real form of its own (never inside the message box's
 // form). Details agreed in the chat are filled in; the end times follow from the start time and the 2-hour package.
 // The page opens at 14:00, so the submit is enabled; choosing 09:00 brings back the clash and disables it.
 // The card can fold to one line, which still shows the time, the clash note and the submit.
 export default function BookingForm({ booking, services = [], conflict, start, onStartChange, open, onToggle }) {
-  const h = Number.parseInt(start, 10);
-  const makeup = `${pad(h - 1)}–${pad(h)}`;
-  const shoot = `${pad(h)}–${pad(h + 2)}`;
+  // Make-up takes the hour before the shoot; the Premium package shoots for two hours.
+  const t = toMinutes(start);
+  const makeup = `${fmtTime(t - 60)}–${fmtTime(t)}`;
+  const shoot = `${fmtTime(t)}–${fmtTime(t + 120)}`;
   return (
     <form className="booking-card" id="booking-moi" action="lich-chup.html" aria-labelledby="booking-card-title">
       <div className="booking-card-head">
@@ -23,7 +24,7 @@ export default function BookingForm({ booking, services = [], conflict, start, o
         {booking.date} · {start} · Makeup {makeup} · Chụp {shoot}
       </p>
       <p className={conflict ? 'booking-card-note is-conflict' : 'booking-card-note'} role="status">
-        <span aria-hidden="true">⚠ </span>
+        <Icon name="alert" />{' '}
         {conflict
           ? `09:00 trùng lịch: Mai (makeup) bận 08:00–12:00. Chọn ${booking.agreed} để tạo booking.`
           : `09:00 Linh hỏi ban đầu bị trùng vì Mai (makeup) bận 08:00–12:00, nên đã đổi sang ${booking.agreed}.`}
@@ -83,7 +84,7 @@ export default function BookingForm({ booking, services = [], conflict, start, o
                 <option value={booking.makeup.who}>{booking.makeup.who}</option>
               </select>
               <span className={conflict ? 'bf-avail is-busy' : 'bf-avail is-free'}>
-                {conflict ? `⚠ Bận 08:00–12:00` : `✓ Trống ${makeup}`}
+                <Icon name={conflict ? 'alert' : 'check'} /> {conflict ? 'Bận 08:00–12:00' : `Trống ${makeup}`}
               </span>
             </p>
             <p className="field">
@@ -91,14 +92,14 @@ export default function BookingForm({ booking, services = [], conflict, start, o
               <select className="input" id="bf-photographer" name="photographer" defaultValue={booking.shoot.who}>
                 <option value={booking.shoot.who}>{booking.shoot.who}</option>
               </select>
-              {conflict ? null : <span className="bf-avail is-free">✓ Trống {shoot}</span>}
+              {conflict ? null : <span className="bf-avail is-free"><Icon name="check" /> Trống {shoot}</span>}
             </p>
             <p className="field">
               <label className="field-label" htmlFor="bf-room">Phòng chụp</label>
               <select className="input" id="bf-room" name="room" defaultValue={booking.shoot.room}>
                 <option value={booking.shoot.room}>{booking.shoot.room}</option>
               </select>
-              {conflict ? null : <span className="bf-avail is-free">✓ Trống {shoot}</span>}
+              {conflict ? null : <span className="bf-avail is-free"><Icon name="check" /> Trống {shoot}</span>}
             </p>
           </div>
         </fieldset>

@@ -1,22 +1,24 @@
+import Icon from './Icon.jsx';
+import { toMinutes, toPct } from '../utils/time.js';
+
 const KINDS = {
-  busy: { label: 'Bận', glyph: '■' },
-  conflict: { label: 'Trùng', glyph: '⚠' },
-  free: { label: 'Trống', glyph: '✓' },
-  proposed: { label: 'Đề xuất', glyph: '◆' },
+  busy: { label: 'Bận', icon: 'square' },
+  conflict: { label: 'Trùng', icon: 'alert' },
+  free: { label: 'Trống', icon: 'check' },
+  proposed: { label: 'Đề xuất', icon: 'diamond' },
 };
-const DAY_FROM = 8, DAY_TO = 18;
+const DAY_FROM = 8 * 60, DAY_TO = 18 * 60;
 const HOURS = [8, 10, 12, 14, 16, 18];
-const toHours = (t) => { const [h, m] = t.split(':').map(Number); return h + m / 60; };
-const pct = (t) => ((toHours(t) - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100;
+const pct = (t) => toPct(t, DAY_FROM, DAY_TO);
 
 // Blocks that overlap in one row go to a second lane, so neither covers the other.
 function lanes(blocks) {
   const ends = [];
   return blocks.map((block) => {
-    const from = toHours(block.from);
+    const from = toMinutes(block.from);
     let lane = ends.findIndex((end) => end <= from);
     if (lane < 0) lane = ends.length;
-    ends[lane] = toHours(block.to);
+    ends[lane] = toMinutes(block.to);
     return { ...block, lane };
   });
 }
@@ -43,7 +45,7 @@ export default function ResourceSchedule({ title, date, rows = [], slots = [], p
           {slots.map((slot) => (
             <button key={slot.id} type="button" className="slot" aria-pressed={picked === slot.id} onClick={() => onPick(slot)}>
               <span className="slot-time">
-                <span aria-hidden="true">✓</span> {slot.time}
+                <Icon name="check" /> {slot.time}
                 {picked === slot.id ? <span className="slot-picked"> · Đã chọn cho Linh</span> : <span className="slot-picked"> · Chọn giờ này</span>}
               </span>
               <span className="slot-note">{slot.note}</span>
@@ -56,7 +58,7 @@ export default function ResourceSchedule({ title, date, rows = [], slots = [], p
         {Object.entries(KINDS).map(([kind, item]) => (
           <li key={kind}>
             <span className={`sched-swatch kind-${kind}`} aria-hidden="true" />
-            <span>{item.glyph} {item.label}</span>
+            <span><Icon name={item.icon} /> {item.label}</span>
           </li>
         ))}
       </ul>
@@ -64,7 +66,7 @@ export default function ResourceSchedule({ title, date, rows = [], slots = [], p
       <div className="tl" aria-hidden="true">
         <div className="tl-axis">
           {HOURS.map((h) => (
-            <span key={h} style={{ left: `${((h - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100}%` }}>{String(h).padStart(2, '0')}:00</span>
+            <span key={h} style={{ left: `${((h * 60 - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100}%` }}>{String(h).padStart(2, '0')}:00</span>
           ))}
         </div>
         {rows.map((row) => {
@@ -76,14 +78,14 @@ export default function ResourceSchedule({ title, date, rows = [], slots = [], p
               <div className="tl-track" style={{ '--lanes': count }}>
                 {placed.map((block) => {
                   const kind = KINDS[block.kind] || KINDS.busy;
-                  const short = toHours(block.to) - toHours(block.from) <= 1;
+                  const short = toMinutes(block.to) - toMinutes(block.from) <= 60;
                   return (
                     <span
                       key={block.id}
                       className={`tl-block kind-${block.kind || 'busy'}${short ? ' is-short' : ''}`}
                       style={{ left: `${pct(block.from)}%`, width: `${pct(block.to) - pct(block.from)}%`, '--lane': block.lane }}
                     >
-                      {kind.glyph}<span className="tl-word"> {kind.label}</span>
+                      <Icon name={kind.icon} /><span className="tl-word"> {kind.label}</span>
                     </span>
                   );
                 })}
@@ -106,7 +108,7 @@ export default function ResourceSchedule({ title, date, rows = [], slots = [], p
                 return (
                   <li className={`sched-block kind-${block.kind || 'busy'}`} key={block.id}>
                     <span className="sched-kind">
-                      <span aria-hidden="true">{kind.glyph}</span> {kind.label}
+                      <Icon name={kind.icon} /> {kind.label}
                     </span>
                     <b>{block.label}</b>
                     <span className="sched-time">{block.from}–{block.to}</span>
