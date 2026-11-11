@@ -416,6 +416,12 @@ An also attached screenshots of the conversation rows and the filter buttons (an
 
 > sửa hết các mục cần xử lý
 
+> phải như này không
+
+An also attached a screenshot of the W3C checker run on the file's path instead of its content.
+
+> đã hiểu, giờ bạn làm chụp 9 ảnh vào screenshots/ (thay 3 ảnh lich-chup cũ của Khánh) và viết SELF_ASSESSMENT_REPORT.md trong lúc mình dán các lỗi
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

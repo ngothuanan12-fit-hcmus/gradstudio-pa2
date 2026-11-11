@@ -1335,3 +1335,12 @@ Kept: awaiting An's review. (1) The booking card's fields have no `name`, so *Tá
 Changed: nothing beyond the request. Checks: lint no output; every axis label and block sits at the same pixel offset and width as computed from its time (for example 14:00 at 60 % of the track, the 09:00 make-up hour 10 % wide at 768 and 1280 px), and Linh's blocks still move when 09:00 is chosen; the main flow ends at `lich-chup.html?`; rubric checks FAILURES: 0; Slow 4G shell 0.6 s, page 2.0 s.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-11 â€” W3C paste help, nine screenshots, self-assessment
+Commit: 258317e (`screenshots/`), and the commit that adds this entry with `SELF_ASSESSMENT_REPORT.md`.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built `dist/`.
+Asked for: whether the W3C run in An's screenshot was right; then the nine screenshots and the self-assessment while An pastes the pages into the checker.
+Kept: awaiting An's review. The W3C run had checked the file's path as text (3 messages about that line, none about the page); the rendered page was put on the clipboard for Text input instead. Nine screenshots replace the three old `lich-chup` ones. `SELF_ASSESSMENT_REPORT.md` claims 86 with evidence on each row; the W3C row points at the files An is saving in `checks/`.
+Changed: the first full-page captures of `index.html` at 768 and 1280 px showed only the first 3D frame and then 5000 px of dark page, with the packages, process, chat and footer missing (found by looking at the bottom of the image). The story's height follows the window, and a full-page capture stretches the window to the page. A capture through the browser protocol without resizing did the same. Those two files are now screen-height captures taken while scrolling and joined; the self-assessment says so under *What we did not manage*.
+Rejected: nothing.
+By hand: An's requests; An pastes each page into the W3C checker.
