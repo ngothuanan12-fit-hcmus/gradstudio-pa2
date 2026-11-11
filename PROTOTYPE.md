@@ -30,7 +30,7 @@ Each page opens straight into its own state, as the GradStudio brief asks.
 
 | Path | GradStudio screen | What the user does there | Links open |
 |---|---|---|---|
-| `index.html` | Screen 1, Services and chat (customer) | Linh walks into the classroom story, sees the three services and their prices, asks about one, and reads the process and the chat | "Nhân viên studio: mở cuộc trò chuyện này" → `quan-ly.html`; menu → `lich-chup.html`; "Xem gói chụp" and "Chat với studio" move within the page |
+| `index.html` | Screen 1, Services and chat (customer) | Linh walks into the classroom story, sees the three services and their prices, asks about one (on its card or with the quick choice beside the chat), and reads the process and the chat | "Nhân viên studio: mở cuộc trò chuyện này", in a strip above the footer → `quan-ly.html`; menu → `lich-chup.html`; "Xem gói chụp" and "Chat với studio" move within the page |
 | `quan-ly.html` | Screen 2, Advice and clash handling (Admin) | Admin Thảo opens the moment after Linh agrees: 14:00 chosen, the conversation *Đã chốt lịch*, *Tạo booking* enabled, and a note that 09:00 clashed because Mai is busy 08:00–12:00. Search and the status filter work; choosing 09:00 brings the clash back | "Khách hàng: mở lịch chụp GS-1024" → `lich-chup.html` |
 | `lich-chup.html` | Screen 3, Review the appointment and pay the deposit (customer) | Being rebuilt. Planned state: Linh sees GS-1024 waiting for the 30% deposit | Menu → `index.html` |
 
@@ -43,7 +43,9 @@ Each page opens straight into its own state, as the GradStudio brief asks.
 | A plain first screen on phones, without WebGL or with reduced motion | A 3D scene does not suit 360 px or a slow connection. The 3D code is not even downloaded there |
 | Service cards, process and chat follow the story as normal sections, in every version | So every feature works with a keyboard and without 3D |
 | The process has five steps and says the slot is held only after the 30% deposit | The brief's main flow; the authors' screen promised it too early |
-| The chat is a section of the page, not a box floating in a corner | A floating box covers content at 360 px, a problem on the brief's *Fix these* list |
+| The chat is a section of the page that looks like a chat window and is always open, not a box floating in a corner | A floating box covers content at 360 px, a problem on the brief's *Fix these* list; the page must show Linh's question when it opens |
+| Beside the chat: a quick choice of package and a short list of what to tell the studio. No opening hours, address, phone or reviews | The brief gives none of these, so they would be invented |
+| The link to the management page sits in a strip above the footer, marked as the prototype's next screen | A real customer site would not have it, but PA#2 moves along the flow by a real link that says who continues |
 | No separate photo gallery or reviews on `index.html` | The brief's Screen 1 asks for the studio, the three services and the chat; the service photos show the style |
 | Separate layouts for customer and management pages | The lecturer's remark in class. It is not access control |
 | No demo switcher between screens | Pages link along the main flow instead |
