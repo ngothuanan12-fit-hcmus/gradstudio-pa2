@@ -38,18 +38,18 @@ export default function ConversationList({ items = [], activeId, onSelect, onRes
             <span className="conv-body">
               <span className="conv-top">
                 <span className="conv-name">{item.name}</span>
+                <span className="conv-time">{item.time}</span>
+              </span>
+              <span className="conv-meta">
                 <StatusBadge tone={item.tone}>{item.statusLabel}</StatusBadge>
+                {item.unread ? (
+                  <span className="conv-unread">
+                    {item.unread}
+                    <span className="sr-only"> tin chưa đọc</span>
+                  </span>
+                ) : null}
               </span>
               <span className="conv-last">{item.last}</span>
-            </span>
-            <span className="conv-meta">
-              <span className="conv-time">{item.time}</span>
-              {item.unread ? (
-                <span className="conv-unread">
-                  {item.unread}
-                  <span className="sr-only"> tin chưa đọc</span>
-                </span>
-              ) : null}
             </span>
           </button>
         </li>
