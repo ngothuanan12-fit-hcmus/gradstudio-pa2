@@ -1110,3 +1110,12 @@ Kept: awaiting An's review. The chat is a window like the landing page's, seen f
 Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px in the chat, placeholder not cut off, send disabled with its note, overflow line 0; choosing Trần Minh Anh shows "Trần Minh Anh / Chưa trả lời" and "Chưa có tin nhắn trong hội thoại này."; rubric checks FAILURES: 0, main flow reaches `lich-chup.html`.
 Rejected: nothing yet.
 By hand: An's request.
+
+## 2026-11-11 — round 4 options: the booking form inside the chat
+Commit: the commit that adds this entry, directly after 50ea417.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: how a booking form inside the chat should be laid out so the manager records the details easily.
+Kept: options for An, nothing built. (A) A booking card in the conversation, right after Linh's "Dạ em chốt lịch 14:00 ạ.", the full width of the chat window: details already agreed in the chat filled in and marked as taken from the conversation, grouped as customer and package, time, and people and room, each person and room with its free or busy line, the end times worked out from the start time and the package, the 09:00 clash written under the time, and one submit button that says who continues. (B) The same card between the messages and the message box. (C) The current layout, chat then form, restyled. Recommended A. Rules for any option: not inside the message box's own form (a form in a form fails the W3C check), no inner scrolling, visible labels and 44 px controls at 360 px, the opening state (14:00 chosen, *Tạo booking* enabled, the 09:00 note), no *Chờ cọc 30%* before the booking exists, one primary button, the time still changeable so choosing 09:00 shows the clash.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's question.

@@ -364,6 +364,8 @@ An also attached an example: a round avatar with a green dot at its lower right.
 > nên chuyển badge đặt cạnh giờ nhưng cần xét đến việc nó sẽ che tên, làm như vậy thì còn vi phạm nguyên tắc không
 
 > nhắc mình sửa lại các badge với vị trí căn chỉnh khác, giờ làm tiếp lượt 3
+
+> form trong khung chat nên có bố cục thế nào và hiển thị như thế nào cho người quản lý dễ dàng ghi nhận thông tin
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
