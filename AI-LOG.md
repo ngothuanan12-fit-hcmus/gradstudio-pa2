@@ -862,6 +862,16 @@ Changed: updated `src/components/ConflictAlert.jsx` with the warning triangle al
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — Full port Step 5: ResourceTimeline, TimelineRow, TimelineBlock, and SlotSuggestion
+
+Who: Khánh (24120340).
+Commit: 2a1e16f.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: port `ResourceTimeline.tsx`, `TimelineRow.tsx`, `TimelineBlock.tsx`, and `SlotSuggestion.tsx` into `src/components/ResourceSchedule.jsx`.
+Changed: rewrote `src/components/ResourceSchedule.jsx` with the date switcher (`‹ Thứ Bảy, 24/10 ›`), 4-state swatch legend (`Đã xác nhận`, `Yêu cầu đang xét`, `Trùng lịch`, `Nghỉ`), `08:00–18:00` horizontal Gantt timeline across `Makeup · Mai`, `Thợ chụp · Tuấn`, `Thợ chụp · Hà`, `Phòng A`, and `Phòng B`, diagonal lunch break and conflict hatching, portal hover tooltip, active slot indicator needle, conflict/ready banner, and smart `SlotSuggestion` cards (`14:00 Gần nhất`, `13:00`, `25/10 · 08:00`).
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
 
 
 
