@@ -874,3 +874,12 @@ Kept: options for An, nothing built. (1) Quick choice of package: the three pack
 Changed: nothing.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-11 — chat open and folded; what a real site would not show
+Commit: the commit that adds this entry, directly after 9ee430c.
+Tool: Claude Code (Claude Opus 5.5), checking the brief, `CLAUDE.md`, `PROTOTYPE.md` and the layouts.
+Asked for: what the chat section should show open and folded, which parts a real site would not have, and whether removing them breaks a rule.
+Kept: proposals for An, nothing built. Open: left the heading, text, quick package buttons and "Nên kể cho studio"; right the chat window. Folded: recommended to drop folding, because the chat is no longer a floating box and folding only leaves an empty column; alternatives: the folded header shows the last message as a preview, or the section becomes one column while folded. Parts a real site would not show: (1) the fold button: the brief does not ask for it, removing it breaks nothing, and the page still opens on Linh's question; (2) the photo credits line with the path `docs/IMAGE_SOURCES.md`: the brief asks for sources in `PROTOTYPE.md`, which has them, and the Unsplash and Pexels licences do not require credit on the page, so removing it breaks nothing; (3) the link "Nhân viên studio: mở cuộc trò chuyện này" would not exist on a real site, but the brief and `CLAUDE.md` require a real link with a label that says who continues, so it cannot go; it can move out of the chat panel to a quieter place, such as a strip above the footer marked as the prototype's next screen; (4) the footer "Bản mẫu cho môn CSC13008, dữ liệu minh họa." would not be on a real site, but it says the studio and data are made up, which matters with photos of real people, so keeping it is recommended.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's questions.
