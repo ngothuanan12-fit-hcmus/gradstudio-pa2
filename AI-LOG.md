@@ -727,6 +727,17 @@ Changed: updated `src/components/ConflictAlert.jsx` so its opening 14:00 state e
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — management page: BookingForm session type, addons and agreed badge
+
+Who: Khánh (24120340).
+Commit: 41dd717.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: ported the session-type field (`Tốt nghiệp cá nhân` / `Tốt nghiệp nhóm`), the native addon checkboxes (`Makeup (60 phút trước giờ chụp)` and `Thuê áo cử nhân` inside a `<fieldset>` with 44 px touch targets), and the inline resource availability text (`✓` / `⚠`) from the practice `BookingForm.tsx` into `src/components/BookingForm.jsx` and `src/styles/admin.css`. Fixed item 2 of the PR #2 review by showing *Đã chốt lịch* instead of *Chờ cọc 30%* on the form badge before the booking is created, and stated in the form note that the slot is held only after the 30% deposit succeeds.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
 
 
 
