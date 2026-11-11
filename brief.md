@@ -403,6 +403,8 @@ An also attached `tai-lieu-ky-thuat-lich-va-thong-bao.md`, notes on three MIT-li
 An also attached `gradstudio-huong-cai-thien.md`, a list of improvements for the management page (three-column app frame, Messenger-style chat, form in a side tab, timeline clean-up, notifications, visual style, technique).
 
 > cứ thực hiện sửa khi nào tới 8h45 thì chuẩn bị các bước nộp bài
+
+> đổi các trạng thái từ màu sắc thành các icon được không
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

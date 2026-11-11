@@ -1290,3 +1290,12 @@ Kept: four rendered documents written outside the repository for An to paste int
 Changed: the first export script failed on a line break inside the page-side expression; fixed and rerun.
 Rejected: nothing.
 By hand: the pasting into the checker, by An.
+
+## 2026-11-11 — conversation statuses as icons instead of coloured dots
+Commit: 655e723 (shared: `Icon.jsx` adds a "done" icon, `StatusBadge.jsx` uses it, `utils/status.js` maps each status to an icon) and be5ef30 (`ConversationList.jsx`, `QuanLy.jsx`, `admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: the statuses shown by icons rather than by colour.
+Kept: awaiting An's review. Each status has its own shape: *Chưa trả lời* an empty circle, *Đang tư vấn* a clock, *Đã chốt lịch* a tick, *Hoàn thành* a tick in a circle. The icon sits in a small white disc on each avatar, leads each filter button and sits in the chat header, still in the status colour; the badge by the time uses the same icons and the name. So the status reads by shape and word even in greyscale or for colour-blind readers.
+Changed: nothing beyond the request. Checks at 360, 768 and 1280 px: no text under 16 px, no overlap or clipped name, overflow line 0; rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: An's request.
