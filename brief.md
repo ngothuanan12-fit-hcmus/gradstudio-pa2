@@ -272,6 +272,9 @@ An also attached `phan-tich-webild-coffee-shop.md`, an analysis of the Webild "C
 > mình đã báo cho Khánh rồi, giờ thực hiện bước 1
 
 > duyệt
+
+> ý mình là chữ "Lưu lại ngày
+> ra trường" phóng kiểu zoom out thì phải là nó phải từ màn hình xong nhỏ lại dần chữ không phải ảnh lớp học
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
