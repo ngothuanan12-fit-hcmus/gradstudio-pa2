@@ -707,5 +707,16 @@ Changed: `src/components/ChatPanel.jsx` changed in its own commit as a shared fi
 Checks: `npm run lint` exits 0 with no output.
 By hand: none.
 
+## 2026-11-11 — management page: conversation list, 16 px unread count and search width
+
+Who: Khánh (24120340).
+Commit: 9f4011b.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: ported the two-letter avatar initials (`NL`, `PU`, `MA`, `GB`) and empty-state reset action from the practice `CustomerInbox.tsx` into `src/components/ConversationList.jsx`. In `src/styles/admin.css`, raised `.conv-unread` from 14 px to 16 px / 24 px (fixing item 5 of the PR #2 review) and removed the two-column `.toolbar` split inside the narrow conversation panel so the search input keeps the full panel width instead of cutting off its placeholder.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
 
 
