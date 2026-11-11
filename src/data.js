@@ -93,8 +93,6 @@ export const scheduleRows = [
     role: 'Thợ makeup',
     blocks: [
       { id: 'mai-busy', from: '08:00', to: '12:00', label: 'Đã kín', kind: 'busy' },
-      { id: 'mai-conflict', from: '09:00', to: '10:00', label: 'Linh yêu cầu 09:00', kind: 'conflict' },
-      { id: 'mai-proposed', from: '13:00', to: '14:00', label: 'Linh · makeup', kind: 'proposed' },
     ],
   },
   {
@@ -103,16 +101,13 @@ export const scheduleRows = [
     role: 'Thợ chụp',
     blocks: [
       { id: 'tuan-free', from: '11:00', to: '14:00', label: 'Trống', kind: 'free' },
-      { id: 'tuan-proposed', from: '14:00', to: '16:00', label: 'Linh · GS-1024', kind: 'proposed' },
     ],
   },
   {
     id: 'phong-b',
     name: 'Phòng B',
     role: 'Phòng chụp',
-    blocks: [
-      { id: 'phong-proposed', from: '14:00', to: '16:00', label: 'Linh · GS-1024', kind: 'proposed' },
-    ],
+    blocks: [],
   },
 ];
 
