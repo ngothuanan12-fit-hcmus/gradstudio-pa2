@@ -829,3 +829,12 @@ Kept: all of it; pushed to `main`. Next: step 3, the package section.
 Changed: nothing.
 Rejected: nothing.
 By hand: An's approval after viewing on a real machine.
+
+## 2026-11-11 — step 3: the package section
+Commit: f1d4e55 for `PackageCard.jsx` and `home.css`, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: step 3 of the plan, the package section as proposed earlier (cards, aligned price and button, a larger price, a chosen state, one photo shape).
+Kept: awaiting An's review. Each package is a card on the surface colour with a thin border; the price ("Từ" on its own small line, then the amount in the display font, accent colour) and the button sit at the bottom, so the three cards line up; choosing "Tư vấn gói này" outlines the whole card in the accent colour and adds the line "Đang hỏi về gói này trong chat", matching the status line in the chat; photos are 4:3 on phones and square from 768 px, cropped to keep faces. Wording and prices unchanged.
+Changed: at 768 px the first version pushed "350.000đ/người" past the card's edge (measured: price box outside the card); the unit can now wrap before "/người" (`<wbr>`) and the price is 26 px between 768 and 1279 px, 32 px elsewhere. Checks: at 768 and 1280 px every price inside its card and the three buttons at the same height; chosen state outlines Tốt nghiệp, shows the line, the chat status reads "Đang hỏi về: Tốt nghiệp" and focus moves to it; contrast on the card: accent 8.4:1, muted "Từ" 8.4:1, body 15.2:1; lint clean; rubric checks FAILURES: 0.
+Rejected: nothing yet.
+By hand: none.
