@@ -1191,3 +1191,12 @@ Kept: split proposed: 10a contrast, 10b Linh's block sliding to 14:00, 10c the b
 Changed: nothing. The only failures the script listed were the screen-reader-only "tin chưa đọc" texts, which are hidden on purpose (a 1 px box), so they are not real failures. The 4.6:1 labels are close to the limit; making them the body colour, with the accent kept for the border and icon, would give 13.9:1, offered to An rather than changed.
 Rejected: nothing.
 By hand: An's request to split the round.
+
+## 2026-11-11 — 10a follow-up: proposed blocks in the body colour
+Commit: 1dbc6fd (`admin.css`), and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), `contrast_pages.py` again on both pages.
+Asked for: An accepted the offer to write the "Đề xuất" blocks in the body colour.
+Kept: the words inside proposed blocks (list and timeline) are now the body colour on the soft accent background (13.9:1, was 4.6:1); the accent stays for the border and the diamond icon, so the kind still reads by shape and word. No real failure on either page; the lowest value is now 4.6:1 for the amber "Đang tư vấn" badge in the light theme (shared badge style), offered to An for the same treatment.
+Changed: nothing else.
+Rejected: nothing.
+By hand: An's choice.
