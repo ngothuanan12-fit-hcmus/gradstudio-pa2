@@ -414,6 +414,8 @@ An also attached screenshots of the conversation rows and the filter buttons (an
 
 > kiểm tra lại độ tương phản và tất cả các ràng buộc của các trang xem có phù hợp và đúng quy định và giải quyết được hết chưa rồi mình mới xuất
 
+> sửa hết các mục cần xử lý
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.

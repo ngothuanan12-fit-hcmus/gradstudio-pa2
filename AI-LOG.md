@@ -1326,3 +1326,12 @@ Kept: awaiting An's decision on the findings. Passed: lint with no output; rubri
 Changed: the first contrast and button runs crashed while printing Vietnamese to a file (Windows code page), not on the page; rerun with UTF-8. The contrast script's "fails" on `span.sr-only` were text hidden for screen readers, measured by mistake, and were left out.
 Rejected: nothing.
 By hand: An's request.
+
+## 2026-11-11 — fixing the three findings of the full check
+Commit: 099e406 (`BookingForm.jsx`), 8a74ea3 (shared: `ResourceSchedule.jsx`, `WeekCalendar.jsx`, `admin.css`, `schedule.css`), and the commit that adds this entry with `PROTOTYPE.md`.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the rebuilt `dist/`.
+Asked for: fix every finding of the previous entry.
+Kept: awaiting An's review. (1) The booking card's fields have no `name`, so *Tạo booking* still opens `lich-chup.html`, and the address is now `lich-chup.html?` with no booking data in it (NEVER 8). (2) The two day timelines pass only data in inline `style`, as custom properties (`--at`, `--len`, `--lane`); `left` and `width` are now set in `admin.css` and `schedule.css` (NEVER 12). (3) `PROTOTYPE.md`: the draft line is gone, the status row says icon instead of coloured dot, and the submit is named as on the page, "Tạo booking GS-1024 · Khách hàng: mở lịch chụp".
+Changed: nothing beyond the request. Checks: lint no output; every axis label and block sits at the same pixel offset and width as computed from its time (for example 14:00 at 60 % of the track, the 09:00 make-up hour 10 % wide at 768 and 1280 px), and Linh's blocks still move when 09:00 is chosen; the main flow ends at `lich-chup.html?`; rubric checks FAILURES: 0; Slow 4G shell 0.6 s, page 2.0 s.
+Rejected: nothing.
+By hand: An's request.
