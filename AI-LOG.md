@@ -838,3 +838,12 @@ Kept: awaiting An's review. Each package is a card on the surface colour with a 
 Changed: at 768 px the first version pushed "350.000đ/người" past the card's edge (measured: price box outside the card); the unit can now wrap before "/người" (`<wbr>`) and the price is 26 px between 768 and 1279 px, 32 px elsewhere. Checks: at 768 and 1280 px every price inside its card and the three buttons at the same height; chosen state outlines Tốt nghiệp, shows the line, the chat status reads "Đang hỏi về: Tốt nghiệp" and focus moves to it; contrast on the card: accent 8.4:1, muted "Từ" 8.4:1, body 15.2:1; lint clean; rubric checks FAILURES: 0.
 Rejected: nothing yet.
 By hand: none.
+
+## 2026-11-11 — package cards: hover lift instead of a chosen state
+Commit: 831aab6 for the page, and the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5), with Playwright on the built page.
+Asked for: An found the chosen-card outline and its line unnecessary and asked for a hover on the whole card instead.
+Kept: awaiting An's review. With a mouse, pointing at a card lifts it 4 px, lightens its border and adds a soft shadow; the border also lightens when the card's button has keyboard focus. The card is not a button: "Tư vấn gói này" stays the one action and still turns primary when chosen, as before. No movement with reduced motion; touch screens have no hover.
+Changed: removed the accent outline and the line "Đang hỏi về gói này trong chat" from f1d4e55. Checks: hover lifts 4 px with border and shadow, overflow line 0; keyboard focus lightens the border; after "Tư vấn gói này" no extra line, the button is pressed and the chat status reads "Đang hỏi về: Tốt nghiệp"; reduced motion: no lift; rubric checks FAILURES: 0.
+Rejected: An rejected the chosen-card outline and line (f1d4e55).
+By hand: An's review.
