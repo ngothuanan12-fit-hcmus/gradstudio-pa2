@@ -112,14 +112,14 @@ export default function BookingForm({
         </FormField>
 
         <FormField label="Loại buổi chụp">
-          <select disabled={isLocked} defaultValue="ca-nhan" aria-label="Loại buổi chụp" className="st-select">
+          <select name="shoot-type" disabled={isLocked} defaultValue="ca-nhan" aria-label="Loại buổi chụp" className="st-select">
             <option value="ca-nhan">Tốt nghiệp cá nhân</option>
             <option value="nhom">Tốt nghiệp nhóm</option>
           </select>
         </FormField>
 
         <FormField label="Gói" className="is-span-2">
-          <select disabled={isLocked} defaultValue="premium" aria-label="Gói chụp" className="st-select">
+          <select name="package-id" disabled={isLocked} defaultValue="premium" aria-label="Gói chụp" className="st-select">
             <option value="premium">{defaultPackageTitle}</option>
             <option value="basic">Gói Tốt nghiệp Cơ bản · 1 giờ · 15 ảnh chỉnh</option>
           </select>
@@ -145,6 +145,7 @@ export default function BookingForm({
           }
         >
           <select
+            name="start-time"
             disabled={isLocked}
             value={startTime}
             aria-label="Giờ bắt đầu chụp"
@@ -164,6 +165,7 @@ export default function BookingForm({
             <label className="st-checkbox-label">
               <input
                 type="checkbox"
+                name="addon-makeup"
                 disabled={isLocked}
                 checked={hasMakeup}
                 onChange={(e) => onToggleMakeup(e.target.checked)}
@@ -175,6 +177,7 @@ export default function BookingForm({
             <label className="st-checkbox-label">
               <input
                 type="checkbox"
+                name="addon-costume"
                 disabled={isLocked}
                 checked={hasCostume}
                 onChange={(e) => onToggleCostume(e.target.checked)}
@@ -188,6 +191,7 @@ export default function BookingForm({
         <FormField label="Giá chốt" helper="Giá tham khảo: từ 1.800.000đ">
           <input
             type="text"
+            name="final-price"
             value={price}
             disabled={isLocked}
             aria-label="Giá chốt"

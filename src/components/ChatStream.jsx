@@ -62,6 +62,7 @@ export function ChatInput({
 
       <input
         type="text"
+        name="chat-message"
         value={val}
         onChange={(e) => setVal(e.target.value)}
         placeholder={placeholder}

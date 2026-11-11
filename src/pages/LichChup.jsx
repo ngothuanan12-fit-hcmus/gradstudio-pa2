@@ -1,20 +1,21 @@
 import { useState } from 'react';
+import '../styles/schedule.css';
 
 const GALLERY_IMAGES = [
   {
-    url: './photos/tot-nghiep-960.webp',
+    url: './photos/tot-nghiep-900.webp',
     thumb: './photos/tot-nghiep-480.webp',
     title: 'Tốt nghiệp cá nhân',
     category: 'Gói Chụp Premium · Cử nhân',
   },
   {
-    url: './photos/ky-yeu-960.webp',
-    thumb: './photos/ky-yeu-480.webp',
+    url: './photos/ky-yeu-1350.webp',
+    thumb: './photos/ky-yeu-640.webp',
     title: 'Ảnh kỷ yếu tập thể',
     category: 'Kỷ yếu nhóm & Bạn bè · Ngoài trời',
   },
   {
-    url: './photos/chan-dung-960.webp',
+    url: './photos/chan-dung-900.webp',
     thumb: './photos/chan-dung-480.webp',
     title: 'Ảnh CV & Profile chuyên nghiệp',
     category: 'Studio Portrait · Chân dung công sở',

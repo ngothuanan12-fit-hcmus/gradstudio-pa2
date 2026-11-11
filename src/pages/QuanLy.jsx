@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import '../styles/admin.css';
 import BookingForm from '../components/BookingForm.jsx';
 import ChatStream from '../components/ChatStream.jsx';
 import ConversationList from '../components/ConversationList.jsx';

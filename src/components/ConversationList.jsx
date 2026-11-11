@@ -67,6 +67,7 @@ export default function ConversationList({
           </svg>
           <input
             type="search"
+            name="customer-search"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Tìm khách hàng…"
