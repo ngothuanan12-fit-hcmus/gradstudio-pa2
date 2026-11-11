@@ -687,3 +687,14 @@ Changed: `src/data.js` changed in its own commit as a shared file. Fixed two sam
 Checks: `npm run lint` exits 0 with no output.
 By hand: Khánh directed the step-by-step commit and logging order.
 
+## 2026-11-11 — shared UI styles: 16 px status badge
+
+Who: Khánh (24120340).
+Commit: d292b9c.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: the prompts in `brief.md` Part 5.
+Changed: `src/styles/ui.css` changed in its own commit as a shared file. Raised `.status-badge` from 14 px / 20 px to 16 px / 24 px so status badges on both `quan-ly.html` and `lich-chup.html` meet the 16 px minimum text rule noted in the PR #2 and PR #3 reviews.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
+
