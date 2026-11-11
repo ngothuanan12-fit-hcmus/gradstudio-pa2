@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import AdminLayout from '../layouts/AdminLayout.jsx';
+import Button from '../components/Button.jsx';
 import BookingForm from '../components/BookingForm.jsx';
 import ChatPanel from '../components/ChatPanel.jsx';
 import ConversationList from '../components/ConversationList.jsx';
@@ -64,23 +65,28 @@ export default function QuanLy() {
                 id="conv-search"
                 type="search"
                 value={query}
-                placeholder="Tên khách hoặc tin nhắn"
+                placeholder="Tên hoặc tin nhắn"
                 onChange={(event) => setQuery(event.target.value)}
               />
             </p>
-            <p className="field">
-              <label className="field-label" htmlFor="conv-filter">Lọc trạng thái</label>
-              <select
-                className="input"
-                id="conv-filter"
-                value={filter}
-                onChange={(event) => setFilter(event.target.value)}
-              >
-                {FILTERS.map((item) => (
-                  <option key={item.id} value={item.id}>{item.label}</option>
-                ))}
-              </select>
-            </p>
+            <div className="field">
+              <p className="field-label" id="conv-filter-label">Lọc theo trạng thái</p>
+              <div className="filter-chips" role="group" aria-labelledby="conv-filter-label">
+                {FILTERS.map((item) => {
+                  const count = item.id === 'all' ? conversations.length : conversations.filter((c) => c.status === item.id).length;
+                  return (
+                    <Button
+                      key={item.id}
+                      variant={filter === item.id ? 'primary' : 'secondary'}
+                      aria-pressed={filter === item.id}
+                      onClick={() => setFilter(item.id)}
+                    >
+                      {item.label} ({count})
+                    </Button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
           <ConversationList
             items={visibleConversations}

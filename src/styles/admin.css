@@ -1,6 +1,10 @@
 /* Management page. Shared primitives live in ui.css. */
 
 .toolbar { display: grid; gap: var(--space-12); }
+/* Status filter as pressed buttons with counts; they wrap in the narrow column. */
+.conv .status-badge { white-space: nowrap; }
+.filter-chips { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.filter-chips .btn { min-height: var(--control-height-sm); padding: var(--space-4) var(--space-12); border-radius: var(--radius-pill); font-weight: 500; }
 
 .conv-list { display: grid; align-content: start; margin: 0; padding: 0; list-style: none; }
 .conv-list li + li { border-top: 1px solid var(--line); }
@@ -45,7 +49,7 @@
   border-radius: var(--radius-pill);
   background: var(--accent);
   color: var(--on-accent);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -123,36 +127,33 @@
 .sched-swatch.kind-free { border: 2px dashed var(--free); }
 .sched-swatch.kind-proposed { border: 2px solid var(--accent); }
 
-/* Management page layout: one column at 360; from 768 the conversations beside the chat and the form, with the
-   resource calendar across the full width below. Sections leave room above them when a header link opens them. */
+/* Management page layout: one column below 1280 (at 768 a side column would be too narrow for the list); from
+   1280 the conversations beside the chat and the form, with the resource calendar across the full width below. Sections leave room above them when a header link opens them. */
 .admin-grid > section, .admin-grid > form { scroll-margin-top: var(--space-16); }
 .admin-grid { display: grid; gap: var(--space-24); min-width: 0; }
 .admin-convs { align-content: start; }
 .admin-chat { display: grid; align-content: start; gap: var(--space-16); min-width: 0; }
 
 @media (min-width: 768px) {
-  .toolbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 
-  .admin-grid {
-    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
-    grid-template-areas:
-      "convs chat"
-      "convs form"
-      "sched sched";
-    align-items: start;
-  }
-
-  .admin-convs { grid-area: convs; }
-  .admin-chat { grid-area: chat; }
-  .booking-form { grid-area: form; }
-  .sched { grid-area: sched; }
 
   .form-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .sched-blocks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (min-width: 1280px) {
-  .admin-grid { grid-template-columns: minmax(0, 340px) minmax(0, 1fr); }
+  .admin-grid {
+    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+    grid-template-areas:
+      "convs chat"
+      "convs form"
+      "sched sched";
+    align-items: start;
+  }
+  .admin-convs { grid-area: convs; }
+  .admin-chat { grid-area: chat; }
+  .booking-form { grid-area: form; }
+  .sched { grid-area: sched; }
 }
 
 /* Header of the management page: who is working here, beside the brand. */
