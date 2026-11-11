@@ -1245,3 +1245,12 @@ Kept: PR #3 could not be closed: GitHub already shows it as merged, because pull
 Changed: the first version of this entry said PR #3 was closed; `gh` refused, since it was already merged, so the entry was corrected in the next commit.
 Rejected: nothing.
 By hand: An's approval.
+
+## 2026-11-11 — how to export the three pages for the W3C checker
+Commit: the commit that adds this entry, directly after 76c98a7.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: instructions for exporting the three pages so An can paste them into the W3C checker.
+Kept: the steps for An: build and preview, open each path, wait for the page to settle (the 3D story on the landing page takes over a second or two after load), copy the rendered document from the DevTools console with `copy("<!DOCTYPE html>\n" + document.documentElement.outerHTML)`, paste it into the Nu checker's text input, then save the result as `checks/validator-<page>.png` (full-size screenshot) or `.txt`. The landing page has two states (3D at 768 px and wider, plain on a phone); checking both is suggested. The assistant offered to write the three rendered files itself so only the pasting is manual.
+Changed: nothing.
+Rejected: nothing.
+By hand: An's request.
