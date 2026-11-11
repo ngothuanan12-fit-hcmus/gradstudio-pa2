@@ -1182,3 +1182,12 @@ Kept: awaiting An's review. "Buổi chụp GS-1024" keeps the badge "Đã thốn
 Changed: nothing beyond the request. Checks: every Screen 3 item present (24/10 marked, 09:00 struck, 13:00–14:00 Mai, 14:00–16:00 Tuấn in Phòng B, the status, package, 1.800.000đ, 540.000đ, 1.260.000đ, the disabled pay button with its note), no demo controls; at 360, 768 and 1280 px no text under 16 px, nothing cut off, overflow line 0; rubric checks FAILURES: 0.
 Rejected: nothing yet.
 By hand: An's approval.
+
+## 2026-11-11 — round 10 split; 10a: contrast on the two pages
+Commit: the commit that adds this entry, directly after 348c20d.
+Tool: Claude Code (Claude Opus 5.5), with Playwright: `contrast_pages.py` (the landing page's method: each text against the real pixels behind it, worst 5 %), every 800 px of `quan-ly.html` (as opened and with 09:00 chosen) and `lich-chup.html`, at 360 and 1280 px.
+Asked for: round 10 in several smaller steps.
+Kept: split proposed: 10a contrast, 10b Linh's block sliding to 14:00, 10c the badge position (An's idea, as reminded), 10d consistency (spacing, primary buttons, remaining details). 10a result: every visible text passes on both pages in both states and widths; lowest 4.6:1 for the accent labels inside the light-theme "Đề xuất" blocks ("Linh · makeup", "Linh · GS-1024"; needs 4.5:1), then the muted lines; the red 09:00 row on the dark schedule page passes over its hatching.
+Changed: nothing. The only failures the script listed were the screen-reader-only "tin chưa đọc" texts, which are hidden on purpose (a 1 px box), so they are not real failures. The 4.6:1 labels are close to the limit; making them the body colour, with the accent kept for the border and icon, would give 13.9:1, offered to An rather than changed.
+Rejected: nothing.
+By hand: An's request to split the round.
