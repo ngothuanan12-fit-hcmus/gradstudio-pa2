@@ -48,6 +48,11 @@
   .day-axis span:nth-child(n) { display: inline; }
 }
 
+/* BookingSummary on this page: label and value side by side in two columns, so a long value wraps under itself
+   instead of breaking the row; the package's duration sits under its name. */
+.schedule-side .summary-row { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: var(--space-12); }
+.schedule-side .summary-row dd { overflow-wrap: anywhere; }
+.summary-sub { display: block; color: var(--ink-muted); font-weight: 400; }
 /* DepositCard */
 .deposit { align-content: start; }
 .deposit-list { display: grid; gap: var(--space-8); }

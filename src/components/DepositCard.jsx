@@ -25,8 +25,7 @@ export default function DepositCard({ booking }) {
         Thanh toán cọc 30%
       </Button>
       <p className="deposit-note" id="deposit-note">
-        Chưa thanh toán được trong bản mẫu: PA#2 không có cổng thanh toán. Lịch chỉ được giữ
-        sau khi cọc thành công và studio kiểm tra lại lịch.
+        Bản mẫu chưa có cổng thanh toán. Lịch chỉ được giữ sau khi cọc thành công và studio kiểm tra lại lịch.
       </p>
     </section>
   );
