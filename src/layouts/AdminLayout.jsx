@@ -4,9 +4,13 @@ export default function AdminLayout({ children }) {
     <>
       <header className="page-header">
         <a className="page-brand" href="index.html">GradStudio</a>
-        <nav className="page-nav" aria-label="Trang quản lý">
+        <p className="page-role">Quản lý studio · Thảo</p>
+        {/* Links within this page: it is long on a phone. Each one opens a section that is really there. */}
+        <nav className="page-nav" aria-label="Các phần của trang quản lý">
           <ul>
-            <li><a href="quan-ly.html" aria-current="page">Quản lý booking</a></li>
+            <li><a href="#hoi-thoai">Hội thoại</a></li>
+            <li><a href="#booking-moi">Booking mới</a></li>
+            <li><a href="#lich-tai-nguyen">Lịch tài nguyên</a></li>
           </ul>
         </nav>
       </header>

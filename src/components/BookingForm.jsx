@@ -16,7 +16,7 @@ export default function BookingForm({
   onPickSlot,
 }) {
   return (
-    <form className="panel booking-form" action="lich-chup.html" aria-labelledby="booking-form-title">
+    <form className="panel booking-form" id="booking-moi" action="lich-chup.html" aria-labelledby="booking-form-title">
       <div className="panel-head">
         <h2 id="booking-form-title">Booking mới</h2>
         <StatusBadge tone={conflict ? 'conflict' : 'confirmed'}>

@@ -9,7 +9,7 @@ const KINDS = {
 // time, so nothing is clipped at 360px, and each kind keeps a text label.
 export default function ResourceSchedule({ title, date, rows = [] }) {
   return (
-    <section className="panel sched" aria-labelledby="sched-title">
+    <section className="panel sched" id="lich-tai-nguyen" aria-labelledby="sched-title">
       <div className="panel-head">
         <h2 id="sched-title">{title || 'Lịch thợ và phòng'}</h2>
         <p className="meta-line">{date}</p>

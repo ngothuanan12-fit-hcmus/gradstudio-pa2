@@ -54,7 +54,7 @@ export default function QuanLy() {
       <p className="status-line" role="status">{status}</p>
 
       <div className="admin-grid">
-        <section className="panel admin-convs" aria-labelledby="convs-title">
+        <section className="panel admin-convs" id="hoi-thoai" aria-labelledby="convs-title">
           <h2 id="convs-title">Hội thoại</h2>
           <div className="toolbar">
             <p className="field">

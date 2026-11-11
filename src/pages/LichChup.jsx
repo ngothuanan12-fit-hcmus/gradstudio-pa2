@@ -19,14 +19,15 @@ export default function LichChup() {
         sau khi cọc thành công.
       </p>
 
+      {/* The booking and its deposit come first (beside the week from 1280 px), then the week and the day. */}
       <div className="schedule-layout">
+        <div className="schedule-side">
+          <BookingSummary booking={booking} />
+          <DepositCard booking={booking} />
+        </div>
         <div className="schedule-main">
           <WeekCalendar days={weekDays} today="2026-10-24" />
-          <BookingSummary booking={booking} />
         </div>
-        <aside className="schedule-side" aria-label="Thanh toán">
-          <DepositCard booking={booking} />
-        </aside>
       </div>
     </CustomerLayout>
   );
