@@ -1353,3 +1353,12 @@ Kept: `checks/validator-index.png`, `checks/validator-quan-ly.png` and `checks/v
 Changed: nothing on the pages.
 Rejected: nothing.
 By hand: An ran the checker.
+
+## 2026-11-11 — raising the mark: PA#1 differences, Accessibility pane, rescoring; repository public
+Commit: the commit that adds this entry with `PROTOTYPE.md` and `SELF_ASSESSMENT_REPORT.md`.
+Tool: Claude Code (Claude Opus 5.5), with Playwright and Chrome's accessibility tree on the built `dist/`; `gh` to change the repository's visibility.
+Asked for: what would raise the mark; make the repository public. In the question dialog An chose to keep Khánh's branch `refactor/quan-ly-lich-chup` (it holds code from the authors' prototype and was never merged; making the repository public shows it too), to add a table of differences from PA#1, to review the Accessibility pane, and to rescore.
+Kept: awaiting An's review. The repository is public (the link opens signed out, HTTP 200). `PROTOTYPE.md` has a *Changed since PA#1* table: 17 rows, screen by screen, each with what PA#1 had, what our pages do and why, checked against the PA#1 images in `docs/pa1/` and the strings in `src/`. Accessibility: no skipped heading level on any page at 360 and 1280 px, with and without 3D; in Chrome's accessibility tree every button, link, text box and select has a name, each page has one banner, navigation, main and contentinfo, and no `div` or `span` acts as a button (the only focusable non-control is the labelled package turntable, beside two real buttons). Self-assessment 86 → 91: criterion 1 17 → 19, 2 22 → 23, 3 17 → 19, each with the new evidence; the zip is renamed to match.
+Changed: the self-assessment's responsive row said "card grid" and "schedule beside the booking", which no longer describe the pages; it now names the real layout changes.
+Rejected: nothing.
+By hand: An's choices in the dialog.

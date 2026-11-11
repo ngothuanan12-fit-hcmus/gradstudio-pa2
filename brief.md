@@ -426,6 +426,13 @@ An also attached a screenshot of the W3C checker run on the file's path instead 
 
 An also attached four W3C results (Text input, vnu 26.11.10): `lich-chup.html`, `quan-ly.html` and `index.html` twice, each with no errors or warnings.
 
+> cần làm gì để cải thiện điểm lên nữa
+> muốn public luôn
+
+In the question dialog An chose: make the repository public and keep Khánh's branch; add the table of differences from PA#1, review the Accessibility pane, and rescore the self-assessment.
+
+> 1 2 3 mình cố gắng không vi phạm mà sao cái nào cũng hạ điểm
+
 ## Part 2 — Claude Design: design system set-up (sent)
 
 Tool: Claude Design, "Set up your design system" form. An confirmed this is the text pasted.
