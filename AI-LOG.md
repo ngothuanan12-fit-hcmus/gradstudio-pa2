@@ -832,6 +832,16 @@ Changed: created `src/utils/scheduling.js` (`studioResources`, `scheduledEventsB
 Checks: `npm run lint` exits 0 with no output.
 By hand: Khánh's direction.
 
+## 2026-11-11 — Full port Step 2: StudioHeader and CustomerInbox conversation list
+
+Who: Khánh (24120340).
+Commit: 10ca2f4.
+Tool: Antigravity (Gemini 4 Argon Medium).
+Asked for: port `StudioHeader.tsx`, `Avatar.tsx`, and `CustomerInbox.tsx` into `src/components/StudioHeader.jsx` and `src/components/ConversationList.jsx`.
+Changed: created `src/components/StudioHeader.jsx` with the studio brand bar, navigation tabs (`Hội thoại`, `Booking`, `Lịch studio`, `Tài nguyên`, `Lịch chụp khách`), notification bell, and staff profile (`Thảo · Quản lý studio`); updated `src/components/ConversationList.jsx` with `Avatar`, search input, filter pills (`Tất cả`, `Chưa trả lời`, `Đang tư vấn`) with live counts, and customer rows with status dots, unread indicators, and active bar.
+Checks: `npm run lint` exits 0 with no output.
+By hand: none.
+
 
 
 
