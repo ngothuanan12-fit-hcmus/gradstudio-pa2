@@ -1362,3 +1362,16 @@ Kept: awaiting An's review. The repository is public (the link opens signed out,
 Changed: the self-assessment's responsive row said "card grid" and "schedule beside the booking", which no longer describe the pages; it now names the real layout changes.
 Rejected: nothing.
 By hand: An's choices in the dialog.
+
+## PA#3 — React front end on a contract and a mock
+
+The PA#2 entries above are as handed in (tag `pa2-submitted`, commit `722a157`). PA#3 entries follow, one per step, newest last.
+
+### 2026-11-18 — PA#2 tagged; the rules file rewritten for React and the contract
+Commit: the commit that adds this entry (tag `pa2-submitted` on `722a157`, pushed before it).
+Tool: Claude Code (Claude Opus 5.5), reading the overview of the six milestones and the PA#3, PA#4 and PA#5 rubrics.
+Asked for: tag the PA#2 hand-in, then rewrite `CLAUDE.md` for PA#3 ("bắt đầu gắn tag và viết lại CLAUDE.md"). Earlier the same day An decided: Prettier as the formatter, forms by hand, the 3D story kept as it is, and questions sent to the product owners. The prompts go into the PA#3 `brief.md` in the next step.
+Kept: awaiting An's review. `CLAUDE.md` rewritten from 14 KB about static PA#2 pages to one page about this product: the stack (`client/`, `mock/`, `docs/api/`, `server/` from PA#4, the gates), the commands, how we work (contract first, a commit before each request, `git diff -- docs/api mock` after it, branches and reviewed pull requests, the log), the product facts, what every screen must do in PA#3, a NEVER list of 13, and *Done means*. Three NEVER lines point at PA#2 incidents in this log: booking data in the address (`099e406`), inline style for appearance (`8a74ea3`), and code from the authors' prototype not merged.
+Changed: the PA#2 rule "never carry main-flow data with localStorage" could not stay as it was. The PA#3 marker signs in and then opens every route directly, which reloads the app, so a token kept only in memory would send each route back to sign-in. The new rule stores the token alone, under one key, through the auth context, and still keeps booking data out of the URL and the browser.
+Rejected: keeping the PA#2 sections (one state per page, disabled actions, multi-page HTML files), which PA#3 replaces; a longer file (the PA#5 rubric wants a rules file read in two minutes).
+By hand: An's decisions.
