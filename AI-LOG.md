@@ -1375,3 +1375,12 @@ Kept: awaiting An's review. `CLAUDE.md` rewritten from 14 KB about static PA#2 p
 Changed: the PA#2 rule "never carry main-flow data with localStorage" could not stay as it was. The PA#3 marker signs in and then opens every route directly, which reloads the app, so a token kept only in memory would send each route back to sign-in. The new rule stores the token alone, under one key, through the auth context, and still keeps booking data out of the URL and the browser.
 Rejected: keeping the PA#2 sections (one state per page, disabled actions, multi-page HTML files), which PA#3 replaces; a longer file (the PA#5 rubric wants a rules file read in two minutes).
 By hand: An's decisions.
+
+### 2026-11-18 — the rules file cut to a two-minute read
+Commit: the commit that adds this entry, directly after `cb7f34f`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: An asked what "read in two minutes" means; the answer: the PA#5 rubric's top band for the rules file ("Short enough to read in two minutes, and a stranger could follow it: the stack, the commands, your conventions, and a never list about this product"), about 400–500 words, while `cb7f34f` had about 1,100. Then: cut it, in a commit of its own ("rút gọn, tách thành commit riêng").
+Kept: awaiting An's review. `CLAUDE.md` at 464 words: stack, commands, five working rules, and the 13 NEVER lines, three of them still tagged with the PA#2 incident and commit they come from. The sections *Product facts*, *Every screen* and *Done means*, and the details in NEVER 6 and 10 (computed values in state, the list of allowed dependencies), move to the PA#3 `brief.md` in the next step, where the PA#3 rubric (criterion 7) wants these constraints handed to the assistant.
+Changed: nothing beyond the request.
+Rejected: keeping the long version (the PA#5 top band asks for a two-minute read, and the file will grow with later incidents).
+By hand: An's decision.
