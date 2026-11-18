@@ -1384,3 +1384,12 @@ Kept: awaiting An's review. `CLAUDE.md` at 464 words: stack, commands, five work
 Changed: nothing beyond the request.
 Rejected: keeping the long version (the PA#5 top band asks for a two-minute read, and the file will grow with later incidents).
 By hand: An's decision.
+
+### 2026-11-18 — the PA#3 brief
+Commit: the commit that adds this entry with `brief.md`, after `ca218e1` (pushed).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: push the rules file, then write `brief.md` for PA#3 ("push rồi viết brief.md cho PA#3").
+Kept: awaiting An's review. `brief.md` replaces the PA#2 brief (kept in history, tag `pa2-submitted`). Part 1, the hand-over: the task and steps G1–G11; the facts (the story, status names, the slot held only after the deposit, the seven demo accounts, the test payment returning to `/thanh-toan/ket-qua`, money in integer đồng); ten constraints in the order the PA#3 rubric's criterion 7 lists them (follow `docs/api/` and stop when an endpoint is missing, do not edit `docs/api/` or `mock/`, relative `/api` only, no data in components, loading, error with Retry and empty, routing and sign-in, forms, the choices and no new dependency without asking, the PA#2 rules, *Fix these* as read in PA#3); and how done is checked. It takes in the sections cut from `CLAUDE.md` in `ca218e1`. Part 2: the prompts as given since 2026-11-17, in order.
+Changed: one prompt keeps only its project part; the omitted words, marked `[…]`, are about how An manages the team's planning.
+Rejected: nothing.
+By hand: An's request.
