@@ -1393,3 +1393,12 @@ Kept: awaiting An's review. `brief.md` replaces the PA#2 brief (kept in history,
 Changed: one prompt keeps only its project part; the omitted words, marked `[…]`, are about how An manages the team's planning.
 Rejected: nothing.
 By hand: An's request.
+
+### 2026-11-19 — the app moved into `client/`; Prettier added at the root
+Commit: `6027d8d` (the move, 67 files, 0 lines changed), and the commit that adds this entry (root `package.json`, Prettier).
+Tool: Claude Code (Claude Opus 5.5), `git mv`, npm.
+Asked for: add Prettier in a commit of its own ("thêm Prettier trong một commit riêng."). The root `package.json` was still the app's, while `CLAUDE.md` runs the gates from the root; asked whether to move the app first, An chose the move first.
+Kept: awaiting An's review. `6027d8d` moves `src/`, `public/`, the three HTML files, `package.json`, `package-lock.json`, `vite.config.js` and `eslint.config.js` into `client/` with nothing else changed, as the PA#3 rubric asks; `npm run lint` and `npm run build` in `client/` pass. Then a root `package.json` holds the gates: `format` and `format:check` (Prettier 3.10.1, exact version), `lint` (runs the client's ESLint), `test` (`node --test`), `build`. `.prettierrc.json` keeps the code's existing style (single quotes, lines up to 120). `.prettierignore` leaves out built files, the lock files, every Markdown file (the log and documents keep their wording and history), and the PA#2 records (`design-system/`, `docs/pa1/`, `screenshots/`, `checks/`).
+Changed: nothing beyond the request. Checks: `npm run format:check` fails on 35 files (the gate can go red; the next commit formats them); `npm run lint` passes; `npm test` passes with 0 tests, so the test gate cannot fail yet: tests come with the mock.
+Rejected: adding Prettier to the app's `package.json` before the move (the gates would have had to move again).
+By hand: An's choice of order.

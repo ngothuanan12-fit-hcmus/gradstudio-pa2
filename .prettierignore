@@ -1,0 +1,13 @@
+# Built or installed
+node_modules/
+dist/
+package-lock.json
+
+# Logs and documents: their wording and history must stay as written (AI-LOG entries are never rewritten)
+*.md
+
+# PA#2 hand-in records and the generated design reference
+design-system/
+docs/pa1/
+screenshots/
+checks/

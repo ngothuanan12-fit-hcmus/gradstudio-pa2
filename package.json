@@ -1,0 +1,16 @@
+{
+  "name": "gradstudio",
+  "private": true,
+  "type": "module",
+  "description": "GradStudio (CSC13008): React client in client/, mock API in mock/, contract in docs/api/. Root scripts are the gates.",
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "npm --prefix client run lint",
+    "test": "node --test",
+    "build": "npm --prefix client run build"
+  },
+  "devDependencies": {
+    "prettier": "3.10.1"
+  }
+}

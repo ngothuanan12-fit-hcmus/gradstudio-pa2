@@ -100,3 +100,9 @@ The part left out (`[…]`) is about how An manages the team's planning, not abo
 > rút gọn, tách thành commit riêng
 
 > push rồi viết brief.md cho PA#3
+
+### 2.4 The app into `client/`, then Prettier (2026-11-19)
+
+> thêm Prettier trong một commit riêng.
+
+Asked whether Prettier should come before or after the move into `client/`, An chose: move into `client/` first.
