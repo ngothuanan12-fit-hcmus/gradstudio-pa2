@@ -1438,3 +1438,12 @@ Kept: awaiting An's review. `HARNESS.md` with the seven sections of the PA#5 rub
 Changed: incident 3's fix commit holds the corrected version only; the file now says the first try was never committed, so nobody looks for it.
 Rejected: listing gates as "went red" without a run to show: lint, build and CI have no red run yet and say so.
 By hand: none.
+
+### 2026-11-19 — the contract's README
+Commit: the commit that adds this entry with `docs/api/README.md`, after `38ddd2c`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: the second half of "tạo HARNESS.md rồi viết docs/api/README.md".
+Kept: awaiting An's review. `docs/api/README.md`: base path `/api` and JSON; who is calling (`Authorization: Bearer`, the role from the token only, the seven demo accounts written `{{token:<name>}}`); one error shape (`error.code`, `error.message` in Vietnamese, `error.fields` with `400`, `error.details` with `409`); status codes `200`, `201`, `400`, `401`, `403`, `404` (also for another customer's item), `409`, `413`, `500`; data conventions (string ids, dates, times and moments with the studio's offset, money in integer đồng computed by the API, the brief's status names); the ten files in the order a fresh mock receives them, with who writes each; the endpoints of An's files (`01`–`03`, `08`–`10`, 22 rows); a `## Changes` section.
+Changed: the endpoints of `04`–`07` are not listed: by the agreed split Khánh writes those files and adds their rows. The error-shape example is fenced as `json`, not `http`, because the marker sends every `http` block of `docs/api/` to the mock, starting with this file. The name of a cancelled booking's status is left to the product owners' answer.
+Rejected: nothing.
+By hand: none.
