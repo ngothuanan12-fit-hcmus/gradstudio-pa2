@@ -1411,3 +1411,12 @@ Kept: awaiting An's review. `.gitattributes` makes every checkout use LF; the fo
 Changed: the commit messages warned that Git would turn LF into CRLF on checkout (`core.autocrlf=true` on this machine). Prettier expects LF, so on a Windows clone, such as Khánh's, the format check would have failed on every file while CI on Linux passed. `.gitattributes` (`* text=auto eol=lf`) closes that gap before anyone clones. Check that formatting changed nothing on screen: the build before and after, served side by side, screenshotted page by page at 360, 768 and 1280 px: all 9 pairs identical to the pixel; no sideways scroll, nothing past the right edge, no control under 44 px, one `<h1>`, no page error. The PA#2 check scripts had been lost with the old scratch folder, so the comparison was written again; check scripts will be kept in the repository from now on.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-19 — CI on GitHub Actions
+Commit: the commit that adds this entry with `.github/workflows/ci.yml`, after `1ce8ae8` (pushed).
+Tool: Claude Code (Claude Opus 5.5), `gh` to read the run.
+Asked for: push, then set up CI ("push rồi làm CI").
+Kept: awaiting An's review. One workflow, on every push and pull request, Node 22 (the version the PA#4 marker runs), installing the root tools and the client with `npm ci`, then the same commands as `CLAUDE.md`: `npm run format:check`, `npm run lint`, `npm test`, `npm run build`. The run's result is in the next entry.
+Changed: nothing yet.
+Rejected: nothing.
+By hand: none.

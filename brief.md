@@ -106,3 +106,5 @@ The part left out (`[…]`) is about how An manages the team's planning, not abo
 > thêm Prettier trong một commit riêng.
 
 Asked whether Prettier should come before or after the move into `client/`, An chose: move into `client/` first.
+
+> push rồi làm CI
