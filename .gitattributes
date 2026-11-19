@@ -1,0 +1,9 @@
+# Every checkout uses LF, as Prettier and CI expect, also on Windows with core.autocrlf=true
+* text=auto eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary
+*.pdf binary
