@@ -1420,3 +1420,12 @@ Kept: awaiting An's review. One workflow, on every push and pull request, Node 2
 Changed: nothing yet.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-19 — the first CI run
+Commit: the commit that adds this entry (log only).
+Tool: `gh run watch`.
+Asked for: the result promised in the CI entry.
+Kept: run 44462292455 on `5b4f37d`: success; install root tools, install client, format check, lint, tests (0 tests), build all passed. https://github.com/ngothuanan12-fit-hcmus/gradstudio-pa2/actions/runs/44462292455
+Changed: nothing. Not yet shown: a red run. The format check went red locally on 35 files before `1ce8ae8` (entry of `c74cbb4`), but CI did not exist then; the test gate cannot fail until the mock's tests exist.
+Rejected: making a commit only to turn CI red on purpose (a red run should come from real work).
+By hand: none.
