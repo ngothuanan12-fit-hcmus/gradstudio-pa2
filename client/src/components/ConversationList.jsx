@@ -21,7 +21,9 @@ export default function ConversationList({ items = [], activeId, onSelect }) {
           >
             <span className="conv-avatar" aria-hidden="true">
               {item.name.charAt(0)}
-              <span className={`conv-status st-${item.status}`}><Icon name={STATUS_ICON[item.status]} /></span>
+              <span className={`conv-status st-${item.status}`}>
+                <Icon name={STATUS_ICON[item.status]} />
+              </span>
             </span>
             {/* Like a messaging app: name and time on the first line, the last message and the unread count on the
                 second, the status (icon and name) on the third. Only the short time sits beside the name, so a long

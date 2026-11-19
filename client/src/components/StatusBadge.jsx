@@ -16,7 +16,9 @@ export default function StatusBadge({ tone = 'neutral', children }) {
   const label = LABELS[name];
   return (
     <span className={`status-badge status-badge-${name}`}>
-      <span className="status-badge-glyph"><Icon name={label.icon} /></span>
+      <span className="status-badge-glyph">
+        <Icon name={label.icon} />
+      </span>
       <span>{children || label.text}</span>
     </span>
   );

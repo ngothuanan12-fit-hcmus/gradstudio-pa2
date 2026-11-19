@@ -9,10 +9,14 @@ export default function ChatDock({ packageName }) {
   return (
     <div className="chat-dock" id="chat">
       <div className="chat-dock-bar">
-        <span className="chat-avatar" aria-hidden="true">GS</span>
+        <span className="chat-avatar" aria-hidden="true">
+          GS
+        </span>
         <div className="chat-dock-who">
           <p className="chat-dock-name">GradStudio</p>
-          <p role="status" id="home-chat-status" tabIndex={-1}>{packageName ? `Đang hỏi về: ${packageName}` : 'Chưa chọn gói nào'}</p>
+          <p role="status" id="home-chat-status" tabIndex={-1}>
+            {packageName ? `Đang hỏi về: ${packageName}` : 'Chưa chọn gói nào'}
+          </p>
         </div>
       </div>
       <ChatPanel

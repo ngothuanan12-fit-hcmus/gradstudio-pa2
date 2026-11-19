@@ -31,11 +31,15 @@ export default function StoryStage({ start }) {
         <div className="stage-sweep" aria-hidden="true" />
         <div className="stage-veil" ref={veilRef} />
         <div className="cap at-center cap-open">
-          <h1 className="story-title">Lưu lại ngày <em>ra trường</em></h1>
+          <h1 className="story-title">
+            Lưu lại ngày <em>ra trường</em>
+          </h1>
           <p>Cuộn xuống để bước vào lớp.</p>
         </div>
         <div className="cap at-top">
-          <h2 className="story-title">Trở lại lớp học <em>nơi câu chuyện bắt đầu</em></h2>
+          <h2 className="story-title">
+            Trở lại lớp học <em>nơi câu chuyện bắt đầu</em>
+          </h2>
         </div>
         <div className="cap at-bottom">
           <h2 className="story-title">Chọn buổi chụp của bạn</h2>
@@ -43,21 +47,32 @@ export default function StoryStage({ start }) {
         </div>
         {packages.map((item, i) => (
           <div className={`cap ${PLACES[i]}`} key={item.id}>
-            <h2 className="story-title">{item.name} <em>{item.line}</em></h2>
+            <h2 className="story-title">
+              {item.name} <em>{item.line}</em>
+            </h2>
             <p>{item.text}</p>
-            <p className="cap-price">Từ {formatVND(item.price)}{item.unit}</p>
+            <p className="cap-price">
+              Từ {formatVND(item.price)}
+              {item.unit}
+            </p>
           </div>
         ))}
         <div className="cap at-center">
-          <h2 className="story-title">Chưa chọn được gói? <em>chat với studio nhé</em></h2>
+          <h2 className="story-title">
+            Chưa chọn được gói? <em>chat với studio nhé</em>
+          </h2>
           <p>Giá từng gói và khung chat ở ngay bên dưới.</p>
           <p className="cap-note">Giá tham khảo. Giá chốt được ghi trên booking sau khi tư vấn.</p>
         </div>
         <div className="story-actions stage-links">
           <Button href="#goi-chup">Xem gói chụp</Button>
-          <Button variant="secondary" href="#chat">Chat với studio</Button>
+          <Button variant="secondary" href="#chat">
+            Chat với studio
+          </Button>
         </div>
-        <div className="stage-bar"><i ref={barRef} /></div>
+        <div className="stage-bar">
+          <i ref={barRef} />
+        </div>
       </div>
     </section>
   );

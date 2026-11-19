@@ -34,37 +34,59 @@ export default function BookingForm({ booking, services = [], conflict, start, o
 
       <div id="booking-card-details" className="booking-card-details" hidden={!open}>
         <fieldset className="bf-group">
-          <legend>Khách và gói <span className="bf-from">· lấy từ hội thoại</span></legend>
+          <legend>
+            Khách và gói <span className="bf-from">· lấy từ hội thoại</span>
+          </legend>
           <div className="bf-grid">
             <p className="field">
-              <label className="field-label" htmlFor="bf-customer">Khách hàng</label>
-              <input className="input" id="bf-customer" type="text" defaultValue={booking.customer} autoComplete="off" />
+              <label className="field-label" htmlFor="bf-customer">
+                Khách hàng
+              </label>
+              <input
+                className="input"
+                id="bf-customer"
+                type="text"
+                defaultValue={booking.customer}
+                autoComplete="off"
+              />
             </p>
             <p className="field">
-              <label className="field-label" htmlFor="bf-package">Gói chụp</label>
+              <label className="field-label" htmlFor="bf-package">
+                Gói chụp
+              </label>
               <select className="input" id="bf-package" defaultValue={booking.pkg}>
                 {services.map((service) => (
-                  <option key={service.id} value={service.name}>{service.name}</option>
+                  <option key={service.id} value={service.name}>
+                    {service.name}
+                  </option>
                 ))}
               </select>
-              <span className="field-hint">{booking.pkgDetail} · {formatVND(booking.price)}</span>
+              <span className="field-hint">
+                {booking.pkgDetail} · {formatVND(booking.price)}
+              </span>
             </p>
           </div>
         </fieldset>
 
         <fieldset className="bf-group">
-          <legend>Thời gian <span className="bf-from">· lấy từ hội thoại</span></legend>
+          <legend>
+            Thời gian <span className="bf-from">· lấy từ hội thoại</span>
+          </legend>
           <div className="bf-grid">
             <p className="field">
-              <label className="field-label" htmlFor="bf-date">Ngày chụp</label>
+              <label className="field-label" htmlFor="bf-date">
+                Ngày chụp
+              </label>
               <input className="input" id="bf-date" type="text" defaultValue={booking.date} />
             </p>
             <p className="field">
-              <label className="field-label" htmlFor="bf-start">Giờ chụp</label>
+              <label className="field-label" htmlFor="bf-start">
+                Giờ chụp
+              </label>
               <select
                 className="input"
                 id="bf-start"
-               
+
                 value={start}
                 aria-invalid={conflict ? 'true' : 'false'}
                 onChange={(event) => onStartChange(event.target.value)}
@@ -72,7 +94,9 @@ export default function BookingForm({ booking, services = [], conflict, start, o
                 <option value={booking.requested}>{booking.requested}</option>
                 <option value={booking.agreed}>{booking.agreed}</option>
               </select>
-              <span className="field-hint">Makeup {makeup} · Chụp {shoot}</span>
+              <span className="field-hint">
+                Makeup {makeup} · Chụp {shoot}
+              </span>
             </p>
           </div>
         </fieldset>
@@ -81,7 +105,9 @@ export default function BookingForm({ booking, services = [], conflict, start, o
           <legend>Người và phòng</legend>
           <div className="bf-grid">
             <p className="field">
-              <label className="field-label" htmlFor="bf-makeup">Thợ makeup</label>
+              <label className="field-label" htmlFor="bf-makeup">
+                Thợ makeup
+              </label>
               <select className="input" id="bf-makeup" defaultValue={booking.makeup.who}>
                 <option value={booking.makeup.who}>{booking.makeup.who}</option>
               </select>
@@ -90,18 +116,30 @@ export default function BookingForm({ booking, services = [], conflict, start, o
               </span>
             </p>
             <p className="field">
-              <label className="field-label" htmlFor="bf-photographer">Thợ chụp</label>
+              <label className="field-label" htmlFor="bf-photographer">
+                Thợ chụp
+              </label>
               <select className="input" id="bf-photographer" defaultValue={booking.shoot.who}>
                 <option value={booking.shoot.who}>{booking.shoot.who}</option>
               </select>
-              {conflict ? null : <span className="bf-avail is-free"><Icon name="check" /> Trống {shoot}</span>}
+              {conflict ? null : (
+                <span className="bf-avail is-free">
+                  <Icon name="check" /> Trống {shoot}
+                </span>
+              )}
             </p>
             <p className="field">
-              <label className="field-label" htmlFor="bf-room">Phòng chụp</label>
+              <label className="field-label" htmlFor="bf-room">
+                Phòng chụp
+              </label>
               <select className="input" id="bf-room" defaultValue={booking.shoot.room}>
                 <option value={booking.shoot.room}>{booking.shoot.room}</option>
               </select>
-              {conflict ? null : <span className="bf-avail is-free"><Icon name="check" /> Trống {shoot}</span>}
+              {conflict ? null : (
+                <span className="bf-avail is-free">
+                  <Icon name="check" /> Trống {shoot}
+                </span>
+              )}
             </p>
           </div>
         </fieldset>

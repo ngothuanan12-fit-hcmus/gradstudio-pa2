@@ -27,14 +27,18 @@ export default function Home() {
       <Story />
 
       <section className="home-section" id="goi-chup" aria-labelledby="goi-chup-title">
-        <h2 className="section-heading" id="goi-chup-title">Chọn buổi chụp của bạn</h2>
+        <h2 className="section-heading" id="goi-chup-title">
+          Chọn buổi chụp của bạn
+        </h2>
         <p>Cần makeup, thuê áo, hay muốn chụp kiểu không có trong ba gói này, bạn hỏi studio trong chat.</p>
         <PackageCarousel items={packages} askingId={askingId} onAsk={askAbout} />
         <p className="home-note">Giá tham khảo. Giá chốt được ghi trên booking sau khi tư vấn.</p>
       </section>
 
       <section className="home-section" aria-labelledby="quy-trinh-title">
-        <h2 className="section-heading" id="quy-trinh-title">Từ một tin nhắn đến bộ ảnh hoàn chỉnh</h2>
+        <h2 className="section-heading" id="quy-trinh-title">
+          Từ một tin nhắn đến bộ ảnh hoàn chỉnh
+        </h2>
         <ol className="process">
           {processSteps.map((step) => (
             <li key={step.id}>
@@ -47,9 +51,16 @@ export default function Home() {
 
       <section className="home-section chat-section" aria-labelledby="hoi-studio-title">
         <div className="chat-panel">
-          <h2 className="section-heading" id="hoi-studio-title">Nhắn cho studio</h2>
-          <p>Kể studio bạn muốn chụp gì, ngày nào, đi mấy người. Studio xem lịch thợ chụp, makeup và phòng rồi trả lời trong chat.</p>
-          <h3 className="chat-panel-title" id="hoi-goi-title">Bạn muốn hỏi gói nào?</h3>
+          <h2 className="section-heading" id="hoi-studio-title">
+            Nhắn cho studio
+          </h2>
+          <p>
+            Kể studio bạn muốn chụp gì, ngày nào, đi mấy người. Studio xem lịch thợ chụp, makeup và phòng rồi trả lời
+            trong chat.
+          </p>
+          <h3 className="chat-panel-title" id="hoi-goi-title">
+            Bạn muốn hỏi gói nào?
+          </h3>
           <div className="quick-packages" role="group" aria-labelledby="hoi-goi-title">
             {packages.map((item) => (
               <Button
@@ -59,7 +70,10 @@ export default function Home() {
                 onClick={() => askAbout(item.id)}
               >
                 <span className="quick-name">{item.name}</span>
-                <span className="quick-price">Từ {formatVND(item.price)}{item.unit}</span>
+                <span className="quick-price">
+                  Từ {formatVND(item.price)}
+                  {item.unit}
+                </span>
               </Button>
             ))}
           </div>
@@ -76,7 +90,9 @@ export default function Home() {
 
       <div className="home-section next-screen">
         <p>Màn hình tiếp theo của bản mẫu:</p>
-        <Button variant="secondary" href="quan-ly.html">Nhân viên studio: mở cuộc trò chuyện này</Button>
+        <Button variant="secondary" href="quan-ly.html">
+          Nhân viên studio: mở cuộc trò chuyện này
+        </Button>
       </div>
     </CustomerLayout>
   );

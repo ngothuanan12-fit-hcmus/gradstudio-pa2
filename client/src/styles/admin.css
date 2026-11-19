@@ -1,23 +1,59 @@
 /* Management page. Shared primitives live in ui.css. */
 
-.toolbar { display: grid; gap: var(--space-12); }
+.toolbar {
+  display: grid;
+  gap: var(--space-12);
+}
 /* Status filter as pressed buttons with counts; they wrap in the narrow column. The pressed one is filled with the
    body colour, not the primary style, so "Tạo booking" stays the page's one primary button. */
-.conv .status-badge { white-space: nowrap; }
-.filter-chips { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.conv .status-badge {
+  white-space: nowrap;
+}
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
 /* From 1280 px, where the list is a column well inside the screen, the filters stay on one row and slide sideways;
    below that the list spans the screen, so a sliding row would reach past its edge (the rubric's overflow line):
    there they wrap. */
 @media (min-width: 1280px) {
-  .filter-chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; padding-bottom: var(--space-4); }
-  .filter-chips .btn { flex: none; }
+  .filter-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    padding-bottom: var(--space-4);
+  }
+  .filter-chips .btn {
+    flex: none;
+  }
 }
-.filter-chips .btn { border-color: transparent; background: transparent; }
-.filter-chips .btn[aria-pressed='true'] { color: var(--ink); background: var(--accent-soft); border-color: transparent; }
-.filter-chips .btn { min-height: var(--control-height-sm); padding: var(--space-4) var(--space-8); border-radius: var(--radius-pill); font-weight: 500; }
+.filter-chips .btn {
+  border-color: transparent;
+  background: transparent;
+}
+.filter-chips .btn[aria-pressed='true'] {
+  color: var(--ink);
+  background: var(--accent-soft);
+  border-color: transparent;
+}
+.filter-chips .btn {
+  min-height: var(--control-height-sm);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+}
 
-.conv-list { display: grid; align-content: start; margin: 0; padding: 0; list-style: none; }
-.conv-list li + li { border-top: 1px solid var(--line); }
+.conv-list {
+  display: grid;
+  align-content: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.conv-list li + li {
+  border-top: 1px solid var(--line);
+}
 .conv {
   display: grid;
   grid-template-columns: 40px minmax(0, 1fr);
@@ -32,7 +68,10 @@
   font: inherit;
   cursor: pointer;
 }
-.conv[aria-current='true'] { background: var(--surface-raised); box-shadow: inset 3px 0 0 var(--accent); }
+.conv[aria-current='true'] {
+  background: var(--surface-raised);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
 .conv-avatar {
   position: relative;
   grid-row: 1 / span 2;
@@ -45,23 +84,85 @@
   color: var(--accent);
   font-weight: 600;
 }
-.conv-body { display: grid; gap: var(--space-4); min-width: 0; }
-.conv-line { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-8); min-width: 0; }
-.conv-name { flex: 1 1 auto; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
-.conv-last { flex: 1 1 auto; min-width: 0; color: var(--ink-muted); overflow-wrap: anywhere; }
-.conv-time { flex: none; }
-.conv-unread { flex: none; }
-.conv-state { display: inline-flex; align-items: center; gap: var(--space-4); font-weight: 600; }
-.conv-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); margin-left: auto; }
+.conv-body {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.conv-line {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-8);
+  min-width: 0;
+}
+.conv-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.conv-last {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+}
+.conv-time {
+  flex: none;
+}
+.conv-unread {
+  flex: none;
+}
+.conv-state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-weight: 600;
+}
+.conv-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-8);
+  margin-left: auto;
+}
 /* Status dot: one colour per status, ringed so it stands apart from the avatar; the name is always beside the time. */
-.conv-status { display: inline-grid; place-items: center; line-height: 1; }
-.conv-avatar .conv-status { position: absolute; right: -4px; bottom: -4px; width: 20px; height: 20px; border-radius: 50%; background: var(--surface); font-size: 16px; box-shadow: 0 0 0 1px var(--line); }
-.filter-chips .conv-status { margin-right: var(--space-4); }
-.st-new { color: var(--danger); }
-.st-advising { color: var(--accent); }
-.st-agreed { color: var(--free); }
-.st-done { color: var(--ink-muted); }
-.conv-time { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.conv-status {
+  display: inline-grid;
+  place-items: center;
+  line-height: 1;
+}
+.conv-avatar .conv-status {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 16px;
+  box-shadow: 0 0 0 1px var(--line);
+}
+.filter-chips .conv-status {
+  margin-right: var(--space-4);
+}
+.st-new {
+  color: var(--danger);
+}
+.st-advising {
+  color: var(--accent);
+}
+.st-agreed {
+  color: var(--free);
+}
+.st-done {
+  color: var(--ink-muted);
+}
+.conv-time {
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
 .conv-unread {
   display: inline-grid;
   place-items: center;
@@ -76,16 +177,48 @@
 }
 
 /* ConflictAlert */
-.alert { display: grid; gap: var(--space-8); padding: var(--space-12); border-radius: var(--radius-sm); }
-.alert-danger { background: var(--danger-soft); border: 1px solid var(--danger); }
-.alert-free { background: var(--free-soft); border: 2px dashed var(--free); }
-.alert-head { display: flex; gap: var(--space-8); align-items: flex-start; }
-.alert-icon { flex: none; color: var(--danger); font-weight: 700; }
-.alert-free .alert-icon { color: var(--free); }
-.alert h3 { color: var(--danger); font-size: 18px; line-height: 28px; }
-.alert-free h3 { color: var(--free); }
-.slots-label { font-weight: 500; }
-.slots { display: grid; gap: var(--space-8); }
+.alert {
+  display: grid;
+  gap: var(--space-8);
+  padding: var(--space-12);
+  border-radius: var(--radius-sm);
+}
+.alert-danger {
+  background: var(--danger-soft);
+  border: 1px solid var(--danger);
+}
+.alert-free {
+  background: var(--free-soft);
+  border: 2px dashed var(--free);
+}
+.alert-head {
+  display: flex;
+  gap: var(--space-8);
+  align-items: flex-start;
+}
+.alert-icon {
+  flex: none;
+  color: var(--danger);
+  font-weight: 700;
+}
+.alert-free .alert-icon {
+  color: var(--free);
+}
+.alert h3 {
+  color: var(--danger);
+  font-size: 18px;
+  line-height: 28px;
+}
+.alert-free h3 {
+  color: var(--free);
+}
+.slots-label {
+  font-weight: 500;
+}
+.slots {
+  display: grid;
+  gap: var(--space-8);
+}
 .slot {
   display: grid;
   gap: var(--space-4);
@@ -99,21 +232,50 @@
   text-align: left;
   cursor: pointer;
 }
-.slot[aria-pressed='true'] { border-style: solid; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--free); }
-.slot-time { color: var(--free); font-weight: 600; }
-.slot-note { color: var(--ink-muted); }
-.slot-picked { color: var(--free); }
+.slot[aria-pressed='true'] {
+  border-style: solid;
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 4px var(--free);
+}
+.slot-time {
+  color: var(--free);
+  font-weight: 600;
+}
+.slot-note {
+  color: var(--ink-muted);
+}
+.slot-picked {
+  color: var(--free);
+}
 
 /* BookingForm */
-.booking-form { align-content: start; }
-.form-lede { color: var(--ink-muted); }
-.form-grid { display: grid; gap: var(--space-12); }
-.form-actions { display: flex; flex-wrap: wrap; gap: var(--space-8); }
-.form-actions .btn { flex: 1 1 auto; }
-.form-note { color: var(--ink-muted); }
+.booking-form {
+  align-content: start;
+}
+.form-lede {
+  color: var(--ink-muted);
+}
+.form-grid {
+  display: grid;
+  gap: var(--space-12);
+}
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+.form-actions .btn {
+  flex: 1 1 auto;
+}
+.form-note {
+  color: var(--ink-muted);
+}
 
 /* ResourceSchedule: a list, so no block ever clips its label. */
-.sched { align-content: start; }
+.sched {
+  align-content: start;
+}
 .sched-legend {
   display: flex;
   flex-wrap: wrap;
@@ -123,13 +285,46 @@
   list-style: none;
   color: var(--ink-muted);
 }
-.sched-legend li { display: inline-flex; align-items: center; gap: var(--space-4); }
-.sched-swatch { display: inline-block; width: 16px; height: 12px; border-radius: 2px; }
-.sched-rows { display: grid; gap: var(--space-16); }
-.sched-row { display: grid; gap: var(--space-8); padding-top: var(--space-12); border-top: 1px solid var(--line); }
-.sched-row h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-4) var(--space-8); font-size: 18px; line-height: 28px; }
-.sched-row h3 span { color: var(--ink-muted); font-weight: 400; }
-.sched-blocks { display: grid; gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
+.sched-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.sched-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 12px;
+  border-radius: 2px;
+}
+.sched-rows {
+  display: grid;
+  gap: var(--space-16);
+}
+.sched-row {
+  display: grid;
+  gap: var(--space-8);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--line);
+}
+.sched-row h3 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-4) var(--space-8);
+  font-size: 18px;
+  line-height: 28px;
+}
+.sched-row h3 span {
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+.sched-blocks {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 .sched-block {
   display: grid;
   gap: var(--space-4);
@@ -138,152 +333,447 @@
   border-radius: var(--radius-sm);
   overflow-wrap: anywhere;
 }
-.sched-kind, .sched-time { font-weight: 600; }
-.sched-time { font-variant-numeric: tabular-nums; }
-.kind-busy { color: var(--ink); background: var(--busy); border-color: var(--busy); }
-.kind-conflict { color: var(--danger); background: var(--danger-soft); border: 2px solid var(--danger); }
-.kind-free { color: var(--free); background: var(--free-soft); border: 2px dashed var(--free); }
-.kind-proposed { color: var(--ink); background: var(--accent-soft); border: 2px solid var(--accent); }
+.sched-kind,
+.sched-time {
+  font-weight: 600;
+}
+.sched-time {
+  font-variant-numeric: tabular-nums;
+}
+.kind-busy {
+  color: var(--ink);
+  background: var(--busy);
+  border-color: var(--busy);
+}
+.kind-conflict {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border: 2px solid var(--danger);
+}
+.kind-free {
+  color: var(--free);
+  background: var(--free-soft);
+  border: 2px dashed var(--free);
+}
+.kind-proposed {
+  color: var(--ink);
+  background: var(--accent-soft);
+  border: 2px solid var(--accent);
+}
 /* Proposed blocks: words in the body colour (13.9:1), the accent kept for the border and the icon. */
-.kind-proposed .icon { color: var(--accent); }
-.sched-swatch.kind-busy { border: 1px solid var(--line-strong); }
-.sched-swatch.kind-conflict { border: 2px solid var(--danger); }
-.sched-swatch.kind-free { border: 2px dashed var(--free); }
-.sched-swatch.kind-proposed { border: 2px solid var(--accent); }
+.kind-proposed .icon {
+  color: var(--accent);
+}
+.sched-swatch.kind-busy {
+  border: 1px solid var(--line-strong);
+}
+.sched-swatch.kind-conflict {
+  border: 2px solid var(--danger);
+}
+.sched-swatch.kind-free {
+  border: 2px dashed var(--free);
+}
+.sched-swatch.kind-proposed {
+  border: 2px solid var(--accent);
+}
 
 /* Management page layout: one column below 1280 (at 768 a side column would be too narrow for the list); from
    1280 the conversations beside the chat and the form, with the resource calendar across the full width below. Sections leave room above them when a header link opens them. */
-.admin-grid > section, .admin-grid > form, .booking-card { scroll-margin-top: var(--space-16); }
-.admin-grid { display: grid; gap: var(--space-24); min-width: 0; }
-.admin-convs { align-content: start; }
-.admin-chat { display: grid; align-content: start; min-width: 0; }
+.admin-grid > section,
+.admin-grid > form,
+.booking-card {
+  scroll-margin-top: var(--space-16);
+}
+.admin-grid {
+  display: grid;
+  gap: var(--space-24);
+  min-width: 0;
+}
+.admin-convs {
+  align-content: start;
+}
+.admin-chat {
+  display: grid;
+  align-content: start;
+  min-width: 0;
+}
 /* Chat window, as on the landing page: a header with the customer and the status, rounded bubbles, a round
    message box. The panel's own heading stays for screen readers; the header names the conversation on screen. */
 .chat-window-bar {
-  display: flex; align-items: center; gap: var(--space-12); padding: var(--space-12) var(--space-16);
-  background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-md) var(--radius-md) 0 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
-.chat-window-who { min-width: 0; }
-.chat-window-name { font-weight: 600; overflow-wrap: anywhere; }
-.chat-window-status { color: var(--ink-muted); }
-.admin-chat .chat { gap: var(--space-16); border-top: 0; border-radius: 0 0 var(--radius-md) var(--radius-md); }
-.admin-chat .chat > h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.admin-chat .chat-log { gap: var(--space-8); padding-block: var(--space-8); }
-.admin-chat .chat-msg { max-width: 85%; padding: var(--space-8) var(--space-16); border-radius: 18px 18px 18px var(--space-4); }
-.admin-chat .chat-msg-me { border-radius: 18px 18px var(--space-4) 18px; }
-.admin-chat .chat-time { color: var(--ink-muted); }
-.admin-chat .chat-msg-me .chat-time { text-align: right; }
-.admin-chat .chat-form { padding-top: var(--space-16); border-top: 1px solid var(--line); }
-.admin-chat .chat-row { flex-wrap: nowrap; }
-.admin-chat .chat-input { width: 0; border-radius: var(--radius-pill); padding-inline: var(--space-16); }
-.admin-chat .chat-row .btn { border-radius: var(--radius-pill); }
+.chat-window-who {
+  min-width: 0;
+}
+.chat-window-name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.chat-window-status {
+  color: var(--ink-muted);
+}
+.admin-chat .chat {
+  gap: var(--space-16);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+.admin-chat .chat > h2 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.admin-chat .chat-log {
+  gap: var(--space-8);
+  padding-block: var(--space-8);
+}
+.admin-chat .chat-msg {
+  max-width: 85%;
+  padding: var(--space-8) var(--space-16);
+  border-radius: 18px 18px 18px var(--space-4);
+}
+.admin-chat .chat-msg-me {
+  border-radius: 18px 18px var(--space-4) 18px;
+}
+.admin-chat .chat-time {
+  color: var(--ink-muted);
+}
+.admin-chat .chat-msg-me .chat-time {
+  text-align: right;
+}
+.admin-chat .chat-form {
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--line);
+}
+.admin-chat .chat-row {
+  flex-wrap: nowrap;
+}
+.admin-chat .chat-input {
+  width: 0;
+  border-radius: var(--radius-pill);
+  padding-inline: var(--space-16);
+}
+.admin-chat .chat-row .btn {
+  border-radius: var(--radius-pill);
+}
 
 @media (min-width: 768px) {
-
-
-  .form-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .sched-blocks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .sched-blocks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1280px) {
   .admin-grid {
     grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
     grid-template-areas:
-      "convs chat"
-      "sched sched";
+      'convs chat'
+      'sched sched';
     align-items: start;
   }
-  .admin-convs { grid-area: convs; }
-  .admin-chat { grid-area: chat; }
-  .sched { grid-area: sched; }
+  .admin-convs {
+    grid-area: convs;
+  }
+  .admin-chat {
+    grid-area: chat;
+  }
+  .sched {
+    grid-area: sched;
+  }
 }
 
 /* Header of the management page: who is working here, beside the brand. */
-.page-role { margin-right: auto; color: var(--ink-muted); }
+.page-role {
+  margin-right: auto;
+  color: var(--ink-muted);
+}
 
 /* Booking card inside the chat, after Linh's last message: set apart from the bubbles by its border and background.
    Groups follow the order the manager thinks in; folded, the summary, the clash note and the submit stay. */
-.booking-card { display: grid; gap: var(--space-12); padding: var(--space-16); background: var(--surface); border: 2px solid var(--accent); border-radius: var(--radius-md); }
-.booking-card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-8); }
-.booking-card-head h3 { font-size: 20px; line-height: 28px; }
-.booking-card-head .btn { min-height: var(--control-height-sm); }
-.booking-card-summary { font-weight: 600; font-variant-numeric: tabular-nums; }
-.booking-card-note { padding: var(--space-8) var(--space-12); color: var(--ink); background: var(--accent-soft); border-radius: var(--radius-sm); }
-.booking-card-note.is-conflict { color: var(--danger); background: var(--danger-soft); border: 1px solid var(--danger); }
-.booking-card-details { display: grid; gap: var(--space-16); }
-.booking-card-details[hidden] { display: none; }
-.bf-group { display: grid; gap: var(--space-8); min-width: 0; margin: 0; padding: var(--space-12) 0 0; border: 0; border-top: 1px solid var(--line); }
-.bf-group legend { float: left; width: 100%; padding: 0; margin-bottom: var(--space-8); font-weight: 600; }
-.bf-from { color: var(--ink-muted); font-weight: 400; }
-.bf-grid { display: grid; gap: var(--space-12); align-items: start; clear: both; }
-.bf-grid .field { align-content: start; }
-.bf-avail.is-free { color: var(--free); font-weight: 600; }
-.bf-avail.is-busy { color: var(--danger); font-weight: 600; }
-.booking-card > .btn-primary { justify-self: stretch; }
+.booking-card {
+  display: grid;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-md);
+}
+.booking-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+.booking-card-head h3 {
+  font-size: 20px;
+  line-height: 28px;
+}
+.booking-card-head .btn {
+  min-height: var(--control-height-sm);
+}
+.booking-card-summary {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.booking-card-note {
+  padding: var(--space-8) var(--space-12);
+  color: var(--ink);
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+}
+.booking-card-note.is-conflict {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border: 1px solid var(--danger);
+}
+.booking-card-details {
+  display: grid;
+  gap: var(--space-16);
+}
+.booking-card-details[hidden] {
+  display: none;
+}
+.bf-group {
+  display: grid;
+  gap: var(--space-8);
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-12) 0 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.bf-group legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: var(--space-8);
+  font-weight: 600;
+}
+.bf-from {
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+.bf-grid {
+  display: grid;
+  gap: var(--space-12);
+  align-items: start;
+  clear: both;
+}
+.bf-grid .field {
+  align-content: start;
+}
+.bf-avail.is-free {
+  color: var(--free);
+  font-weight: 600;
+}
+.bf-avail.is-busy {
+  color: var(--danger);
+  font-weight: 600;
+}
+.booking-card > .btn-primary {
+  justify-self: stretch;
+}
 @media (min-width: 768px) {
-  .bf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .booking-card > .btn-primary { justify-self: start; }
+  .bf-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .booking-card > .btn-primary {
+    justify-self: start;
+  }
 }
 
 /* Suggested times, at the top of the resource calendar. */
-.sched-suggest { display: grid; gap: var(--space-8); padding: var(--space-12); background: var(--free-soft); border: 2px dashed var(--free); border-radius: var(--radius-sm); }
-.sched-suggest h3 { color: var(--free); font-size: 18px; line-height: 28px; }
-.sched-suggest.is-conflict { background: var(--danger-soft); border: 2px solid var(--danger); }
-.sched-suggest.is-conflict h3 { color: var(--danger); }
-.sched-suggest .slot { background: var(--surface); }
+.sched-suggest {
+  display: grid;
+  gap: var(--space-8);
+  padding: var(--space-12);
+  background: var(--free-soft);
+  border: 2px dashed var(--free);
+  border-radius: var(--radius-sm);
+}
+.sched-suggest h3 {
+  color: var(--free);
+  font-size: 18px;
+  line-height: 28px;
+}
+.sched-suggest.is-conflict {
+  background: var(--danger-soft);
+  border: 2px solid var(--danger);
+}
+.sched-suggest.is-conflict h3 {
+  color: var(--danger);
+}
+.sched-suggest .slot {
+  background: var(--surface);
+}
 
 /* Day timeline, from 768 px: one row per person or room, 08:00 to 18:00, a gridline each hour, hour labels every
    two hours so they never run into each other. Overlapping blocks take a second lane. */
-.tl { display: none; }
+.tl {
+  display: none;
+}
 @media (min-width: 768px) {
-  .tl { display: grid; gap: var(--space-8); }
-  .tl-axis, .tl-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); column-gap: var(--space-12); }
-  .tl-axis { position: relative; height: 24px; margin-left: calc(120px + var(--space-12)); display: block; }
-  .tl-axis span { position: absolute; top: 0; left: calc(var(--at) * 1%); transform: translateX(-50%); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
-  .tl-axis span:first-child { transform: none; }
-  .tl-axis span:last-child { transform: translateX(-100%); }
-  .tl-name { align-self: center; font-weight: 600; }
+  .tl {
+    display: grid;
+    gap: var(--space-8);
+  }
+  .tl-axis,
+  .tl-row {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    column-gap: var(--space-12);
+  }
+  .tl-axis {
+    position: relative;
+    height: 24px;
+    margin-left: calc(120px + var(--space-12));
+    display: block;
+  }
+  .tl-axis span {
+    position: absolute;
+    top: 0;
+    left: calc(var(--at) * 1%);
+    transform: translateX(-50%);
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .tl-axis span:first-child {
+    transform: none;
+  }
+  .tl-axis span:last-child {
+    transform: translateX(-100%);
+  }
+  .tl-name {
+    align-self: center;
+    font-weight: 600;
+  }
   .tl-track {
-    position: relative; height: calc(var(--lanes) * 64px); transition: height 400ms var(--ease-out);
+    position: relative;
+    height: calc(var(--lanes) * 64px);
+    transition: height 400ms var(--ease-out);
     background: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 10%), var(--surface-raised);
-    border: 1px solid var(--line); border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
   }
   /* A one-hour block is too narrow for its word: it keeps its icon (the key above explains it) and the list below
      gives the full entry, so nothing is cut off or broken over two lines. */
-  .tl-block.is-short { justify-content: center; padding: 0; }
-  .tl-block.is-short .tl-word { display: none; }
+  .tl-block.is-short {
+    justify-content: center;
+    padding: 0;
+  }
+  .tl-block.is-short .tl-word {
+    display: none;
+  }
   /* When the start time changes, Linh's blocks slide to their new place; nothing moves with reduced motion. */
-  .tl-block { transition: left 400ms var(--ease-out), width 400ms var(--ease-out), top 400ms var(--ease-out); }
   .tl-block {
-    position: absolute; top: calc(var(--lane) * 64px + var(--space-8)); left: calc(var(--at) * 1%); width: calc(var(--len) * 1%); height: 48px; display: flex; align-items: center; padding: 0 var(--space-8);
-    border-radius: var(--radius-sm); font-weight: 600; line-height: 20px; overflow-wrap: anywhere;
+    transition:
+      left 400ms var(--ease-out),
+      width 400ms var(--ease-out),
+      top 400ms var(--ease-out);
+  }
+  .tl-block {
+    position: absolute;
+    top: calc(var(--lane) * 64px + var(--space-8));
+    left: calc(var(--at) * 1%);
+    width: calc(var(--len) * 1%);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-8);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    line-height: 20px;
+    overflow-wrap: anywhere;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .tl-block { transition: none; }
+  .tl-block {
+    transition: none;
+  }
 }
 
 /* Message groups: bubbles in a row from one side share their inner corners; the price is a small card. */
-.admin-chat .chat-msg:not(.chat-msg-me):not(.is-first) { border-top-left-radius: var(--space-4); }
-.admin-chat .chat-msg:not(.chat-msg-me):not(.is-last) { border-bottom-left-radius: var(--space-4); }
-.admin-chat .chat-msg-me:not(.is-first) { border-top-right-radius: var(--space-4); }
-.admin-chat .chat-msg-me:not(.is-last) { border-bottom-right-radius: var(--space-4); }
-.admin-chat .chat-log .chat-msg:not(.is-first) { margin-top: calc(var(--space-4) * -1); }
-.chat-quote-title { font-weight: 600; }
-.chat-quote { display: grid; gap: var(--space-4); margin: var(--space-4) 0 0; }
-.chat-quote div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-4) var(--space-16); }
-.chat-quote dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.admin-chat .chat-msg:not(.chat-msg-me):not(.is-first) {
+  border-top-left-radius: var(--space-4);
+}
+.admin-chat .chat-msg:not(.chat-msg-me):not(.is-last) {
+  border-bottom-left-radius: var(--space-4);
+}
+.admin-chat .chat-msg-me:not(.is-first) {
+  border-top-right-radius: var(--space-4);
+}
+.admin-chat .chat-msg-me:not(.is-last) {
+  border-bottom-right-radius: var(--space-4);
+}
+.admin-chat .chat-log .chat-msg:not(.is-first) {
+  margin-top: calc(var(--space-4) * -1);
+}
+.chat-quote-title {
+  font-weight: 600;
+}
+.chat-quote {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-4) 0 0;
+}
+.chat-quote div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-16);
+}
+.chat-quote dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
 /* The main button in two lines: the action, then who continues. */
-.booking-card > .btn-primary { flex-direction: column; gap: 0; padding-block: var(--space-8); }
-.btn-sub { font-weight: 400; }
+.booking-card > .btn-primary {
+  flex-direction: column;
+  gap: 0;
+  padding-block: var(--space-8);
+}
+.btn-sub {
+  font-weight: 400;
+}
 
 /* Page top and width: the management page uses more of a wide screen. */
-.admin-main { max-width: 1440px; gap: var(--space-16); padding-block: var(--space-24); }
-.admin-top { display: grid; gap: var(--space-8); }
+.admin-main {
+  max-width: 1440px;
+  gap: var(--space-16);
+  padding-block: var(--space-24);
+}
+.admin-top {
+  display: grid;
+  gap: var(--space-8);
+}
 @media (min-width: 1280px) {
-  .admin-top { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--space-24); }
+  .admin-top {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-24);
+  }
 }
 /* The schedule list, one line per block where there is room: kind, label, times. */
-.sched-block { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-4) var(--space-12); }
+.sched-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-4) var(--space-12);
+}
 /* A clash is hatched as well as named and marked with its icon. */
-.kind-conflict { background: repeating-linear-gradient(135deg, var(--danger-soft) 0 6px, var(--surface) 6px 12px); }
+.kind-conflict {
+  background: repeating-linear-gradient(135deg, var(--danger-soft) 0 6px, var(--surface) 6px 12px);
+}

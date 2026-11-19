@@ -9,198 +9,701 @@
   scroll-margin-top: var(--space-16);
 }
 
-.section-heading { font-family: var(--font-display); font-size: 30px; line-height: 38px; font-weight: 500; }
-.home-note { color: var(--ink-muted); }
+.section-heading {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 38px;
+  font-weight: 500;
+}
+.home-note {
+  color: var(--ink-muted);
+}
 
 /* First screen */
-.story-title { font-family: var(--font-display); font-size: 44px; line-height: 52px; font-weight: 500; }
-.story-title em { display: block; color: var(--accent); font-weight: 400; }
-.story-actions { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.story-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 52px;
+  font-weight: 500;
+}
+.story-title em {
+  display: block;
+  color: var(--accent);
+  font-weight: 400;
+}
+.story-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
 
-.hero { display: grid; gap: var(--space-16); }
-.hero-photo { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
-.hero-text { display: grid; gap: var(--space-16); padding-inline: var(--space-16); }
+.hero {
+  display: grid;
+  gap: var(--space-16);
+}
+.hero-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+.hero-text {
+  display: grid;
+  gap: var(--space-16);
+  padding-inline: var(--space-16);
+}
 
 /* Packages: a turntable of the three photos, the front package's words beside it from 1280 px, below it before.
    PackageCarousel.jsx sizes and places the cards from the turntable's width. */
-.pkg-show { display: grid; gap: var(--space-24); }
-.pkg-visual { display: grid; gap: var(--space-16); }
-.pkg-stage { position: relative; min-height: 160px; cursor: grab; touch-action: pan-y; user-select: none; }
-.pkg-stage[data-held="true"] { cursor: grabbing; }
-.pkg-slot { position: absolute; top: 0; left: 50%; transform-origin: 50% 50%; perspective: 900px; }
+.pkg-show {
+  display: grid;
+  gap: var(--space-24);
+}
+.pkg-visual {
+  display: grid;
+  gap: var(--space-16);
+}
+.pkg-stage {
+  position: relative;
+  min-height: 160px;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+.pkg-stage[data-held='true'] {
+  cursor: grabbing;
+}
+.pkg-slot {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform-origin: 50% 50%;
+  perspective: 900px;
+}
 .pkg-card {
-  position: relative; width: 100%; height: 100%; overflow: hidden;
-  border: var(--space-8) solid var(--chalk); border-radius: var(--radius-sm);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: var(--space-8) solid var(--chalk);
+  border-radius: var(--radius-sm);
   box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.6);
 }
-.pkg-card img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; pointer-events: none; }
-.pkg-sheen { position: absolute; inset: 0; pointer-events: none; }
-.pkg-detail { display: grid; gap: var(--space-8); align-content: start; justify-items: start; }
-.pkg-count { min-width: var(--space-48); color: var(--ink-muted); text-align: center; font-variant-numeric: tabular-nums; }
-.package-name { font-family: var(--font-display); font-size: 30px; line-height: 38px; font-weight: 500; }
-.package-line { color: var(--accent); font-family: var(--font-display); font-size: 22px; line-height: 30px; font-style: italic; }
-.package-price { padding-top: var(--space-8); color: var(--accent); font-family: var(--font-display); font-size: 32px; line-height: 40px; font-weight: 500; font-variant-numeric: tabular-nums; }
-.package-price span { display: block; color: var(--ink-muted); font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 400; }
-.pkg-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-12); }
+.pkg-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  pointer-events: none;
+}
+.pkg-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.pkg-detail {
+  display: grid;
+  gap: var(--space-8);
+  align-content: start;
+  justify-items: start;
+}
+.pkg-count {
+  min-width: var(--space-48);
+  color: var(--ink-muted);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.package-name {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 38px;
+  font-weight: 500;
+}
+.package-line {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 30px;
+  font-style: italic;
+}
+.package-price {
+  padding-top: var(--space-8);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.package-price span {
+  display: block;
+  color: var(--ink-muted);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+.pkg-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-12);
+}
 
 /* Process */
-.process { display: grid; gap: var(--space-24); margin: 0; padding: 0; list-style: none; counter-reset: step; }
-.process li { display: grid; align-content: start; gap: var(--space-4); padding-top: var(--space-12); border-top: 1px solid var(--line-strong); counter-increment: step; }
-.process li::before { content: "0" counter(step); color: var(--accent); font-weight: 600; }
-.process-title { font-size: 18px; line-height: 28px; font-weight: 600; }
+.process {
+  display: grid;
+  gap: var(--space-24);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.process li {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--line-strong);
+  counter-increment: step;
+}
+.process li::before {
+  content: '0' counter(step);
+  color: var(--accent);
+  font-weight: 600;
+}
+.process-title {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+}
 
 /* Chat */
 /* The chat section: a panel with the heading, text and chat window; from 1280 px a photo stands beside it. */
-.chat-panel { display: grid; gap: var(--space-16); align-content: start; }
-.chat-panel-title { margin-top: var(--space-8); font-size: 18px; line-height: 28px; font-weight: 600; }
-.quick-packages { display: grid; gap: var(--space-8); }
-.quick-packages .btn { justify-content: space-between; flex-wrap: wrap; column-gap: var(--space-16); text-align: left; }
-.quick-price { font-weight: 400; font-variant-numeric: tabular-nums; }
-.tell-list { display: grid; gap: var(--space-4); margin: 0; padding-left: var(--space-24); }
+.chat-panel {
+  display: grid;
+  gap: var(--space-16);
+  align-content: start;
+}
+.chat-panel-title {
+  margin-top: var(--space-8);
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+}
+.quick-packages {
+  display: grid;
+  gap: var(--space-8);
+}
+.quick-packages .btn {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  column-gap: var(--space-16);
+  text-align: left;
+}
+.quick-price {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.tell-list {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding-left: var(--space-24);
+}
 /* The link to the next screen of the prototype, kept apart from the customer's chat. */
-.home-section.next-screen { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-12); padding-block: var(--space-24); border-top: 1px solid var(--line); color: var(--ink-muted); }
+.home-section.next-screen {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-12);
+  padding-block: var(--space-24);
+  border-top: 1px solid var(--line);
+  color: var(--ink-muted);
+}
 /* The chat looks like a live chat window, kept in the page: header, conversation, message box. */
-.chat-dock { display: grid; max-width: 560px; scroll-margin-top: var(--space-16); }
+.chat-dock {
+  display: grid;
+  max-width: 560px;
+  scroll-margin-top: var(--space-16);
+}
 .chat-dock-bar {
-  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-12); padding: var(--space-12) var(--space-16);
-  background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-md) var(--radius-md) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 .chat-avatar {
-  flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
-  color: var(--on-accent); background: var(--accent); font-family: var(--font-display); font-size: 18px; font-weight: 600;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--on-accent);
+  background: var(--accent);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
 }
-.chat-dock-who { flex: 1 1 160px; min-width: 0; }
-.chat-dock-name { font-weight: 600; }
-.chat-dock-who [role="status"] { color: var(--ink-muted); }
-.chat-dock .chat { gap: var(--space-16); border-top: 0; border-radius: 0 0 var(--radius-md) var(--radius-md); }
+.chat-dock-who {
+  flex: 1 1 160px;
+  min-width: 0;
+}
+.chat-dock-name {
+  font-weight: 600;
+}
+.chat-dock-who [role='status'] {
+  color: var(--ink-muted);
+}
+.chat-dock .chat {
+  gap: var(--space-16);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
 /* The header already names the conversation; its heading stays for screen readers. */
-.chat-dock .chat > h2 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.chat-dock .chat-log { gap: var(--space-8); align-content: start; padding-block: var(--space-8); }
-.chat-dock .chat-msg { max-width: 85%; padding: var(--space-8) var(--space-16); border-radius: 18px 18px 18px var(--space-4); }
-.chat-dock .chat-msg-me { border-radius: 18px 18px var(--space-4) 18px; }
-.chat-dock .chat-time { color: var(--ink-muted); }
-.chat-dock .chat-msg-me .chat-time { text-align: right; }
-.chat-dock .chat-form { padding-top: var(--space-16); border-top: 1px solid var(--line); }
-.chat-dock .chat-row { flex-wrap: nowrap; }
+.chat-dock .chat > h2 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.chat-dock .chat-log {
+  gap: var(--space-8);
+  align-content: start;
+  padding-block: var(--space-8);
+}
+.chat-dock .chat-msg {
+  max-width: 85%;
+  padding: var(--space-8) var(--space-16);
+  border-radius: 18px 18px 18px var(--space-4);
+}
+.chat-dock .chat-msg-me {
+  border-radius: 18px 18px var(--space-4) 18px;
+}
+.chat-dock .chat-time {
+  color: var(--ink-muted);
+}
+.chat-dock .chat-msg-me .chat-time {
+  text-align: right;
+}
+.chat-dock .chat-form {
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--line);
+}
+.chat-dock .chat-row {
+  flex-wrap: nowrap;
+}
 /* width: 0 so the box never sets the window's minimum width; it still grows to fill the row. */
-.chat-dock .chat-input { width: 0; border-radius: var(--radius-pill); padding-inline: var(--space-16); }
-.chat-dock .chat-row .btn { border-radius: var(--radius-pill); }
-
+.chat-dock .chat-input {
+  width: 0;
+  border-radius: var(--radius-pill);
+  padding-inline: var(--space-16);
+}
+.chat-dock .chat-row .btn {
+  border-radius: var(--radius-pill);
+}
 
 @media (min-width: 768px) {
-  .home-section { padding: var(--space-64) var(--space-24); }
-  .section-heading { font-size: 40px; line-height: 48px; }
-  .story-title { font-size: 64px; line-height: 72px; }
-  .process { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-section {
+    padding: var(--space-64) var(--space-24);
+  }
+  .section-heading {
+    font-size: 40px;
+    line-height: 48px;
+  }
+  .story-title {
+    font-size: 64px;
+    line-height: 72px;
+  }
+  .process {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
   /* The same size as the 3D stage, so nothing jumps when the scene takes over. */
-  .hero { position: relative; min-height: 100vh; min-height: 100svh; align-content: center; justify-items: center; }
-  .hero-photo { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; filter: brightness(.34); }
-  .hero-text { position: relative; justify-items: center; text-align: center; padding: var(--space-24); }
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    align-content: center;
+    justify-items: center;
+  }
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    aspect-ratio: auto;
+    filter: brightness(0.34);
+  }
+  .hero-text {
+    position: relative;
+    justify-items: center;
+    text-align: center;
+    padding: var(--space-24);
+  }
 }
 
 /* Opening of the 3D story: the view fades in once its first frame is drawn, the chalk lines draw themselves in while
    the camera moves into the room (scene.js), and a band of warm light crosses the room as the drawing finishes.
    The band sits under the words and is decoration only. Nothing moves with reduced motion. */
-.stage-sweep { position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: screen;
-  background: linear-gradient(105deg, transparent 35%, rgba(232, 165, 92, 0.22) 47%, rgba(255, 236, 200, 0.3) 50%, rgba(232, 165, 92, 0.22) 53%, transparent 65%) no-repeat;
-  background-size: 250% 100%; background-position: 100% 0; }
-@keyframes sweep { 0% { opacity: 0; background-position: 100% 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; background-position: 0 0; } }
+.stage-sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgba(232, 165, 92, 0.22) 47%,
+      rgba(255, 236, 200, 0.3) 50%,
+      rgba(232, 165, 92, 0.22) 53%,
+      transparent 65%
+    )
+    no-repeat;
+  background-size: 250% 100%;
+  background-position: 100% 0;
+}
+@keyframes sweep {
+  0% {
+    opacity: 0;
+    background-position: 100% 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    background-position: 0 0;
+  }
+}
 @media (prefers-reduced-motion: no-preference) {
-  .stage-view.is-ready ~ .stage-sweep { animation: sweep 1600ms cubic-bezier(0.45, 0, 0.55, 1) 1000ms both; }
-  .stage-view { opacity: 0; transition: opacity 600ms var(--ease-out); }
-  .stage-view.is-ready { opacity: 1; }
+  .stage-view.is-ready ~ .stage-sweep {
+    animation: sweep 1600ms cubic-bezier(0.45, 0, 0.55, 1) 1000ms both;
+  }
+  .stage-view {
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out);
+  }
+  .stage-view.is-ready {
+    opacity: 1;
+  }
 }
 
 /* 3D story. Only shown at 768 px or wider. Words live in the scene: each moment has its own place. */
-.story { position: relative; height: 1400vh; }
-.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: clip; background: var(--ground); }
-.stage-view { display: block; width: 100%; height: 100%; }
-.stage-veil { position: absolute; inset: 0; background: var(--ground); opacity: 0; pointer-events: none; }
-.stage-links { position: absolute; top: var(--space-16); right: var(--space-24); justify-content: flex-end; z-index: 1; }
-.stage-links .btn-secondary, .stage-links .btn-secondary:not(:disabled):hover { background-color: var(--scrim); }
-.stage-bar { position: absolute; inset: auto 0 0; height: var(--space-4); background: var(--surface-raised); }
-.stage-bar i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+.story {
+  position: relative;
+  height: 1400vh;
+}
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: clip;
+  background: var(--ground);
+}
+.stage-view {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.stage-veil {
+  position: absolute;
+  inset: 0;
+  background: var(--ground);
+  opacity: 0;
+  pointer-events: none;
+}
+.stage-links {
+  position: absolute;
+  top: var(--space-16);
+  right: var(--space-24);
+  justify-content: flex-end;
+  z-index: 1;
+}
+.stage-links .btn-secondary,
+.stage-links .btn-secondary:not(:disabled):hover {
+  background-color: var(--scrim);
+}
+.stage-bar {
+  position: absolute;
+  inset: auto 0 0;
+  height: var(--space-4);
+  background: var(--surface-raised);
+}
+.stage-bar i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
 
-.cap { position: absolute; display: grid; gap: var(--space-12); opacity: 0; visibility: hidden; font-size: 18px; line-height: 28px; text-shadow: 0 1px 3px rgba(0, 0, 0, .65), 0 2px 22px rgba(0, 0, 0, .6); }
+.cap {
+  position: absolute;
+  display: grid;
+  gap: var(--space-12);
+  opacity: 0;
+  visibility: hidden;
+  font-size: 18px;
+  line-height: 28px;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.65),
+    0 2px 22px rgba(0, 0, 0, 0.6);
+}
 /* Each caption comes in line by line: the heading, its second line, then the text, as the scene raises --rise
    from 0 to 1. Without --rise (before the first frame) every line is simply shown. */
-.cap > *, .cap .story-title em {
+.cap > *,
+.cap .story-title em {
   --line: clamp(0, calc((var(--rise, 1) - var(--i, 0) * 0.15) / 0.55), 1);
-  opacity: var(--line); transform: translateY(calc((1 - var(--line)) * 18px));
+  opacity: var(--line);
+  transform: translateY(calc((1 - var(--line)) * 18px));
 }
-.cap > :nth-child(1) { --i: 0; }
-.cap .story-title em { --i: 1; }
-.cap > :nth-child(2) { --i: 2; }
-.cap > :nth-child(n + 3) { --i: 3; }
+.cap > :nth-child(1) {
+  --i: 0;
+}
+.cap .story-title em {
+  --i: 1;
+}
+.cap > :nth-child(2) {
+  --i: 2;
+}
+.cap > :nth-child(n + 3) {
+  --i: 3;
+}
 /* The opening words appear with the camera: hidden at first, the title fades in while its letters close up from
    0.22 em apart over the camera's move, the line under it follows. Then the band of light catches the title as it
    crosses (a highlight drawn through the letters; outside it the colours are the usual ones). If the scene is slow
    to arrive, the waiting screen shows its words after 1.5 s anyway. */
-@keyframes words-late { to { opacity: 1; letter-spacing: 0; } }
+@keyframes words-late {
+  to {
+    opacity: 1;
+    letter-spacing: 0;
+  }
+}
 @keyframes glint {
   /* The letters' shadow would be painted over a background drawn through them, so it rests during the glint.
      The highlight exists only while the glint runs; at rest the title is plain text in its usual colour. */
-  from { -webkit-text-fill-color: transparent; text-shadow: none; background-image: linear-gradient(105deg, var(--ink) 40%, #ffd9a0 50%, var(--ink) 60%); background-position: 100% 0; }
-  to { -webkit-text-fill-color: transparent; text-shadow: none; background-image: linear-gradient(105deg, var(--ink) 40%, #ffd9a0 50%, var(--ink) 60%); background-position: 0 0; }
+  from {
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    background-image: linear-gradient(105deg, var(--ink) 40%, #ffd9a0 50%, var(--ink) 60%);
+    background-position: 100% 0;
+  }
+  to {
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    background-image: linear-gradient(105deg, var(--ink) 40%, #ffd9a0 50%, var(--ink) 60%);
+    background-position: 0 0;
+  }
 }
 @keyframes glint-accent {
-  from { -webkit-text-fill-color: transparent; text-shadow: none; background-image: linear-gradient(105deg, var(--accent) 40%, #fff1dc 50%, var(--accent) 60%); background-position: 100% 0; }
-  to { -webkit-text-fill-color: transparent; text-shadow: none; background-image: linear-gradient(105deg, var(--accent) 40%, #fff1dc 50%, var(--accent) 60%); background-position: 0 0; }
+  from {
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    background-image: linear-gradient(105deg, var(--accent) 40%, #fff1dc 50%, var(--accent) 60%);
+    background-position: 100% 0;
+  }
+  to {
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    background-image: linear-gradient(105deg, var(--accent) 40%, #fff1dc 50%, var(--accent) 60%);
+    background-position: 0 0;
+  }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .hero-bare .hero-text > *, .cap-open > * { opacity: 0; }
-  .hero-bare .story-title, .cap-open .story-title { letter-spacing: 0.22em; }
-  .hero-bare .hero-text > * { animation: words-late 500ms var(--ease-out) 1500ms both; }
-  .stage-view.is-ready ~ .cap-open > * { opacity: 1; transition: opacity 1200ms var(--ease-out) 700ms; }
+  .hero-bare .hero-text > *,
+  .cap-open > * {
+    opacity: 0;
+  }
+  .hero-bare .story-title,
+  .cap-open .story-title {
+    letter-spacing: 0.22em;
+  }
+  .hero-bare .hero-text > * {
+    animation: words-late 500ms var(--ease-out) 1500ms both;
+  }
+  .stage-view.is-ready ~ .cap-open > * {
+    opacity: 1;
+    transition: opacity 1200ms var(--ease-out) 700ms;
+  }
   .stage-view.is-ready ~ .cap-open .story-title {
     letter-spacing: 0;
-    transition: opacity 1200ms var(--ease-out), letter-spacing 1800ms cubic-bezier(0.45, 0, 0.2, 1);
+    transition:
+      opacity 1200ms var(--ease-out),
+      letter-spacing 1800ms cubic-bezier(0.45, 0, 0.2, 1);
   }
-  .cap-open .story-title, .cap-open .story-title em {
-    background-repeat: no-repeat; background-size: 250% 100%;
-    -webkit-background-clip: text; background-clip: text;
+  .cap-open .story-title,
+  .cap-open .story-title em {
+    background-repeat: no-repeat;
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
   }
-  .stage-view.is-ready ~ .cap-open .story-title { animation: glint 1600ms cubic-bezier(0.45, 0, 0.55, 1) 1000ms; }
-  .stage-view.is-ready ~ .cap-open .story-title em { animation: glint-accent 1600ms cubic-bezier(0.45, 0, 0.55, 1) 1000ms; }
+  .stage-view.is-ready ~ .cap-open .story-title {
+    animation: glint 1600ms cubic-bezier(0.45, 0, 0.55, 1) 1000ms;
+  }
+  .stage-view.is-ready ~ .cap-open .story-title em {
+    animation: glint-accent 1600ms cubic-bezier(0.45, 0, 0.55, 1) 1000ms;
+  }
 }
 /* The opening words are on screen from the start, before the scene's first frame sets them. */
-.cap-open { opacity: 1; visibility: visible; }
+.cap-open {
+  opacity: 1;
+  visibility: visible;
+}
 /* The plain screen while the scene loads: the same sizes and spacing as the scene's opening words. */
-.hero-bare .hero-text { gap: var(--space-12); padding: var(--space-32); font-size: 18px; line-height: 28px; }
-.hero-bare .story-title { font-size: clamp(44px, 5.2vw, 76px); line-height: 1.08; text-wrap: balance; }
-.cap .story-title { font-size: clamp(44px, 5.2vw, 76px); line-height: 1.08; text-wrap: balance; }
-.cap p { text-wrap: balance; }
-.cap-price { margin-top: var(--space-4); font-size: 22px; line-height: 32px; font-weight: 600; }
-.cap-note { color: var(--ink-muted); font-size: 16px; line-height: 26px; }
+.hero-bare .hero-text {
+  gap: var(--space-12);
+  padding: var(--space-32);
+  font-size: 18px;
+  line-height: 28px;
+}
+.hero-bare .story-title {
+  font-size: clamp(44px, 5.2vw, 76px);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.cap .story-title {
+  font-size: clamp(44px, 5.2vw, 76px);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.cap p {
+  text-wrap: balance;
+}
+.cap-price {
+  margin-top: var(--space-4);
+  font-size: 22px;
+  line-height: 32px;
+  font-weight: 600;
+}
+.cap-note {
+  color: var(--ink-muted);
+  font-size: 16px;
+  line-height: 26px;
+}
 
-.at-center { inset: 0; align-content: center; justify-items: center; text-align: center; padding: var(--space-32); }
-.at-top { top: var(--space-64); left: 0; right: 0; text-align: center; padding-inline: var(--space-32); }
-.at-bottom { bottom: var(--space-32); left: 0; right: 0; text-align: center; padding-inline: var(--space-32); }
-.at-left, .at-right { top: 0; bottom: 0; width: min(36vw, 500px); align-content: center; }
-.at-left { left: clamp(var(--space-32), 5vw, 96px); }
-.at-right { right: clamp(var(--space-32), 5vw, 96px); }
-.at-lefttop { top: var(--space-64); left: clamp(var(--space-32), 5vw, 96px); width: min(42vw, 620px); padding-top: var(--space-32); }
+.at-center {
+  inset: 0;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  padding: var(--space-32);
+}
+.at-top {
+  top: var(--space-64);
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding-inline: var(--space-32);
+}
+.at-bottom {
+  bottom: var(--space-32);
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding-inline: var(--space-32);
+}
+.at-left,
+.at-right {
+  top: 0;
+  bottom: 0;
+  width: min(36vw, 500px);
+  align-content: center;
+}
+.at-left {
+  left: clamp(var(--space-32), 5vw, 96px);
+}
+.at-right {
+  right: clamp(var(--space-32), 5vw, 96px);
+}
+.at-lefttop {
+  top: var(--space-64);
+  left: clamp(var(--space-32), 5vw, 96px);
+  width: min(42vw, 620px);
+  padding-top: var(--space-32);
+}
 
 /* A soft dark backing only where the words sit on a bright or busy part of the scene. */
-.at-top::before, .at-bottom::before, .at-center::before { content: ""; position: absolute; z-index: -1; pointer-events: none; }
-.at-top::before { inset: calc(var(--space-64) * -1) 0 calc(var(--space-48) * -2); background: linear-gradient(rgba(8, 6, 3, .68) 55%, rgba(8, 6, 3, 0)); }
-.at-bottom::before { inset: calc(var(--space-48) * -2) 0 calc(var(--space-32) * -1); background: linear-gradient(rgba(8, 6, 3, 0), rgba(8, 6, 3, .8) 50%); }
-.at-center::before { inset: 0; background: radial-gradient(ellipse 38% 30% at 50% 50%, rgba(8, 11, 10, .82) 45%, rgba(8, 11, 10, 0) 100%); }
+.at-top::before,
+.at-bottom::before,
+.at-center::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+.at-top::before {
+  inset: calc(var(--space-64) * -1) 0 calc(var(--space-48) * -2);
+  background: linear-gradient(rgba(8, 6, 3, 0.68) 55%, rgba(8, 6, 3, 0));
+}
+.at-bottom::before {
+  inset: calc(var(--space-48) * -2) 0 calc(var(--space-32) * -1);
+  background: linear-gradient(rgba(8, 6, 3, 0), rgba(8, 6, 3, 0.8) 50%);
+}
+.at-center::before {
+  inset: 0;
+  background: radial-gradient(ellipse 38% 30% at 50% 50%, rgba(8, 11, 10, 0.82) 45%, rgba(8, 11, 10, 0) 100%);
+}
 
 /* Tall windows: photos sit high, so every caption goes below them. */
 @media (orientation: portrait) {
-  .at-left, .at-right, .at-lefttop { inset: auto var(--space-24) var(--space-24); width: auto; padding: var(--space-16); background: var(--scrim); border-radius: var(--radius-md); text-shadow: none; }
+  .at-left,
+  .at-right,
+  .at-lefttop {
+    inset: auto var(--space-24) var(--space-24);
+    width: auto;
+    padding: var(--space-16);
+    background: var(--scrim);
+    border-radius: var(--radius-md);
+    text-shadow: none;
+  }
 }
 
 @media (min-width: 1280px) {
-  .home-section { padding-inline: var(--space-48); }
-  .process { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .pkg-show { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: center; gap: var(--space-48); }
+  .home-section {
+    padding-inline: var(--space-48);
+  }
+  .process {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .pkg-show {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: center;
+    gap: var(--space-48);
+  }
   /* Two panels: the heading, quick package choice and what to tell the studio in a card on the left, the chat
      window on the right; the window's conversation fills the height of the card. */
-  .chat-section { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-24); align-items: stretch; }
-  .chat-panel { padding: var(--space-32); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); }
-  .chat-section > .chat-dock { max-width: none; grid-template-rows: auto 1fr; }
-  .chat-section > .chat-dock .chat { grid-template-rows: 1fr auto; }
+  .chat-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-24);
+    align-items: stretch;
+  }
+  .chat-panel {
+    padding: var(--space-32);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+  }
+  .chat-section > .chat-dock {
+    max-width: none;
+    grid-template-rows: auto 1fr;
+  }
+  .chat-section > .chat-dock .chat {
+    grid-template-rows: 1fr auto;
+  }
 }

@@ -4,11 +4,21 @@ export default function CustomerLayout({ current, wide = false, children }) {
   return (
     <>
       <header className="page-header">
-        <a className="page-brand" href="index.html">GradStudio</a>
+        <a className="page-brand" href="index.html">
+          GradStudio
+        </a>
         <nav className="page-nav" aria-label="Trang khách">
           <ul>
-            <li><a href="index.html" aria-current={current === 'home' ? 'page' : undefined}>Trang chủ</a></li>
-            <li><a href="lich-chup.html" aria-current={current === 'schedule' ? 'page' : undefined}>Lịch chụp của tôi</a></li>
+            <li>
+              <a href="index.html" aria-current={current === 'home' ? 'page' : undefined}>
+                Trang chủ
+              </a>
+            </li>
+            <li>
+              <a href="lich-chup.html" aria-current={current === 'schedule' ? 'page' : undefined}>
+                Lịch chụp của tôi
+              </a>
+            </li>
           </ul>
         </nav>
       </header>

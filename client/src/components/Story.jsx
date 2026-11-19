@@ -22,12 +22,19 @@ export default function Story() {
   useEffect(() => {
     if (!suits || startScene || gaveUp || window.scrollY > 100 || !webgl) return undefined;
     let cancelled = false;
-    import('../story/scene.js').then(({ startStory }) => {
-      if (cancelled) return;
-      if (window.scrollY <= 100) setStartScene(() => startStory);
-      else setGaveUp(true);
-    }, () => { if (!cancelled) setGaveUp(true); });
-    return () => { cancelled = true; };
+    import('../story/scene.js').then(
+      ({ startStory }) => {
+        if (cancelled) return;
+        if (window.scrollY <= 100) setStartScene(() => startStory);
+        else setGaveUp(true);
+      },
+      () => {
+        if (!cancelled) setGaveUp(true);
+      },
+    );
+    return () => {
+      cancelled = true;
+    };
   }, [suits, startScene, gaveUp, webgl]);
 
   return suits && startScene ? <StoryStage start={startScene} /> : <StoryHero bare={waiting} />;

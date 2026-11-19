@@ -1402,3 +1402,12 @@ Kept: awaiting An's review. `6027d8d` moves `src/`, `public/`, the three HTML fi
 Changed: nothing beyond the request. Checks: `npm run format:check` fails on 35 files (the gate can go red; the next commit formats them); `npm run lint` passes; `npm test` passes with 0 tests, so the test gate cannot fail yet: tests come with the mock.
 Rejected: adding Prettier to the app's `package.json` before the move (the gates would have had to move again).
 By hand: An's choice of order.
+
+### 2026-11-19 — LF on every checkout; the code formatted by Prettier
+Commit: `56b88ca` (`.gitattributes`), and the commit that adds this entry (formatting only).
+Tool: Claude Code (Claude Opus 5.5), Prettier 3.10.1, Playwright.
+Asked for: the rest of "thêm Prettier trong một commit riêng.": format the code so the new gate passes.
+Kept: awaiting An's review. `.gitattributes` makes every checkout use LF; the formatting commit runs `npm run format` on 31 files (+2857/−850 lines, mostly CSS rules written on one line now split over several). `npm run format:check` passes, `npm run lint` passes, `npm run build` passes.
+Changed: the commit messages warned that Git would turn LF into CRLF on checkout (`core.autocrlf=true` on this machine). Prettier expects LF, so on a Windows clone, such as Khánh's, the format check would have failed on every file while CI on Linux passed. `.gitattributes` (`* text=auto eol=lf`) closes that gap before anyone clones. Check that formatting changed nothing on screen: the build before and after, served side by side, screenshotted page by page at 360, 768 and 1280 px: all 9 pairs identical to the pixel; no sideways scroll, nothing past the right edge, no control under 44 px, one `<h1>`, no page error. The PA#2 check scripts had been lost with the old scratch folder, so the comparison was written again; check scripts will be kept in the repository from now on.
+Rejected: nothing.
+By hand: none.

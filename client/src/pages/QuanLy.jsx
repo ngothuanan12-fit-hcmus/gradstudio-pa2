@@ -7,14 +7,7 @@ import BookingForm from '../components/BookingForm.jsx';
 import ChatPanel from '../components/ChatPanel.jsx';
 import ConversationList from '../components/ConversationList.jsx';
 import ResourceSchedule from '../components/ResourceSchedule.jsx';
-import {
-  booking,
-  conversations,
-  freeSlots,
-  messages,
-  services,
-  scheduleRows,
-} from '../data.js';
+import { booking, conversations, freeSlots, messages, services, scheduleRows } from '../data.js';
 import '../styles/admin.css';
 
 const FILTERS = [
@@ -43,9 +36,8 @@ export default function QuanLy() {
   const visibleConversations = conversations.filter((item) => {
     const matchesFilter = filter === 'all' || item.status === filter;
     const keyword = query.trim().toLowerCase();
-    const matchesQuery = !keyword
-      || item.name.toLowerCase().includes(keyword)
-      || item.last.toLowerCase().includes(keyword);
+    const matchesQuery =
+      !keyword || item.name.toLowerCase().includes(keyword) || item.last.toLowerCase().includes(keyword);
     return matchesFilter && matchesQuery;
   });
 
@@ -54,7 +46,9 @@ export default function QuanLy() {
       {/* A short page top: the heading and the pinned status of GS-1024 side by side on wide screens. */}
       <div className="admin-top">
         <h1 className="page-title">Quản lý booking</h1>
-        <p className="status-line" role="status">{status}</p>
+        <p className="status-line" role="status">
+          {status}
+        </p>
       </div>
 
       <div className="admin-grid">
@@ -62,7 +56,9 @@ export default function QuanLy() {
           <h2 id="convs-title">Hội thoại</h2>
           <div className="toolbar">
             <p className="field">
-              <label className="field-label" htmlFor="conv-search">Tìm hội thoại</label>
+              <label className="field-label" htmlFor="conv-search">
+                Tìm hội thoại
+              </label>
               <input
                 className="input"
                 id="conv-search"
@@ -73,10 +69,13 @@ export default function QuanLy() {
               />
             </p>
             <div className="field">
-              <p className="field-label" id="conv-filter-label">Lọc theo trạng thái</p>
+              <p className="field-label" id="conv-filter-label">
+                Lọc theo trạng thái
+              </p>
               <div className="filter-chips" role="group" aria-labelledby="conv-filter-label">
                 {FILTERS.map((item) => {
-                  const count = item.id === 'all' ? conversations.length : conversations.filter((c) => c.status === item.id).length;
+                  const count =
+                    item.id === 'all' ? conversations.length : conversations.filter((c) => c.status === item.id).length;
                   return (
                     <Button
                       key={item.id}
@@ -84,7 +83,11 @@ export default function QuanLy() {
                       aria-pressed={filter === item.id}
                       onClick={() => setFilter(item.id)}
                     >
-                      {item.id !== 'all' && <span className={`conv-status st-${item.id}`}><Icon name={STATUS_ICON[item.id]} /></span>}
+                      {item.id !== 'all' && (
+                        <span className={`conv-status st-${item.id}`}>
+                          <Icon name={STATUS_ICON[item.id]} />
+                        </span>
+                      )}
                       {item.label} ({count})
                     </Button>
                   );
@@ -92,11 +95,7 @@ export default function QuanLy() {
               </div>
             </div>
           </div>
-          <ConversationList
-            items={visibleConversations}
-            activeId={activeId}
-            onSelect={setActiveId}
-          />
+          <ConversationList items={visibleConversations} activeId={activeId} onSelect={setActiveId} />
         </section>
 
         {/* The chat looks like the landing page's chat window, seen from the studio's side. */}
@@ -104,7 +103,9 @@ export default function QuanLy() {
           <div className="chat-window-bar">
             <span className="conv-avatar" aria-hidden="true">
               {active.name.charAt(0)}
-              <span className={`conv-status st-${active.status}`}><Icon name={STATUS_ICON[active.status]} /></span>
+              <span className={`conv-status st-${active.status}`}>
+                <Icon name={STATUS_ICON[active.status]} />
+              </span>
             </span>
             <div className="chat-window-who">
               <p className="chat-window-name">{active.name}</p>
@@ -119,21 +120,21 @@ export default function QuanLy() {
             messages={activeId === 'linh' ? messages : []}
             disabled
             note="Chưa gửi được tin nhắn trong bản mẫu."
-            afterMessages={activeId === 'linh' ? (
-              <BookingForm
-                booking={booking}
-                services={services}
-                conflict={conflict}
-                start={start}
-                onStartChange={setStart}
-                open={cardOpen}
-                onToggle={() => setCardOpen(!cardOpen)}
-              />
-            ) : null}
+            afterMessages={
+              activeId === 'linh' ? (
+                <BookingForm
+                  booking={booking}
+                  services={services}
+                  conflict={conflict}
+                  start={start}
+                  onStartChange={setStart}
+                  open={cardOpen}
+                  onToggle={() => setCardOpen(!cardOpen)}
+                />
+              ) : null
+            }
           />
         </div>
-
-
 
         <ResourceSchedule
           title="Lịch thợ và phòng"
@@ -143,7 +144,10 @@ export default function QuanLy() {
           slots={freeSlots}
           picked={picked}
           conflict={conflict}
-          onPick={(slot) => { setStart(slot.time); setCardOpen(true); }}
+          onPick={(slot) => {
+            setStart(slot.time);
+            setCardOpen(true);
+          }}
         />
       </div>
     </AdminLayout>

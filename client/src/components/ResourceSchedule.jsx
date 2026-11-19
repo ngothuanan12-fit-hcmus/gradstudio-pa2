@@ -7,7 +7,8 @@ const KINDS = {
   free: { label: 'Trống', icon: 'check' },
   proposed: { label: 'Đề xuất', icon: 'diamond' },
 };
-const DAY_FROM = 8 * 60, DAY_TO = 18 * 60;
+const DAY_FROM = 8 * 60,
+  DAY_TO = 18 * 60;
 const HOURS = [8, 10, 12, 14, 16, 18];
 const pct = (t) => toPct(t, DAY_FROM, DAY_TO);
 
@@ -31,7 +32,12 @@ function withLinh(rows, start) {
   const shoot = { from: fmtTime(t), to: fmtTime(t + 120) };
   const clash = (row) => row.blocks.some((b) => b.kind === 'busy' && toMinutes(b.from) < t && t - 60 < toMinutes(b.to));
   const extra = {
-    mai: (row) => ({ id: 'linh-makeup', ...makeup, label: clash(row) ? `Linh yêu cầu ${start}` : 'Linh · makeup', kind: clash(row) ? 'conflict' : 'proposed' }),
+    mai: (row) => ({
+      id: 'linh-makeup',
+      ...makeup,
+      label: clash(row) ? `Linh yêu cầu ${start}` : 'Linh · makeup',
+      kind: clash(row) ? 'conflict' : 'proposed',
+    }),
     tuan: () => ({ id: 'linh-shoot', ...shoot, label: 'Linh · GS-1024', kind: 'proposed' }),
     'phong-b': () => ({ id: 'linh-room', ...shoot, label: 'Linh · GS-1024', kind: 'proposed' }),
   };
@@ -45,7 +51,16 @@ function withLinh(rows, start) {
 // The resource calendar with the suggested times. From 768 px a day timeline gives the overview; it repeats what the
 // list says, so screen readers skip it. The list below is the readable record at every width: each block keeps its
 // kind as a word and a symbol, its label and its times, so nothing rests on colour or is cut off.
-export default function ResourceSchedule({ title, date, rows: baseRows = [], start, slots = [], picked, conflict, onPick }) {
+export default function ResourceSchedule({
+  title,
+  date,
+  rows: baseRows = [],
+  start,
+  slots = [],
+  picked,
+  conflict,
+  onPick,
+}) {
   const rows = start ? withLinh(baseRows, start) : baseRows;
   return (
     <section className="panel sched" id="lich-tai-nguyen" aria-labelledby="sched-title">
@@ -63,10 +78,20 @@ export default function ResourceSchedule({ title, date, rows: baseRows = [], sta
         </p>
         <div className="slots" role="group" aria-labelledby="slots-title">
           {slots.map((slot) => (
-            <button key={slot.id} type="button" className="slot" aria-pressed={picked === slot.id} onClick={() => onPick(slot)}>
+            <button
+              key={slot.id}
+              type="button"
+              className="slot"
+              aria-pressed={picked === slot.id}
+              onClick={() => onPick(slot)}
+            >
               <span className="slot-time">
                 <Icon name="check" /> {slot.time}
-                {picked === slot.id ? <span className="slot-picked"> · Đã chọn cho Linh</span> : <span className="slot-picked"> · Chọn giờ này</span>}
+                {picked === slot.id ? (
+                  <span className="slot-picked"> · Đã chọn cho Linh</span>
+                ) : (
+                  <span className="slot-picked"> · Chọn giờ này</span>
+                )}
               </span>
               <span className="slot-note">{slot.note}</span>
             </button>
@@ -78,7 +103,9 @@ export default function ResourceSchedule({ title, date, rows: baseRows = [], sta
         {Object.entries(KINDS).map(([kind, item]) => (
           <li key={kind}>
             <span className={`sched-swatch kind-${kind}`} aria-hidden="true" />
-            <span><Icon name={item.icon} /> {item.label}</span>
+            <span>
+              <Icon name={item.icon} /> {item.label}
+            </span>
           </li>
         ))}
       </ul>
@@ -86,7 +113,9 @@ export default function ResourceSchedule({ title, date, rows: baseRows = [], sta
       <div className="tl" aria-hidden="true">
         <div className="tl-axis">
           {HOURS.map((h) => (
-            <span key={h} style={{ '--at': pct(fmtTime(h * 60)) }}>{String(h).padStart(2, '0')}:00</span>
+            <span key={h} style={{ '--at': pct(fmtTime(h * 60)) }}>
+              {String(h).padStart(2, '0')}:00
+            </span>
           ))}
         </div>
         {rows.map((row) => {
@@ -103,9 +132,14 @@ export default function ResourceSchedule({ title, date, rows: baseRows = [], sta
                     <span
                       key={block.id}
                       className={`tl-block kind-${block.kind || 'busy'}${short ? ' is-short' : ''}`}
-                      style={{ '--at': pct(block.from), '--len': pct(block.to) - pct(block.from), '--lane': block.lane }}
+                      style={{
+                        '--at': pct(block.from),
+                        '--len': pct(block.to) - pct(block.from),
+                        '--lane': block.lane,
+                      }}
                     >
-                      <Icon name={kind.icon} /><span className="tl-word"> {kind.label}</span>
+                      <Icon name={kind.icon} />
+                      <span className="tl-word"> {kind.label}</span>
                     </span>
                   );
                 })}
@@ -131,7 +165,9 @@ export default function ResourceSchedule({ title, date, rows: baseRows = [], sta
                       <Icon name={kind.icon} /> {kind.label}
                     </span>
                     <b>{block.label}</b>
-                    <span className="sched-time">{block.from}–{block.to}</span>
+                    <span className="sched-time">
+                      {block.from}–{block.to}
+                    </span>
                   </li>
                 );
               })}

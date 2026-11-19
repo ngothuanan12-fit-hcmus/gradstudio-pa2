@@ -21,13 +21,33 @@ export const booking = {
 
 export const messages = [
   { id: 'm1', who: 'Linh', text: 'Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?', time: '09:40' },
-  { id: 'm2', who: 'Studio', me: true, text: 'Dạ để studio kiểm tra lịch thợ makeup, thợ chụp và phòng rồi báo lại ạ.', time: '09:41' },
-  { id: 'm3', who: 'Studio', me: true, text: 'Thợ makeup Mai bận 08:00–12:00. Studio đề xuất makeup 13:00–14:00 và chụp 14:00–16:00.', time: '09:42' },
   {
-    id: 'm4', who: 'Studio', me: true, time: '09:46',
+    id: 'm2',
+    who: 'Studio',
+    me: true,
+    text: 'Dạ để studio kiểm tra lịch thợ makeup, thợ chụp và phòng rồi báo lại ạ.',
+    time: '09:41',
+  },
+  {
+    id: 'm3',
+    who: 'Studio',
+    me: true,
+    text: 'Thợ makeup Mai bận 08:00–12:00. Studio đề xuất makeup 13:00–14:00 và chụp 14:00–16:00.',
+    time: '09:42',
+  },
+  {
+    id: 'm4',
+    who: 'Studio',
+    me: true,
+    time: '09:46',
     text: 'Báo giá Gói Tốt nghiệp Premium: 1.800.000đ. Cọc 540.000đ, còn lại 1.260.000đ.',
     // Shown as a small card in the chat; the figures are the brief's.
-    quote: [['Gói', 'Tốt nghiệp Premium'], ['Giá', '1.800.000đ'], ['Cọc 30%', '540.000đ'], ['Còn lại', '1.260.000đ']],
+    quote: [
+      ['Gói', 'Tốt nghiệp Premium'],
+      ['Giá', '1.800.000đ'],
+      ['Cọc 30%', '540.000đ'],
+      ['Còn lại', '1.260.000đ'],
+    ],
   },
   { id: 'm5', who: 'Linh', text: 'Dạ em chốt lịch 14:00 ạ.', time: '09:47' },
 ];
@@ -96,17 +116,13 @@ export const scheduleRows = [
     id: 'mai',
     name: 'Mai',
     role: 'Thợ makeup',
-    blocks: [
-      { id: 'mai-busy', from: '08:00', to: '12:00', label: 'Đã kín', kind: 'busy' },
-    ],
+    blocks: [{ id: 'mai-busy', from: '08:00', to: '12:00', label: 'Đã kín', kind: 'busy' }],
   },
   {
     id: 'tuan',
     name: 'Tuấn',
     role: 'Thợ chụp',
-    blocks: [
-      { id: 'tuan-free', from: '11:00', to: '14:00', label: 'Trống', kind: 'free' },
-    ],
+    blocks: [{ id: 'tuan-free', from: '11:00', to: '14:00', label: 'Trống', kind: 'free' }],
   },
   {
     id: 'phong-b',
@@ -153,10 +169,22 @@ export const packages = [
 // The steps of section 3 of the GradStudio brief. The slot is held only after the deposit succeeds.
 export const processSteps = [
   { id: 'chat', title: 'Chat tư vấn', text: 'Nhắn studio ngay trên web để hỏi gói, concept và giá.' },
-  { id: 'lich', title: 'Thống nhất giờ', text: 'Studio kiểm tra thợ chụp, makeup, phòng và đề xuất giờ trống. Bạn đồng ý ngay trong chat.' },
-  { id: 'coc', title: 'Cọc để giữ lịch', text: 'Lịch chỉ được giữ khi bạn cọc 30% thành công và studio kiểm tra lại lịch.' },
+  {
+    id: 'lich',
+    title: 'Thống nhất giờ',
+    text: 'Studio kiểm tra thợ chụp, makeup, phòng và đề xuất giờ trống. Bạn đồng ý ngay trong chat.',
+  },
+  {
+    id: 'coc',
+    title: 'Cọc để giữ lịch',
+    text: 'Lịch chỉ được giữ khi bạn cọc 30% thành công và studio kiểm tra lại lịch.',
+  },
   { id: 'chup', title: 'Buổi chụp', text: 'Ekip chuẩn bị theo checklist của từng loại buổi chụp.' },
-  { id: 'anh', title: 'Chọn ảnh và nhận file', text: 'Chọn ảnh cần chỉnh, thanh toán 70% còn lại, nhận file khi hoàn tất.' },
+  {
+    id: 'anh',
+    title: 'Chọn ảnh và nhận file',
+    text: 'Chọn ảnh cần chỉnh, thanh toán 70% còn lại, nhận file khi hoàn tất.',
+  },
 ];
 
 export const weekDays = [

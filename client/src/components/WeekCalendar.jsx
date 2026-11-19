@@ -1,7 +1,8 @@
 import Icon from './Icon.jsx';
 import { toPct } from '../utils/time.js';
 
-const DAY_FROM = 8 * 60, DAY_TO = 18 * 60;
+const DAY_FROM = 8 * 60,
+  DAY_TO = 18 * 60;
 const HOURS = [8, 10, 12, 14, 16, 18];
 const hour = (t) => `${String(Number.parseInt(t, 10) + 1).padStart(2, '0')}:00`;
 
@@ -24,17 +25,26 @@ export default function WeekCalendar({ days = [], shootDay }) {
               <span className="week-dow">{item.dow}</span>
               <span className="week-num">{item.num}</span>
             </time>
-            {item.id === shootDay ? <span className="week-mark"><Icon name="diamond" /><span className="sr-only"> ngày chụp</span></span> : null}
+            {item.id === shootDay ? (
+              <span className="week-mark">
+                <Icon name="diamond" />
+                <span className="sr-only"> ngày chụp</span>
+              </span>
+            ) : null}
           </li>
         ))}
       </ol>
-      <p className="week-shoot-line"><Icon name="diamond" /> Thứ Bảy 24/10 · Ngày chụp GS-1024</p>
+      <p className="week-shoot-line">
+        <Icon name="diamond" /> Thứ Bảy 24/10 · Ngày chụp GS-1024
+      </p>
 
       <h3 className="day-title">Lịch trình ngày 24/10</h3>
       <div className="day-bar" aria-hidden="true">
         <div className="day-axis">
           {HOURS.map((h) => (
-            <span key={h} style={{ '--at': ((h * 60 - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100 }}>{String(h).padStart(2, '0')}:00</span>
+            <span key={h} style={{ '--at': ((h * 60 - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100 }}>
+              {String(h).padStart(2, '0')}:00
+            </span>
           ))}
         </div>
         <div className="day-track">
@@ -44,7 +54,10 @@ export default function WeekCalendar({ days = [], shootDay }) {
               <span
                 key={event.id}
                 className={event.struck ? 'day-block is-off' : 'day-block'}
-                style={{ '--at': toPct(event.from, DAY_FROM, DAY_TO), '--len': toPct(to, DAY_FROM, DAY_TO) - toPct(event.from, DAY_FROM, DAY_TO) }}
+                style={{
+                  '--at': toPct(event.from, DAY_FROM, DAY_TO),
+                  '--len': toPct(to, DAY_FROM, DAY_TO) - toPct(event.from, DAY_FROM, DAY_TO),
+                }}
               />
             );
           })}
@@ -54,13 +67,17 @@ export default function WeekCalendar({ days = [], shootDay }) {
       <ol className="day-agenda">
         {day.events.map((event) => (
           <li className={event.struck ? 'day-item is-off' : 'day-item'} key={event.id}>
-            <p className="day-time">
-              {event.struck ? <s>{event.from}</s> : `${event.from}–${event.to}`}
-            </p>
+            <p className="day-time">{event.struck ? <s>{event.from}</s> : `${event.from}–${event.to}`}</p>
             <div className="day-body">
               <p className="day-what">{event.title}</p>
               <p className="day-where">
-                {event.struck ? <><Icon name="alert" /> {event.where}</> : event.where}
+                {event.struck ? (
+                  <>
+                    <Icon name="alert" /> {event.where}
+                  </>
+                ) : (
+                  event.where
+                )}
               </p>
             </div>
           </li>
