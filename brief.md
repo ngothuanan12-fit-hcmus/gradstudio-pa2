@@ -112,3 +112,6 @@ Asked whether Prettier should come before or after the move into `client/`, An c
 ### 2.5 HARNESS.md and the contract README (2026-11-19)
 
 > tạo HARNESS.md rồi viết docs/api/README.md
+
+> push rồi viết 01-auth.md
+> hiện tại có làm theo trình tự front end trước không

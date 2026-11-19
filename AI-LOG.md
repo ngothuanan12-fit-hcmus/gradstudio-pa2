@@ -1447,3 +1447,12 @@ Kept: awaiting An's review. `docs/api/README.md`: base path `/api` and JSON; who
 Changed: the endpoints of `04`–`07` are not listed: by the agreed split Khánh writes those files and adds their rows. The error-shape example is fenced as `json`, not `http`, because the marker sends every `http` block of `docs/api/` to the mock, starting with this file. The name of a cancelled booking's status is left to the product owners' answer.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-19 — contract file 01, auth
+Commit: the commit that adds this entry with `docs/api/01-auth.md`, after `29c3d23` (pushed).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: push, then write `01-auth.md`; and whether we are doing the front end first ("push rồi viết 01-auth.md / hiện tại có làm theo trình tự front end trước không").
+Kept: awaiting An's review. The answer: no; the order is rules and gates, then the whole contract, then the mock, then the screens, because the PA#3 rubric scores each endpoint committed before the code that calls it (criterion 5) and the contract and mock before the front end (criterion 9). `01-auth.md`: the user object; the seven demo accounts with e-mail `<name>@gradstudio.test` and password `<name>-demo`, as in the rubric's example; `POST /api/auth/login` (fields and limits, `200` with token and user, `400` with one message per field, `401` that does not say which field is wrong, working in every mock mode) and `GET /api/auth/me` (`200`, `401`); five examples fenced as `http`, request then answer, in an order that works on a fresh mock.
+Changed: the brief names only Linh, Thảo, Mai and Tuấn. The other three accounts needed display names: `customer2` takes Trần Minh Anh from our PA#2 sample conversations; `staff3` (Hoàng Gia Huy) and `superadmin` (Quản trị hệ thống) are new sample names, not facts about the studio.
+Rejected: nothing.
+By hand: none.
