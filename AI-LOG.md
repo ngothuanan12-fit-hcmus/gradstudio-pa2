@@ -1429,3 +1429,12 @@ Kept: run 44462292455 on `5b4f37d`: success; install root tools, install client,
 Changed: nothing. Not yet shown: a red run. The format check went red locally on 35 files before `1ce8ae8` (entry of `c74cbb4`), but CI did not exist then; the test gate cannot fail until the mock's tests exist.
 Rejected: making a commit only to turn CI red on purpose (a red run should come from real work).
 By hand: none.
+
+### 2026-11-19 — HARNESS.md started
+Commit: the commit that adds this entry with `HARNESS.md`.
+Tool: Claude Code (Claude Opus 5.5), reading `git log --follow -- CLAUDE.md` and this log.
+Asked for: create `HARNESS.md`, then write `docs/api/README.md` ("tạo HARNESS.md rồi viết docs/api/README.md").
+Kept: awaiting An's review. `HARNESS.md` with the seven sections of the PA#5 rubric: team and parts; the gates (tool, command, where, the commit that added each, where each went red so far); how to run them; the rules-file timeline, 13 rows from `798a111` to `ca218e1`, each with its reason; four self-review incidents with the check that caught each and the fix commit (`099e406`, `8a74ea3`, `64119d9`, `56b88ca`); the human gates; *What we would change* left for the end. Each commit was checked with `git log` before it was named.
+Changed: incident 3's fix commit holds the corrected version only; the file now says the first try was never committed, so nobody looks for it.
+Rejected: listing gates as "went red" without a run to show: lint, build and CI have no red run yet and say so.
+By hand: none.

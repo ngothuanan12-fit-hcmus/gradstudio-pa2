@@ -108,3 +108,7 @@ The part left out (`[…]`) is about how An manages the team's planning, not abo
 Asked whether Prettier should come before or after the move into `client/`, An chose: move into `client/` first.
 
 > push rồi làm CI
+
+### 2.5 HARNESS.md and the contract README (2026-11-19)
+
+> tạo HARNESS.md rồi viết docs/api/README.md
