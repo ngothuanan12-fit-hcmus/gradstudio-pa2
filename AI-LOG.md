@@ -1510,3 +1510,12 @@ Kept: `mock/server.mjs` reformatted (one line over 120 characters split in two);
 Changed: the assistant's mistake: the earlier test command, which also ran the format check, had been refused (it would have stopped every Node process), and `99fa53d` was committed without running the check again. Caught by the format gate locally; `99fa53d` had not been pushed, so CI never saw the unformatted file.
 Rejected: pushing `99fa53d` unchanged to get a red CI run (a red run must not be produced on purpose).
 By hand: none.
+
+### 2026-11-20 — its own message for a password that is too long
+Commit: the commit that adds this entry with `docs/api/01-auth.md` and `mock/routes/auth.mjs`, after `5e569f7`.
+Tool: Claude Code (Claude Opus 5.5); the child-process test script and contract-check.
+Asked for: change the message ("1 sửa thông báo").
+Kept: awaiting An's review. A password over 128 characters now gets "Mật khẩu tối đa 128 ký tự." in the contract's field table and in the mock; the contract's `## Changes` has the dated line (no client code calls the endpoint yet). Checks: the format check passes; contract-check on a fresh mock: PASS for all five examples of `01-auth.md`; a 129-character password answers `400` with the new message.
+Changed: nothing beyond the request.
+Rejected: nothing.
+By hand: An's decision.

@@ -40,7 +40,7 @@ Errors:
 
 | Status | `code` | When | `fields` |
 |---|---|---|---|
-| `400` | `VALIDATION_ERROR` | a field is missing, not a string, or outside its limits | `email`: "Nhập e-mail." or "E-mail chưa đúng định dạng."; `password`: "Nhập mật khẩu." |
+| `400` | `VALIDATION_ERROR` | a field is missing, not a string, or outside its limits | `email`: "Nhập e-mail." or "E-mail chưa đúng định dạng."; `password`: "Nhập mật khẩu." or "Mật khẩu tối đa 128 ký tự." |
 | `401` | `UNAUTHENTICATED` | no account with this e-mail and password; the message does not say which one is wrong | — |
 
 A sign-in as Linh:
@@ -133,3 +133,4 @@ Content-Type: application/json
 ## Changes
 
 - 2026-11-19 — First version. No client code calls these endpoints yet.
+- 2026-11-20 — A password over 128 characters gets its own message, "Mật khẩu tối đa 128 ký tự.", instead of "Nhập mật khẩu.". No client code calls these endpoints yet.

@@ -8,7 +8,8 @@ function login({ body, db }) {
   const { email, password } = body || {};
   if (typeof email !== 'string' || email.trim() === '') fields.email = 'Nhập e-mail.';
   else if (email.length > 254 || !EMAIL.test(email)) fields.email = 'E-mail chưa đúng định dạng.';
-  if (typeof password !== 'string' || password === '' || password.length > 128) fields.password = 'Nhập mật khẩu.';
+  if (typeof password !== 'string' || password === '') fields.password = 'Nhập mật khẩu.';
+  else if (password.length > 128) fields.password = 'Mật khẩu tối đa 128 ký tự.';
   if (Object.keys(fields).length) return invalid(fields);
 
   // Compared as plain strings: a value such as ' OR '1'='1 is just a wrong password.

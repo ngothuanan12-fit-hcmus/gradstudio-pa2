@@ -132,3 +132,10 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 > mình chưa hiểu hai câu hỏi
 
 > push rồi làm khung mock
+
+> 1 sửa thông báo, nếu mở rộng sang mock thì có ảnh hưởng gì không, xem kỹ lại quy định
+> push
+> với hai câu hỏi 6, 7 thì tạm thời làm theo ý dưới đây, vẫn giữ lại trong bộ danh sách câu hỏi
+> Gói có danh sách “đã gồm” (makeup, trang phục). Mục nào đã gồm thì hiện 0đ trong booking, mục ngoài gói cộng thêm vào tổng.
+> Makeup tính theo người và theo suất của thợ. Trang phục kiểm tra tồn kho theo (mẫu, size, ngày).
+> Kỷ yếu lớp: đại diện nhập sĩ số ước lượng, admin xác nhận và điều chỉnh giá. Bản đầu chỉ cần một tài khoản đại diện kèm link thư viện ảnh chung. Tài khoản riêng từng bạn để làm sau.
