@@ -1609,3 +1609,12 @@ Kept: awaiting An's review. Four Superadmin-only endpoints for step G11: list Ad
 Changed: the brief gives the reminder time (24 hours before the earliest milestone) but no opening hours; `08:00`–`18:00` comes from the PA#2 schedule and is marked as sample data at the top of the file, with the new Admin's name.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — the mock answers 10-admin
+Commit: the commit that adds this entry with `mock/routes/admin.mjs`, `mock/data/settings.json`, `mock/server.mjs` and `mock/data/README.md`, after `b07150e` (the contract).
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check on a fresh mock), ESLint, Prettier.
+Asked for: the mock for `10-admin.md`.
+Kept: awaiting An's review. `settings.json` (08:00–18:00, 24 hours); `mock/routes/admin.mjs`: Superadmin only, field checks with one message per field, an e-mail taken by any account refused with `409`, a new Admin stored so they can sign in, the settings replaced whole. `mock/data/README.md` lists the new file.
+Changed: a correction to the previous entry: it says `10-admin.md` has twelve examples; it has eleven. Checks: contract-check passes all 44 examples of the four files with no value notes and covers all 16 endpoints of the table; `npm test` 4/4; format and lint pass.
+Rejected: nothing.
+By hand: none.

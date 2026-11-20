@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { fail, notFound } from './lib.mjs';
 import auth from './routes/auth.mjs';
 import catalogue from './routes/catalogue.mjs';
+import admin from './routes/admin.mjs';
 import conversations from './routes/conversations.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -25,7 +26,7 @@ if (!(MODE in DELAY)) {
 }
 
 // One module per resource, each a list of { method, path, handler }. Paths may hold :params.
-const ROUTES = [...auth, ...catalogue, ...conversations].map((route) => ({
+const ROUTES = [...auth, ...catalogue, ...conversations, ...admin].map((route) => ({
   ...route,
   pattern: new RegExp(`^${route.path.replace(/:(\w+)/g, '(?<$1>[^/]+)')}$`),
 }));

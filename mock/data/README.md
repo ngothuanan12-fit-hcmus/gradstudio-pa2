@@ -95,6 +95,7 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 | `rooms.json` | Rooms | `conversations`; `04-schedule.md` may add fields |
 | `busy.json` | Times when a person or a room is held by a booking in *Đã đặt lịch* (R1: a booking in *Chờ cọc 30%* holds nothing) | the clash check in `conversations`; `04-schedule.md` and `06-payments.md` (a successful deposit adds the booking's blocks) |
 | `freeTimes.json` | The free time the API offers for a date with a clash (the mock may answer fixed values, PA#3 rubric) | the clash check |
+| `settings.json` | Opening hours (*sample*, 08:00–18:00) and `reminderHoursBefore` (24, from the brief) | `admin`; the reminders of `07-reminders.md` |
 
 ## Changes
 
@@ -103,3 +104,4 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 - 2026-11-20 — The catalogue's values, for `02-catalogue.md`.
 - 2026-11-20 — GS-1023's representative is now Võ Đăng Khoa (`u-khoa`): Uyên had both a booked GS-1023 and a conversation with no agreed time, which did not fit together.
 - 2026-11-20 — Files for `03-conversations.md`: conversations, proposals, rooms, busy times, free times.
+- 2026-11-20 — `settings.json` for `10-admin.md`.
