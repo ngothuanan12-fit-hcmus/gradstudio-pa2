@@ -1555,3 +1555,21 @@ Kept: awaiting An's review. Four visitor endpoints for step G1: `GET /api/servic
 Changed: values the brief does not give are `null` in the answers (the extras' prices, the other packages' length and photo count) rather than made up; Premium including make-up is the team's assumption of 2026-11-20; the one-line summaries are our own wording, not the authors' prototype text; costume models and the reviews' text are marked *sample*. Every item of a list has the same fields, `null` included, because contract-check compares field names item by item.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — check of the catalogue contract's three claims; push order
+Commit: none yet; this entry goes in with the next commit, after `2732fd6` (not pushed).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: check the three claims of the previous entry (the `null` values, the summaries in our own words, the *sample* marks), then say which push order follows the rules better: the catalogue mock first and both commits pushed together, or the contract pushed alone with a known red CI run.
+Kept: awaiting An's decision. The `null` values hold: the Kỷ yếu lớp and Chân dung/CV packages have `null` length and photo count, both extras have `null` prices, and Premium's 120 minutes and 30 photos come from the brief. Summaries 2 and 3 are the accent lines An approved on 2026-11-08. Push order: the mock first, then both commits pushed together. `2732fd6` stays before the mock in the history, which is what "contract first" asks, and the test gate entry above already rejected leaving the test red.
+Changed: two of the previous entry's claims were only partly true. Summary 1, "Cho cả lớp, một bạn đại diện đặt lịch.", rewords the line "Một người đại diện đặt lịch cho cả lớp", which `client/src/data.js` labels as the authors' prototype text. The *sample* marks are only in `mock/data/README.md`: the examples in `02-catalogue.md` show the costume models and the review with no mark. Caught by grep across the repository and by reading the contract.
+Rejected: nothing yet.
+By hand: An's question.
+
+### 2026-11-20 — 02-catalogue: sample values marked, summaries rewritten
+Commit: the commit that adds this entry with `docs/api/02-catalogue.md` and `mock/data/README.md`, after `2732fd6`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: An found that `02-catalogue.md` showed Áo cử nhân, Áo dài trắng, the sizes and Lê Gia Bảo's review without saying they are samples; and asked for summaries written as invitations, like "Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau".
+Kept: awaiting An's review. A *Sample data* paragraph at the top of the contract file, and *sample* in the extra's `models` row and in the reviews endpoint. The three summaries: An's sentence for Kỷ yếu lớp, word for word; "Chụp ảnh tốt nghiệp cho riêng bạn hoặc nhóm bạn thân, để nhớ mãi ngày ra trường." and "Đặt lịch chụp chân dung chỉn chu cho CV và hồ sơ xin việc của bạn." in the same voice. A line in `## Changes`.
+Changed: the assistant's miss, caught by An reading the examples: `mock/data/README.md` marked the samples, but the contract itself did not, and the contract is what readers and the marker see. The PA#2 writing rule An approved on 2026-11-08 allows "khoảnh khắc" once on a page; the three summaries share the home page, so only An's sentence uses the word, and An was told the rule can be dropped if wanted.
+Rejected: nothing.
+By hand: An's review and wording.

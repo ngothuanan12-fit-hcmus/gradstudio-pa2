@@ -4,6 +4,8 @@ What a visitor sees before signing in (step G1): the services with their package
 
 Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghiệp from 1.800.000đ, Chân dung/CV from 690.000đ; Gói Tốt nghiệp Premium is 1.800.000đ for 2 hours and 30 edited photos. Until the product owners answer (`FRONTEND.md`, section 5), the team assumes: each package lists the extras it already includes, which then cost 0đ in a booking; an extra outside the package is added to the total; make-up is priced per person and per artist slot; costumes have models and sizes, and their stock is checked by model, size and date. A value nobody has given yet is `null`.
 
+**Sample data.** The costume models and sizes (Áo cử nhân S–XL, Áo dài trắng S–L) and the reviews (names, ratings, texts, dates) in the examples below are sample data written by the team to fill the story, not facts from the brief; `mock/data/README.md` marks each value's source.
+
 ## Objects
 
 **Service**
@@ -12,7 +14,7 @@ Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghi�
 |---|---|---|
 | `id` | string | `ky-yeu`, `tot-nghiep`, `chan-dung` |
 | `name` | string | Shown on screen |
-| `summary` | string | One line: who it is for |
+| `summary` | string | One line inviting the reader, saying who the service is for |
 | `priceFrom` | integer | The lowest package price, in đồng |
 | `priceUnit` | string or `null` | `"người"` when the price is per person, otherwise `null` |
 | `packages` | list of packages | At least one |
@@ -39,7 +41,7 @@ Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghi�
 | `price` | integer or `null` | In đồng, when the extra is not included; `null` while the price waits for the product owners |
 | `priceUnit` | string | `"người"` for make-up, `"bộ"` for a costume |
 | `note` | string | How it is charged, in Vietnamese |
-| `models` | list | For a costume: `{ "id", "name", "sizes" }` with `sizes` a list of strings; empty for make-up |
+| `models` | list | For a costume: `{ "id", "name", "sizes" }` with `sizes` a list of strings; empty for make-up. The models in the examples are *sample* |
 
 **Photo**
 
@@ -80,7 +82,7 @@ GET /api/services
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "ky-yeu", "name": "Kỷ yếu lớp", "summary": "Cho cả lớp, một bạn đại diện đặt lịch.", "priceFrom": 350000, "priceUnit": "người", "packages": [{"id": "ky-yeu-lop", "name": "Gói Kỷ yếu lớp", "price": 350000, "priceUnit": "người", "durationMinutes": null, "editedPhotos": null, "includes": []}]}, {"id": "tot-nghiep", "name": "Tốt nghiệp", "summary": "Cho một người hoặc nhóm nhỏ.", "priceFrom": 1800000, "priceUnit": null, "packages": [{"id": "tot-nghiep-premium", "name": "Gói Tốt nghiệp Premium", "price": 1800000, "priceUnit": null, "durationMinutes": 120, "editedPhotos": 30, "includes": ["makeup"]}]}, {"id": "chan-dung", "name": "Chân dung/CV", "summary": "Cho CV và hồ sơ xin việc.", "priceFrom": 690000, "priceUnit": null, "packages": [{"id": "chan-dung-cv", "name": "Gói Chân dung/CV", "price": 690000, "priceUnit": null, "durationMinutes": null, "editedPhotos": null, "includes": []}]}]
+[{"id": "ky-yeu", "name": "Kỷ yếu lớp", "summary": "Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau.", "priceFrom": 350000, "priceUnit": "người", "packages": [{"id": "ky-yeu-lop", "name": "Gói Kỷ yếu lớp", "price": 350000, "priceUnit": "người", "durationMinutes": null, "editedPhotos": null, "includes": []}]}, {"id": "tot-nghiep", "name": "Tốt nghiệp", "summary": "Chụp ảnh tốt nghiệp cho riêng bạn hoặc nhóm bạn thân, để nhớ mãi ngày ra trường.", "priceFrom": 1800000, "priceUnit": null, "packages": [{"id": "tot-nghiep-premium", "name": "Gói Tốt nghiệp Premium", "price": 1800000, "priceUnit": null, "durationMinutes": 120, "editedPhotos": 30, "includes": ["makeup"]}]}, {"id": "chan-dung", "name": "Chân dung/CV", "summary": "Đặt lịch chụp chân dung chỉn chu cho CV và hồ sơ xin việc của bạn.", "priceFrom": 690000, "priceUnit": null, "packages": [{"id": "chan-dung-cv", "name": "Gói Chân dung/CV", "price": 690000, "priceUnit": null, "durationMinutes": null, "editedPhotos": null, "includes": []}]}]
 ```
 
 ## GET /api/extras
@@ -161,7 +163,7 @@ Content-Type: application/json
 
 ## GET /api/reviews
 
-Who: anyone. Reviews by earlier customers, newest first.
+Who: anyone. Reviews by earlier customers, newest first. The reviews in the example and in the mock are *sample* data.
 
 Success: `200` with a list of reviews.
 
@@ -181,3 +183,4 @@ Content-Type: application/json
 ## Changes
 
 - 2026-11-20 — First version. No client code calls these endpoints yet.
+- 2026-11-20 — Sample values marked as such (costume models and sizes, reviews); the one-line summaries rewritten as invitations. No client code calls these endpoints yet.

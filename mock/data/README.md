@@ -38,7 +38,7 @@ From the brief: Kỷ yếu lớp từ 350.000đ/người, Tốt nghiệp từ 1.
 |---|---|---|
 | Services | Kỷ yếu lớp (from 350.000đ per person), Tốt nghiệp (from 1.800.000đ), Chân dung/CV (from 690.000đ) | brief |
 | Packages | Gói Kỷ yếu lớp 350.000đ/người; Gói Tốt nghiệp Premium 1.800.000đ, 120 minutes, 30 edited photos, includes make-up; Gói Chân dung/CV 690.000đ | brief; Premium including make-up is the team's *assumption*; the other packages' length and photo counts are `null` (*waiting*) |
-| One-line summaries | "Cho cả lớp, một bạn đại diện đặt lịch.", "Cho một người hoặc nhóm nhỏ.", "Cho CV và hồ sơ xin việc." | our wording |
+| One-line summaries | "Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau." (An's wording); "Chụp ảnh tốt nghiệp cho riêng bạn hoặc nhóm bạn thân, để nhớ mãi ngày ra trường."; "Đặt lịch chụp chân dung chỉn chu cho CV và hồ sơ xin việc của bạn." | our wording; "khoảnh khắc" once on the home page (PA#2 writing rule 7) |
 | Extras | Makeup (per person and per artist slot), Thuê trang phục (by model and size) | brief names them; how they are charged is the team's *assumption*; prices `null` (*waiting*) |
 | Costume models | Áo cử nhân (S–XL), Áo dài trắng (S–L) | *sample* |
 | Photos | One per service, the licensed photos of PA#2 with their authors and licences (`docs/IMAGE_SOURCES.md`) | PA#2 |
