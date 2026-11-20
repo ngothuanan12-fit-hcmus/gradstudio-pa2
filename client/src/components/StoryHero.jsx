@@ -17,8 +17,8 @@ export default function StoryHero({ bare = false }) {
       {!bare && (
         <img
           className="hero-photo"
-          src="./photos/lop-hoc-800.webp"
-          srcSet="./photos/lop-hoc-800.webp 800w, ./photos/lop-hoc-1600.webp 1600w"
+          src="/photos/lop-hoc-800.webp"
+          srcSet="/photos/lop-hoc-800.webp 800w, /photos/lop-hoc-1600.webp 1600w"
           sizes="100vw"
           width="1600"
           height="1067"

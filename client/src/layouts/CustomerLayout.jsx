@@ -1,23 +1,25 @@
-// Customer pages. Includes the header, menu and footer landmarks.
+import { Link, NavLink } from 'react-router';
+import usePageMeta from '../hooks/usePageMeta.js';
+
+// Customer screens, dark theme. Includes the header, menu and footer landmarks.
 // `wide` lets a page run edge to edge and set its own section widths.
-export default function CustomerLayout({ current, wide = false, children }) {
+export default function CustomerLayout({ title = 'GradStudio: chụp ảnh tốt nghiệp', wide = false, children }) {
+  usePageMeta(title, 'cinema');
   return (
     <>
       <header className="page-header">
-        <a className="page-brand" href="index.html">
+        <Link className="page-brand" to="/">
           GradStudio
-        </a>
+        </Link>
         <nav className="page-nav" aria-label="Trang khách">
           <ul>
             <li>
-              <a href="index.html" aria-current={current === 'home' ? 'page' : undefined}>
+              <NavLink to="/" end>
                 Trang chủ
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a href="lich-chup.html" aria-current={current === 'schedule' ? 'page' : undefined}>
-                Lịch chụp của tôi
-              </a>
+              <NavLink to="/lich-chup">Lịch chụp của tôi</NavLink>
             </li>
           </ul>
         </nav>

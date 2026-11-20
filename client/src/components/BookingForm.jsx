@@ -7,7 +7,7 @@ import { fmtTime, toMinutes } from '../utils/time.js';
 // form). Details agreed in the chat are filled in; the end times follow from the start time and the 2-hour package.
 // The page opens at 14:00, so the submit is enabled; choosing 09:00 brings back the clash and disables it.
 // The card can fold to one line, which still shows the time, the clash note and the submit.
-// The fields have no `name`: submitting only opens lich-chup.html, which reads its booking from data.js, so no booking
+// The fields have no `name`: submitting only opens /lich-chup, which reads its booking from data.js, so no booking
 // detail travels in the address.
 export default function BookingForm({ booking, services = [], conflict, start, onStartChange, open, onToggle }) {
   // Make-up takes the hour before the shoot; the Premium package shoots for two hours.
@@ -15,7 +15,7 @@ export default function BookingForm({ booking, services = [], conflict, start, o
   const makeup = `${fmtTime(t - 60)}–${fmtTime(t)}`;
   const shoot = `${fmtTime(t)}–${fmtTime(t + 120)}`;
   return (
-    <form className="booking-card" id="booking-moi" action="lich-chup.html" aria-labelledby="booking-card-title">
+    <form className="booking-card" id="booking-moi" action="/lich-chup" aria-labelledby="booking-card-title">
       <div className="booking-card-head">
         <h3 id="booking-card-title">Booking mới cho Linh</h3>
         <Button variant="secondary" aria-expanded={open} aria-controls="booking-card-details" onClick={onToggle}>

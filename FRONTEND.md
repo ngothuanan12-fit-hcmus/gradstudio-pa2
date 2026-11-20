@@ -45,7 +45,10 @@ One row per route, as the browser shows it (`BrowserRouter`). A route that exist
 
 | Path | Role | Steps | Endpoints |
 |---|---|---|---|
-| *added as the screens are built* | | | |
+| `/` | visitor | G1 (still the PA#2 page, not yet on the API) | — |
+| `/lich-chup` | customer | G7 (still the PA#2 page, not yet on the API) | — |
+| `/quan-ly` | admin | G4–G6 (still the PA#2 page, not yet on the API) | — |
+| any other path | anyone | not-found screen | — |
 
 ## 5. Product owner decisions
 
@@ -67,7 +70,7 @@ Questions posted under *GradStudio — questions for the product owners* (course
 |---|---|---|
 | React, React DOM | `client/` | The course's front-end stack |
 | Vite | `client/` | Build and dev server, with the `/api` proxy |
-| React Router | `client/` | One route per screen (`BrowserRouter`); added with the first screen that needs it |
+| React Router 8 | `client/` | One route per screen (`BrowserRouter`), router links, protected routes. Needs React 19.2.7 or newer; the lock file has 19.3.1 |
 | three | `client/` | The home page's 3D story only, loaded with a dynamic `import()` at 768 px and wider |
 | ESLint and its React plugins | `client/` | The lint gate |
 | Prettier | root | The format gate |

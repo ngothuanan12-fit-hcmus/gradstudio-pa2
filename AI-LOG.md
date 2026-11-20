@@ -1618,3 +1618,12 @@ Kept: awaiting An's review. `settings.json` (08:00–18:00, 24 hours); `mock/rou
 Changed: a correction to the previous entry: it says `10-admin.md` has twelve examples; it has eleven. Checks: contract-check passes all 44 examples of the four files with no value notes and covers all 16 endpoints of the table; `npm test` 4/4; format and lint pass.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — front-end base, part 1: one page with React Router
+Commit: the commit that adds this entry, after `9862a43` (pushed, CI green).
+Tool: Claude Code (Claude Opus 5.5); Playwright on the built client (`vite preview`), each route opened directly.
+Asked for: build the front end's base first ("làm phần nền front end trước"), in three commits: router, API helper with the shared states, sign-in and roles.
+Kept: awaiting An's review. React Router 8.5.2 added to `client/` (agreed in the brief's choices). The three HTML files become one: `index.html` loads `src/main.jsx` (`BrowserRouter`), `src/App.jsx` holds the routes `/`, `/lich-chup`, `/quan-ly` and a not-found screen for any other path. `vite.config.js`: `base: '/'` so a nested route still finds its assets, and `/api` forwarded to port 3001 in both `server.proxy` and `preview.proxy`. `usePageMeta` sets the tab title and the colour theme per screen, with a cleanup. `Button` takes `to` for a router link; the layouts use `Link` and `NavLink` (which sets `aria-current`). Photo paths start at `/`. The pages themselves are still the PA#2 ones on `data.js`; each is rebuilt on the API in its own step (`FRONTEND.md`, *Routes*).
+Changed: React Router 8 asks for React 19.2.7 or newer; the lock file already had 19.3.1, so nothing else moved. The first route check failed before opening a page: Git Bash turned the argument `/` into `E:/Git/`; rerun with path conversion off. Checks: format, lint and build pass; `/`, `/quan-ly`, `/lich-chup` and an unknown path, each opened directly at 360 and 1280 px: one `<h1>`, the right title and theme (`studio` for the management page, `cinema` for the others), no sideways scroll, no console error, no failed request, no broken image.
+Rejected: nothing.
+By hand: none.

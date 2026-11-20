@@ -1,11 +1,15 @@
-// Studio management page. A separate layout, not access control: anyone can open this path.
-export default function AdminLayout({ children }) {
+import { Link } from 'react-router';
+import usePageMeta from '../hooks/usePageMeta.js';
+
+// Studio management screens, light theme. A separate layout, not access control: the role check comes with sign-in.
+export default function AdminLayout({ title = 'Quản lý booking: GradStudio', children }) {
+  usePageMeta(title, 'studio');
   return (
     <>
       <header className="page-header">
-        <a className="page-brand" href="index.html">
+        <Link className="page-brand" to="/">
           GradStudio
-        </a>
+        </Link>
         <p className="page-role">Quản lý studio · Thảo</p>
         {/* Links within this page: it is long on a phone. Each one opens a section that is really there. */}
         <nav className="page-nav" aria-label="Các phần của trang quản lý">

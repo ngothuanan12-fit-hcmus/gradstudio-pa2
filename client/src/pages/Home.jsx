@@ -23,7 +23,7 @@ export default function Home() {
   }
 
   return (
-    <CustomerLayout current="home" wide>
+    <CustomerLayout wide>
       <Story />
 
       <section className="home-section" id="goi-chup" aria-labelledby="goi-chup-title">
@@ -90,7 +90,7 @@ export default function Home() {
 
       <div className="home-section next-screen">
         <p>Màn hình tiếp theo của bản mẫu:</p>
-        <Button variant="secondary" href="quan-ly.html">
+        <Button variant="secondary" to="/quan-ly">
           Nhân viên studio: mở cuộc trò chuyện này
         </Button>
       </div>

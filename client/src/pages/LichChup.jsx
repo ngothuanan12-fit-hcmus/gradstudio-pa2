@@ -9,7 +9,7 @@ import '../styles/schedule.css';
 // waiting for the 30% deposit. No tab, demo switch or payment simulation.
 export default function LichChup() {
   return (
-    <CustomerLayout current="schedule">
+    <CustomerLayout title="Lịch chụp của tôi: GradStudio">
       <h1 className="page-title">Lịch chụp của tôi</h1>
       <p className="page-lede">Tuần chụp, thông tin GS-1024 và tiền cọc cho buổi chụp ngày 24/10/2026.</p>
       <p className="status-line" role="status">

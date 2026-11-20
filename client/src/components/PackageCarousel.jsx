@@ -230,8 +230,8 @@ export default function PackageCarousel({ items, askingId, onAsk }) {
                   }}
                 >
                   <img
-                    src={`./photos/${name}-${small}.webp`}
-                    srcSet={`./photos/${name}-${small}.webp ${small}w, ./photos/${name}-${large}.webp ${large}w`}
+                    src={`/photos/${name}-${small}.webp`}
+                    srcSet={`/photos/${name}-${small}.webp ${small}w, /photos/${name}-${large}.webp ${large}w`}
                     sizes="(min-width: 1280px) 460px, 62vw"
                     width={width}
                     height={height}
