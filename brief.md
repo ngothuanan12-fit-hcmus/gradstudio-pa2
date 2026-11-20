@@ -153,3 +153,5 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 > mô tả ngắn nên tự viết kiểu Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau
 
 > viết 03-conversations.md hội thoại quay về đang tư vấn
+
+> viết 10-admin.md

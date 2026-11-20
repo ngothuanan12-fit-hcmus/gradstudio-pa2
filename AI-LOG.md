@@ -1600,3 +1600,12 @@ Kept: awaiting An's review. Seeds: the four conversations of the seed story, one
 Changed: nothing. Checks: contract-check passes all 33 examples on the first run, with no value notes, and covers all 12 endpoints of the table; `npm test` 4/4; format and lint pass. For Khánh: a successful deposit in `06-payments.md` must add the booking's held times to `busy.json`'s data, or the clash check will not see GS-1024.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — contract file 10, Admin accounts and settings
+Commit: the commit that adds this entry with `docs/api/10-admin.md` and `docs/api/README.md`, after `8dc9daa` (pushed, CI green). The mock follows in the next commit.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: write `10-admin.md` ("viết 10-admin.md").
+Kept: awaiting An's review. Four Superadmin-only endpoints for step G11: list Admin accounts, create one (name, e-mail not used by any account, password 8–128 characters; `409` for an e-mail already taken; the password never in an answer), read and replace the settings (`openingHours` with `open` before `close`, `reminderHoursBefore` from 1 to 168). Every endpoint answers `403` to another role: the PA#4 rubric's S4 check sends exactly "as `thao`: create an Admin account, change the settings". Twelve examples.
+Changed: the brief gives the reminder time (24 hours before the earliest milestone) but no opening hours; `08:00`–`18:00` comes from the PA#2 schedule and is marked as sample data at the top of the file, with the new Admin's name.
+Rejected: nothing.
+By hand: none.

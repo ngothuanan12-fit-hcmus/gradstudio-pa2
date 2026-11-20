@@ -91,6 +91,10 @@ Every endpoint the client calls **and that has an example** in its file. contrac
 | `POST` | `/api/conversations/:id/messages` | customer (own), admin | `03-conversations.md` |
 | `POST` | `/api/conversations/:id/proposals` | admin | `03-conversations.md` |
 | `POST` | `/api/conversations/:id/proposals/:proposalId/answer` | customer (own) | `03-conversations.md` |
+| `GET` | `/api/admins` | superadmin | `10-admin.md` |
+| `POST` | `/api/admins` | superadmin | `10-admin.md` |
+| `GET` | `/api/settings` | superadmin | `10-admin.md` |
+| `PUT` | `/api/settings` | superadmin | `10-admin.md` |
 
 ### Planned
 
@@ -99,10 +103,6 @@ Endpoints designed but not yet written up with examples, by file. Not a table, s
 - GET /api/bookings/:id/previews · customer (own), staff (assigned), admin · `09-gallery.md`
 - PUT /api/bookings/:id/selection · customer (own) · `09-gallery.md`
 - POST /api/bookings/:id/receive · customer (own) · `09-gallery.md`
-- GET /api/admins · superadmin · `10-admin.md`
-- POST /api/admins · superadmin · `10-admin.md`
-- GET /api/settings · superadmin · `10-admin.md`
-- PUT /api/settings · superadmin · `10-admin.md`
 
 ## Changes
 
@@ -113,3 +113,4 @@ Once client code calls an endpoint, every change to it gets a line here or in it
 - 2026-11-20 — The endpoint table lists only endpoints with examples; the others wait under *Planned* until their file is written, so contract-check can run in full in `npm test` at every step. No client code calls the API yet.
 - 2026-11-20 — The four endpoints of `02-catalogue.md` move from *Planned* to the table with their examples.
 - 2026-11-20 — The six endpoints of `03-conversations.md` move from *Planned* to the table with their examples.
+- 2026-11-20 — The four endpoints of `10-admin.md` move from *Planned* to the table with their examples.
