@@ -58,8 +58,8 @@ Questions posted under *GradStudio — questions for the product owners* (course
 | Who may cancel or change a booking, and whether the deposit is refunded | | waiting |
 | What a reminder says and where it shows in the customer's account | | waiting |
 | What happens after the customer declines a proposed time | | waiting |
-| The prices of the extras (make-up, costume rental); how a costume is chosen and whether its stock is checked | | waiting |
-| Class yearbook: does the representative give the number of people (350.000đ/người)? | | waiting |
+| The prices of the extras (make-up, costume rental); how a costume is chosen and whether its stock is checked | | waiting. **Team assumption until then (An, 2026-11-20):** each package lists what it already includes (make-up, costume); an included item shows 0đ in the booking, an item outside the package is added to the total. Make-up is priced per person and per artist slot. Costumes are checked for stock by model, size and date |
+| Class yearbook: does the representative give the number of people (350.000đ/người)? | | waiting. **Team assumption until then (An, 2026-11-20):** the representative enters an estimated head count; the Admin confirms it and adjusts the price. The first version has one representative account with a link to the class's shared gallery; accounts for each classmate come later |
 
 ## 6. Libraries
 

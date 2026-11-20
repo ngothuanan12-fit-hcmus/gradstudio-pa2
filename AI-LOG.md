@@ -1519,3 +1519,12 @@ Kept: awaiting An's review. A password over 128 characters now gets "Mật khẩ
 Changed: nothing beyond the request.
 Rejected: nothing.
 By hand: An's decision.
+
+### 2026-11-20 — team assumptions for extras, costumes and the class yearbook
+Commit: the commit that adds this entry with `FRONTEND.md` and `mock/data/README.md`, after `8f65609`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: until the product owners answer questions 6 and 7, work with An's rules, and keep both questions in the list.
+Kept: awaiting An's review. `FRONTEND.md`, section 5: both questions stay *waiting*, each with the team's assumption: a package lists what it includes (make-up, costume), included items show 0đ and others are added to the total; make-up priced per person and per artist slot; costume stock checked by model, size and date; for a class yearbook the representative enters an estimated head count, the Admin confirms it and adjusts the price, one representative account with a shared gallery link, classmates' accounts later. `mock/data/README.md`: the seed story follows them (Gói Tốt nghiệp Premium includes make-up, which keeps Linh at 1.800.000đ; GS-1023's 20 people estimated and confirmed by the Admin; costumes with model and sizes).
+Changed: nothing beyond the request. These assumptions reach Khánh's files: the clash check must cover costume stock (`04-schedule.md`) and the booking's price must list included and added items (`05-bookings.md`).
+Rejected: nothing.
+By hand: An's rules.
