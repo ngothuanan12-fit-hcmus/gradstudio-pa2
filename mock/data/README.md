@@ -32,6 +32,18 @@ Accounts sign in with `<name>@gradstudio.test` and `<name>-demo` (`users.json`; 
 
 From the brief: Kỷ yếu lớp từ 350.000đ/người, Tốt nghiệp từ 1.800.000đ, Chân dung/CV từ 690.000đ; Gói Tốt nghiệp Premium, 2 hours, 30 edited photos, 1.800.000đ. Until the product owners answer (*assumption*, `FRONTEND.md` section 5): each package lists what it already includes (make-up, costume); an included item costs 0đ in the booking, an item outside the package is added to the total; make-up is priced per person and per artist slot. Gói Tốt nghiệp Premium includes make-up, which is why Linh's make-up adds nothing to 1.800.000đ. The prices of extras outside a package are *waiting*.
 
+## Catalogue (`02-catalogue.md`)
+
+| Item | Values | Source |
+|---|---|---|
+| Services | Kỷ yếu lớp (from 350.000đ per person), Tốt nghiệp (from 1.800.000đ), Chân dung/CV (from 690.000đ) | brief |
+| Packages | Gói Kỷ yếu lớp 350.000đ/người; Gói Tốt nghiệp Premium 1.800.000đ, 120 minutes, 30 edited photos, includes make-up; Gói Chân dung/CV 690.000đ | brief; Premium including make-up is the team's *assumption*; the other packages' length and photo counts are `null` (*waiting*) |
+| One-line summaries | "Cho cả lớp, một bạn đại diện đặt lịch.", "Cho một người hoặc nhóm nhỏ.", "Cho CV và hồ sơ xin việc." | our wording |
+| Extras | Makeup (per person and per artist slot), Thuê trang phục (by model and size) | brief names them; how they are charged is the team's *assumption*; prices `null` (*waiting*) |
+| Costume models | Áo cử nhân (S–XL), Áo dài trắng (S–L) | *sample* |
+| Photos | One per service, the licensed photos of PA#2 with their authors and licences (`docs/IMAGE_SOURCES.md`) | PA#2 |
+| Reviews | Three, the newest by Lê Gia Bảo (GS-1021) | *sample* text |
+
 ## Conversations
 
 One in each status the brief names, so step G4 shows all four.
@@ -75,3 +87,4 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 
 - 2026-11-20 — First version. No client code calls the API yet. The JSON files for each resource follow the field names of its contract file, written when that file is.
 - 2026-11-20 — The team's assumptions for extras, costumes and the class yearbook (`FRONTEND.md`, section 5) written into the seed story, until the product owners answer.
+- 2026-11-20 — The catalogue's values, for `02-catalogue.md`.

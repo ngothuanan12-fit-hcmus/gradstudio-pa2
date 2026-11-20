@@ -81,15 +81,15 @@ Every endpoint the client calls **and that has an example** in its file. contrac
 |---|---|---|---|
 | `POST` | `/api/auth/login` | visitor | `01-auth.md` |
 | `GET` | `/api/auth/me` | any signed in | `01-auth.md` |
+| `GET` | `/api/services` | visitor | `02-catalogue.md` |
+| `GET` | `/api/extras` | visitor | `02-catalogue.md` |
+| `GET` | `/api/photos` | visitor | `02-catalogue.md` |
+| `GET` | `/api/reviews` | visitor | `02-catalogue.md` |
 
 ### Planned
 
 Endpoints designed but not yet written up with examples, by file. Not a table, so contract-check does not read them yet. Khánh adds the endpoints of `04`–`08` here, or straight to the table with their examples.
 
-- GET /api/services · visitor · `02-catalogue.md`
-- GET /api/extras · visitor · `02-catalogue.md`
-- GET /api/photos · visitor · `02-catalogue.md`
-- GET /api/reviews · visitor · `02-catalogue.md`
 - GET /api/conversations · customer (own), admin · `03-conversations.md`
 - POST /api/conversations · customer · `03-conversations.md`
 - GET /api/conversations/:id · customer (own), admin · `03-conversations.md`
@@ -111,3 +111,4 @@ Once client code calls an endpoint, every change to it gets a line here or in it
 - 2026-11-19 — First version: base path, auth header, error shape, status codes, conventions, files, endpoints of `01`–`03` and `08`–`10`. No client code calls the API yet.
 - 2026-11-20 — `08-jobs.md` moves to Khánh with step G8; its three rows leave this table until he writes the file. No client code calls the API yet.
 - 2026-11-20 — The endpoint table lists only endpoints with examples; the others wait under *Planned* until their file is written, so contract-check can run in full in `npm test` at every step. No client code calls the API yet.
+- 2026-11-20 — The four endpoints of `02-catalogue.md` move from *Planned* to the table with their examples.

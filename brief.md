@@ -145,3 +145,5 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 > bổ sung lưu ý ảnh hưởng tới phần Khánh vào đoạn tin nhắn gửi Khánh
 
 > push rồi dùng danh sách Planned
+
+> viết 02-catalogue.md

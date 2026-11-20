@@ -1546,3 +1546,12 @@ Kept: awaiting An's review. `tools/contract-check.mjs` copied from Classroom unc
 Changed: the first draft stopped the mock with `kill()` and restarted it at once on the same port, which can fail while the port is still taken; `stop()` now waits for the child to exit. Checks: `npm test` 4/4 pass; `npm run format:check` and `npm run lint` pass; a probe on a copy of `docs/api/` outside the repository, with one example changed from `200` to `201`, made contract-check fail with exit code 1, so the test gate can go red.
 Rejected: leaving the test red until the contract is complete (it would hide new failures and mark every pull request red).
 By hand: An's choice.
+
+### 2026-11-20 — contract file 02, the catalogue
+Commit: the commit that adds this entry with `docs/api/02-catalogue.md`, `docs/api/README.md` and `mock/data/README.md`, after `a47d1a0` (pushed, CI green).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: write `02-catalogue.md` ("viết 02-catalogue.md").
+Kept: awaiting An's review. Four visitor endpoints for step G1: `GET /api/services` (each service with its packages), `GET /api/extras`, `GET /api/photos` (optional `serviceId`, checked against the services: `400` otherwise), `GET /api/reviews`. Objects: service, package (price, unit, length, edited photos, the extras it includes), extra (kind, price, unit, how it is charged, costume models and sizes), photo (both file sizes, width and height so nothing jumps, Vietnamese alt, the licence and source of each photo), review. Six examples. The README's table gains the four rows from *Planned*; `mock/data/README.md` gains a catalogue section marking each value's source.
+Changed: values the brief does not give are `null` in the answers (the extras' prices, the other packages' length and photo count) rather than made up; Premium including make-up is the team's assumption of 2026-11-20; the one-line summaries are our own wording, not the authors' prototype text; costume models and the reviews' text are marked *sample*. Every item of a list has the same fields, `null` included, because contract-check compares field names item by item.
+Rejected: nothing.
+By hand: none.
