@@ -16,11 +16,14 @@ export class ApiError extends Error {
   }
 }
 
-// The auth context tells this module how to read the token and what to do when the API stops accepting it.
-let getToken = () => null;
+// The auth context sets the token here when the user signs in or out, and says what to do when the API stops accepting
+// it. Kept in this module, not in React state, so the very first request of a reload already carries it.
+let token = null;
 let onUnauthorized = () => {};
+export function setApiToken(value) {
+  token = value;
+}
 export function configureApi(options) {
-  getToken = options.getToken;
   onUnauthorized = options.onUnauthorized;
 }
 
@@ -29,8 +32,8 @@ export async function api(path, { method = 'GET', body, signal } = {}) {
   const headers = {};
   const isForm = body instanceof FormData;
   if (body !== undefined && !isForm) headers['Content-Type'] = 'application/json';
-  const token = getToken();
-  if (token) headers.Authorization = `Bearer ${token}`;
+  const sent = token;
+  if (sent) headers.Authorization = `Bearer ${sent}`;
   const signals = [AbortSignal.timeout(TIMEOUT_MS), ...(signal ? [signal] : [])];
 
   let res;
@@ -52,7 +55,7 @@ export async function api(path, { method = 'GET', body, signal } = {}) {
 
   const data = await res.json().catch(() => null);
   if (!res.ok) {
-    if (res.status === 401 && token) onUnauthorized();
+    if (res.status === 401 && sent) onUnauthorized();
     throw new ApiError(res.status, data);
   }
   return data;

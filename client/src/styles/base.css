@@ -322,3 +322,15 @@ a {
   line-height: 40px;
   font-weight: 500;
 }
+
+/* The signed-in user and Đăng xuất, at the end of the header; wraps under the menu on a phone. */
+.account-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+}
+.account-who {
+  margin: 0;
+  color: var(--ink-muted);
+}

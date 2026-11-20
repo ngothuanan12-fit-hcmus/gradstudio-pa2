@@ -46,9 +46,11 @@ One row per route, as the browser shows it (`BrowserRouter`). A route that exist
 | Path | Role | Steps | Endpoints |
 |---|---|---|---|
 | `/` | visitor | G1 (still the PA#2 page, not yet on the API) | — |
-| `/lich-chup` | customer | G7 (still the PA#2 page, not yet on the API) | — |
-| `/quan-ly` | admin | G4–G6 (still the PA#2 page, not yet on the API) | — |
+| `/lich-chup` | customer (protected) | G7 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
+| `/quan-ly` | admin (protected) | G4–G6 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
 | any other path | anyone | not-found screen | — |
+
+A protected route opened while signed out goes to `/dang-nhap` (the sign-in screen, step G2, next) and back after sign-in; opened with another role it is turned away with a link to that role's home. Homes: customer `/lich-chup`, admin `/quan-ly`, staff `/cong-viec`, Superadmin `/quan-tri` (the last two come with steps G8 and G11).
 
 ## 5. Product owner decisions
 

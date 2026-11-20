@@ -1,4 +1,5 @@
 import { Link, NavLink } from 'react-router';
+import AccountBar from '../components/AccountBar.jsx';
 import usePageMeta from '../hooks/usePageMeta.js';
 
 // Customer screens, dark theme. Includes the header, menu and footer landmarks.
@@ -23,6 +24,7 @@ export default function CustomerLayout({ title = 'GradStudio: chụp ảnh tốt
             </li>
           </ul>
         </nav>
+        <AccountBar />
       </header>
       <main className={wide ? 'page-main-wide' : 'page-main'}>{children}</main>
       <footer className="page-footer">GradStudio. Bản mẫu cho môn CSC13008, dữ liệu minh họa.</footer>
