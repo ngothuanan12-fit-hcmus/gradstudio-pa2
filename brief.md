@@ -186,3 +186,9 @@ Prompts of a review session that ran beside the ones above on 2026-11-20, in the
 > commit cho đúng quy định ghi ai log, không sửa gì
 
 > xem file nào cần ghi đúng file lúc commit nữa thì chuẩn bị ghi
+
+> push
+> sửa lại
+> Đăng nhập sai xong, focus rơi về <body> vì nút bị khóa trong lúc chờ. Người dùng bàn phím phải Tab lại từ đầu trang
+> Mai, Tuấn, staff3 và superadmin đăng nhập xong rơi vào not-found chung "Địa chỉ này không có trong GradStudio". FRONTEND.md mục 4 lại yêu cầu route chưa làm phải hiện một thông báo riêng
+> Form co theo nội dung: chỉ rộng khoảng 220 px ở màn 360 px, và rộng ra khi hiện lỗi 401, làm layout nhảy. Nguyên nhân là margin-inline: auto trong grid .page-main

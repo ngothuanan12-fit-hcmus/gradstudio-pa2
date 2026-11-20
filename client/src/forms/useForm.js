@@ -57,6 +57,9 @@ export default function useForm({ initial, validate, onSubmit }) {
     formError,
     busy,
     handleSubmit,
+    // The submit stays focusable while busy (aria-disabled, not disabled): a disabled button would drop the keyboard
+    // focus to <body> and the user would have to Tab from the top of the page. handleSubmit ignores a second press.
+    submitProps: { type: 'submit', 'aria-disabled': busy ? 'true' : undefined },
     // Props for a controlled input: <TextField {...form.field('email')} />.
     field: (name) => ({
       name,

@@ -1,5 +1,7 @@
-/* Step G2. One column, never wider than a comfortable form. */
+/* Step G2. One column, never wider than a comfortable form. `width: 100%` so the form takes the column's width (up to
+   28rem) instead of shrinking to its content inside the .page-main grid, and does not jump when a message appears. */
 .sign-in {
+  width: 100%;
   max-width: 28rem;
   margin-inline: auto;
   padding-block: var(--space-32);

@@ -64,9 +64,7 @@ export default function SignIn() {
               autoComplete="current-password"
               {...form.field('password')}
             />
-            <Button type="submit" disabled={form.busy}>
-              {form.busy ? 'Đang đăng nhập…' : 'Đăng nhập'}
-            </Button>
+            <Button {...form.submitProps}>{form.busy ? 'Đang đăng nhập…' : 'Đăng nhập'}</Button>
           </form>
         )}
       </section>

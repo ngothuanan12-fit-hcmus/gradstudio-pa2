@@ -49,9 +49,11 @@ One row per route, as the browser shows it (`BrowserRouter`). A route that exist
 | `/dang-nhap` | anyone; a signed-in user is sent to their home | G2 | `POST /api/auth/login` |
 | `/lich-chup` | customer (protected) | G7 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
 | `/quan-ly` | admin (protected) | G4–G6 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
+| `/cong-viec` | staff (protected) | G8, not built yet: says so plainly | `GET /api/auth/me` on load |
+| `/quan-tri` | Superadmin (protected) | G11, not built yet: says so plainly | `GET /api/auth/me` on load |
 | any other path | anyone | not-found screen | — |
 
-A protected route opened while signed out goes to `/dang-nhap` (step G2) and back after sign-in; opened with another role it is turned away with a link to that role's home. Homes: customer `/lich-chup`, admin `/quan-ly`, staff `/cong-viec`, Superadmin `/quan-tri` (the last two come with steps G8 and G11).
+A protected route opened while signed out goes to `/dang-nhap` (step G2) and back after sign-in; opened with another role it is turned away with a link to that role's home. Homes: customer `/lich-chup`, admin `/quan-ly`, staff `/cong-viec`, Superadmin `/quan-tri`; until steps G8 and G11 are built, those two show a message that the screen is not ready, not the general not-found screen.
 
 ## 5. Product owner decisions
 

@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router';
 import RequireRole from './auth/RequireRole.jsx';
+import ComingSoon from './pages/ComingSoon.jsx';
 import Home from './pages/Home.jsx';
 import LichChup from './pages/LichChup.jsx';
 import NotFound from './pages/NotFound.jsx';
@@ -26,6 +27,23 @@ export default function App() {
         element={
           <RequireRole roles={['admin']}>
             <QuanLy />
+          </RequireRole>
+        }
+      />
+      {/* Homes of the staff and the Superadmin, until steps G8 and G11 build them. */}
+      <Route
+        path="/cong-viec"
+        element={
+          <RequireRole roles={['staff']}>
+            <ComingSoon title="Việc của tôi" step="G8" />
+          </RequireRole>
+        }
+      />
+      <Route
+        path="/quan-tri"
+        element={
+          <RequireRole roles={['superadmin']}>
+            <ComingSoon title="Quản trị hệ thống" step="G11" />
           </RequireRole>
         }
       />

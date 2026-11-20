@@ -19,6 +19,13 @@ const FILTERS = [
 ];
 
 // The page opens in the state the brief asks for: Linh has agreed to 14:00.
+// Links within this long page; each opens a section that is really on it.
+const SECTIONS = [
+  { href: '#hoi-thoai', label: 'Hội thoại' },
+  { href: '#booking-moi', label: 'Booking mới' },
+  { href: '#lich-tai-nguyen', label: 'Lịch tài nguyên' },
+];
+
 export default function QuanLy() {
   const [activeId, setActiveId] = useState('linh');
   const [query, setQuery] = useState('');
@@ -42,7 +49,7 @@ export default function QuanLy() {
   });
 
   return (
-    <AdminLayout>
+    <AdminLayout sections={SECTIONS}>
       {/* A short page top: the heading and the pinned status of GS-1024 side by side on wide screens. */}
       <div className="admin-top">
         <h1 className="page-title">Quản lý booking</h1>
