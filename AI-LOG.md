@@ -1474,3 +1474,12 @@ Kept: awaiting An's review. `docs/api/README.md`: `08-jobs.md` is now written by
 Changed: nothing beyond the request.
 Rejected: nothing.
 By hand: An tells Khánh about G8.
+
+### 2026-11-20 — shared task 1: FRONTEND.md
+Commit: the commit that adds this entry with `FRONTEND.md`, after `46325a4`.
+Tool: Claude Code (Claude Opus 5.5); `contract-check.mjs` from Classroom (`pj/PA3/`), run on the repository with no mock.
+Asked for: the first of the four shared tasks An agreed.
+Kept: awaiting An's review. `FRONTEND.md` with the rubric's seven sections: team; how to run it (mock, client, preview, the gates); the demo accounts table with the columns contract-check reads (name in examples, role, e-mail, password) for all seven accounts; routes (filled as screens are built); the five product-owner questions, waiting; libraries, one line each on why (React Router listed as coming with the first screen that needs it); not done.
+Changed: nothing. Check: contract-check read the table (it found the sign-in example at `01-auth.md:48` and tried to sign in as `thao`) and the README's 19 endpoints; every line failed as expected, with no mock running and 17 endpoints still without examples.
+Rejected: nothing.
+By hand: none.
