@@ -1,0 +1,26 @@
+[
+  {
+    "id": "rv-1",
+    "customerName": "Lê Gia Bảo",
+    "serviceId": "tot-nghiep",
+    "rating": 5,
+    "text": "Ảnh chỉnh kỹ, nhận file đúng hẹn. Studio báo lịch rõ ràng từ đầu.",
+    "date": "2026-10-16"
+  },
+  {
+    "id": "rv-2",
+    "customerName": "Phạm Quỳnh Như",
+    "serviceId": "ky-yeu",
+    "rating": 5,
+    "text": "Lớp đông mà studio sắp xếp trang phục và lịch makeup gọn gàng, cả lớp ai cũng có ảnh đẹp.",
+    "date": "2026-09-28"
+  },
+  {
+    "id": "rv-3",
+    "customerName": "Đỗ Minh Khôi",
+    "serviceId": "chan-dung",
+    "rating": 4,
+    "text": "Buổi chụp nhanh, được hướng dẫn tạo dáng. Ảnh CV dùng được ngay.",
+    "date": "2026-09-10"
+  }
+]

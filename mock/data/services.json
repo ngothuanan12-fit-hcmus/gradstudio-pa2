@@ -1,0 +1,56 @@
+[
+  {
+    "id": "ky-yeu",
+    "name": "Kỷ yếu lớp",
+    "summary": "Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau.",
+    "priceFrom": 350000,
+    "priceUnit": "người",
+    "packages": [
+      {
+        "id": "ky-yeu-lop",
+        "name": "Gói Kỷ yếu lớp",
+        "price": 350000,
+        "priceUnit": "người",
+        "durationMinutes": null,
+        "editedPhotos": null,
+        "includes": []
+      }
+    ]
+  },
+  {
+    "id": "tot-nghiep",
+    "name": "Tốt nghiệp",
+    "summary": "Chụp ảnh tốt nghiệp cho riêng bạn hoặc nhóm bạn thân, để nhớ mãi ngày ra trường.",
+    "priceFrom": 1800000,
+    "priceUnit": null,
+    "packages": [
+      {
+        "id": "tot-nghiep-premium",
+        "name": "Gói Tốt nghiệp Premium",
+        "price": 1800000,
+        "priceUnit": null,
+        "durationMinutes": 120,
+        "editedPhotos": 30,
+        "includes": ["makeup"]
+      }
+    ]
+  },
+  {
+    "id": "chan-dung",
+    "name": "Chân dung/CV",
+    "summary": "Đặt lịch chụp chân dung chỉn chu cho CV và hồ sơ xin việc của bạn.",
+    "priceFrom": 690000,
+    "priceUnit": null,
+    "packages": [
+      {
+        "id": "chan-dung-cv",
+        "name": "Gói Chân dung/CV",
+        "price": 690000,
+        "priceUnit": null,
+        "durationMinutes": null,
+        "editedPhotos": null,
+        "includes": []
+      }
+    ]
+  }
+]

@@ -1573,3 +1573,12 @@ Kept: awaiting An's review. A *Sample data* paragraph at the top of the contract
 Changed: the assistant's miss, caught by An reading the examples: `mock/data/README.md` marked the samples, but the contract itself did not, and the contract is what readers and the marker see. The PA#2 writing rule An approved on 2026-11-08 allows "khoảnh khắc" once on a page; the three summaries share the home page, so only An's sentence uses the word, and An was told the rule can be dropped if wanted.
 Rejected: nothing.
 By hand: An's review and wording.
+
+### 2026-11-20 — the mock answers 02-catalogue
+Commit: the commit that adds this entry with `mock/data/services.json`, `extras.json`, `photos.json`, `reviews.json`, `mock/routes/catalogue.mjs` and `mock/server.mjs`.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check on a fresh mock), ESLint, Prettier.
+Asked for: the catalogue's mock, then push ("làm cách 1, viết mock catalogue rồi push").
+Kept: the four JSON files with the values of `02-catalogue.md` (the PA#2 photos with their licences; three *sample* reviews, newest first); `mock/routes/catalogue.mjs` with the four handlers, `serviceId` checked against the services before it filters; the module added to the server's route list.
+Changed: nothing. Checks: before this commit the test gate failed locally on the four new examples (the contract had arrived first, as the rubric orders); now contract-check passes 11 of 11 examples with no value notes and covers all 6 endpoints of the table; empty mode answers `[]` for the three lists; format and lint pass.
+Rejected: nothing.
+By hand: none.

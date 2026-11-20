@@ -1,0 +1,23 @@
+[
+  {
+    "id": "makeup",
+    "name": "Makeup",
+    "kind": "makeup",
+    "price": null,
+    "priceUnit": "người",
+    "note": "Tính theo người và theo suất của thợ makeup. Đã gồm trong Gói Tốt nghiệp Premium.",
+    "models": []
+  },
+  {
+    "id": "trang-phuc",
+    "name": "Thuê trang phục",
+    "kind": "costume",
+    "price": null,
+    "priceUnit": "bộ",
+    "note": "Chọn mẫu và size; studio kiểm tra còn trang phục vào ngày chụp.",
+    "models": [
+      { "id": "ao-cu-nhan", "name": "Áo cử nhân", "sizes": ["S", "M", "L", "XL"] },
+      { "id": "ao-dai-trang", "name": "Áo dài trắng", "sizes": ["S", "M", "L"] }
+    ]
+  }
+]
