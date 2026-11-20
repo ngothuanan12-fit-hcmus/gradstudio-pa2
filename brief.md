@@ -139,3 +139,7 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 > Gói có danh sách “đã gồm” (makeup, trang phục). Mục nào đã gồm thì hiện 0đ trong booking, mục ngoài gói cộng thêm vào tổng.
 > Makeup tính theo người và theo suất của thợ. Trang phục kiểm tra tồn kho theo (mẫu, size, ngày).
 > Kỷ yếu lớp: đại diện nhập sĩ số ước lượng, admin xác nhận và điều chỉnh giá. Bản đầu chỉ cần một tài khoản đại diện kèm link thư viện ảnh chung. Tài khoản riêng từng bạn để làm sau.
+
+> 1 đồng ý thêm, 2 nếu để đổ do chưa đủ thì có ảnh hưởng gì, được ghi vào HARNESS không
+
+> bổ sung lưu ý ảnh hưởng tới phần Khánh vào đoạn tin nhắn gửi Khánh

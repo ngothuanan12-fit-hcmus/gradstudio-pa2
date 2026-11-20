@@ -1528,3 +1528,12 @@ Kept: awaiting An's review. `FRONTEND.md`, section 5: both questions stay *waiti
 Changed: nothing beyond the request. These assumptions reach Khánh's files: the clash check must cover costume stock (`04-schedule.md`) and the booking's price must list included and added items (`05-bookings.md`).
 Rejected: nothing.
 By hand: An's rules.
+
+### 2026-11-20 — the lint gate covers the mock
+Commit: the commit that adds this entry with the root `eslint.config.js`, `package.json` and `package-lock.json`, after `51a32ac` (pushed, CI green).
+Tool: Claude Code (Claude Opus 5.5), ESLint.
+Asked for: An agreed to three root dev dependencies so the lint gate also checks `mock/`; and asked what a test gate left red until the contract is complete would mean, and whether `HARNESS.md` could record it.
+Kept: awaiting An's review. Root `eslint.config.js` (JavaScript recommended rules, Node globals) for the Node code outside `client/`: the mock now, the server from PA#4; `tools/contract-check.mjs` is left out because the course's file is never edited. `eslint`, `@eslint/js` and `globals` at the same versions as `client/`. `npm run lint` now runs both configs. `HARNESS.md`: the lint row and a *Gate changes* line (stricter, with the reason). The answer on the red test: it can be recorded as a real red run, but days of red on every push would hide new failures and mark every pull request red; proposed instead: the README's endpoint table lists only endpoints that already have examples, the rest in a *Planned* list that contract-check does not read, so the full tool runs in `npm test` and goes red only on a real mismatch. Waiting for An's choice.
+Changed: nothing beyond the request. Checks: ESLint linted `mock/lib.mjs`, `mock/routes/auth.mjs`, `mock/server.mjs` and `eslint.config.js` with no problem; a probe with an unused variable, sent on standard input, failed with exit code 1, so the gate can fail; `npm run lint` and `npm run format:check` pass.
+Rejected: nothing.
+By hand: An's approval of the dependencies.
