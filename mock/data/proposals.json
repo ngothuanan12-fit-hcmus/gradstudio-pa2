@@ -1,0 +1,17 @@
+[
+  {
+    "id": "pr-c2",
+    "conversationId": "c-customer2",
+    "date": "2026-10-18",
+    "makeup": { "from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai" },
+    "shoot": {
+      "from": "14:00",
+      "to": "16:00",
+      "staffId": "u-tuan",
+      "staffName": "Tuấn",
+      "roomId": "r-b",
+      "roomName": "Phòng B"
+    },
+    "status": "agreed"
+  }
+]

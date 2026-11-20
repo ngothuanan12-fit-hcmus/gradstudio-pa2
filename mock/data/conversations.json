@@ -1,0 +1,113 @@
+[
+  {
+    "id": "c-anh",
+    "customerId": "u-customer2",
+    "status": "Chưa trả lời",
+    "bookingId": null,
+    "messages": [
+      {
+        "id": "m-anh-1",
+        "from": "customer",
+        "authorName": "Trần Minh Anh",
+        "kind": "text",
+        "text": "Studio cho em hỏi giá gói chân dung CV ạ.",
+        "at": "2026-10-20T07:50:00+07:00",
+        "request": null,
+        "proposal": null
+      }
+    ]
+  },
+  {
+    "id": "c-uyen",
+    "customerId": "u-uyen",
+    "status": "Đang tư vấn",
+    "bookingId": null,
+    "messages": [
+      {
+        "id": "m-uyen-1",
+        "from": "customer",
+        "authorName": "Nguyễn Thị Hoàng Phương Uyên",
+        "kind": "request",
+        "text": "Em muốn hỏi gói kỷ yếu lớp cho cả nhóm.",
+        "at": "2026-10-19T08:15:00+07:00",
+        "request": {
+          "serviceId": "ky-yeu",
+          "serviceName": "Kỷ yếu lớp",
+          "packageId": "ky-yeu-lop",
+          "packageName": "Gói Kỷ yếu lớp",
+          "date": "2026-11-07",
+          "time": "08:00",
+          "people": 25,
+          "extras": [{ "extraId": "makeup", "name": "Makeup", "modelId": null, "size": null }]
+        },
+        "proposal": null
+      },
+      {
+        "id": "m-uyen-2",
+        "from": "studio",
+        "authorName": "Thảo",
+        "kind": "text",
+        "text": "Dạ studio xem lịch thợ makeup cho cả lớp rồi báo lại bạn nhé.",
+        "at": "2026-10-19T08:20:00+07:00",
+        "request": null,
+        "proposal": null
+      }
+    ]
+  },
+  {
+    "id": "c-bao",
+    "customerId": "u-bao",
+    "status": "Hoàn thành",
+    "bookingId": "GS-1021",
+    "messages": [
+      {
+        "id": "m-bao-1",
+        "from": "customer",
+        "authorName": "Lê Gia Bảo",
+        "kind": "text",
+        "text": "Em nhận đủ ảnh rồi, cảm ơn studio ạ.",
+        "at": "2026-10-16T10:00:00+07:00",
+        "request": null,
+        "proposal": null
+      }
+    ]
+  },
+  {
+    "id": "c-customer2",
+    "customerId": "u-customer2",
+    "status": "Đã chốt lịch",
+    "bookingId": "GS-1022",
+    "messages": [
+      {
+        "id": "m-c2-1",
+        "from": "customer",
+        "authorName": "Trần Minh Anh",
+        "kind": "text",
+        "text": "Em muốn chụp tốt nghiệp có makeup ngày 18/10 ạ.",
+        "at": "2026-10-12T14:00:00+07:00",
+        "request": null,
+        "proposal": null
+      },
+      {
+        "id": "m-c2-2",
+        "from": "studio",
+        "authorName": "Thảo",
+        "kind": "proposal",
+        "text": "Studio đề xuất ngày 18/10/2026: makeup 13:00–14:00 với Mai, chụp 14:00–16:00 với Tuấn tại Phòng B.",
+        "at": "2026-10-12T14:30:00+07:00",
+        "request": null,
+        "proposal": "pr-c2"
+      },
+      {
+        "id": "m-c2-3",
+        "from": "customer",
+        "authorName": "Trần Minh Anh",
+        "kind": "answer",
+        "text": "Đồng ý lịch đề xuất.",
+        "at": "2026-10-12T15:00:00+07:00",
+        "request": null,
+        "proposal": "pr-c2"
+      }
+    ]
+  }
+]

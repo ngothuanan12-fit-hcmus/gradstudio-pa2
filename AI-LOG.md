@@ -1591,3 +1591,12 @@ Kept: awaiting An's review. The four statuses and how a conversation moves betwe
 Changed: the seed story gave GS-1023 to Uyên, who also has a conversation with no agreed time; GS-1023 now belongs to a new sample representative, Võ Đăng Khoa (`u-khoa`). contract-check fails when an example shows an object where the answer has `null` (and the other way round), so every message carries both `request` and `proposal`, `null` when unused, and examples that return a whole conversation after an action show its messages as `[…]`.
 Rejected: nothing.
 By hand: An's assumption for a declined proposal.
+
+### 2026-11-20 — the mock answers 03-conversations
+Commit: the commit that adds this entry with `mock/routes/conversations.mjs`, `mock/server.mjs` and the seed files `conversations.json`, `proposals.json`, `rooms.json`, `busy.json`, `freeTimes.json`, after `e3f7733` (the contract).
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check on a fresh mock), ESLint, Prettier.
+Asked for: the second half of "viết 03-conversations.md hội thoại quay về đang tư vấn": the mock for the contract committed just before.
+Kept: awaiting An's review. Seeds: the four conversations of the seed story, one in each status; the agreed proposal of GS-1022; Phòng A and Phòng B; the times held by bookings in *Đã đặt lịch* (GS-1022 on 18/10, GS-1023 with Mai 08:00–12:00 on 24/10); the free time the API offers on 24/10 (make-up 13:00–14:00, shoot 14:00–16:00). The module: who may see what (a customer's own, `404` for another's, `403` for other roles), field checks with one message per field, the status moves, a clash check against the held times that names who is busy and when, proposals stored once and referred to by id from the proposal and answer messages, so both show the current status, and a clock for new messages starting at 09:40 on 20/10/2026, one minute per message, so answers repeat on every fresh start. `mock/data/README.md` lists each data file and who reads it.
+Changed: nothing. Checks: contract-check passes all 33 examples on the first run, with no value notes, and covers all 12 endpoints of the table; `npm test` 4/4; format and lint pass. For Khánh: a successful deposit in `06-payments.md` must add the booking's held times to `busy.json`'s data, or the clash check will not see GS-1024.
+Rejected: nothing.
+By hand: none.

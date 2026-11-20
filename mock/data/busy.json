@@ -1,0 +1,12 @@
+[
+  { "bookingId": "GS-1022", "date": "2026-10-18", "from": "13:00", "to": "14:00", "staffId": "u-mai", "roomId": null },
+  {
+    "bookingId": "GS-1022",
+    "date": "2026-10-18",
+    "from": "14:00",
+    "to": "16:00",
+    "staffId": "u-tuan",
+    "roomId": "r-b"
+  },
+  { "bookingId": "GS-1023", "date": "2026-10-24", "from": "08:00", "to": "12:00", "staffId": "u-mai", "roomId": "r-a" }
+]

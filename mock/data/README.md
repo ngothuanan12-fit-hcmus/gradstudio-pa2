@@ -75,7 +75,7 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 |---|---|---|
 | `01-auth.md` | the accounts | nothing |
 | `02-catalogue.md` | services, packages, photos, reviews | nothing |
-| `03-conversations.md` | `c-anh`, `c-uyen`, `c-customer2`, `c-bao` | `c-linh`, agreed |
+| `03-conversations.md` | `c-anh`, `c-uyen`, `c-customer2`, `c-bao` | `c-linh` agreed (proposal `pr-1`: make-up 13:00–14:00 with Mai, shoot 14:00–16:00 with Tuấn in Phòng B); `c-anh` back to *Đang tư vấn* after declining `pr-2` |
 | `04-schedule.md` | GS-1023 (Mai busy 08:00–12:00) | nothing |
 | `05-bookings.md` | `c-uyen` (not agreed), `c-linh` (agreed), GS-1022 | GS-1024 in Chờ cọc 30%; GS-1022 with its file link |
 | `06-payments.md` | GS-1024, GS-1022 | GS-1024 Đã đặt lịch (after one failed and one successful deposit); GS-1022 fully paid |
@@ -84,9 +84,22 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 | `09-gallery.md` | GS-1020, GS-1022 | 30 photos chosen on GS-1020; GS-1022 Hoàn thành |
 | `10-admin.md` | the accounts, the settings | a new Admin account |
 
+## Files
+
+| File | Holds | Read by |
+|---|---|---|
+| `users.json` | People and the demo accounts | `auth`, every module |
+| `services.json`, `extras.json`, `photos.json`, `reviews.json` | The catalogue | `catalogue`, `conversations` |
+| `conversations.json` | Conversations and their messages; a message points at its proposal by id | `conversations` |
+| `proposals.json` | Proposed times, with their status | `conversations` |
+| `rooms.json` | Rooms | `conversations`; `04-schedule.md` may add fields |
+| `busy.json` | Times when a person or a room is held by a booking in *Đã đặt lịch* (R1: a booking in *Chờ cọc 30%* holds nothing) | the clash check in `conversations`; `04-schedule.md` and `06-payments.md` (a successful deposit adds the booking's blocks) |
+| `freeTimes.json` | The free time the API offers for a date with a clash (the mock may answer fixed values, PA#3 rubric) | the clash check |
+
 ## Changes
 
 - 2026-11-20 — First version. No client code calls the API yet. The JSON files for each resource follow the field names of its contract file, written when that file is.
 - 2026-11-20 — The team's assumptions for extras, costumes and the class yearbook (`FRONTEND.md`, section 5) written into the seed story, until the product owners answer.
 - 2026-11-20 — The catalogue's values, for `02-catalogue.md`.
 - 2026-11-20 — GS-1023's representative is now Võ Đăng Khoa (`u-khoa`): Uyên had both a booked GS-1023 and a conversation with no agreed time, which did not fit together.
+- 2026-11-20 — Files for `03-conversations.md`: conversations, proposals, rooms, busy times, free times.
