@@ -163,3 +163,26 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 > chờ phiên kia xong rồi chạy lại đủ A–I
 
 > mình thử test tay nên lỡ mở thêm cổng mà quên tắt, chạy lại A–I
+
+Prompts of a review session that ran beside the ones above on 2026-11-20, in the order sent. The first was sent after `viết 02-catalogue.md`; the third and later ones were sent after `làm phần nền front end trước`.
+
+> xem cho mình
+> Giá trị brief không có thì để null, không tự đặt số: giá dịch vụ thêm, thời lượng và số ảnh của gói Kỷ yếu và gói Chân dung.
+> Mô tả ngắn của từng dịch vụ là câu nhóm tự viết, không chép chữ từ prototype của nhóm tác giả.
+> Các mẫu áo (Áo cử nhân, Áo dài trắng) và nội dung đánh giá là dữ liệu mẫu, đã đánh dấu sample.
+
+> 1. Viết module mock cho catalogue trước, rồi push cả hai commit cùng lúc. CI xanh.
+> 2. Push contract ngay, rồi mới viết mock. CI sẽ đỏ một lượt, sau đó xanh lại khi có mock. Lượt đỏ này là thật và đúng thứ tự rubric (contract trước, mock sau), nhưng là đỏ mà mình biết trước.
+> cách nào đúng quy định hơn trong hai cách trên
+
+> các trạng thái hiện tại của đoạn chat là gì
+
+> cho mình hướng dẫn để test các trang với 3 commit d3dca41, a49b9ea, 7ae3f89
+
+> chạy thử các bước test này giúp mình
+
+> kiểm tra G2 đăng nhập trên nhiều tiêu chí và đúng quy định
+
+> commit cho đúng quy định ghi ai log, không sửa gì
+
+> xem file nào cần ghi đúng file lúc commit nữa thì chuẩn bị ghi
