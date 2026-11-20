@@ -128,3 +128,7 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 > push commit
 
 > push rồi làm dữ liệu khởi đầu
+
+> mình chưa hiểu hai câu hỏi
+
+> push rồi làm khung mock

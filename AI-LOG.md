@@ -1492,3 +1492,12 @@ Kept: awaiting An's review. `mock/data/README.md`, the seed story every contract
 Changed: the JSON for the other resources is not written yet: its field names must follow each contract file, and `04`–`08` are Khánh's to write. Values the brief does not give are marked *sample* (names, counts, dates) or *waiting* (the extras' prices, costumes, the class yearbook's head count); the last two questions are added to `FRONTEND.md` for the product owners.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — shared task 4: the mock's skeleton, answering 01-auth
+Commit: the commit that adds this entry with `mock/server.mjs`, `mock/lib.mjs` and `mock/routes/auth.mjs`, after `6541b6e` (pushed). Before it, An asked what the two new product-owner questions mean; they were explained (extras' prices and costumes; the class yearbook's head count), with a suggested assumption for each.
+Tool: Claude Code (Claude Opus 5.5); a throwaway script that starts the mock as a child process in each mode, and contract-check from Classroom.
+Asked for: push, then the mock's skeleton ("push rồi làm khung mock").
+Kept: awaiting An's review. `mock/server.mjs` (Node built-ins only): port from `PORT` (3001), `MOCK_MODE` normal / slow / error / empty with the delays and behaviour of the PA#3 rubric, data read from `mock/data/*.json` into memory, one log line per request, a `404` in the error shape for unknown paths, `413` over 1 MB, `400` for a body that is not JSON, and a `500` in the error shape for any handler crash. Route modules are plain lists of `{ method, path, handler }`, one file per resource in `mock/routes/`, so each member adds their own. `mock/lib.mjs`: the error shape, the token `token-<user id>` that survives a restart, the signed-in user, the user object without its password. `mock/routes/auth.mjs` answers `01-auth.md`.
+Changed: the first test run was refused by the permission check, because its clean-up stopped every Node process on the machine; the script now starts the mock as a child and stops only that child. Checks: normal answers in about 160–210 ms, slow in about 2 s; error mode keeps sign-in working and answers `/api/auth/me` with `500`; contract-check on a fresh mock: PASS for all five examples of `01-auth.md`; the README's 17 endpoints without examples still fail, as expected. Empty mode has no list to empty yet. The contract gives a password over 128 characters only the message "Nhập mật khẩu."; the mock follows it as written; to raise with An before client code calls the endpoint.
+Rejected: nothing.
+By hand: none.
