@@ -1,0 +1,47 @@
+[
+  {
+    "id": "u-linh",
+    "name": "Nguyễn Thùy Linh",
+    "email": "linh@gradstudio.test",
+    "password": "linh-demo",
+    "role": "customer"
+  },
+  {
+    "id": "u-customer2",
+    "name": "Trần Minh Anh",
+    "email": "customer2@gradstudio.test",
+    "password": "customer2-demo",
+    "role": "customer"
+  },
+  {
+    "id": "u-uyen",
+    "name": "Nguyễn Thị Hoàng Phương Uyên",
+    "email": "uyen@gradstudio.test",
+    "password": null,
+    "role": "customer"
+  },
+  {
+    "id": "u-bao",
+    "name": "Lê Gia Bảo",
+    "email": "bao@gradstudio.test",
+    "password": null,
+    "role": "customer"
+  },
+  { "id": "u-thao", "name": "Thảo", "email": "thao@gradstudio.test", "password": "thao-demo", "role": "admin" },
+  { "id": "u-mai", "name": "Mai", "email": "mai@gradstudio.test", "password": "mai-demo", "role": "staff" },
+  { "id": "u-tuan", "name": "Tuấn", "email": "tuan@gradstudio.test", "password": "tuan-demo", "role": "staff" },
+  {
+    "id": "u-staff3",
+    "name": "Hoàng Gia Huy",
+    "email": "staff3@gradstudio.test",
+    "password": "staff3-demo",
+    "role": "staff"
+  },
+  {
+    "id": "u-superadmin",
+    "name": "Quản trị hệ thống",
+    "email": "superadmin@gradstudio.test",
+    "password": "superadmin-demo",
+    "role": "superadmin"
+  }
+]

@@ -1483,3 +1483,12 @@ Kept: awaiting An's review. `FRONTEND.md` with the rubric's seven sections: team
 Changed: nothing. Check: contract-check read the table (it found the sign-in example at `01-auth.md:48` and tried to sign in as `thao`) and the README's 19 endpoints; every line failed as expected, with no mock running and 17 endpoints still without examples.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — shared task 3: the mock's seed story
+Commit: the commit that adds this entry with `mock/data/README.md` and `mock/data/users.json`, after `ef8ab73` (pushed).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: push, then the starting data ("push rồi làm dữ liệu khởi đầu").
+Kept: awaiting An's review. `mock/data/README.md`, the seed story every contract file's examples rely on: people (Linh starts with no conversation and no booking, so G3 creates hers), rooms, services, one conversation in each of the four statuses, and bookings in the states the examples need: GS-1020 with previews to choose (R5), GS-1021 completed, GS-1022 waiting for the file link, the remainder and *Nhận ảnh* (R6), GS-1023 making Mai busy 08:00–12:00 on 24/10 (R1), and GS-1024 created from Linh's agreed conversation, so the mock's next number gives the brief's code. A table says which file starts from what and leaves what behind, in the order contract-check sends them. `users.json` holds the nine people with the fields of `01-auth.md` plus the demo password (plain text in the mock only).
+Changed: the JSON for the other resources is not written yet: its field names must follow each contract file, and `04`–`08` are Khánh's to write. Values the brief does not give are marked *sample* (names, counts, dates) or *waiting* (the extras' prices, costumes, the class yearbook's head count); the last two questions are added to `FRONTEND.md` for the product owners.
+Rejected: nothing.
+By hand: none.

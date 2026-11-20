@@ -58,6 +58,8 @@ Questions posted under *GradStudio — questions for the product owners* (course
 | Who may cancel or change a booking, and whether the deposit is refunded | | waiting |
 | What a reminder says and where it shows in the customer's account | | waiting |
 | What happens after the customer declines a proposed time | | waiting |
+| The prices of the extras (make-up, costume rental); how a costume is chosen and whether its stock is checked | | waiting |
+| Class yearbook: does the representative give the number of people (350.000đ/người)? | | waiting |
 
 ## 6. Libraries
 
