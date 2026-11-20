@@ -153,3 +153,22 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* The three data states: loading, error with Retry, empty. Text at 16 px or more, colours from the tokens. */
+.state {
+  margin: var(--space-16) 0;
+  padding: var(--space-16);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+}
+.state-loading,
+.state-empty {
+  color: var(--ink-muted);
+}
+.state-error {
+  display: grid;
+  gap: var(--space-12);
+  justify-items: start;
+  border-color: var(--danger);
+}

@@ -1627,3 +1627,12 @@ Kept: awaiting An's review. React Router 8.5.2 added to `client/` (agreed in the
 Changed: React Router 8 asks for React 19.2.7 or newer; the lock file already had 19.3.1, so nothing else moved. The first route check failed before opening a page: Git Bash turned the argument `/` into `E:/Git/`; rerun with path conversion off. Checks: format, lint and build pass; `/`, `/quan-ly`, `/lich-chup` and an unknown path, each opened directly at 360 and 1280 px: one `<h1>`, the right title and theme (`studio` for the management page, `cinema` for the others), no sideways scroll, no console error, no failed request, no broken image.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — front-end base, part 2: the API helper and the three data states
+Commit: the commit that adds this entry, after `d3dca41`.
+Tool: Claude Code (Claude Opus 5.5); Playwright on the Vite dev server, calling the helper against the mock in three modes.
+Asked for: part 2 of "làm phần nền front end trước".
+Kept: awaiting An's review. `src/api/client.js`: the one place that calls the API, on relative `/api` paths, with the token, a 10-second timeout combined with the caller's abort signal, JSON or `FormData` bodies, and every failure turned into an `ApiError` carrying the contract's error shape (`status`, `code`, Vietnamese `message`, `fields`, `details`); a `401` on a request that carried a token tells the auth context. `src/hooks/useApi.js`: one request per path, aborted in the cleanup when the screen closes or the path changes, `retry` without a page reload, old data kept on screen while reloading, `setData` so a screen shows an action's answer without loading again. `LoadingState` (`role="status"`), `ErrorState` (the API's message and *Thử lại*, `role="alert"`), `EmptyState`, and `DataState`, which picks one of the three; their styles in `ui.css`.
+Changed: the first draft of the styles used `--space-3` and `--space-4` as steps of a scale (3 = 12 px, 4 = 16 px); the project's tokens are named by their size (`--space-4` is 4 px, `--space-12` is 12 px, and there is no `--space-3`). Caught by listing the tokens in `src/styles/` before building; now `--space-16` and `--space-12`. Checks: format, lint and build pass; through Vite's proxy, normal mode returned the 3 services, the signed-in user from the token, and a `400` with its field message; error mode gave `ApiError` 500 with the API's message; empty mode returned `[]`; an aborted request rejected with `AbortError` in each mode.
+Rejected: nothing.
+By hand: none.
