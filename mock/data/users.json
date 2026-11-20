@@ -27,9 +27,34 @@
     "password": null,
     "role": "customer"
   },
-  { "id": "u-thao", "name": "Thảo", "email": "thao@gradstudio.test", "password": "thao-demo", "role": "admin" },
-  { "id": "u-mai", "name": "Mai", "email": "mai@gradstudio.test", "password": "mai-demo", "role": "staff" },
-  { "id": "u-tuan", "name": "Tuấn", "email": "tuan@gradstudio.test", "password": "tuan-demo", "role": "staff" },
+  {
+    "id": "u-khoa",
+    "name": "Võ Đăng Khoa",
+    "email": "khoa@gradstudio.test",
+    "password": null,
+    "role": "customer"
+  },
+  {
+    "id": "u-thao",
+    "name": "Thảo",
+    "email": "thao@gradstudio.test",
+    "password": "thao-demo",
+    "role": "admin"
+  },
+  {
+    "id": "u-mai",
+    "name": "Mai",
+    "email": "mai@gradstudio.test",
+    "password": "mai-demo",
+    "role": "staff"
+  },
+  {
+    "id": "u-tuan",
+    "name": "Tuấn",
+    "email": "tuan@gradstudio.test",
+    "password": "tuan-demo",
+    "role": "staff"
+  },
   {
     "id": "u-staff3",
     "name": "Hoàng Gia Huy",

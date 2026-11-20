@@ -10,7 +10,8 @@ Values come from the GradStudio brief and its example. A value the brief does no
 |---|---|---|---|---|
 | `u-linh` | Nguyễn Thùy Linh | customer | `linh` | The brief's customer. **No conversation and no booking at the start**: step G3 creates her conversation |
 | `u-customer2` | Trần Minh Anh | customer | `customer2` | Has bookings GS-1020 and GS-1022 and conversation `c-customer2` of their own |
-| `u-uyen` | Nguyễn Thị Hoàng Phương Uyên | customer | none (*sample*) | Class representative of GS-1023; the class shares one gallery link, classmates have no accounts in this version (*assumption*) |
+| `u-uyen` | Nguyễn Thị Hoàng Phương Uyên | customer | none (*sample*) | Asks about a class yearbook (`c-uyen`); no time agreed yet |
+| `u-khoa` | Võ Đăng Khoa | customer | none (*sample*) | Class representative of GS-1023; the class shares one gallery link, classmates have no accounts in this version (*assumption*) |
 | `u-bao` | Lê Gia Bảo | customer | none (*sample*) | GS-1021, completed |
 | `u-thao` | Thảo | admin | `thao` | The brief's Admin |
 | `u-mai` | Mai | staff, make-up | `mai` | Busy 08:00–12:00 on 24/10/2026 (GS-1023) |
@@ -63,7 +64,7 @@ One in each status the brief names, so step G4 shows all four.
 | GS-1020 | `u-customer2` | Gói Tốt nghiệp Premium | 17/10/2026 (*sample*) | Đã đặt lịch | Deposit paid, shoot done, 40 previews (*sample* count), **no photos chosen** | `09-gallery.md`: choosing 30 is accepted, 31 refused (R5) |
 | GS-1021 | `u-bao` | Gói Tốt nghiệp Premium | 10/10/2026 (*sample*) | Hoàn thành | Everything paid, photos chosen, file link, *Nhận ảnh* pressed | History; *Hoàn thành* in lists |
 | GS-1022 | `u-customer2` | Gói Tốt nghiệp Premium | 18/10/2026 (*sample*) | Đã đặt lịch | Deposit paid, shoot done, 30 photos chosen, **remainder not paid, no file link**; editing job with `u-staff3` | `05-bookings.md` adds the file link (G10); `06-payments.md` pays the remainder; `09-gallery.md` presses *Nhận ảnh* → Hoàn thành (R6) |
-| GS-1023 | `u-uyen` | Kỷ yếu lớp, estimated 20 people (*sample*), confirmed by the Admin at 7.000.000đ (350.000đ × 20; *assumption*: the representative estimates, the Admin confirms and adjusts) | 24/10/2026, make-up 08:00–12:00 with Mai, Phòng A | Đã đặt lịch | Deposit paid | Makes Mai busy 08:00–12:00, so 09:00 clashes (R1, G5) |
+| GS-1023 | `u-khoa` | Kỷ yếu lớp, estimated 20 people (*sample*), confirmed by the Admin at 7.000.000đ (350.000đ × 20; *assumption*: the representative estimates, the Admin confirms and adjusts) | 24/10/2026, make-up 08:00–12:00 with Mai, Phòng A | Đã đặt lịch | Deposit paid | Makes Mai busy 08:00–12:00, so 09:00 clashes (R1, G5) |
 | GS-1024 | `u-linh` | Gói Tốt nghiệp Premium, Tốt nghiệp cá nhân, 1.800.000đ | 24/10/2026, make-up 13:00–14:00 with Mai, shoot 14:00–16:00 with Tuấn in Phòng B | *created by* `05-bookings.md` → Chờ cọc 30% | — | `06` deposit (success → Đã đặt lịch, failure → stays); `07` its reminder; `08` Mai's and Tuấn's jobs and a preview upload |
 
 Ids: the mock gives a new booking the next number, so the booking created from `c-linh` is **GS-1024**, the brief's code.
@@ -88,3 +89,4 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 - 2026-11-20 — First version. No client code calls the API yet. The JSON files for each resource follow the field names of its contract file, written when that file is.
 - 2026-11-20 — The team's assumptions for extras, costumes and the class yearbook (`FRONTEND.md`, section 5) written into the seed story, until the product owners answer.
 - 2026-11-20 — The catalogue's values, for `02-catalogue.md`.
+- 2026-11-20 — GS-1023's representative is now Võ Đăng Khoa (`u-khoa`): Uyên had both a booked GS-1023 and a conversation with no agreed time, which did not fit together.

@@ -151,3 +151,5 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 > làm cách 1, viết mock catalogue rồi push
 > Trong 02-catalogue.md, các ví dụ có Áo cử nhân, Áo dài trắng, size S–XL và review của Lê Gia Bảo nhưng không ghi gì là mẫu
 > mô tả ngắn nên tự viết kiểu Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau
+
+> viết 03-conversations.md hội thoại quay về đang tư vấn

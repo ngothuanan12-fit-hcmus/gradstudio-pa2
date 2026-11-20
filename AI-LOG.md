@@ -1582,3 +1582,12 @@ Kept: the four JSON files with the values of `02-catalogue.md` (the PA#2 photos 
 Changed: nothing. Checks: before this commit the test gate failed locally on the four new examples (the contract had arrived first, as the rubric orders); now contract-check passes 11 of 11 examples with no value notes and covers all 6 endpoints of the table; empty mode answers `[]` for the three lists; format and lint pass.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — contract file 03, conversations
+Commit: the commit that adds this entry with `docs/api/03-conversations.md`, `docs/api/README.md`, `mock/data/README.md` and `mock/data/users.json`, after `3c900cb` (pushed, CI green). The mock follows in the next commit.
+Tool: Claude Code (Claude Opus 5.5); `tools/contract-check.mjs` read to see how it compares a field that is an object in one answer and `null` in another.
+Asked for: write `03-conversations.md`, with a declined proposal bringing the conversation back to *Đang tư vấn* ("viết 03-conversations.md hội thoại quay về đang tư vấn").
+Kept: awaiting An's review. The four statuses and how a conversation moves between them (the move after a decline marked as the team's assumption); objects for a conversation, a message (`text`, `request`, `proposal`, `answer`), a booking request and a proposal; six endpoints: list (own for a customer, all for the Admin, `status` filter checked against the four names), start (message, booking request or both, with field limits that cover the class yearbook's estimated head count and costume model and size), read one (`404` for another customer's), reply, propose a time (the clash check against bookings that hold a slot, `409` with who is busy, when, and the free time), answer (`agree` → *Đã chốt lịch*, `decline` → *Đang tư vấn*, `409` when answered twice). 22 examples that take Linh from her question at 09:00 through the clash to the agreed 13:00–14:00 make-up and 14:00–16:00 shoot, so `c-linh` is left agreed for `05-bookings.md`, plus a decline on `c-anh`.
+Changed: the seed story gave GS-1023 to Uyên, who also has a conversation with no agreed time; GS-1023 now belongs to a new sample representative, Võ Đăng Khoa (`u-khoa`). contract-check fails when an example shows an object where the answer has `null` (and the other way round), so every message carries both `request` and `proposal`, `null` when unused, and examples that return a whole conversation after an action show its messages as `[…]`.
+Rejected: nothing.
+By hand: An's assumption for a declined proposal.
