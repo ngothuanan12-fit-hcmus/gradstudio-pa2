@@ -11,3 +11,6 @@ design-system/
 docs/pa1/
 screenshots/
 checks/
+
+# From the course, used as given and never edited
+tools/contract-check.mjs

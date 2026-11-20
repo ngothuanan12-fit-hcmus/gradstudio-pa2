@@ -143,3 +143,5 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 > 1 đồng ý thêm, 2 nếu để đổ do chưa đủ thì có ảnh hưởng gì, được ghi vào HARNESS không
 
 > bổ sung lưu ý ảnh hưởng tới phần Khánh vào đoạn tin nhắn gửi Khánh
+
+> push rồi dùng danh sách Planned

@@ -1537,3 +1537,12 @@ Kept: awaiting An's review. Root `eslint.config.js` (JavaScript recommended rule
 Changed: nothing beyond the request. Checks: ESLint linted `mock/lib.mjs`, `mock/routes/auth.mjs`, `mock/server.mjs` and `eslint.config.js` with no problem; a probe with an unused variable, sent on standard input, failed with exit code 1, so the gate can fail; `npm run lint` and `npm run format:check` pass.
 Rejected: nothing.
 By hand: An's approval of the dependencies.
+
+### 2026-11-20 — contract-check in the test gate; the endpoint table only for written endpoints
+Commit: the commit that adds this entry with `tools/contract-check.mjs`, `test/mock.test.mjs`, `docs/api/README.md`, `.prettierignore` and `HARNESS.md`, after `b816479` (pushed).
+Tool: Claude Code (Claude Opus 5.5), `node --test`, contract-check.
+Asked for: push, then the *Planned* list ("push rồi dùng danh sách Planned").
+Kept: awaiting An's review. `tools/contract-check.mjs` copied from Classroom unchanged (same MD5 as `pj/PA3/contract-check.mjs`), left out of Prettier and ESLint so it is never edited. `docs/api/README.md`: the endpoint table keeps only the two endpoints with examples (`01-auth.md`); the other 17 wait under *Planned*, a list contract-check does not read; a `## Changes` line. `test/mock.test.mjs`, four tests, each starting its own mock as a child on its own port and waiting for it to exit: contract-check in full on a fresh mock must exit 0; error mode keeps sign-in and answers `/api/auth/me` with `500` in the error shape; slow mode answers after at least 1.9 s; Thảo's token still works after the mock restarts. `HARNESS.md`: the tests row and a *Gate changes* line.
+Changed: the first draft stopped the mock with `kill()` and restarted it at once on the same port, which can fail while the port is still taken; `stop()` now waits for the child to exit. Checks: `npm test` 4/4 pass; `npm run format:check` and `npm run lint` pass; a probe on a copy of `docs/api/` outside the repository, with one example changed from `200` to `201`, made contract-check fail with exit code 1, so the test gate can go red.
+Rejected: leaving the test red until the contract is complete (it would hide new failures and mark every pull request red).
+By hand: An's choice.

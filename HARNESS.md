@@ -15,11 +15,11 @@ How our assistant works inside a harness: the rules file it reads, the gates tha
 |---|---|---|---|---|---|---|
 | Format | Code style of JS, JSX, CSS, HTML, JSON, YAML (Markdown left out: the log keeps its wording) | Prettier 3.10.1 | `npm run format:check` | local, CI | `c74cbb4` | Locally on 35 files at `c74cbb4`, before `1ce8ae8` formatted them (AI-LOG 2026-11-19); locally on `mock/server.mjs` at `99fa53d` (incident 5). Not yet in CI |
 | Lint | React and JavaScript rules in `client/`; JavaScript rules for the Node code at the root (`mock/`, `server/` from PA#4); 0 warnings allowed | ESLint 9 (`client/eslint.config.js`, root `eslint.config.js`) | `npm run lint` | local, CI | `b5b8362` (client); root script `c74cbb4`; extended to `mock/` in the commit after `51a32ac` | Not yet recorded; a probe with an unused variable failed as it should (AI-LOG 2026-11-20) |
-| Tests | The mock answers as the contract says (to come) | `node --test` | `npm test` | local, CI | `c74cbb4` | Cannot fail yet: 0 tests until the mock's tests exist |
+| Tests | `test/mock.test.mjs`: every example in `docs/api/` gets its answer from a fresh mock (the course's `tools/contract-check.mjs`, run in full); error mode; slow mode; the token after a restart | `node --test` | `npm test` | local, CI | script `c74cbb4`; tests in the commit after `b816479` | Not yet in a real run; a probe with one example changed from `200` to `201` (a copy of `docs/api/`, outside the repository) made contract-check exit 1 (AI-LOG 2026-11-20) |
 | Build | The client builds | Vite | `npm run build` | local, CI | root script `c74cbb4` | Not yet |
 | CI | All four, on every push and pull request, Node 22 | GitHub Actions, `.github/workflows/ci.yml` | — | GitHub | `5b4f37d` | First run green: [44462292455](https://github.com/ngothuanan12-fit-hcmus/gradstudio-pa2/actions/runs/44462292455) |
 
-Gate changes: 2026-11-20, the lint gate was extended to the root's Node code (stricter, not weaker), so the mock is checked too. `tools/contract-check.mjs` comes from the course and is left out of lint, never edited.
+Gate changes: 2026-11-20, the README's endpoint table lists only endpoints that have examples, the rest under *Planned*, so contract-check runs in full and goes red only on a real mismatch (instead of red on every push until the contract is complete). 2026-11-20, the lint gate was extended to the root's Node code (stricter, not weaker), so the mock is checked too. `tools/contract-check.mjs` comes from the course and is left out of lint, never edited.
 
 Line endings: `.gitattributes` (`56b88ca`) keeps LF on every checkout, so the format check gives the same answer on Windows and in CI.
 
