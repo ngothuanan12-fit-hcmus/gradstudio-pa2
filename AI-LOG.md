@@ -1501,3 +1501,12 @@ Kept: awaiting An's review. `mock/server.mjs` (Node built-ins only): port from `
 Changed: the first test run was refused by the permission check, because its clean-up stopped every Node process on the machine; the script now starts the mock as a child and stops only that child. Checks: normal answers in about 160–210 ms, slow in about 2 s; error mode keeps sign-in working and answers `/api/auth/me` with `500`; contract-check on a fresh mock: PASS for all five examples of `01-auth.md`; the README's 17 endpoints without examples still fail, as expected. Empty mode has no list to empty yet. The contract gives a password over 128 characters only the message "Nhập mật khẩu."; the mock follows it as written; to raise with An before client code calls the endpoint.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — the format gate catches the mock
+Commit: the commit that adds this entry, directly after `99fa53d`.
+Tool: Prettier (`npm run format:check`), run before pushing; Claude Code (Claude Opus 5.5).
+Asked for: before pushing the password-message fix, the format check was run on the changed files.
+Kept: `mock/server.mjs` reformatted (one line over 120 characters split in two); `npm run format:check` passes for the whole repository. `HARNESS.md`: incident 5, the first caught by an automated gate.
+Changed: the assistant's mistake: the earlier test command, which also ran the format check, had been refused (it would have stopped every Node process), and `99fa53d` was committed without running the check again. Caught by the format gate locally; `99fa53d` had not been pushed, so CI never saw the unformatted file.
+Rejected: pushing `99fa53d` unchanged to get a red CI run (a red run must not be produced on purpose).
+By hand: none.

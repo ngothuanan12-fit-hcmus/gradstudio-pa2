@@ -81,7 +81,8 @@ const server = http.createServer(async (req, res) => {
     const isJson = (req.headers['content-type'] || '').startsWith('application/json');
     const read = isJson ? await readJson(req) : { body: null };
     if (read.tooLarge) answer = fail(413, 'PAYLOAD_TOO_LARGE', 'Dữ liệu gửi lên quá lớn.');
-    else if (read.badJson) answer = fail(400, 'VALIDATION_ERROR', 'Dữ liệu gửi lên không phải JSON hợp lệ.', { fields: {} });
+    else if (read.badJson)
+      answer = fail(400, 'VALIDATION_ERROR', 'Dữ liệu gửi lên không phải JSON hợp lệ.', { fields: {} });
     else {
       try {
         const params = url.pathname.match(route.pattern).groups || {};

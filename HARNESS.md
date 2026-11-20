@@ -13,7 +13,7 @@ How our assistant works inside a harness: the rules file it reads, the gates tha
 
 | Gate | What it checks | Tool | Command (root) | Where it runs | Added in | Went red |
 |---|---|---|---|---|---|---|
-| Format | Code style of JS, JSX, CSS, HTML, JSON, YAML (Markdown left out: the log keeps its wording) | Prettier 3.10.1 | `npm run format:check` | local, CI | `c74cbb4` | Locally on 35 files at `c74cbb4`, before `1ce8ae8` formatted them (AI-LOG 2026-11-19). Not yet in CI |
+| Format | Code style of JS, JSX, CSS, HTML, JSON, YAML (Markdown left out: the log keeps its wording) | Prettier 3.10.1 | `npm run format:check` | local, CI | `c74cbb4` | Locally on 35 files at `c74cbb4`, before `1ce8ae8` formatted them (AI-LOG 2026-11-19); locally on `mock/server.mjs` at `99fa53d` (incident 5). Not yet in CI |
 | Lint | React and JavaScript rules, 0 warnings allowed | ESLint 9 (`client/eslint.config.js`) | `npm run lint` | local, CI | `b5b8362` (client); root script `c74cbb4` | Not yet recorded |
 | Tests | The mock answers as the contract says (to come) | `node --test` | `npm test` | local, CI | `c74cbb4` | Cannot fail yet: 0 tests until the mock's tests exist |
 | Build | The client builds | Vite | `npm run build` | local, CI | root script `c74cbb4` | Not yet |
@@ -64,8 +64,8 @@ Actions page: <https://github.com/ngothuanan12-fit-hcmus/gradstudio-pa2/actions>
 | 2 | PA#2 | The day timelines set `left` and `width` in inline `style` | A search of `src/` against the NEVER list | `8a74ea3` | NEVER 7 in `CLAUDE.md` (`cb7f34f`) |
 | 3 | PA#2 | The filter tabs slid sideways from 768 px, where the list spans the screen, so tabs stuck out past the right edge | The rubric's overflow line in our check script: FAILURES: 1 at 768 px | `64119d9` (sliding from 1280 px only; the first try was never committed) | None needed: the overflow rule already existed |
 | 4 | PA#3 | Prettier added with its default LF line endings while Git on Windows checks out CRLF: a Windows clone would fail the format check on every file | Git's own warnings during the commit, then a check of the files' line endings | `56b88ca` | None: `.gitattributes` now enforces it |
+| 5 | PA#3 | `mock/server.mjs` committed in `99fa53d` with a line over Prettier's 120 characters (the assistant's test run, which included the format check, had been refused, and the commit went ahead without it) | The format gate, `npm run format:check`, run locally before pushing: `mock/server.mjs` failed. `99fa53d` was never pushed, so CI did not see it | the commit after `99fa53d` | None new: *Done means* in the brief already asks for the gates before a push; the miss was skipping them |
 
-At least one incident caught by an automated gate (format, lint, tests, CI) is still to come; add it here with the run's link.
 
 ## 6. Human gates
 
