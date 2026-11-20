@@ -157,3 +157,9 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 > viết 10-admin.md
 
 > làm phần nền front end trước
+
+> làm G2 màn đăng nhập
+
+> chờ phiên kia xong rồi chạy lại đủ A–I
+
+> mình thử test tay nên lỡ mở thêm cổng mà quên tắt, chạy lại A–I

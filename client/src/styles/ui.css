@@ -172,3 +172,19 @@
   justify-items: start;
   border-color: var(--danger);
 }
+
+/* Form messages: one per field after the first try, and the form's own message from the API. */
+.field-error {
+  color: var(--danger);
+}
+.input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+.form-error {
+  margin: 0;
+  padding: var(--space-12);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  background: var(--danger-soft);
+}

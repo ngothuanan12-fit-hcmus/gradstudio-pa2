@@ -4,6 +4,7 @@ import Home from './pages/Home.jsx';
 import LichChup from './pages/LichChup.jsx';
 import NotFound from './pages/NotFound.jsx';
 import QuanLy from './pages/QuanLy.jsx';
+import SignIn from './pages/SignIn.jsx';
 
 // Every screen has its own path, opened directly or after a reload. The paths are listed in FRONTEND.md, section 4.
 // A protected screen sits inside RequireRole with the roles that may open it.
@@ -11,6 +12,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/dang-nhap" element={<SignIn />} />
       <Route
         path="/lich-chup"
         element={
