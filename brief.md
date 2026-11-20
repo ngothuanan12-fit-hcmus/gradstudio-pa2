@@ -115,3 +115,10 @@ Asked whether Prettier should come before or after the move into `client/`, An c
 
 > push rồi viết 01-auth.md
 > hiện tại có làm theo trình tự front end trước không
+
+### 2.6 The PA#3 assignment and contract-check (2026-11-20)
+
+An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 for four roles; the contract in `docs/api/` and `mock/server.mjs` with four modes before the screens; `contract-check.mjs` and its README attached; hand-in by 2 December 22:00).
+
+> hãy xem và có cần phân việc lại không
+> mình để trong PA3

@@ -1456,3 +1456,12 @@ Kept: awaiting An's review. The answer: no; the order is rules and gates, then t
 Changed: the brief names only Linh, Thảo, Mai and Tuấn. The other three accounts needed display names: `customer2` takes Trần Minh Anh from our PA#2 sample conversations; `staff3` (Hoàng Gia Huy) and `superadmin` (Quản trị hệ thống) are new sample names, not facts about the studio.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — the PA#3 assignment and contract-check: does the split change?
+Commit: the commit that adds this entry (log and brief only).
+Tool: Claude Code (Claude Opus 5.5), reading `contract-check-README.md` and the parts of `contract-check.mjs` that read the account and endpoint tables (both in `pj/PA3/`, from Classroom; the brief and rubric there are the same files as before, same checksums).
+Asked for: read the assignment and say whether the work should be split again.
+Kept: awaiting An's decision. What contract-check changes: it sends every example of all files to one mock without restarting, in file order, so examples in different files depend on each other's state; it signs in through the *Demo accounts* table of `FRONTEND.md` (columns for the name in examples, the e-mail, the password), so that table must exist before the tool can run; every endpoint in the README's table needs an example, and every example's endpoint must be in the table; the field names of each answer must match the example exactly, in both directions. Proposed: keep who builds which steps, but first agree a seed story for the mock (bookings already in each state, used by examples in every file), split the mock into one module per resource so the two members do not edit one file, write `FRONTEND.md`'s demo accounts now, and run contract-check in `npm test` so CI goes red when the contract and the mock disagree.
+Changed: nothing yet.
+Rejected: nothing.
+By hand: none.
