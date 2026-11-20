@@ -1690,3 +1690,12 @@ Kept: awaiting An's review. The shared form helper now gives `submitProps` with 
 Changed: all three were the assistant's misses in `64bd68c`, caught by An testing by hand, not by the checks, which did not look at focus after an error, at the homes of staff and Superadmin beyond the path, or at the form's width. The check now covers them. Results: after a wrong password the focus stays on *Đăng nhập*; the form is 328 px wide at 360 px before and after the 401 message; staff and Superadmin land on their own screen with its message, Linh opening `/cong-viec` is turned away; `/quan-ly` keeps its three section links; checks A–I still pass, including one request in slow mode with two presses.
 Rejected: nothing.
 By hand: An's review on the running app.
+
+### 2026-11-20 — end of the day: pushed, next steps listed
+Commit: the commit that adds this entry (log and brief only), after `fb61927` (pushed, CI green).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: push, and a list of tasks for the next session ("push, chuẩn bị các list công việc để mai làm tiếp, giờ nghỉ ngơi").
+Kept: `fb61927` pushed, CI green. The task list is kept in An's own planning notes, outside the repository: product-owner answers and Khánh's progress first, then G1 (home on the API), G3 with G6 on the customer side, G11, a review of Khánh's contract files before his screens, `09-gallery.md` once his `05` and `06` exist, and the hand-in checks. The browser check scripts written today are kept outside the temporary folder that lost the PA#2 ones.
+Changed: nothing.
+Rejected: nothing.
+By hand: none.
