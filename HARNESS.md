@@ -6,8 +6,8 @@ How our assistant works inside a harness: the rules file it reads, the gates tha
 
 | Member | Student ID | Parts of GradStudio |
 |---|---|---|
-| Ngô Thuận An | 23120206 | PA#2: rules file, landing page with the 3D story, the rebuilt `quan-ly` and `lich-chup` pages, checks and hand-in. PA#3: rules file and brief, `client/` move, gates and CI, contract README, auth, catalogue, conversations (customer side), staff jobs, gallery, Superadmin |
-| Nguyễn Hữu Khánh | 24120340 | PA#2: first versions of `quan-ly` and `lich-chup` (PR #1–#3). PA#3: conversations (Admin side), clash check, booking creation, *Lịch chụp của tôi* with the test payment and reminders, booking management |
+| Ngô Thuận An | 23120206 | PA#2: rules file, landing page with the 3D story, the rebuilt `quan-ly` and `lich-chup` pages, checks and hand-in. PA#3: rules file and brief, `client/` move, gates and CI, contract README, FRONTEND.md, contract-check in the tests, the mock's seed and skeleton, auth, catalogue, conversations (customer side), gallery, Superadmin |
+| Nguyễn Hữu Khánh | 24120340 | PA#2: first versions of `quan-ly` and `lich-chup` (PR #1–#3). PA#3: conversations (Admin side), clash check, booking creation, *Lịch chụp của tôi* with the test payment and reminders, staff jobs and preview upload, booking management |
 
 ## 2. The gates
 

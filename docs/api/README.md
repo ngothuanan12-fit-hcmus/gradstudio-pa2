@@ -69,7 +69,7 @@ Sent in this order to a freshly started mock: this file, then the others alphabe
 | `05-bookings.md` | Bookings: create, read, change, cancel, file link | Khánh |
 | `06-payments.md` | Deposit and remainder through the test gateway | Khánh |
 | `07-reminders.md` | Reminders in the customer's account | Khánh |
-| `08-jobs.md` | Staff jobs, job status, preview upload | An |
+| `08-jobs.md` | Staff jobs, job status, preview upload | Khánh |
 | `09-gallery.md` | Previews, photo choice, *Nhận ảnh* | An |
 | `10-admin.md` | Admin accounts, system settings | An |
 
@@ -91,10 +91,7 @@ Every endpoint the client calls. Each file adds its rows when it is written.
 | `POST` | `/api/conversations/:id/messages` | customer (own), admin | `03-conversations.md` |
 | `POST` | `/api/conversations/:id/proposals` | admin | `03-conversations.md` |
 | `POST` | `/api/conversations/:id/proposals/:proposalId/answer` | customer (own) | `03-conversations.md` |
-| | *rows for `04`–`07` added by Khánh with those files* | | |
-| `GET` | `/api/jobs` | staff (own) | `08-jobs.md` |
-| `PATCH` | `/api/jobs/:id` | staff (own) | `08-jobs.md` |
-| `POST` | `/api/bookings/:id/previews` | staff (assigned) | `08-jobs.md` |
+| | *rows for `04`–`08` added by Khánh with those files* | | |
 | `GET` | `/api/bookings/:id/previews` | customer (own), staff (assigned), admin | `09-gallery.md` |
 | `PUT` | `/api/bookings/:id/selection` | customer (own) | `09-gallery.md` |
 | `POST` | `/api/bookings/:id/receive` | customer (own) | `09-gallery.md` |
@@ -108,3 +105,4 @@ Every endpoint the client calls. Each file adds its rows when it is written.
 Once client code calls an endpoint, every change to it gets a line here or in its file: the date, what changed, and why.
 
 - 2026-11-19 — First version: base path, auth header, error shape, status codes, conventions, files, endpoints of `01`–`03` and `08`–`10`. No client code calls the API yet.
+- 2026-11-20 — `08-jobs.md` moves to Khánh with step G8; its three rows leave this table until he writes the file. No client code calls the API yet.

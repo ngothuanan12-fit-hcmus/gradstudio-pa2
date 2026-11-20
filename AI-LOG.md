@@ -1465,3 +1465,12 @@ Kept: awaiting An's decision. What contract-check changes: it sends every exampl
 Changed: nothing yet.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-20 — G8 moves to Khánh
+Commit: the commit that adds this entry, after `3fd1e2a` (pushed).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: move G8 to Khánh, agree the four shared tasks, push ("chuyển G8 sang Khánh / đồng ý 4 việc chung / push commit").
+Kept: awaiting An's review. `docs/api/README.md`: `08-jobs.md` is now written by Khánh; its three endpoint rows leave the table until he writes the file, with a line in `## Changes`. `HARNESS.md`, section 1: staff jobs and preview upload listed under Khánh; An's list gains the shared tasks (`FRONTEND.md`, contract-check in the tests, the mock's seed and skeleton). The four shared tasks follow in that order, one commit each.
+Changed: nothing beyond the request.
+Rejected: nothing.
+By hand: An tells Khánh about G8.

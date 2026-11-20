@@ -122,3 +122,7 @@ An pasted the PA#3 assignment text from Classroom (the whole main flow G1–G11 
 
 > hãy xem và có cần phân việc lại không
 > mình để trong PA3
+
+> chuyển  G8 sang Khánh
+> đồng ý 4 việc chung
+> push commit
