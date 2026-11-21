@@ -210,3 +210,5 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 > mình cần tự kiểm các trang như thế nào
 
 > commit luôn cho đúng quy định
+
+> push
