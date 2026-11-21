@@ -1844,3 +1844,12 @@ Changed: the assistant's first plan put the booking code only in the message tex
 Rejected: the assistant's recommendation (a), taking the costume from the customer's request automatically. An chose (b): correct behaviour over speed, and a customer who changes model or size in the chat is handled by the Admin directly, without a new request. The weakness of (b), an Admin who forgets the costume, is covered by pre-filling the fields from the request (to ask of Khánh) and by the check again at booking creation and deposit.
 By hand: none.
 
+### 2026-11-22 — answers to Khánh's three questions (remainder timing, preview URL, routes)
+Commit: the commit that adds this entry with `FRONTEND.md`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: check Khánh's three questions (items 5–7 of the PR #5 review), then draft the reply once An agreed.
+Kept: awaiting Khánh's changes. (5) The remaining 70% is paid only after the customer saves the photo choice, the order of G9 in the brief (choose, pay, *Nhận ảnh*), marked in `06-payments.md` as the team's reading of the brief; 06 drops its successful remainder on GS-1022 for a refusal before the choice, and `09-gallery.md` walks GS-1022 through choice, remainder and *Nhận ảnh*; the mock of 06 reads the choice from `db.selections`, which the mock of 09 will create. (6) A preview's `url` points to an endpoint of `08-jobs.md` that answers the image file itself; its examples are the JSON errors (`401`, `404`) and the `200` is described in words, since contract-check reads JSON answers only and a binary `200` would fail with `--strict-values`; seed previews may use the sample photos in `client/public/photos`. (7) The routes of G4–G10 are listed in `FRONTEND.md` section 4 as agreed, not yet built.
+Changed: none of the three changes a file of Khánh's here; the reply asks for them. The `--strict-values` point was read from `tools/contract-check.mjs` (an answer block without a body becomes a note, and notes fail in strict mode) before it went into the answer.
+Rejected: a binary `200` example for the image endpoint, for the reason above.
+By hand: none.
+

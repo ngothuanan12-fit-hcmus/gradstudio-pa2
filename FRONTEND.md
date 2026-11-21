@@ -57,6 +57,20 @@ One row per route, as the browser shows it (`BrowserRouter`). A route that exist
 
 A protected route opened while signed out goes to `/dang-nhap` (step G2) and back after sign-in; opened with another role it is turned away with a link to that role's home. Homes: customer `/lich-chup`, admin `/quan-ly`, staff `/cong-viec`, Superadmin `/quan-tri`; until step G8 is built, `/cong-viec` shows a message that the screen is not ready, not the general not-found screen.
 
+**Agreed for the screens not built yet (An and Khánh, 2026-11-22).** Each moves into the table above when its screen is built. Booking and payment ids sit in the path, never in the query (CLAUDE.md, NEVER 4).
+
+| Path | Role | Steps |
+|---|---|---|
+| `/quan-ly` | admin | G4, conversation list (the Admin's home) |
+| `/quan-ly/hoi-thoai/:id` | admin | G4–G6, conversation, clash check, proposal, *Tạo booking* |
+| `/quan-ly/booking` | admin | G10, bookings with payment status |
+| `/quan-ly/booking/:id` | admin | G10, change, cancel, final file link |
+| `/lich-chup` | customer | G7, my bookings and reminders (the customer's home) |
+| `/thanh-toan/:paymentId` | customer | G7, G9, the test payment gateway |
+| `/thanh-toan/:paymentId/ket-qua` | customer | G7, G9, the payment's result |
+| `/cong-viec` | staff | G8, assigned jobs, job status, preview upload |
+| `/lich-chup/:id/anh` | customer | G9, photo choice, the remaining 70%, *Nhận ảnh* |
+
 ## 5. Product owner decisions
 
 Questions posted under *GradStudio — questions for the product owners* (course Facebook group, #WAD2431). Until an answer arrives, the contract marks the behaviour as an assumption.
