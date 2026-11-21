@@ -1,0 +1,132 @@
+/* Steps G3 and G4: conversations. Messages flow in the page (no inner scrolling box), mine on the right. */
+.chat-block {
+  display: grid;
+  gap: var(--space-16);
+}
+.conv-links,
+.msg-list {
+  display: grid;
+  gap: var(--space-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.conv-links a {
+  display: grid;
+  gap: var(--space-8);
+  min-height: 44px;
+  padding: var(--space-12) var(--space-16);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  text-decoration: none;
+}
+.conv-links a:hover {
+  border-color: var(--line-strong);
+}
+.conv-link-text {
+  overflow-wrap: anywhere;
+}
+.conv-link-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--ink-muted);
+}
+.msg {
+  justify-self: start;
+  display: grid;
+  gap: var(--space-4);
+  width: min(100%, 36rem);
+  padding: var(--space-12) var(--space-16);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+}
+.msg-mine {
+  justify-self: end;
+  border-color: var(--line-strong);
+}
+.msg p {
+  margin: 0;
+}
+.msg-who {
+  font-weight: 600;
+}
+.msg-text {
+  overflow-wrap: anywhere;
+}
+.msg-time {
+  color: var(--ink-muted);
+}
+.msg-card {
+  display: grid;
+  gap: var(--space-8);
+  margin: var(--space-8) 0 0;
+  padding: var(--space-12);
+  border-left: 4px solid var(--accent);
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+}
+.msg-card dl {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+}
+.msg-card dt {
+  color: var(--ink-muted);
+}
+.msg-card dd {
+  margin: 0;
+}
+.proposal-status {
+  font-weight: 600;
+}
+.chat-form,
+.request-fields,
+.request-extras {
+  display: grid;
+  gap: var(--space-16);
+}
+.request-fields,
+.request-extras {
+  margin: 0;
+  padding: var(--space-16);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.request-fields legend,
+.request-extras legend {
+  padding-inline: var(--space-4);
+  font-weight: 600;
+}
+.field-row {
+  display: grid;
+  gap: var(--space-16);
+}
+@media (min-width: 768px) {
+  .field-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.check-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  min-height: 44px;
+  margin: 0;
+}
+.check-field input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--accent);
+}
+.back-link,
+.conv-status-line {
+  margin: 0;
+}
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}

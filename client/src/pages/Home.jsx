@@ -202,10 +202,14 @@ export default function Home() {
           <li>Có cần makeup hay thuê áo không</li>
         </ul>
         {auth.status === 'signed-in' && auth.user.role === 'customer' ? (
-          <p className="state state-empty">Màn chat với studio đang được làm (bước G3).</p>
+          <p>
+            <Button to="/tu-van">Mở hội thoại với studio</Button>
+          </p>
         ) : auth.status === 'signed-in' ? null : (
           <p>
-            <Button to="/dang-nhap">Đăng nhập để chat với studio</Button>
+            <Button to="/dang-nhap" state={{ from: '/tu-van' }}>
+              Đăng nhập để chat với studio
+            </Button>
           </p>
         )}
       </section>

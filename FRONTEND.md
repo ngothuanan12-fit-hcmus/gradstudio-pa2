@@ -47,6 +47,8 @@ One row per route, as the browser shows it (`BrowserRouter`). A route that exist
 |---|---|---|---|
 | `/` | visitor (anyone) | G1 | `GET /api/services`, `GET /api/extras`, `GET /api/photos`, `GET /api/reviews` |
 | `/dang-nhap` | anyone; a signed-in user is sent to their home | G2 | `POST /api/auth/login` |
+| `/tu-van` | customer (protected) | G3 | `GET /api/conversations`, `GET /api/services`, `GET /api/extras`, `POST /api/conversations` |
+| `/tu-van/:id` (e.g. `/tu-van/c-anh` as `customer2`; `/tu-van/c-linh` after G3) | customer (protected) | G3, G6 | `GET /api/conversations/:id`, `POST /api/conversations/:id/messages`, `POST /api/conversations/:id/proposals/:proposalId/answer` |
 | `/lich-chup` | customer (protected) | G7 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
 | `/quan-ly` | admin (protected) | G4–G6 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
 | `/cong-viec` | staff (protected) | G8, not built yet: says so plainly | `GET /api/auth/me` on load |

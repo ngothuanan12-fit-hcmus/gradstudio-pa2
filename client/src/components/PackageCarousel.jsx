@@ -271,7 +271,8 @@ export default function PackageCarousel({ items }) {
           <wbr />
           {item.unit}
         </p>
-        <Button variant="secondary" href="#chat">
+        {/* The chosen service travels in the router's state, never in the URL (CLAUDE.md, NEVER 4). */}
+        <Button variant="secondary" to="/tu-van" state={{ serviceId: item.id }}>
           Hỏi studio về gói này
         </Button>
       </div>

@@ -20,6 +20,9 @@ export default function CustomerLayout({ title = 'GradStudio: chụp ảnh tốt
               </NavLink>
             </li>
             <li>
+              <NavLink to="/tu-van">Hội thoại</NavLink>
+            </li>
+            <li>
               <NavLink to="/lich-chup">Lịch chụp của tôi</NavLink>
             </li>
           </ul>

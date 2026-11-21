@@ -1,6 +1,8 @@
 import { Route, Routes } from 'react-router';
 import RequireRole from './auth/RequireRole.jsx';
 import ComingSoon from './pages/ComingSoon.jsx';
+import Conversation from './pages/Conversation.jsx';
+import Conversations from './pages/Conversations.jsx';
 import Home from './pages/Home.jsx';
 import LichChup from './pages/LichChup.jsx';
 import NotFound from './pages/NotFound.jsx';
@@ -14,6 +16,22 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/dang-nhap" element={<SignIn />} />
+      <Route
+        path="/tu-van"
+        element={
+          <RequireRole roles={['customer']}>
+            <Conversations />
+          </RequireRole>
+        }
+      />
+      <Route
+        path="/tu-van/:id"
+        element={
+          <RequireRole roles={['customer']}>
+            <Conversation />
+          </RequireRole>
+        }
+      />
       <Route
         path="/lich-chup"
         element={

@@ -62,6 +62,14 @@ export default function useForm({ initial, validate, onSubmit }) {
     formError,
     busy,
     handleSubmit,
+    setValue,
+    // Back to the first values with no messages, for a form that stays on screen after sending (a chat box).
+    reset: () => {
+      setValues(initial);
+      setTried(false);
+      setApiErrors({});
+      setFormError(null);
+    },
     // The submit stays focusable while busy (aria-disabled, not disabled): a disabled button would drop the keyboard
     // focus to <body> and the user would have to Tab from the top of the page. handleSubmit ignores a second press.
     submitProps: { type: 'submit', 'aria-disabled': busy ? 'true' : undefined },
