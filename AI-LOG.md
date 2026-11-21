@@ -1825,3 +1825,111 @@ Kept: the steps in the chat, following `brief.md` *How done is checked* and `HAR
 Changed: the exact wording of the PA#2 rubric's two Console lines is not in the repository; the snippet rebuilds them from earlier entries (the sideways scroll and the elements past the edge). An should compare it with the rubric.
 Rejected: nothing yet.
 By hand: An's request; the checks themselves are An's.
+
+### 2026-11-21 — contract file 04, schedule (staff, rooms, clash check)
+Commit: the commit that adds this entry with `docs/api/04-schedule.md`, `docs/api/README.md` and `brief.md`, after `0404bda` (which committed `.gitignore` and `AGENTS.md`). The mock follows in the next step.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write `docs/api/04-schedule.md` following the team's conventions, and commit `.gitignore` + `AGENTS.md` ("Viêt docs/api/04-schedule.md (có thể tham khảo cách viết của lead), lần này có thể commit .gitignore + AGENTS.md.").
+Kept: awaiting An's review. Committed `.gitignore` and `AGENTS.md` first in `0404bda` so the contract diff stays isolated under `docs/api/`. Wrote `docs/api/04-schedule.md` with four Admin-only endpoints for step G5 and G10 rescheduling: `GET /api/staff` (`specialty`: `makeup` or `photographer`), `GET /api/rooms`, `GET /api/schedule?date=YYYY-MM-DD` (opening hours from `settings.json`, held blocks from bookings in *Đã đặt lịch*, costume stock per model/size/date, suggested `freeTime`), and `POST /api/schedule/check` (checks held blocks, opening hours, costume stock assumption from `FRONTEND.md` section 5, and `excludeBookingId`, returning the same `conflicts` and `freeTime` shapes as `03-conversations.md`). Added the four rows and a dated line in `## Changes` to `docs/api/README.md`, and appended the prompts to `brief.md`.
+Changed: no `mock/` files edited yet (contract committed before mock). After the final edit, `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` parses `04-schedule.md` cleanly, covers 20/20 endpoints in `docs/api/README.md`, passes all 44 existing examples, and fails only with `404` on the 17 new `04-schedule.md` examples until the schedule mock is implemented.
+Rejected: editing `mock/` in the same step before committing the contract first.
+By hand: Khánh's choice to keep `.gitignore` and `AGENTS.md` in a separate preceding commit.
+
+### 2026-11-21 — HARNESS timeline for AGENTS.md (`0404bda`) and updated AI-LOG rules
+Commit: the commit that adds this entry with `HARNESS.md` and `brief.md`, after `342be14`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: apply An's log rules (`Changed` only for errors and which check caught them, check results in a separate sentence, `Rejected` only for declined proposals with reasons, `By hand` only for text/code written or edited manually), treat the `0404bda` split as a `Kept` decision, leave `0404bda` as committed, check for any other rule/workflow files, and record `AGENTS.md` in `HARNESS.md`.
+Kept: awaiting An's review. Checked the repository root, `.github/workflows/`, and `client/`: no other rule or workflow files exist besides `CLAUDE.md`, `AGENTS.md` (`0404bda`), and `.github/workflows/ci.yml` (`.codegraph/` is already ignored in `.gitignore`; future machine-only settings will stay out of commits). Added the `0404bda` row to `HARNESS.md` section 4 (*Rules file timeline*), left `0404bda` intact as instructed, and recorded this prompt in `brief.md`. Clarified for `342be14` without rewriting the old entry (`CLAUDE.md` rule 4): separating `.gitignore` and `AGENTS.md` into `0404bda` was a decision under `Kept`, and `342be14` itself had `Changed: nothing`, `Rejected: nothing`, `By hand: nothing`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass (`npm test` still fails only on the 17 new `04-schedule.md` examples until its mock is written).
+Changed: in the `342be14` log entry, the assistant put the `0404bda` split decision under `By hand`, put a general workflow constraint under `Rejected`, and mixed check results into `Changed` instead of writing a separate sentence; caught by An's review of the log.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — contract file 05, bookings
+Commit: the commit that adds this entry with `docs/api/05-bookings.md`, `docs/api/README.md` and `brief.md`, after `842143c`. The mock follows after the contract files.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write the next contract file (`docs/api/05-bookings.md`) ("Viết tiếp").
+Kept: awaiting An's review. Wrote `docs/api/05-bookings.md` with six endpoints matching `mock/data/README.md`: `POST /api/bookings` (creates `GS-1024` in *Chờ cọc 30%* from agreed `c-linh`, links `conversation.bookingId`, checks clashes without holding any slot yet, refuses unagreed `c-uyen` with `409` per R2), `GET /api/bookings` (own for customer, all for Admin, `?status` filter), `GET /api/bookings/:id` (`404` for another customer's booking), `PATCH /api/bookings/:id` (G10 reschedule/headcount confirmation with clash check excluding self and updating held `busy` blocks when *Đã đặt lịch*), `PUT /api/bookings/:id/file-link` (sets final delivery URL on `GS-1022` for `09-gallery.md`), and `POST /api/bookings/:id/cancel` (Admin cancel under the team assumption until the product owners answer, keeping `GS-1020`–`GS-1024` active for `06`–`09` and checking the guard paths). Pricing breaks down included vs added items per `FRONTEND.md` section 5 (`1.800.000đ` total, `540.000đ` deposit, `1.260.000đ` remainder for `GS-1024`). Added the six rows and a dated line in `## Changes` to `docs/api/README.md`, and logged the prompt in `brief.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` covers 26/26 endpoints in `docs/api/README.md` and answers 47/86 examples, failing only on unimplemented `04-schedule.md` (17) and `05-bookings.md` (22) routes.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — contract file 06, payments
+Commit: the commit that adds this entry with `docs/api/06-payments.md`, `docs/api/README.md` and `brief.md`, after `e07fc21`. The mock follows after the contract files.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write contract 06 (`docs/api/06-payments.md`) ("Tiếp tục với contract 06").
+Kept: awaiting An's review. Wrote `docs/api/06-payments.md` with four endpoints matching `brief.md` (test gateway returning to `/thanh-toan/ket-qua`), `docs/api/README.md`, and `mock/data/README.md`: `GET /api/payments` (`customer` own or `admin`, optional `bookingId` filter), `POST /api/payments` (`customer` starts a `pending` `deposit` or `remainder` attempt, refusing remainder before deposit and `404` for another customer's booking), `GET /api/payments/:id`, and `POST /api/payments/:id/result` (`success` or `fail`, `409` if already applied). Marked as a team assumption until the product owners answer (`FRONTEND.md` section 5): when a deposit attempt fails, the booking stays *Chờ cọc 30%* and the customer can start a new attempt to retry. On `deposit` success, resources are checked again, the booking becomes *Đã đặt lịch*, and its make-up and shoot blocks are added to `busy` (verified by a follow-up `POST /api/schedule/check` example on `GS-1024`). Examples cover `GS-1024` (one failed deposit `pay-1`, retry `pay-2` succeeding, duplicate deposit `409`) and `GS-1022` (remainder `pay-3` succeeding for `09-gallery.md`). Added the four rows and a dated line in `## Changes` to `docs/api/README.md`, and logged the prompt in `brief.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` covers 30/30 endpoints in `docs/api/README.md` and answers 49/102 examples, failing only on unimplemented `04`–`06` routes.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — contract file 07, reminders
+Commit: the commit that adds this entry with `docs/api/07-reminders.md`, `docs/api/README.md` and `brief.md`, after `ec3de57`. The mock follows after the contract files.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write the next contract file (`docs/api/07-reminders.md`) ("Viết tiếp cho tôi").
+Kept: awaiting An's review. Wrote `docs/api/07-reminders.md` with `GET /api/reminders` (optional `?bookingId=`, `customer` own or `admin` all, `404` for another customer's booking, `[]` in `empty` mode) matching `mock/data/README.md` (`GS-1024` booked in `06-payments.md`, `24` hours before `13:00` on `2026-10-24` giving `2026-10-23T13:00:00+07:00`, as in `docs/api/README.md`) and `10-admin.md` (`R4`, capturing `hoursBefore` when scheduled so later settings changes apply only to newer bookings). Marked the reminder message and placement on `/lich-chup` as a team assumption until the product owners answer (`FRONTEND.md` section 5). Added the endpoint row and a dated line in `## Changes` to `docs/api/README.md`, and logged the prompt in `brief.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` covers 31/31 endpoints in `docs/api/README.md` and answers 50/108 examples, failing only on unimplemented `04`–`07` routes.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — contract file 08, staff jobs and preview upload
+Commit: the commit that adds this entry with `docs/api/08-jobs.md`, `docs/api/README.md` and `brief.md`, after `ca2a92d`. This finishes the five contract files (`04`–`08`); the mock modules follow next.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write contract 08 (`docs/api/08-jobs.md`) ("Oke tiếp tục").
+Kept: awaiting An's review. Wrote `docs/api/08-jobs.md` with three endpoints matching `mock/data/README.md` (`GS-1024` jobs for `Mai` and `Tuấn`, `GS-1022` editing job for `u-staff3`, and `staff3` unassigned to `GS-1024`): `GET /api/jobs` (own for `staff`, all for `admin`, optional `status` and `bookingId` filters), `PATCH /api/jobs/:id` (`Chưa bắt đầu`, `Đang thực hiện`, `Hoàn thành`, refusing unassigned staff with `403`), and `POST /api/bookings/:id/previews` (`multipart/form-data` field `file`, `image/jpeg`, `image/png`, or `image/webp` up to `5 MB` returning `201`, `400` for wrong MIME type, `403` for unassigned `staff3`, `413` for `6 MB`). Marked the Vietnamese job status labels and `5 MB` limit as team assumptions until otherwise specified. Added the three rows and a dated line in `## Changes` to `docs/api/README.md`, and logged the prompt in `brief.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` covers 34/34 endpoints in `docs/api/README.md` and answers 50/120 examples, failing only on unimplemented `04`–`08` routes.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — mock answers 04-schedule
+Commit: the commit that adds this entry with `mock/routes/schedule.mjs`, `mock/data/staff.json`, `mock/data/costumes.json`, `mock/data/README.md`, `mock/server.mjs`, and `brief.md`, after `15576d2`.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs` (both `--only 04-schedule.md --strict-values` and full), `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write the mock for `04-schedule.md` following the lead's style ("Viết mock cho 04 cho tôi (nhớ phải tham khảo cách viết của lead)").
+Kept: awaiting An's review. Left An's route files and `users.json` untouched; added `mock/data/staff.json` (staff specialties) and `mock/data/costumes.json` (sample stock of `5` per model/size), registered `mock/routes/schedule.mjs` in `mock/server.mjs`, and updated `mock/data/README.md` and `brief.md`. Implemented `GET /api/staff`, `GET /api/rooms`, `GET /api/schedule`, and `POST /api/schedule/check` plus exported `checkSchedule` / `validateScheduleInput` helpers so `05-bookings` and `06-payments` can reuse the same clash-check logic without duplicating it (checking held `busy` blocks, `settings.openingHours`, costume stock on `date` excluding `excludeBookingId`, and real calendar dates). Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs --only 04-schedule.md --strict-values` passes `17/17` with 0 value mismatches; full `contract-check.mjs` passes `67/120` (all `01`–`04` and `10` pass, remaining 53 failures are only the not-yet-written `05`–`08` mocks).
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — mock answers 05-bookings
+Commit: the commit that adds this entry with `mock/data/bookings.json`, `mock/routes/bookings.mjs`, `mock/server.mjs`, `mock/data/README.md`, and `brief.md`, after `8a714f8`.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write the mock for `05-bookings.md` ("Tiếp tục").
+Kept: awaiting An's review. Left An's route files untouched; added `mock/data/bookings.json` (`GS-1020`–`GS-1023` matching `mock/data/README.md`), implemented `mock/routes/bookings.mjs` (`GET /api/bookings`, `POST /api/bookings`, `GET /api/bookings/:id`, `PATCH /api/bookings/:id`, `PUT /api/bookings/:id/file-link`, `POST /api/bookings/:id/cancel`, plus exported `bookingOut` and `syncBookingBusy` helpers for `06-payments`), registered `bookings` in `mock/server.mjs`, and updated `mock/data/README.md` and `brief.md`. Reused `checkSchedule` and `validateScheduleInput` from `mock/routes/schedule.mjs` so booking creation and rescheduling share one clash-check path; `POST /api/bookings` keeps `GS-1024` in *Chờ cọc 30%* without adding `busy` blocks until deposit succeeds (`06-payments`). Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; full `contract-check.mjs` passes all 25/25 `05-bookings.md` examples (`89/120` overall, remaining 31 failures are only `06`–`08` routes not yet written).
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — mock answers 06-payments
+Commit: the commit that adds this entry with `mock/data/payments.json`, `mock/routes/payments.mjs`, `mock/server.mjs`, `mock/data/README.md`, and `brief.md`, after `316a479`.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write mocks for `06-payments`, `07-reminders`, and `08-jobs` with one commit per resource ("Oke tiếp tục viết mock 06-07-08 luôn (nhưng vẫn mỗi commit là 1 phần nha). Làm và kiểm tra kỹ").
+Kept: awaiting An's review. Left An's route files untouched; added `mock/data/payments.json`, implemented `mock/routes/payments.mjs` (`GET /api/payments`, `POST /api/payments`, `GET /api/payments/:id`, `POST /api/payments/:id/result`), registered `payments` in `mock/server.mjs`, and updated `mock/data/README.md` and `brief.md`. Reused `checkSchedule`, `bookingOut`, and `syncBookingBusy` so a deposit `success` re-checks resources, moves the booking to *Đã đặt lịch*, and adds its make-up and shoot blocks into `db.busy` (so the clash check sees `GS-1024`), while a `fail` leaves the booking in *Chờ cọc 30%* and lets the customer start a new attempt; `GS-1022` pays its 70% remainder cleanly. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; full `contract-check.mjs` passes all 14/14 `06-payments.md` examples (`103/120` overall, remaining 17 failures are only `07` and `08` routes not yet written).
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — mock answers 07-reminders
+Commit: the commit that adds this entry with `mock/data/reminders.json`, `mock/routes/reminders.mjs`, `mock/routes/payments.mjs`, `mock/routes/bookings.mjs`, `mock/server.mjs`, and `mock/data/README.md`, after `66cf257`.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: second part of the request to implement mocks `06`–`08` with one commit per resource (`07-reminders`).
+Kept: awaiting An's review. Left An's route files untouched; added `mock/data/reminders.json`, implemented `mock/routes/reminders.mjs` (`GET /api/reminders` and exported `syncReminderForBooking`), wired `syncReminderForBooking` into `payments.mjs` (creates `rem-gs-1024` at `2026-10-23T13:00:00+07:00` when `GS-1024`'s deposit succeeds, using `settings.reminderHoursBefore`) and `bookings.mjs` (updates/removes on reschedule/cancel), registered `reminders` in `mock/server.mjs`, and updated `mock/data/README.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; full `contract-check.mjs` passes all 6/6 `07-reminders.md` examples (`108/120` overall, remaining 12 failures are only `08-jobs.md` routes not yet written).
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — mock answers 08-jobs
+Commit: the commit that adds this entry with `mock/data/jobs.json`, `mock/data/previews.json`, `mock/routes/jobs.mjs`, `mock/routes/payments.mjs`, `mock/routes/bookings.mjs`, `mock/server.mjs`, and `mock/data/README.md`, after `90c555f`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm test` (`contract-check.mjs`, error/slow/restart modes), `npm run format:check`, `npm run lint`, `npm run build`, and ephemeral node checks for `empty` mode and `200` cancel.
+Asked for: third part of the request to implement mocks `06`–`08` with one commit per resource (`08-jobs`).
+Kept: awaiting An's review. Left An's route files untouched; added `mock/data/jobs.json` and `mock/data/previews.json`, implemented `mock/routes/jobs.mjs` (`GET /api/jobs`, `PATCH /api/jobs/:id`, `POST /api/bookings/:id/previews` with Node built-in `multipart/form-data` parsing draining past-limit uploads to prevent `ECONNRESET`, plus `syncJobsForBooking`), wired `syncJobsForBooking` into `payments.mjs` and `bookings.mjs`, registered `jobs` in `mock/server.mjs`, and updated `mock/data/README.md`. Checks: `npm run format:check`, `npm run lint`, `npm test` (`4/4` suites pass, including `120/120` examples in `contract-check.mjs`, `34/34` endpoints covered, and `0` value notes), and `npm run build` all pass; `MOCK_MODE=empty` returns `[]` for all new list endpoints, and cancelling `GS-1020` on a fresh mock returns `200` *Đã hủy* and frees `2026-10-17` `13:00–16:00`.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — merge origin/main and prepare PR for contracts and mocks 04–08
+Commit: the merge commit that adds this entry with `brief.md`, merging `origin/main` (`6d14e93`) into `feature/pa3-khanh` after `f5be335`.
+Tool: Antigravity (Gemini 4 Hydrogen); `git diff --check`, `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: create a pull request into `main`, post a comment summarizing what was implemented, and request a review from lead An ("Tạo pull request vào main, và viết comment những gì đã thực hiện được sau đó request cho lead An review").
+Kept: awaiting An's review. Merged `origin/main` (`6d14e93`, carrying `0e5bfbc` and `6d14e93`) into `feature/pa3-khanh` instead of rebasing so commit SHAs referenced in `HARNESS.md` and `AI-LOG.md` stay unchanged, kept both An's and Khánh's entries intact in chronological order without rewriting past logs, recorded prompt `2.18` in `brief.md`, and prepared the branch to push and open a PR into `main` for An (`ngothuanan12-fit-hcmus`) to review without self-merging. Checks: `git diff --check`, `npm run format:check`, `npm run lint`, `npm test` (`4/4` suites pass), and `npm run build` all pass cleanly.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "rem-gs-1020",
+    "bookingId": "GS-1020",
+    "customerId": "u-customer2",
+    "dueAt": "2026-10-16T13:00:00+07:00",
+    "hoursBefore": 24,
+    "channels": ["inApp", "email"],
+    "emailStatus": "sent",
+    "emailSentAt": "2026-10-16T13:00:00+07:00",
+    "message": "Nhắc lịch GS-1020 ngày 17/10/2026: makeup 13:00–14:00 với Mai, chụp 14:00–16:00 với Tuấn tại Phòng B."
+  },
+  {
+    "id": "rem-gs-1021",
+    "bookingId": "GS-1021",
+    "customerId": "u-bao",
+    "dueAt": "2026-10-09T09:00:00+07:00",
+    "hoursBefore": 24,
+    "channels": ["inApp", "email"],
+    "emailStatus": "sent",
+    "emailSentAt": "2026-10-09T09:00:00+07:00",
+    "message": "Nhắc lịch GS-1021 ngày 10/10/2026: makeup 09:00–10:00 với Mai, chụp 10:00–12:00 với Tuấn tại Phòng B."
+  },
+  {
+    "id": "rem-gs-1022",
+    "bookingId": "GS-1022",
+    "customerId": "u-customer2",
+    "dueAt": "2026-10-17T13:00:00+07:00",
+    "hoursBefore": 24,
+    "channels": ["inApp", "email"],
+    "emailStatus": "sent",
+    "emailSentAt": "2026-10-17T13:00:00+07:00",
+    "message": "Nhắc lịch GS-1022 ngày 18/10/2026: makeup 13:00–14:00 với Mai, chụp 14:00–16:00 với Tuấn tại Phòng B."
+  },
+  {
+    "id": "rem-gs-1023",
+    "bookingId": "GS-1023",
+    "customerId": "u-khoa",
+    "dueAt": "2026-10-23T08:00:00+07:00",
+    "hoursBefore": 24,
+    "channels": ["inApp", "email"],
+    "emailStatus": "pending",
+    "emailSentAt": null,
+    "message": "Nhắc lịch GS-1023 ngày 24/10/2026: makeup 08:00–12:00 với Mai, chụp 08:00–12:00 với Mai tại Phòng A."
+  }
+]

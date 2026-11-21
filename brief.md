@@ -212,3 +212,51 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 > commit luôn cho đúng quy định
 
 > push
+
+### 2.9 Contract 04-schedule (Khánh, 2026-11-21)
+
+> Tạo nhánh mới để bắt đầu làm các task lead giao, cần nhắc lại về file brief.md và AI-LOG.md. Đó là brief.md bạn sẽ ghi vào những câu prompt khi bắt đầu làm (có thể sau khi tạo nhánh là bắt đầu làm nè), còn file AI-LOG.md bạn có thể tham khảo các viết của An - tức là khi tôi prompt và bạn chỉnh hết file theo yêu cầu đó và kết thúc phiên của câu hỏi đó thì bạn sẽ commit hết + ghi vào AI-LOG.md. Bạn hãy tạo nhánh đi + response lại tôi đã hiểu ý làm của 2 file đó chưa. Ngoài ra các rule khác vẫn cứ đọc codebase coi các yêu cầu của lead (An) để thực hiện không thiếu hành động nào
+
+> Viêt docs/api/04-schedule.md (có thể tham khảo cách viết của lead), lần này có thể commit .gitignore + AGENTS.md.
+
+### 2.10 Log rules from An and HARNESS update (Khánh, 2026-11-21)
+
+> Trước khi viết tiếp các thì có thêm các rule từ lead như sau:
+> Changed thì ghi sai chỗ nào và lần chạy nào bắt được (contract-check, lint, format…). Nếu không sai gì thì ghi "nothing". Kết quả các lần chạy kiểm tra thì tách thành một câu riêng.
+> Rejected: chỉ ghi những gì đề xuất mà không đồng ý, kèm lý do. Nếu không đề xuất gì thì ghi "nothing".
+> By hand: chỉ ghi phần chữ hoặc code tự viết hay tự sửa. 
+> Việc tách .gitignore và AGENTS.md ra commit riêng là một quyết định, nên chuyển sang Kept.
+> Ngoài AGENTS.md, nếu còn file quy tắc hay workflow nào thì commit luôn và ghi vào HARNESS. File cài đặt riêng trên máy (đường dẫn, token) thì cho vào .gitignore, không commit nha.
+> Lỡ commit .gitignore lần này thì cứ để yên đó, lần sau thì không cần.
+
+### 2.11 Contract 05-bookings (Khánh, 2026-11-21)
+
+> Viết tiếp
+
+### 2.12 Contract 06-payments (Khánh, 2026-11-21)
+
+> Tiếp tục với contract 06
+
+### 2.13 Contract 07-reminders (Khánh, 2026-11-21)
+
+> Viết tiếp cho tôi
+
+### 2.14 Contract 08-jobs (Khánh, 2026-11-21)
+
+> Oke tiếp tục
+
+### 2.15 Mock for 04-schedule (Khánh, 2026-11-21)
+
+> Viết mock cho 04 cho tôi (nhớ phải tham khảo cách viết của lead)
+
+### 2.16 Mock for 05-bookings (Khánh, 2026-11-21)
+
+> Tiếp tục
+
+### 2.17 Mocks for 06-payments, 07-reminders, and 08-jobs (Khánh, 2026-11-21)
+
+> Oke tiếp tục viết mock 06-07-08 luôn (nhưng vẫn mỗi commit là 1 phần nha). Làm và kiểm tra kỹ
+
+### 2.18 Merge main and PR for contracts 04–08 and mocks (Khánh, 2026-11-21)
+
+> Tạo pull request vào main, và viết comment những gì đã thực hiện được sau đó request cho lead An review

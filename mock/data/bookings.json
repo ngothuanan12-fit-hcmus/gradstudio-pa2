@@ -1,0 +1,94 @@
+[
+  {
+    "id": "GS-1020",
+    "conversationId": null,
+    "customerId": "u-customer2",
+    "adminId": "u-thao",
+    "serviceId": "tot-nghiep",
+    "packageId": "tot-nghiep-premium",
+    "sessionType": "Tốt nghiệp cá nhân",
+    "people": 1,
+    "extras": [{ "extraId": "makeup", "modelId": null, "size": null, "quantity": 1 }],
+    "date": "2026-10-17",
+    "makeup": { "from": "13:00", "to": "14:00", "staffId": "u-mai" },
+    "shoot": { "from": "14:00", "to": "16:00", "staffId": "u-tuan", "roomId": "r-b" },
+    "status": "Đã đặt lịch",
+    "totalOverride": null,
+    "payment": {
+      "depositStatus": "paid",
+      "depositPaidAt": "2026-10-10T10:00:00+07:00",
+      "remainderStatus": "unpaid",
+      "remainderPaidAt": null
+    },
+    "fileLink": null
+  },
+  {
+    "id": "GS-1021",
+    "conversationId": "c-bao",
+    "customerId": "u-bao",
+    "adminId": "u-thao",
+    "serviceId": "tot-nghiep",
+    "packageId": "tot-nghiep-premium",
+    "sessionType": "Tốt nghiệp cá nhân",
+    "people": 1,
+    "extras": [{ "extraId": "makeup", "modelId": null, "size": null, "quantity": 1 }],
+    "date": "2026-10-10",
+    "makeup": { "from": "09:00", "to": "10:00", "staffId": "u-mai" },
+    "shoot": { "from": "10:00", "to": "12:00", "staffId": "u-tuan", "roomId": "r-b" },
+    "status": "Hoàn thành",
+    "totalOverride": null,
+    "payment": {
+      "depositStatus": "paid",
+      "depositPaidAt": "2026-10-05T10:00:00+07:00",
+      "remainderStatus": "paid",
+      "remainderPaidAt": "2026-10-15T14:00:00+07:00"
+    },
+    "fileLink": "https://drive.gradstudio.test/gs-1021-final"
+  },
+  {
+    "id": "GS-1022",
+    "conversationId": "c-customer2",
+    "customerId": "u-customer2",
+    "adminId": "u-thao",
+    "serviceId": "tot-nghiep",
+    "packageId": "tot-nghiep-premium",
+    "sessionType": "Tốt nghiệp cá nhân",
+    "people": 1,
+    "extras": [{ "extraId": "makeup", "modelId": null, "size": null, "quantity": 1 }],
+    "date": "2026-10-18",
+    "makeup": { "from": "13:00", "to": "14:00", "staffId": "u-mai" },
+    "shoot": { "from": "14:00", "to": "16:00", "staffId": "u-tuan", "roomId": "r-b" },
+    "status": "Đã đặt lịch",
+    "totalOverride": null,
+    "payment": {
+      "depositStatus": "paid",
+      "depositPaidAt": "2026-10-12T16:00:00+07:00",
+      "remainderStatus": "unpaid",
+      "remainderPaidAt": null
+    },
+    "fileLink": null
+  },
+  {
+    "id": "GS-1023",
+    "conversationId": null,
+    "customerId": "u-khoa",
+    "adminId": "u-thao",
+    "serviceId": "ky-yeu",
+    "packageId": "ky-yeu-lop",
+    "sessionType": "Kỷ yếu lớp",
+    "people": 20,
+    "extras": [{ "extraId": "makeup", "modelId": null, "size": null, "quantity": 1 }],
+    "date": "2026-10-24",
+    "makeup": { "from": "08:00", "to": "12:00", "staffId": "u-mai" },
+    "shoot": { "from": "08:00", "to": "12:00", "staffId": "u-mai", "roomId": "r-a" },
+    "status": "Đã đặt lịch",
+    "totalOverride": 7000000,
+    "payment": {
+      "depositStatus": "paid",
+      "depositPaidAt": "2026-10-14T09:00:00+07:00",
+      "remainderStatus": "unpaid",
+      "remainderPaidAt": null
+    },
+    "fileLink": null
+  }
+]
