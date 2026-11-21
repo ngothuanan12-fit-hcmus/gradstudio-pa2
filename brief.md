@@ -206,3 +206,9 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 ### 2.8 G11, the Superadmin's screen (2026-11-21)
 
 > làm G11
+
+### 2.9 Contract 04-schedule (Khánh, 2026-11-21)
+
+> Tạo nhánh mới để bắt đầu làm các task lead giao, cần nhắc lại về file brief.md và AI-LOG.md. Đó là brief.md bạn sẽ ghi vào những câu prompt khi bắt đầu làm (có thể sau khi tạo nhánh là bắt đầu làm nè), còn file AI-LOG.md bạn có thể tham khảo các viết của An - tức là khi tôi prompt và bạn chỉnh hết file theo yêu cầu đó và kết thúc phiên của câu hỏi đó thì bạn sẽ commit hết + ghi vào AI-LOG.md. Bạn hãy tạo nhánh đi + response lại tôi đã hiểu ý làm của 2 file đó chưa. Ngoài ra các rule khác vẫn cứ đọc codebase coi các yêu cầu của lead (An) để thực hiện không thiếu hành động nào
+
+> Viêt docs/api/04-schedule.md (có thể tham khảo cách viết của lead), lần này có thể commit .gitignore + AGENTS.md.

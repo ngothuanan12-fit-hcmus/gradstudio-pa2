@@ -1816,3 +1816,12 @@ Kept: every check passes. A visitor opening `/quan-tri` goes to sign-in and come
 Changed: the screenshot at 1280 px showed "Quản trị hệ thống · Quản trị hệ thống" in the account bar: the Superadmin's display name (`01-auth.md`) is the role's name, and the bar (G2, the assistant's) printed both. It now says it once. The contract's display name is kept.
 Rejected: renaming the Superadmin in the contract and seed only to avoid the repeat.
 By hand: none.
+
+### 2026-11-21 — contract file 04, schedule (staff, rooms, clash check)
+Commit: the commit that adds this entry with `docs/api/04-schedule.md`, `docs/api/README.md` and `brief.md`, after `0404bda` (which committed `.gitignore` and `AGENTS.md`). The mock follows in the next step.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write `docs/api/04-schedule.md` following the team's conventions, and commit `.gitignore` + `AGENTS.md` ("Viêt docs/api/04-schedule.md (có thể tham khảo cách viết của lead), lần này có thể commit .gitignore + AGENTS.md.").
+Kept: awaiting An's review. Committed `.gitignore` and `AGENTS.md` first in `0404bda` so the contract diff stays isolated under `docs/api/`. Wrote `docs/api/04-schedule.md` with four Admin-only endpoints for step G5 and G10 rescheduling: `GET /api/staff` (`specialty`: `makeup` or `photographer`), `GET /api/rooms`, `GET /api/schedule?date=YYYY-MM-DD` (opening hours from `settings.json`, held blocks from bookings in *Đã đặt lịch*, costume stock per model/size/date, suggested `freeTime`), and `POST /api/schedule/check` (checks held blocks, opening hours, costume stock assumption from `FRONTEND.md` section 5, and `excludeBookingId`, returning the same `conflicts` and `freeTime` shapes as `03-conversations.md`). Added the four rows and a dated line in `## Changes` to `docs/api/README.md`, and appended the prompts to `brief.md`.
+Changed: no `mock/` files edited yet (contract committed before mock). After the final edit, `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` parses `04-schedule.md` cleanly, covers 20/20 endpoints in `docs/api/README.md`, passes all 44 existing examples, and fails only with `404` on the 17 new `04-schedule.md` examples until the schedule mock is implemented.
+Rejected: editing `mock/` in the same step before committing the contract first.
+By hand: Khánh's choice to keep `.gitignore` and `AGENTS.md` in a separate preceding commit.

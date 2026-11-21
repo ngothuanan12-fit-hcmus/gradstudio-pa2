@@ -91,6 +91,10 @@ Every endpoint the client calls **and that has an example** in its file. contrac
 | `POST` | `/api/conversations/:id/messages` | customer (own), admin | `03-conversations.md` |
 | `POST` | `/api/conversations/:id/proposals` | admin | `03-conversations.md` |
 | `POST` | `/api/conversations/:id/proposals/:proposalId/answer` | customer (own) | `03-conversations.md` |
+| `GET` | `/api/staff` | admin | `04-schedule.md` |
+| `GET` | `/api/rooms` | admin | `04-schedule.md` |
+| `GET` | `/api/schedule` | admin | `04-schedule.md` |
+| `POST` | `/api/schedule/check` | admin | `04-schedule.md` |
 | `GET` | `/api/admins` | superadmin | `10-admin.md` |
 | `POST` | `/api/admins` | superadmin | `10-admin.md` |
 | `GET` | `/api/settings` | superadmin | `10-admin.md` |
@@ -114,3 +118,4 @@ Once client code calls an endpoint, every change to it gets a line here or in it
 - 2026-11-20 — The four endpoints of `02-catalogue.md` move from *Planned* to the table with their examples.
 - 2026-11-20 — The six endpoints of `03-conversations.md` move from *Planned* to the table with their examples.
 - 2026-11-20 — The four endpoints of `10-admin.md` move from *Planned* to the table with their examples.
+- 2026-11-21 — Add the four endpoints of `04-schedule.md` to the table. No client code calls them yet.
