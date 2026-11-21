@@ -206,3 +206,7 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 ### 2.8 G11, the Superadmin's screen (2026-11-21)
 
 > làm G11
+
+> mình cần tự kiểm các trang như thế nào
+
+> commit luôn cho đúng quy định

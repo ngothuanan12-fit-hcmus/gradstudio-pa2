@@ -1816,3 +1816,12 @@ Kept: every check passes. A visitor opening `/quan-tri` goes to sign-in and come
 Changed: the screenshot at 1280 px showed "Quản trị hệ thống · Quản trị hệ thống" in the account bar: the Superadmin's display name (`01-auth.md`) is the role's name, and the bar (G2, the assistant's) printed both. It now says it once. The contract's display name is kept.
 Rejected: renaming the Superadmin in the contract and seed only to avoid the repeat.
 By hand: none.
+
+### 2026-11-21 — how An checks the pages by hand
+Commit: the commit that adds this entry, after `fcc61bf`.
+Tool: Claude Code (Claude Opus 5.5). The console snippet was tried with Playwright on a small test page outside the repository: it reported the sideways scroll, the overflowing element, an unlabelled input, small controls and small text.
+Asked for: how An checks the pages without the assistant ("mình cần tự kiểm các trang như thế nào").
+Kept: the steps in the chat, following `brief.md` *How done is checked* and `HARNESS.md` section 6: build and preview with the mock; every route of `FRONTEND.md` section 4 opened directly, signed in as its role, at 360, 768 and 1280 px; one console snippet for the two Console lines of PA#2 plus `h1`, labels, 44 px and 16 px; the four mock modes on each data screen, with the mock's log for repeated requests; the built steps walked through the app's own links; the W3C paste with `copy(...)` and a screenshot in `checks/`; the four gates.
+Changed: the exact wording of the PA#2 rubric's two Console lines is not in the repository; the snippet rebuilds them from earlier entries (the sideways scroll and the elements past the edge). An should compare it with the rubric.
+Rejected: nothing yet.
+By hand: An's request; the checks themselves are An's.
