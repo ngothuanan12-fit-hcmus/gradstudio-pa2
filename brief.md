@@ -194,3 +194,9 @@ Prompts of a review session that ran beside the ones above on 2026-11-20, in the
 > Form co theo nội dung: chỉ rộng khoảng 220 px ở màn 360 px, và rộng ra khi hiện lỗi 401, làm layout nhảy. Nguyên nhân là margin-inline: auto trong grid .page-main
 
 > push, chuẩn bị các list công việc để mai làm tiếp, giờ nghỉ ngơi
+
+### 2.7 G1, after checking the repository (2026-11-21)
+
+> thực hiện tiếp G1, kiểm tra repo
+
+In the question dialog An chose: fix the three remaining issues of the G2 review (4–6) before G1, and add both rules the review proposed (HARNESS incidents 8 and 9) to `CLAUDE.md`.

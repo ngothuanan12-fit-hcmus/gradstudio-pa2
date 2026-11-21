@@ -1699,3 +1699,12 @@ Kept: `fb61927` pushed, CI green. The task list is kept in An's own planning not
 Changed: nothing.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-21 — the repository checked; the last three issues of the G2 review fixed
+Commit: the commit that adds this entry, after `4263d0b` (pushed).
+Tool: Claude Code (Claude Opus 5.5); `git fetch`, `gh pr list`, `git show 55980b6`.
+Asked for: go on with G1 and check the repository first ("thực hiện tiếp G1, kiểm tra repo").
+Kept: awaiting An's review. The check: `main` matches GitHub at `4263d0b`; Khánh has pushed nothing since 11/11 (no branch, no pull request), so `04-schedule.md` has not started. `55980b6` was written by the review session An ran in the same working tree; of its six G2 issues, `fb61927` fixed 1–3, and An chose to fix 4–6 now: (4) `ui.css` declared `.field-error` and `.input[aria-invalid='true']` a second time at its end, the assistant's addition in `64bd68c`, which also thinned the invalid border's colour rule; the second copy is gone, the original (2 px border, weight 500) stays, with `.form-error`. (5) The header's *Đăng nhập* link is hidden on `/dang-nhap` itself. (6) The shared form helper guards submits with a ref that changes at once, so two submits in the same tick send one request; `busy` in state still drives what the screen shows.
+Changed: all three were the assistant's misses, found by An's review session (a synthetic double submit for 6, reading the CSS and the header for 4 and 5), not by this session's checks. The fix is tested on a `git archive` copy with its own ports, the rule added in the next commit.
+Rejected: nothing.
+By hand: An's choices in the dialog.

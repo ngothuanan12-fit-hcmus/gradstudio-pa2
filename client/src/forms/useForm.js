@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 // The one shared helper behind every form of the app (forms are written by hand, no library).
 // - `validate(values)` returns { field: message } with what the contract requires; it is computed, not stored.
@@ -11,6 +11,9 @@ export default function useForm({ initial, validate, onSubmit }) {
   const [apiErrors, setApiErrors] = useState({});
   const [formError, setFormError] = useState(null);
   const [busy, setBusy] = useState(false);
+  // `busy` in state shows on screen; this ref is the guard. Two submits in the same tick both read the old state, so
+  // the guard must change at once, not on the next render (a review found two requests from two quick submits).
+  const sending = useRef(false);
 
   const checkErrors = validate(values);
   const errors = tried ? { ...apiErrors, ...checkErrors } : {};
@@ -27,7 +30,7 @@ export default function useForm({ initial, validate, onSubmit }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    if (busy) return;
+    if (sending.current) return;
     const form = event.currentTarget;
     setTried(true);
     setFormError(null);
@@ -36,6 +39,7 @@ export default function useForm({ initial, validate, onSubmit }) {
       form.querySelector(`[name="${first}"]`)?.focus();
       return;
     }
+    sending.current = true;
     setBusy(true);
     try {
       await onSubmit(values);
@@ -47,6 +51,7 @@ export default function useForm({ initial, validate, onSubmit }) {
         setFormError(error.message);
       }
     } finally {
+      sending.current = false;
       setBusy(false);
     }
   }

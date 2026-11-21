@@ -1,5 +1,5 @@
 import { startTransition } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { ROLE_NAME } from '../auth/roles.js';
 import useAuth from '../auth/useAuth.js';
 
@@ -9,6 +9,7 @@ import useAuth from '../auth/useAuth.js';
 // screen would see 'signed-out' first and send the user to sign-in instead of home.
 export default function AccountBar() {
   const auth = useAuth();
+  const { pathname } = useLocation();
   if (auth.status === 'signed-in') {
     return (
       <div className="account-bar">
@@ -21,7 +22,8 @@ export default function AccountBar() {
       </div>
     );
   }
-  if (auth.status === 'signed-out') {
+  // On the sign-in screen itself a link to it would lead nowhere new.
+  if (auth.status === 'signed-out' && pathname !== '/dang-nhap') {
     return (
       <Link className="btn btn-secondary" to="/dang-nhap">
         Đăng nhập
