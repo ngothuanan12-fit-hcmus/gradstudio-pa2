@@ -222,3 +222,7 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 > Việc tách .gitignore và AGENTS.md ra commit riêng là một quyết định, nên chuyển sang Kept.
 > Ngoài AGENTS.md, nếu còn file quy tắc hay workflow nào thì commit luôn và ghi vào HARNESS. File cài đặt riêng trên máy (đường dẫn, token) thì cho vào .gitignore, không commit nha.
 > Lỡ commit .gitignore lần này thì cứ để yên đó, lần sau thì không cần.
+
+### 2.11 Contract 05-bookings (Khánh, 2026-11-21)
+
+> Viết tiếp

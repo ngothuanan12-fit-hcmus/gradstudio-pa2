@@ -1834,3 +1834,12 @@ Kept: awaiting An's review. Checked the repository root, `.github/workflows/`, a
 Changed: in the `342be14` log entry, the assistant put the `0404bda` split decision under `By hand`, put a general workflow constraint under `Rejected`, and mixed check results into `Changed` instead of writing a separate sentence; caught by An's review of the log.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — contract file 05, bookings
+Commit: the commit that adds this entry with `docs/api/05-bookings.md`, `docs/api/README.md` and `brief.md`, after `842143c`. The mock follows after the contract files.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write the next contract file (`docs/api/05-bookings.md`) ("Viết tiếp").
+Kept: awaiting An's review. Wrote `docs/api/05-bookings.md` with six endpoints matching `mock/data/README.md`: `POST /api/bookings` (creates `GS-1024` in *Chờ cọc 30%* from agreed `c-linh`, links `conversation.bookingId`, checks clashes without holding any slot yet, refuses unagreed `c-uyen` with `409` per R2), `GET /api/bookings` (own for customer, all for Admin, `?status` filter), `GET /api/bookings/:id` (`404` for another customer's booking), `PATCH /api/bookings/:id` (G10 reschedule/headcount confirmation with clash check excluding self and updating held `busy` blocks when *Đã đặt lịch*), `PUT /api/bookings/:id/file-link` (sets final delivery URL on `GS-1022` for `09-gallery.md`), and `POST /api/bookings/:id/cancel` (Admin cancel under the team assumption until the product owners answer, keeping `GS-1020`–`GS-1024` active for `06`–`09` and checking the guard paths). Pricing breaks down included vs added items per `FRONTEND.md` section 5 (`1.800.000đ` total, `540.000đ` deposit, `1.260.000đ` remainder for `GS-1024`). Added the six rows and a dated line in `## Changes` to `docs/api/README.md`, and logged the prompt in `brief.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` covers 26/26 endpoints in `docs/api/README.md` and answers 47/86 examples, failing only on unimplemented `04-schedule.md` (17) and `05-bookings.md` (22) routes.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
