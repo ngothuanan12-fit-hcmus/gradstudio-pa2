@@ -1852,3 +1852,12 @@ Kept: awaiting An's review. Wrote `docs/api/06-payments.md` with four endpoints 
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — contract file 07, reminders
+Commit: the commit that adds this entry with `docs/api/07-reminders.md`, `docs/api/README.md` and `brief.md`, after `ec3de57`. The mock follows after the contract files.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write the next contract file (`docs/api/07-reminders.md`) ("Viết tiếp cho tôi").
+Kept: awaiting An's review. Wrote `docs/api/07-reminders.md` with `GET /api/reminders` (optional `?bookingId=`, `customer` own or `admin` all, `404` for another customer's booking, `[]` in `empty` mode) matching `mock/data/README.md` (`GS-1024` booked in `06-payments.md`, `24` hours before `13:00` on `2026-10-24` giving `2026-10-23T13:00:00+07:00`, as in `docs/api/README.md`) and `10-admin.md` (`R4`, capturing `hoursBefore` when scheduled so later settings changes apply only to newer bookings). Marked the reminder message and placement on `/lich-chup` as a team assumption until the product owners answer (`FRONTEND.md` section 5). Added the endpoint row and a dated line in `## Changes` to `docs/api/README.md`, and logged the prompt in `brief.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` covers 31/31 endpoints in `docs/api/README.md` and answers 50/108 examples, failing only on unimplemented `04`–`07` routes.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
