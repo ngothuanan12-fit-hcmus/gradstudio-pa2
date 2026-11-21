@@ -11,11 +11,11 @@ export default function AccountBar() {
   const auth = useAuth();
   const { pathname } = useLocation();
   if (auth.status === 'signed-in') {
+    // The Superadmin's display name is the role's own name: say it once.
+    const role = ROLE_NAME[auth.user.role];
     return (
       <div className="account-bar">
-        <p className="account-who">
-          {auth.user.name} · {ROLE_NAME[auth.user.role]}
-        </p>
+        <p className="account-who">{auth.user.name === role ? role : `${auth.user.name} · ${role}`}</p>
         <Link className="btn btn-secondary" to="/" onClick={() => startTransition(auth.signOut)}>
           Đăng xuất
         </Link>

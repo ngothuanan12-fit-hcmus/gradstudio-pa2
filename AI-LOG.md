@@ -1807,3 +1807,12 @@ Kept: awaiting An's review. `/quan-tri` (Superadmin only) replaces the "not read
 Changed: nothing yet; the test on a `git archive` copy follows.
 Rejected: a table for the Admin list (two columns of long e-mails scroll sideways at 360 px); a list of name and e-mail instead.
 By hand: none.
+
+### 2026-11-21 — G11 tested on a `git archive` copy of `0300048`; the account bar said the Superadmin's name twice
+Commit: the commit that adds this entry with `client/src/components/AccountBar.jsx`.
+Tool: Playwright on a `git archive` copy of `0300048` (preview 4193, the copy's mock 3104, NEVER 15).
+Asked for: the test of G11.
+Kept: every check passes. A visitor opening `/quan-tri` goes to sign-in and comes back to it as the Superadmin, with Thảo in the list and `08:00`, `18:00`, `24` in the settings. An empty create shows the three field messages and focuses the name. Creating Phan Thị Ngọc adds her to the list without a reload, empties the form, shows "Đã tạo tài khoản Admin cho Phan Thị Ngọc…" and keeps the focus on *Tạo tài khoản*. The same e-mail again, in capitals, puts "E-mail này đã có tài khoản." next to the e-mail field, focused, with what was typed kept; the message goes once the e-mail is changed. Closing at `07:00` with `0` hours is refused before sending, on both fields; `19:00` and `48` are saved, shown in the status line, and still there after a reload. A `400` from the API (answered through a test route) lands on the reminder field, focused. With `/api/admins` failing, the settings form still works and the list shows the error with *Thử lại*, which loads it again without a reload. Ngọc then signs in and lands on `/quan-ly`; as an Admin, `/quan-tri` turns her away. One load sends `/auth/me`, `/admins`, `/settings`, once each. Slow mode shows loading, error mode the API's message with *Thử lại*, empty mode "Chưa có tài khoản Admin nào." with the settings form still there. At 360, 768 and 1280 px: one `h1`, every input labelled, nothing under 44 px, no sideways scroll, no console error other than the browser's own lines for the `409` and `400` the test asked for; the two parts sit side by side at 1280 px.
+Changed: the screenshot at 1280 px showed "Quản trị hệ thống · Quản trị hệ thống" in the account bar: the Superadmin's display name (`01-auth.md`) is the role's name, and the bar (G2, the assistant's) printed both. It now says it once. The contract's display name is kept.
+Rejected: renaming the Superadmin in the contract and seed only to avoid the repeat.
+By hand: none.
