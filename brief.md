@@ -226,3 +226,7 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 ### 2.11 Contract 05-bookings (Khánh, 2026-11-21)
 
 > Viết tiếp
+
+### 2.12 Contract 06-payments (Khánh, 2026-11-21)
+
+> Tiếp tục với contract 06

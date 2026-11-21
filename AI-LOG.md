@@ -1843,3 +1843,12 @@ Kept: awaiting An's review. Wrote `docs/api/05-bookings.md` with six endpoints m
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — contract file 06, payments
+Commit: the commit that adds this entry with `docs/api/06-payments.md`, `docs/api/README.md` and `brief.md`, after `e07fc21`. The mock follows after the contract files.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write contract 06 (`docs/api/06-payments.md`) ("Tiếp tục với contract 06").
+Kept: awaiting An's review. Wrote `docs/api/06-payments.md` with four endpoints matching `brief.md` (test gateway returning to `/thanh-toan/ket-qua`), `docs/api/README.md`, and `mock/data/README.md`: `GET /api/payments` (`customer` own or `admin`, optional `bookingId` filter), `POST /api/payments` (`customer` starts a `pending` `deposit` or `remainder` attempt, refusing remainder before deposit and `404` for another customer's booking), `GET /api/payments/:id`, and `POST /api/payments/:id/result` (`success` or `fail`, `409` if already applied). Marked as a team assumption until the product owners answer (`FRONTEND.md` section 5): when a deposit attempt fails, the booking stays *Chờ cọc 30%* and the customer can start a new attempt to retry. On `deposit` success, resources are checked again, the booking becomes *Đã đặt lịch*, and its make-up and shoot blocks are added to `busy` (verified by a follow-up `POST /api/schedule/check` example on `GS-1024`). Examples cover `GS-1024` (one failed deposit `pay-1`, retry `pay-2` succeeding, duplicate deposit `409`) and `GS-1022` (remainder `pay-3` succeeding for `09-gallery.md`). Added the four rows and a dated line in `## Changes` to `docs/api/README.md`, and logged the prompt in `brief.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` covers 30/30 endpoints in `docs/api/README.md` and answers 49/102 examples, failing only on unimplemented `04`–`06` routes.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
