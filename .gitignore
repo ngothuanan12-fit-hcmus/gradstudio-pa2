@@ -3,3 +3,4 @@ dist/
 *.local
 PA2-rubric-responsive-prototype.pdf
 
+.codegraph/
