@@ -44,3 +44,5 @@ CI runs the same commands on every push.
 11. Invent a price, time or policy.
 12. Copy code, images or text from other teams, the authors' prototype or reference sites. `IN 2026-11-11`
 13. Commit `.env`, secrets or `node_modules/`, or a `Co-Authored-By` or "Generated with" line.
+14. Stop a process you did not start; look at its parent process first. `IN 2026-11-20, HARNESS 8`
+15. Test a commit inside the shared working tree; test a `git archive` copy of it, on its own ports. `IN 2026-11-20, HARNESS 9`

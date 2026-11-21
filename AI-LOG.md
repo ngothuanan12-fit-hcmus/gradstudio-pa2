@@ -1708,3 +1708,12 @@ Kept: awaiting An's review. The check: `main` matches GitHub at `4263d0b`; Khán
 Changed: all three were the assistant's misses, found by An's review session (a synthetic double submit for 6, reading the CSS and the header for 4 and 5), not by this session's checks. The fix is tested on a `git archive` copy with its own ports, the rule added in the next commit.
 Rejected: nothing.
 By hand: An's choices in the dialog.
+
+### 2026-11-21 — two rules from incidents 8 and 9
+Commit: the commit that adds this entry with `CLAUDE.md` and `HARNESS.md`, after `22148ff`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: add both rules the G2 review proposed (An's choice in the dialog of 2026-11-21).
+Kept: awaiting An's review. `CLAUDE.md` NEVER 14: stop only a process you started, after looking at its parent (incident 8: the assistant stopped An's hand-started mock); NEVER 15: test a commit on a `git archive` copy with its own ports, not inside the shared working tree (incident 9: two sessions built and tested in one folder). Both tagged with their incident. `HARNESS.md`: a row in the rules-file timeline, and incidents 8 and 9 now name the rule added afterwards. The rules file stays a short read (about 510 words).
+Changed: nothing beyond the request.
+Rejected: nothing.
+By hand: An's approval.
