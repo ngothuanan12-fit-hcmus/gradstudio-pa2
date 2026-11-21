@@ -13,6 +13,7 @@ import auth from './routes/auth.mjs';
 import catalogue from './routes/catalogue.mjs';
 import admin from './routes/admin.mjs';
 import conversations from './routes/conversations.mjs';
+import schedule from './routes/schedule.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT) || 3001;
@@ -26,7 +27,7 @@ if (!(MODE in DELAY)) {
 }
 
 // One module per resource, each a list of { method, path, handler }. Paths may hold :params.
-const ROUTES = [...auth, ...catalogue, ...conversations, ...admin].map((route) => ({
+const ROUTES = [...auth, ...catalogue, ...conversations, ...schedule, ...admin].map((route) => ({
   ...route,
   pattern: new RegExp(`^${route.path.replace(/:(\w+)/g, '(?<$1>[^/]+)')}$`),
 }));

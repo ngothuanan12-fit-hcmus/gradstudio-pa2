@@ -238,3 +238,7 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 ### 2.14 Contract 08-jobs (Khánh, 2026-11-21)
 
 > Oke tiếp tục
+
+### 2.15 Mock for 04-schedule (Khánh, 2026-11-21)
+
+> Viết mock cho 04 cho tôi (nhớ phải tham khảo cách viết của lead)

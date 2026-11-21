@@ -1870,3 +1870,12 @@ Kept: awaiting An's review. Wrote `docs/api/08-jobs.md` with three endpoints mat
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — mock answers 04-schedule
+Commit: the commit that adds this entry with `mock/routes/schedule.mjs`, `mock/data/staff.json`, `mock/data/costumes.json`, `mock/data/README.md`, `mock/server.mjs`, and `brief.md`, after `15576d2`.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs` (both `--only 04-schedule.md --strict-values` and full), `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write the mock for `04-schedule.md` following the lead's style ("Viết mock cho 04 cho tôi (nhớ phải tham khảo cách viết của lead)").
+Kept: awaiting An's review. Left An's route files and `users.json` untouched; added `mock/data/staff.json` (staff specialties) and `mock/data/costumes.json` (sample stock of `5` per model/size), registered `mock/routes/schedule.mjs` in `mock/server.mjs`, and updated `mock/data/README.md` and `brief.md`. Implemented `GET /api/staff`, `GET /api/rooms`, `GET /api/schedule`, and `POST /api/schedule/check` plus exported `checkSchedule` / `validateScheduleInput` helpers so `05-bookings` and `06-payments` can reuse the same clash-check logic without duplicating it (checking held `busy` blocks, `settings.openingHours`, costume stock on `date` excluding `excludeBookingId`, and real calendar dates). Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs --only 04-schedule.md --strict-values` passes `17/17` with 0 value mismatches; full `contract-check.mjs` passes `67/120` (all `01`–`04` and `10` pass, remaining 53 failures are only the not-yet-written `05`–`08` mocks).
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
