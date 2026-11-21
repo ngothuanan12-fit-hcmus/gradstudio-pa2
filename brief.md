@@ -212,3 +212,9 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 > commit luôn cho đúng quy định
 
 > push
+
+### 2.9 Review of Khánh's PR #5, contracts and mocks 04–08 (2026-11-21)
+
+> kiểm tra pr của repo
+
+> đăng review lên PR #5

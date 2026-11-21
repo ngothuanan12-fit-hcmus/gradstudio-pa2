@@ -1825,3 +1825,13 @@ Kept: the steps in the chat, following `brief.md` *How done is checked* and `HAR
 Changed: the exact wording of the PA#2 rubric's two Console lines is not in the repository; the snippet rebuilds them from earlier entries (the sideways scroll and the elements past the edge). An should compare it with the rubric.
 Rejected: nothing yet.
 By hand: An's request; the checks themselves are An's.
+
+### 2026-11-21 — review of PR #5 (Khánh's contracts and mocks 04–08)
+Commit: the commit that adds this entry (log only); the review is on PR #5, *Changes requested*, on `215796c`.
+Tool: Claude Code (Claude Opus 5.5); the gates on a `git archive` copy of `215796c`; a short script against that copy's mock on port 3105.
+Asked for: check the repository's pull requests, then post the review on PR #5.
+Kept: the review as posted. To fix before merging: the cancel endpoint has no success example and `05-bookings.md` claims a mock test that does not exist; changing `total` after a paid deposit recomputes the deposit (GS-1022: 540.000đ paid, `total` 2.000.000đ gives deposit 600.000đ and remainder 1.400.000đ, run on the mock); `PATCH /api/bookings/:id` has no per-field messages and no `400` example; two stale lines in `docs/api/README.md`. To agree before `09-gallery.md`: when the remaining 70% may be paid, previews returned as whole base64 files, the route names of the payment screens. Minor: the costume found by id instead of `kind`, English words in screen messages, the gateway result posted by the customer. The AI-LOG entries of 05 to mock 08 record no check of the assistant's output.
+Changed: of Khánh's three notes on `mock/routes/conversations.mjs`, two are real and stay for An to fix on `main` after the merge (the free time of a refused proposal is not checked against held slots, and that check ignores opening hours and costume stock; a new proposal is not refused once the conversation has a booking); the third (`text: ""` with a request answers `400`) follows `03-conversations.md` and stays. The deposit finding was confirmed by running the mock before it went into the review, not left as a reading of the code.
+Rejected: merging with the findings as follow-ups: the false test claim and the deposit rule are in the contract other files build on.
+By hand: none.
+
