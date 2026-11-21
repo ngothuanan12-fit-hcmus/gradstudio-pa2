@@ -1897,3 +1897,12 @@ Kept: awaiting An's review. Left An's route files untouched; added `mock/data/pa
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — mock answers 07-reminders
+Commit: the commit that adds this entry with `mock/data/reminders.json`, `mock/routes/reminders.mjs`, `mock/routes/payments.mjs`, `mock/routes/bookings.mjs`, `mock/server.mjs`, and `mock/data/README.md`, after `66cf257`.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: second part of the request to implement mocks `06`–`08` with one commit per resource (`07-reminders`).
+Kept: awaiting An's review. Left An's route files untouched; added `mock/data/reminders.json`, implemented `mock/routes/reminders.mjs` (`GET /api/reminders` and exported `syncReminderForBooking`), wired `syncReminderForBooking` into `payments.mjs` (creates `rem-gs-1024` at `2026-10-23T13:00:00+07:00` when `GS-1024`'s deposit succeeds, using `settings.reminderHoursBefore`) and `bookings.mjs` (updates/removes on reschedule/cancel), registered `reminders` in `mock/server.mjs`, and updated `mock/data/README.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; full `contract-check.mjs` passes all 6/6 `07-reminders.md` examples (`108/120` overall, remaining 12 failures are only `08-jobs.md` routes not yet written).
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
