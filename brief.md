@@ -202,3 +202,7 @@ Prompts of a review session that ran beside the ones above on 2026-11-20, in the
 In the question dialog An chose: fix the three remaining issues of the G2 review (4–6) before G1, and add both rules the review proposed (HARNESS incidents 8 and 9) to `CLAUDE.md`.
 
 > làm G3 và G6 phía khách
+
+### 2.8 G11, the Superadmin's screen (2026-11-21)
+
+> làm G11

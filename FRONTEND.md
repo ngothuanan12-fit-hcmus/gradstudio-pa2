@@ -52,10 +52,10 @@ One row per route, as the browser shows it (`BrowserRouter`). A route that exist
 | `/lich-chup` | customer (protected) | G7 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
 | `/quan-ly` | admin (protected) | G4–G6 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
 | `/cong-viec` | staff (protected) | G8, not built yet: says so plainly | `GET /api/auth/me` on load |
-| `/quan-tri` | Superadmin (protected) | G11, not built yet: says so plainly | `GET /api/auth/me` on load |
+| `/quan-tri` | Superadmin (protected) | G11 | `GET /api/admins`, `POST /api/admins`, `GET /api/settings`, `PUT /api/settings` |
 | any other path | anyone | not-found screen | — |
 
-A protected route opened while signed out goes to `/dang-nhap` (step G2) and back after sign-in; opened with another role it is turned away with a link to that role's home. Homes: customer `/lich-chup`, admin `/quan-ly`, staff `/cong-viec`, Superadmin `/quan-tri`; until steps G8 and G11 are built, those two show a message that the screen is not ready, not the general not-found screen.
+A protected route opened while signed out goes to `/dang-nhap` (step G2) and back after sign-in; opened with another role it is turned away with a link to that role's home. Homes: customer `/lich-chup`, admin `/quan-ly`, staff `/cong-viec`, Superadmin `/quan-tri`; until step G8 is built, `/cong-viec` shows a message that the screen is not ready, not the general not-found screen.
 
 ## 5. Product owner decisions
 
@@ -86,4 +86,4 @@ No CSS framework (plain CSS with the tokens in `client/src/styles/tokens.css`) a
 
 ## 7. Not done
 
-Every step, G1–G11: the contract is being written (`docs/api/01-auth.md` done); the mock and the screens come after it.
+Built on the API: G1, G2, G3, G6 (the customer's side) and G11. Not built yet: G4, G5, G6 (the Admin's side), G7, G8, G10 (Khánh's, contract files 04–08 not written yet) and G9 (`09-gallery.md` waits for 05 and 06). `/lich-chup` and `/quan-ly` are still the PA#2 pages.

@@ -7,6 +7,7 @@ import Home from './pages/Home.jsx';
 import LichChup from './pages/LichChup.jsx';
 import NotFound from './pages/NotFound.jsx';
 import QuanLy from './pages/QuanLy.jsx';
+import QuanTri from './pages/QuanTri.jsx';
 import SignIn from './pages/SignIn.jsx';
 
 // Every screen has its own path, opened directly or after a reload. The paths are listed in FRONTEND.md, section 4.
@@ -48,7 +49,7 @@ export default function App() {
           </RequireRole>
         }
       />
-      {/* Homes of the staff and the Superadmin, until steps G8 and G11 build them. */}
+      {/* The staff's home, until step G8 builds it. */}
       <Route
         path="/cong-viec"
         element={
@@ -61,7 +62,7 @@ export default function App() {
         path="/quan-tri"
         element={
           <RequireRole roles={['superadmin']}>
-            <ComingSoon title="Quản trị hệ thống" step="G11" />
+            <QuanTri />
           </RequireRole>
         }
       />

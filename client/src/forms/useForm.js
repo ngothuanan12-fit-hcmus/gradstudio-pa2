@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 // The one shared helper behind every form of the app (forms are written by hand, no library).
 // - `validate(values)` returns { field: message } with what the contract requires; it is computed, not stored.
 // - Messages show only after the first try, next to each field (TextField links them with aria-describedby).
-// - A 400 from the API puts its `fields` messages on the matching fields; any other error shows at the form's top.
+// - An API error with `fields` (a 400) puts its messages on the matching fields; any other error shows at the top.
 // - What the user typed stays after an error, and the submit cannot send twice while a request is out.
 export default function useForm({ initial, validate, onSubmit }) {
   const [values, setValues] = useState(initial);
@@ -44,7 +44,8 @@ export default function useForm({ initial, validate, onSubmit }) {
     try {
       await onSubmit(values);
     } catch (error) {
-      if (error.status === 400 && Object.keys(error.fields || {}).length) {
+      // A 400 from the API carries `fields`; a screen may also put a 409's message on its field (an e-mail in use).
+      if (Object.keys(error.fields || {}).length) {
         setApiErrors(error.fields);
         form.querySelector(`[name="${Object.keys(error.fields)[0]}"]`)?.focus();
       } else {

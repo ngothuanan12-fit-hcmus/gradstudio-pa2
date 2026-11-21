@@ -257,3 +257,4 @@ Content-Type: application/json
 ## Changes
 
 - 2026-11-20 — First version. No client code calls these endpoints yet.
+- 2026-11-21 — Called by the client: `/quan-tri` (step G11). No change to the endpoints.

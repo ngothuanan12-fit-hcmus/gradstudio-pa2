@@ -1798,3 +1798,12 @@ Kept: every check passes. A visitor's *Đăng nhập để chat với studio* no
 Changed: two false starts in the check: an impossible date cannot be typed into a date input, so the `400` is answered through a test route; and the first run stopped at step 1 on the real bug of incident 10.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-21 — step G11, the Superadmin's screen
+Commit: the commit that adds this entry.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: "làm G11".
+Kept: awaiting An's review. `/quan-tri` (Superadmin only) replaces the "not ready" message with two parts, each loading on its own with its own loading, error with *Thử lại*, and empty state: *Tài khoản Admin*, the list from `GET /api/admins` and a form (name, e-mail, first password) that sends `POST /api/admins`; the new account joins the list from the API's answer, the form empties and a status line names who was created. *Cài đặt hệ thống*, a form that starts from `GET /api/settings` (opening and closing time, hours before a shoot the reminder goes out) and sends both fields with `PUT /api/settings`. Both forms check the contract's limits before sending and use the API's field names, so a `400` lands on the same fields. A `409` (e-mail already used) shows next to the e-mail field: the shared form helper now puts any API error that carries `fields` on its fields, not only a `400`. Success lines sit in a `role="status"` region that is always in the page, so a screen reader reads them. `FRONTEND.md` routes and *Not done* updated; a dated line in `10-admin.md` `## Changes` (no change to the endpoints).
+Changed: nothing yet; the test on a `git archive` copy follows.
+Rejected: a table for the Admin list (two columns of long e-mails scroll sideways at 360 px); a list of name and e-mail instead.
+By hand: none.
