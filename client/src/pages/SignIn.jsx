@@ -37,8 +37,9 @@ export default function SignIn() {
     },
   });
 
-  // Already signed in (for example the page was opened again): straight to the user's home.
-  if (auth.status === 'signed-in' && !form.busy) return <Navigate to={HOME[auth.user.role]} replace />;
+  // Already signed in: to the screen the user came for, or to their home. The same place as the submit's own move,
+  // because right after a sign-in both run, and the router's move (a transition) may land after this one.
+  if (auth.status === 'signed-in' && !form.busy) return <Navigate to={from || HOME[auth.user.role]} replace />;
 
   return (
     <CustomerLayout title="Đăng nhập: GradStudio">

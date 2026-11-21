@@ -1780,3 +1780,12 @@ Kept: awaiting An's review. Under an open proposal on `/tu-van/:id`, *Đồng ý
 Changed: nothing beyond the request. The test of G3 and G6 together, on a `git archive` copy, follows.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-21 — G2 fix found by the G3 test: the way back after sign-in could be lost
+Commit: the commit that adds this entry with `client/src/pages/SignIn.jsx` and `HARNESS.md`, after `2711d52`.
+Tool: Playwright on a `git archive` copy of `2711d52` (preview 4192, mock 3103).
+Asked for: the test of G3 and G6.
+Kept: awaiting An's review. On `/dang-nhap`, the redirect for a signed-in user now goes to the screen the user came for (`from`) or to their home, the same place as the submit's own move. `HARNESS.md`: incident 10.
+Changed: the assistant's bug in G2 (`64bd68c`): a visitor who pressed *Đăng nhập để chat với studio* reached `/dang-nhap` with `from: '/tu-van'` in the router's state (checked with `history.state`), signed in, and landed on `/lich-chup`. After the sign-in, the submit calls `navigate(from)`, which the router runs as a transition; the form then clears `busy`, the screen renders again as signed in, and its own redirect to the role's home could land first. The G2 check's "back to the route" case passed by timing. Caught by step 1 of the G3 check.
+Rejected: nothing.
+By hand: none.
