@@ -1861,3 +1861,12 @@ Kept: awaiting An's review. Wrote `docs/api/07-reminders.md` with `GET /api/remi
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — contract file 08, staff jobs and preview upload
+Commit: the commit that adds this entry with `docs/api/08-jobs.md`, `docs/api/README.md` and `brief.md`, after `ca2a92d`. This finishes the five contract files (`04`–`08`); the mock modules follow next.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write contract 08 (`docs/api/08-jobs.md`) ("Oke tiếp tục").
+Kept: awaiting An's review. Wrote `docs/api/08-jobs.md` with three endpoints matching `mock/data/README.md` (`GS-1024` jobs for `Mai` and `Tuấn`, `GS-1022` editing job for `u-staff3`, and `staff3` unassigned to `GS-1024`): `GET /api/jobs` (own for `staff`, all for `admin`, optional `status` and `bookingId` filters), `PATCH /api/jobs/:id` (`Chưa bắt đầu`, `Đang thực hiện`, `Hoàn thành`, refusing unassigned staff with `403`), and `POST /api/bookings/:id/previews` (`multipart/form-data` field `file`, `image/jpeg`, `image/png`, or `image/webp` up to `5 MB` returning `201`, `400` for wrong MIME type, `403` for unassigned `staff3`, `413` for `6 MB`). Marked the Vietnamese job status labels and `5 MB` limit as team assumptions until otherwise specified. Added the three rows and a dated line in `## Changes` to `docs/api/README.md`, and logged the prompt in `brief.md`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` covers 34/34 endpoints in `docs/api/README.md` and answers 50/120 examples, failing only on unimplemented `04`–`08` routes.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.

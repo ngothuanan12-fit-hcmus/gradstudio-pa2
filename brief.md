@@ -234,3 +234,7 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 ### 2.13 Contract 07-reminders (Khánh, 2026-11-21)
 
 > Viết tiếp cho tôi
+
+### 2.14 Contract 08-jobs (Khánh, 2026-11-21)
+
+> Oke tiếp tục

@@ -106,6 +106,9 @@ Every endpoint the client calls **and that has an example** in its file. contrac
 | `GET` | `/api/payments/:id` | customer (own), admin | `06-payments.md` |
 | `POST` | `/api/payments/:id/result` | customer (own) | `06-payments.md` |
 | `GET` | `/api/reminders` | customer (own), admin | `07-reminders.md` |
+| `GET` | `/api/jobs` | staff (own), admin | `08-jobs.md` |
+| `PATCH` | `/api/jobs/:id` | staff (assigned), admin | `08-jobs.md` |
+| `POST` | `/api/bookings/:id/previews` | staff (assigned), admin | `08-jobs.md` |
 | `GET` | `/api/admins` | superadmin | `10-admin.md` |
 | `POST` | `/api/admins` | superadmin | `10-admin.md` |
 | `GET` | `/api/settings` | superadmin | `10-admin.md` |
@@ -133,3 +136,4 @@ Once client code calls an endpoint, every change to it gets a line here or in it
 - 2026-11-21 — Add the six endpoints of `05-bookings.md` to the table. No client code calls them yet.
 - 2026-11-21 — Add the four endpoints of `06-payments.md` to the table. No client code calls them yet.
 - 2026-11-21 — Add the endpoint of `07-reminders.md` to the table. No client code calls it yet.
+- 2026-11-21 — Add the three endpoints of `08-jobs.md` to the table. No client code calls them yet.
