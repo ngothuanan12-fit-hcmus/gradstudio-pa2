@@ -1771,3 +1771,12 @@ Kept: awaiting An's review. `/tu-van` (customer only): their conversations, newe
 Changed: two of the assistant's misses caught by reading the new page before committing: the extras' checkboxes had their labels and ids ("Makeup", `trang-phuc`) written into the component, against the rubric's "no data written into components"; they are now built from `/api/extras`; and the head-count hint named "Kỷ yếu lớp" instead of reading the service's unit. Lint then failed on `TextField`: `Tag`, renamed from the `as` parameter, was "never used" because the client's ESLint has no React plugin to see JSX use; it is now a capitalised variable, which the existing rule already allows (the rule was not changed).
 Rejected: an inner scrolling box for the messages: the PA#3 *Fix these* still forbids a chat cut off at any width, so messages flow in the page (the lab's choice of 2026-11-17 was for the lab only).
 By hand: none.
+
+### 2026-11-21 — step G6, the customer's answer to a proposed time
+Commit: the commit that adds this entry, after `e63a85d`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: G6 on the customer's side, with G3 ("làm G3 và G6 phía khách").
+Kept: awaiting An's review. Under an open proposal on `/tu-van/:id`, *Đồng ý giờ này* and *Chưa đồng ý* send `POST /api/conversations/:id/proposals/:proposalId/answer` through `useAction` (one request at a time, a second press ignored, the buttons kept focusable with `aria-disabled` while busy); the screen shows the API's answer: the proposal's status in words and the conversation's status (*Đã chốt lịch* after agreeing, back to *Đang tư vấn* after declining, the team's assumption). The API's refusal (for example `409` when the proposal was already answered) shows above the buttons. Once answered the buttons go with the open proposal, so the focus moves to the conversation's status line, which reads the new status: the focus problem An found on G2 is not repeated here.
+Changed: nothing beyond the request. The test of G3 and G6 together, on a `git archive` copy, follows.
+Rejected: nothing.
+By hand: none.

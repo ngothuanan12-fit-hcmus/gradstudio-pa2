@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Link, useParams } from 'react-router';
 import { api } from '../api/client.js';
 import Button from '../components/Button.jsx';
@@ -6,6 +7,7 @@ import DataState from '../components/DataState.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
 import TextField from '../components/TextField.jsx';
+import useAction from '../forms/useAction.js';
 import useForm from '../forms/useForm.js';
 import useApi from '../hooks/useApi.js';
 import CustomerLayout from '../layouts/CustomerLayout.jsx';
@@ -18,11 +20,47 @@ function validate({ text }) {
   return {};
 }
 
-// Step G3 (and G6 on the customer's side, next): one conversation with the studio. What was sent shows here, from the
-// API's answer, with no page reload; the message box sits under the messages, in the page's own flow.
+// Steps G3 and G6 (the customer's side): one conversation with the studio, and the answer to a proposed time.
+// What was sent shows here, from the API's answer, with no page reload; the message box sits under the messages, in
+// the page's own flow.
 export default function Conversation() {
   const { id } = useParams();
   const conversation = useApi(`/conversations/${id}`);
+  const answer = useAction();
+  const statusLine = useRef(null);
+
+  // Agree or decline the open proposal; the screen shows the API's answer. The two buttons go away with the open
+  // proposal, so the focus moves to the conversation's status line, which now reads the new status.
+  function reply(proposal, choice) {
+    answer.run(async () => {
+      const updated = await api(`/conversations/${id}/proposals/${proposal.id}/answer`, {
+        method: 'POST',
+        body: { answer: choice },
+      });
+      conversation.setData(updated);
+      statusLine.current?.focus();
+    });
+  }
+
+  const proposalActions = (proposal) => (
+    <div className="proposal-actions">
+      {answer.error ? (
+        <p className="form-error" role="alert">
+          {answer.error}
+        </p>
+      ) : null}
+      <Button aria-disabled={answer.busy ? 'true' : undefined} onClick={() => reply(proposal, 'agree')}>
+        Đồng ý giờ này
+      </Button>
+      <Button
+        variant="secondary"
+        aria-disabled={answer.busy ? 'true' : undefined}
+        onClick={() => reply(proposal, 'decline')}
+      >
+        Chưa đồng ý
+      </Button>
+    </div>
+  );
 
   const form = useForm({
     initial: { text: '' },
@@ -43,12 +81,12 @@ export default function Conversation() {
       <DataState query={conversation} isEmpty={() => false} loadingLabel="Đang tải hội thoại…">
         {(c) => (
           <>
-            <p className="conv-status-line">
+            <p className="conv-status-line" ref={statusLine} tabIndex={-1}>
               Trạng thái: <StatusBadge tone={CONVERSATION_TONE[c.status]}>{c.status}</StatusBadge>
             </p>
             <section className="chat-block" aria-label="Tin nhắn">
               {c.messages.length ? (
-                <MessageList messages={c.messages} viewer="customer" />
+                <MessageList messages={c.messages} viewer="customer" proposalActions={proposalActions} />
               ) : (
                 <EmptyState>Chưa có tin nhắn nào.</EmptyState>
               )}

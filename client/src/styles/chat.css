@@ -130,3 +130,11 @@
   align-items: center;
   min-height: 44px;
 }
+.proposal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-12);
+}
+.proposal-actions .form-error {
+  flex-basis: 100%;
+}
