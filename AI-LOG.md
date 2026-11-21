@@ -1717,3 +1717,12 @@ Kept: awaiting An's review. `CLAUDE.md` NEVER 14: stop only a process you starte
 Changed: nothing beyond the request.
 Rejected: nothing.
 By hand: An's approval.
+
+### 2026-11-21 — `22148ff` tested on a `git archive` copy (NEVER 15)
+Commit: the commit that adds this entry (log only), after `3f77f8a`.
+Tool: Playwright on a `git archive` copy of `22148ff` outside the repository (its `node_modules` linked read-only from the repository, a test-only Vite config with the preview on 4190 and the mock on 3102), the first test run under the new rule.
+Asked for: the test promised in the entry for `22148ff`.
+Kept: every check passes. The new ones: on `/dang-nhap` the header links are GradStudio, Trang chủ and Lịch chụp của tôi, no *Đăng nhập* (issue 5); two `requestSubmit()` calls in one tick in slow mode sent one `POST /api/auth/login` (issue 6). The earlier ones still pass: the seven demo accounts reach their homes, the way back to a protected route and after a reload, field messages and focus on an empty submit, a wrong password with the API's message and one request, the busy button in slow mode, sign-in in error mode, focus kept on the button after a wrong password, the form 328 px wide at 360 px before and after the message, the staff and Superadmin screens, Linh turned away from `/cong-viec`, `/quan-ly`'s section links, and at 360, 768 and 1280 px one `h1`, labelled inputs, nothing under 44 px, no sideways scroll.
+Changed: nothing.
+Rejected: nothing.
+By hand: none.
