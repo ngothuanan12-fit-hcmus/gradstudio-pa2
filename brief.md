@@ -235,3 +235,9 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the remaining 70% may be paid; preview `url` as a base64 data URL; the route names of G4–G10).
 
 > đồng ý cả ba, soạn tin nhắn trả lời Khánh
+
+### 2.11 Refuse a proposal once the conversation has a booking (2026-11-22)
+
+> làm việc chặn đề xuất khi đã có booking
+> mình có sửa luôn 03-conversations không
+

@@ -1853,3 +1853,12 @@ Changed: none of the three changes a file of Khánh's here; the reply asks for t
 Rejected: a binary `200` example for the image endpoint, for the reason above.
 By hand: none.
 
+### 2026-11-22 — contract 03: no new proposal once the conversation has a booking
+Commit: the commit that adds this entry with `docs/api/03-conversations.md` and `brief.md`. The mock follows in the next commit.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check).
+Asked for: refuse a proposal once the conversation has a booking, contract 03 first.
+Kept: awaiting An's review. `POST /api/conversations/:id/proposals` on a conversation with a booking answers `409` with `details.bookingId`; the section says the booking's time is changed in the booking (`PATCH /api/bookings/:id`, step G10). One example (`c-customer2`, which has GS-1022 in the seed) and a row in the error table; a dated line in `## Changes`. The message ends with what to do: "Hội thoại này đã có booking GS-1022. Đổi giờ trong booking."
+Changed: with the contract alone, contract-check fails as expected: the new example gets `201` from the mock instead of `409`, and the accepted proposal shifts Anh's later proposal from `pr-2` to `pr-3`, so the answer example at line 439 gets `404`. Both are the mock's change still to come; CI is red on this commit until it lands.
+Rejected: nothing.
+By hand: none.
+
