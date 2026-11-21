@@ -1862,3 +1862,12 @@ Changed: with the contract alone, contract-check fails as expected: the new exam
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — mock 03: the proposal refusal once a booking exists
+Commit: the commit that adds this entry with `mock/routes/conversations.mjs` and `HARNESS.md`, after `1b8b199`.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check), format and lint.
+Asked for: the mock side of the refusal (same request as `1b8b199`).
+Kept: awaiting An's review. The proposal handler answers `409` with `details.bookingId` as soon as the conversation has a booking, before the body is checked (a refused conversation needs no valid time). `HARNESS.md`: incident 11, found by Khánh's review.
+Changed: nothing beyond the request. Checks: `npm test` 4/4, all 45 examples answer as written, including the two that failed on `1b8b199`; format and lint pass.
+Rejected: nothing.
+By hand: none.
+

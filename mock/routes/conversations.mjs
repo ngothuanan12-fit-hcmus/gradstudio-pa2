@@ -209,6 +209,12 @@ function propose({ req, db, params, body }) {
   if (error) return error;
   const c = db.conversations.find((x) => x.id === params.id);
   if (!c) return notFound();
+  // Once booked, the time is changed in the booking (05-bookings.md), not by a new proposal in the chat.
+  if (c.bookingId !== null) {
+    return fail(409, 'CONFLICT', `Hội thoại này đã có booking ${c.bookingId}. Đổi giờ trong booking.`, {
+      details: { bookingId: c.bookingId },
+    });
+  }
   const b = body && typeof body === 'object' ? body : {};
   const fields = {};
   if (!isDate(b.date)) fields.date = 'Ngày theo dạng YYYY-MM-DD.';
