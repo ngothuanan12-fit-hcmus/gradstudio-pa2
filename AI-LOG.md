@@ -1888,3 +1888,12 @@ Kept: awaiting An's review. Left An's route files untouched; added `mock/data/bo
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — mock answers 06-payments
+Commit: the commit that adds this entry with `mock/data/payments.json`, `mock/routes/payments.mjs`, `mock/server.mjs`, `mock/data/README.md`, and `brief.md`, after `316a479`.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write mocks for `06-payments`, `07-reminders`, and `08-jobs` with one commit per resource ("Oke tiếp tục viết mock 06-07-08 luôn (nhưng vẫn mỗi commit là 1 phần nha). Làm và kiểm tra kỹ").
+Kept: awaiting An's review. Left An's route files untouched; added `mock/data/payments.json`, implemented `mock/routes/payments.mjs` (`GET /api/payments`, `POST /api/payments`, `GET /api/payments/:id`, `POST /api/payments/:id/result`), registered `payments` in `mock/server.mjs`, and updated `mock/data/README.md` and `brief.md`. Reused `checkSchedule`, `bookingOut`, and `syncBookingBusy` so a deposit `success` re-checks resources, moves the booking to *Đã đặt lịch*, and adds its make-up and shoot blocks into `db.busy` (so the clash check sees `GS-1024`), while a `fail` leaves the booking in *Chờ cọc 30%* and lets the customer start a new attempt; `GS-1022` pays its 70% remainder cleanly. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; full `contract-check.mjs` passes all 14/14 `06-payments.md` examples (`103/120` overall, remaining 17 failures are only `07` and `08` routes not yet written).
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.

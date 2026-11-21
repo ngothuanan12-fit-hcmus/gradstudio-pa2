@@ -14,6 +14,7 @@ import catalogue from './routes/catalogue.mjs';
 import admin from './routes/admin.mjs';
 import bookings from './routes/bookings.mjs';
 import conversations from './routes/conversations.mjs';
+import payments from './routes/payments.mjs';
 import schedule from './routes/schedule.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -28,10 +29,12 @@ if (!(MODE in DELAY)) {
 }
 
 // One module per resource, each a list of { method, path, handler }. Paths may hold :params.
-const ROUTES = [...auth, ...catalogue, ...conversations, ...schedule, ...bookings, ...admin].map((route) => ({
-  ...route,
-  pattern: new RegExp(`^${route.path.replace(/:(\w+)/g, '(?<$1>[^/]+)')}$`),
-}));
+const ROUTES = [...auth, ...catalogue, ...conversations, ...schedule, ...bookings, ...payments, ...admin].map(
+  (route) => ({
+    ...route,
+    pattern: new RegExp(`^${route.path.replace(/:(\w+)/g, '(?<$1>[^/]+)')}$`),
+  }),
+);
 
 // Every mock/data/*.json file becomes db.<name>, read once at start.
 function loadData() {

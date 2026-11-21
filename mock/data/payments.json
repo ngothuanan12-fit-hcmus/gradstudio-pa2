@@ -1,0 +1,57 @@
+[
+  {
+    "id": "pay-gs-1020-deposit",
+    "bookingId": "GS-1020",
+    "customerId": "u-customer2",
+    "kind": "deposit",
+    "amount": 540000,
+    "status": "succeeded",
+    "message": "Thanh toán cọc 30% thành công. Lịch chụp đã được giữ.",
+    "createdAt": "2026-10-10T10:00:00+07:00",
+    "completedAt": "2026-10-10T10:00:00+07:00"
+  },
+  {
+    "id": "pay-gs-1021-deposit",
+    "bookingId": "GS-1021",
+    "customerId": "u-bao",
+    "kind": "deposit",
+    "amount": 540000,
+    "status": "succeeded",
+    "message": "Thanh toán cọc 30% thành công. Lịch chụp đã được giữ.",
+    "createdAt": "2026-10-05T10:00:00+07:00",
+    "completedAt": "2026-10-05T10:00:00+07:00"
+  },
+  {
+    "id": "pay-gs-1021-remainder",
+    "bookingId": "GS-1021",
+    "customerId": "u-bao",
+    "kind": "remainder",
+    "amount": 1260000,
+    "status": "succeeded",
+    "message": "Thanh toán 70% còn lại thành công.",
+    "createdAt": "2026-10-15T14:00:00+07:00",
+    "completedAt": "2026-10-15T14:00:00+07:00"
+  },
+  {
+    "id": "pay-gs-1022-deposit",
+    "bookingId": "GS-1022",
+    "customerId": "u-customer2",
+    "kind": "deposit",
+    "amount": 540000,
+    "status": "succeeded",
+    "message": "Thanh toán cọc 30% thành công. Lịch chụp đã được giữ.",
+    "createdAt": "2026-10-12T16:00:00+07:00",
+    "completedAt": "2026-10-12T16:00:00+07:00"
+  },
+  {
+    "id": "pay-gs-1023-deposit",
+    "bookingId": "GS-1023",
+    "customerId": "u-khoa",
+    "kind": "deposit",
+    "amount": 2100000,
+    "status": "succeeded",
+    "message": "Thanh toán cọc 30% thành công. Lịch chụp đã được giữ.",
+    "createdAt": "2026-10-14T09:00:00+07:00",
+    "completedAt": "2026-10-14T09:00:00+07:00"
+  }
+]

@@ -246,3 +246,7 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 ### 2.16 Mock for 05-bookings (Khánh, 2026-11-21)
 
 > Tiếp tục
+
+### 2.17 Mocks for 06-payments, 07-reminders, and 08-jobs (Khánh, 2026-11-21)
+
+> Oke tiếp tục viết mock 06-07-08 luôn (nhưng vẫn mỗi commit là 1 phần nha). Làm và kiểm tra kỹ
