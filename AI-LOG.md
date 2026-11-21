@@ -1825,3 +1825,12 @@ Kept: awaiting An's review. Committed `.gitignore` and `AGENTS.md` first in `040
 Changed: no `mock/` files edited yet (contract committed before mock). After the final edit, `npm run format:check`, `npm run lint`, and `npm run build` pass; `contract-check.mjs` parses `04-schedule.md` cleanly, covers 20/20 endpoints in `docs/api/README.md`, passes all 44 existing examples, and fails only with `404` on the 17 new `04-schedule.md` examples until the schedule mock is implemented.
 Rejected: editing `mock/` in the same step before committing the contract first.
 By hand: Khánh's choice to keep `.gitignore` and `AGENTS.md` in a separate preceding commit.
+
+### 2026-11-21 — HARNESS timeline for AGENTS.md (`0404bda`) and updated AI-LOG rules
+Commit: the commit that adds this entry with `HARNESS.md` and `brief.md`, after `342be14`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: apply An's log rules (`Changed` only for errors and which check caught them, check results in a separate sentence, `Rejected` only for declined proposals with reasons, `By hand` only for text/code written or edited manually), treat the `0404bda` split as a `Kept` decision, leave `0404bda` as committed, check for any other rule/workflow files, and record `AGENTS.md` in `HARNESS.md`.
+Kept: awaiting An's review. Checked the repository root, `.github/workflows/`, and `client/`: no other rule or workflow files exist besides `CLAUDE.md`, `AGENTS.md` (`0404bda`), and `.github/workflows/ci.yml` (`.codegraph/` is already ignored in `.gitignore`; future machine-only settings will stay out of commits). Added the `0404bda` row to `HARNESS.md` section 4 (*Rules file timeline*), left `0404bda` intact as instructed, and recorded this prompt in `brief.md`. Clarified for `342be14` without rewriting the old entry (`CLAUDE.md` rule 4): separating `.gitignore` and `AGENTS.md` into `0404bda` was a decision under `Kept`, and `342be14` itself had `Changed: nothing`, `Rejected: nothing`, `By hand: nothing`. Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass (`npm test` still fails only on the 17 new `04-schedule.md` examples until its mock is written).
+Changed: in the `342be14` log entry, the assistant put the `0404bda` split decision under `By hand`, put a general workflow constraint under `Rejected`, and mixed check results into `Changed` instead of writing a separate sentence; caught by An's review of the log.
+Rejected: nothing.
+By hand: nothing.
