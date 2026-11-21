@@ -1726,3 +1726,12 @@ Kept: every check passes. The new ones: on `/dang-nhap` the header links are Gra
 Changed: nothing.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-21 — 02-catalogue: photos gain `smallWidth`, before G1 calls it
+Commit: the commit that adds this entry with `docs/api/02-catalogue.md` and `mock/data/photos.json`, after `07cd37a` (pushed, CI green).
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check on a fresh mock).
+Asked for: G1, the home page on the API ("thực hiện tiếp G1"); while planning it, a gap in the contract.
+Kept: awaiting An's review. A photo now has `smallWidth`, the width of its small file (640 px for Kỷ yếu, 480 px for the other two), so the page can give the browser both files in `srcset` and let it choose by screen width; without it the client would have had to guess the small file's width or read it from the file name. The field table, both photo examples and the mock's data carry it; a dated line in `## Changes`. Contract first, then the mock, then the client, as the rubric orders.
+Changed: the gap was in `02-catalogue.md` as the assistant wrote it on 2026-11-20 (only the large file's size), found when reading how the PA#2 carousel builds its `srcset`. Checks: contract-check passes every example on a fresh mock; `npm test` 4/4.
+Rejected: guessing the small file's width in the client.
+By hand: none.

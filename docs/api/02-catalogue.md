@@ -52,6 +52,7 @@ Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghi�
 | `src` | string | The large file, a path served by the client: `/photos/<name>-<width>.webp` |
 | `srcSmall` | string | The small file, for phones |
 | `width`, `height` | integer | Of the large file, so the page keeps its place while the photo loads |
+| `smallWidth` | integer | The width of the small file, so the client can offer both files to the browser (`srcset`) |
 | `alt` | string | What the photo shows, in Vietnamese |
 | `credit` | object | `author`, `source`, `url`, `licence`: every photo is licensed and its source named (brief, *Fix these*) |
 
@@ -132,7 +133,7 @@ GET /api/photos
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "p-ky-yeu", "serviceId": "ky-yeu", "src": "/photos/ky-yeu-1350.webp", "srcSmall": "/photos/ky-yeu-640.webp", "width": 1350, "height": 900, "alt": "Cả lớp áo trắng giơ máy bay giấy trước bàn trong phòng học treo bóng bay", "credit": {"author": "Nguyễn Tiến Thịnh", "source": "Pexels", "url": "https://www.pexels.com/photo/36985960/", "licence": "Pexels License"}}, …]
+[{"id": "p-ky-yeu", "serviceId": "ky-yeu", "src": "/photos/ky-yeu-1350.webp", "srcSmall": "/photos/ky-yeu-640.webp", "smallWidth": 640, "width": 1350, "height": 900, "alt": "Cả lớp áo trắng giơ máy bay giấy trước bàn trong phòng học treo bóng bay", "credit": {"author": "Nguyễn Tiến Thịnh", "source": "Pexels", "url": "https://www.pexels.com/photo/36985960/", "licence": "Pexels License"}}, …]
 ```
 
 The photos of one service:
@@ -145,7 +146,7 @@ GET /api/photos?serviceId=tot-nghiep
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "p-tot-nghiep", "serviceId": "tot-nghiep", "src": "/photos/tot-nghiep-900.webp", "srcSmall": "/photos/tot-nghiep-480.webp", "width": 900, "height": 1350, "alt": "Nữ sinh mặc áo cử nhân ôm bó hoa trước bậc thềm sân trường", "credit": {"author": "Hưng Nguyễn", "source": "Unsplash", "url": "https://unsplash.com/photos/ILJfgW9YbcI", "licence": "Unsplash License"}}]
+[{"id": "p-tot-nghiep", "serviceId": "tot-nghiep", "src": "/photos/tot-nghiep-900.webp", "srcSmall": "/photos/tot-nghiep-480.webp", "smallWidth": 480, "width": 900, "height": 1350, "alt": "Nữ sinh mặc áo cử nhân ôm bó hoa trước bậc thềm sân trường", "credit": {"author": "Hưng Nguyễn", "source": "Unsplash", "url": "https://unsplash.com/photos/ILJfgW9YbcI", "licence": "Unsplash License"}}]
 ```
 
 A service that does not exist:
@@ -184,3 +185,4 @@ Content-Type: application/json
 
 - 2026-11-20 — First version. No client code calls these endpoints yet.
 - 2026-11-20 — Sample values marked as such (costume models and sizes, reviews); the one-line summaries rewritten as invitations. No client code calls these endpoints yet.
+- 2026-11-21 — Photos gain `smallWidth`, the width of the small file, so the client can give the browser both files in `srcset`. No client code calls these endpoints yet.
