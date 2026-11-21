@@ -1744,3 +1744,12 @@ Kept: awaiting An's review. `/` reads everything from the API with one request e
 Changed: the first draft ended the chat section with "Chưa có tài khoản? Hỏi studio … bằng tài khoản được cấp", a policy the brief never gives (NEVER 11); removed before committing. The first draft of `Story` also kept waiting for the scene in empty mode, where it can never come; it now falls back to the photo screen.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-21 — G1 tested on a `git archive` copy of `f7618b3`
+Commit: the commit that adds this entry (log only).
+Tool: Playwright on a `git archive` copy of `f7618b3` (preview on 4191, the copy's mock on 3102, NEVER 15), with and without WebGL.
+Asked for: the test promised in the G1 entry.
+Kept: every check passes. Normal mode at 360, 768 and 1280 px: three package cards, the three packages with their prices, Premium as "120 phút · 30 ảnh chỉnh · Đã gồm: Makeup", three photo credits, the two extras with the costume models and sizes, three reviews; one `h1`, no sideways scroll, no standalone control under 44 px, no console error. Exactly four API requests per load (services, extras, photos, reviews), the 3D load included: the scene became ready with its captions from the API and loaded its three photos from the API's `src`. Slow mode shows the three loading lines. Error mode shows three errors with *Thử lại* (packages, extras, reviews) and the photo first screen instead of waiting for the scene; with the mock back in normal mode, three presses of *Thử lại* fill the page without a reload. Empty mode shows the three empty texts, no carousel, and the photo first screen. A signed-in customer sees the note that the chat screen is step G3; a visitor sees *Đăng nhập để chat với studio*.
+Changed: one false failure in the check itself: it collected the three *Thử lại* buttons first and clicked them in turn, but each press replaces its block, so the third button was gone; the check now presses the first remaining button until none is left.
+Rejected: nothing.
+By hand: none.
