@@ -1835,3 +1835,12 @@ Changed: of Khánh's three notes on `mock/routes/conversations.mjs`, two are rea
 Rejected: merging with the findings as follow-ups: the false test claim and the deposit rule are in the contract other files build on.
 By hand: none.
 
+### 2026-11-22 — plan for the two proposal fixes Khánh found; costume check by option (b)
+Commit: the commit that adds this entry (log and brief only; no code or contract changed yet).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: how to handle Khánh's two findings on `POST /api/conversations/:id/proposals` (the clash check differs from `checkSchedule`; a new proposal is accepted after a booking exists), whether the booking code in the refusal can lead to the booking, and a comparison of two ways to check costume stock.
+Kept: awaiting the work. (1) A proposal on a conversation that has a booking will be refused with `409` and `details.bookingId`, so the Admin screen can link to that booking without reading the code out of the message; the screen should also hide the proposal form when the conversation's `bookingId` is set, the `409` staying as the server's guard. Done on `main` now: contract `03` first, then the mock, a dated line in `## Changes`. (2) After PR #5 is merged, the proposal check will call `checkSchedule`, so one set of rules covers staff, rooms, opening hours and costume stock, and free time is offered only when it is really free; conflict kinds widen to `staff`, `room`, `hours`, `costume`. Costume stock by option (b): the proposal body gains optional `costumes` (model, size, quantity), entered by the Admin as in `/api/schedule/check`.
+Changed: the assistant's first plan put the booking code only in the message text; An asked whether it could be clicked, which led to `details.bookingId` and to hiding the form instead of only reporting the refusal. Both findings come from Khánh's cross-review of `mock/routes/conversations.mjs`; checked against the code before they were accepted, the third note (`text: ""` with a request answers `400`) follows the contract and stays.
+Rejected: the assistant's recommendation (a), taking the costume from the customer's request automatically. An chose (b): correct behaviour over speed, and a customer who changes model or size in the chat is handled by the Admin directly, without a new request. The weakness of (b), an Admin who forgets the costume, is covered by pre-filling the fields from the request (to ask of Khánh) and by the check again at booking creation and deposit.
+By hand: none.
+

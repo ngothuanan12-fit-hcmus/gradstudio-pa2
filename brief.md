@@ -218,3 +218,19 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 > kiểm tra pr của repo
 
 > đăng review lên PR #5
+
+### 2.10 The two fixes to the proposal endpoint, found by Khánh (2026-11-22)
+
+> hai vấn đề
+> Đề xuất bị trùng lịch phải dùng chung checkSchedule của Khánh, để giờ trống được kiểm tra thật, và để tính cả giờ mở cửa lẫn tồn kho trang phục.
+> Chặn tạo đề xuất mới khi hội thoại đã có booking. Việc này cần thêm một dòng có ngày vào ## Changes của 03-conversations.md.
+> nên xử lý thế nào
+
+> nếu ghi hội thoại này đã có booking  kèm mã thì có bấm vào thông báo hiện lên được không để dẫn tới nơi xảy ra xung đột
+> việc 1 mình chưa hình dung được a và b cái nào trực quan và tiện lợi hơn, bạn nếu giống như vậy mình không nhớ rõ để review
+
+> mình muốn cách b để đảm bảo chức năng chỉ không phải nhanh hay khi gặp trường hợp ngoại lệ lại xử lý phức tạp, ghi AI LOG cho phiên này có thay đổi
+> kiểm tra các câu hỏi dưới đây do Khánh hỏi
+
+Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the remaining 70% may be paid; preview `url` as a base64 data URL; the route names of G4–G10).
+
