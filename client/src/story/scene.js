@@ -207,7 +207,7 @@ export function startStory({ canvas, story, caps, bar, veil, packages }) {
   const PINS = packages.map((item, i) => ({
     ...PIN_PLACES[i],
     label: item.name,
-    url: `/photos/${item.photo.name}-${item.photo.large}.webp`,
+    url: item.photo.src,
   }));
   const CHALK = 'Các gói chụp' + PINS.map((q) => q.label).join('');
   function boardTexture() {

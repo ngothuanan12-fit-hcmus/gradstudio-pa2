@@ -45,7 +45,7 @@ One row per route, as the browser shows it (`BrowserRouter`). A route that exist
 
 | Path | Role | Steps | Endpoints |
 |---|---|---|---|
-| `/` | visitor | G1 (still the PA#2 page, not yet on the API) | — |
+| `/` | visitor (anyone) | G1 | `GET /api/services`, `GET /api/extras`, `GET /api/photos`, `GET /api/reviews` |
 | `/dang-nhap` | anyone; a signed-in user is sent to their home | G2 | `POST /api/auth/login` |
 | `/lich-chup` | customer (protected) | G7 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
 | `/quan-ly` | admin (protected) | G4–G6 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |

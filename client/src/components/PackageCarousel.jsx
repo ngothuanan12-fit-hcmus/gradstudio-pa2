@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Button from './Button.jsx';
-import { formatVND } from '../data.js';
+import { formatVND } from '../utils/money.js';
 
 // The three packages on a turntable: the front photo is the package being shown, the other two wait behind it.
 // Drag or swipe sideways, use the arrow keys on the turntable, the "Gói trước" / "Gói sau" buttons, or click a
@@ -12,7 +12,7 @@ const TILT = [-2.4, 1.8, -1.4]; // each photo lies a little askew, like the phot
 const REAR = 0.72; // size of a photo behind, against the front one
 const norm = (a) => ((((a + 180) % 360) + 360) % 360) - 180;
 
-export default function PackageCarousel({ items, askingId, onAsk }) {
+export default function PackageCarousel({ items }) {
   const [front, setFront] = useState(0);
   const stageRef = useRef(null);
   const slotRefs = useRef([]);
@@ -214,7 +214,7 @@ export default function PackageCarousel({ items, askingId, onAsk }) {
           onKeyDown={onKeyDown}
         >
           {items.map((pkg, i) => {
-            const { name, small, large, width, height } = pkg.photo;
+            const { src, srcSmall, smallWidth, width, height, alt } = pkg.photo;
             return (
               <div
                 className="pkg-slot"
@@ -230,12 +230,12 @@ export default function PackageCarousel({ items, askingId, onAsk }) {
                   }}
                 >
                   <img
-                    src={`/photos/${name}-${small}.webp`}
-                    srcSet={`/photos/${name}-${small}.webp ${small}w, /photos/${name}-${large}.webp ${large}w`}
+                    src={srcSmall}
+                    srcSet={`${srcSmall} ${smallWidth}w, ${src} ${width}w`}
                     sizes="(min-width: 1280px) 460px, 62vw"
                     width={width}
                     height={height}
-                    alt={pkg.alt}
+                    alt={alt}
                     loading="lazy"
                     draggable="false"
                   />
@@ -265,19 +265,14 @@ export default function PackageCarousel({ items, askingId, onAsk }) {
       </div>
       <div className="pkg-detail">
         <h3 className="package-name">{item.name}</h3>
-        <p className="package-line">{item.line}</p>
-        <p>{item.text}</p>
+        <p>{item.summary}</p>
         <p className="package-price">
           <span>Từ</span> {formatVND(item.price)}
           <wbr />
           {item.unit}
         </p>
-        <Button
-          variant={askingId === item.id ? 'primary' : 'secondary'}
-          aria-pressed={askingId === item.id}
-          onClick={() => onAsk(item.id)}
-        >
-          Tư vấn gói này
+        <Button variant="secondary" href="#chat">
+          Hỏi studio về gói này
         </Button>
       </div>
     </div>

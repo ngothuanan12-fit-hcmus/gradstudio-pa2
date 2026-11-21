@@ -1735,3 +1735,12 @@ Kept: awaiting An's review. A photo now has `smallWidth`, the width of its small
 Changed: the gap was in `02-catalogue.md` as the assistant wrote it on 2026-11-20 (only the large file's size), found when reading how the PA#2 carousel builds its `srcset`. Checks: contract-check passes every example on a fresh mock; `npm test` 4/4.
 Rejected: guessing the small file's width in the client.
 By hand: none.
+
+### 2026-11-21 — step G1, the home page on the API
+Commit: the commit that adds this entry, after `82608d8` (the contract and mock change it relies on).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: G1 ("thực hiện tiếp G1").
+Kept: awaiting An's review. `/` reads everything from the API with one request each: `/api/services`, `/api/extras`, `/api/photos`, `/api/reviews` (`useApi`), each part in `DataState` with its loading, error with *Thử lại*, and empty text. `catalogue/showcase.js` builds one card per service with its photo; the carousel and the 3D story take those cards (the story waits for them, and shows the photo first screen at once when the catalogue failed or came back empty, since the scene shows the packages); the carousel and the scene use the API's `src`, `srcSmall`, `smallWidth`. New on the page: a price list with each package's price, length, edited photos and what it already includes (by the extras' names), each photo's author, source and licence, the extras with how they are charged and the costume models and sizes, and the reviews. The process steps stay as page copy. Gone: `ChatDock` with its written-in messages, the quick package buttons that fed it, the PA#2 strip "Nhân viên studio: mở cuộc trò chuyện này" (changing role is signing out and in), every import of `data.js` on this page, and their unused styles. The chat section explains what to tell the studio and offers *Đăng nhập để chat với studio*; for a signed-in customer it says the chat screen is step G3. `formatVND` moves to `utils/money.js`. The test on a `git archive` copy follows in the next entry.
+Changed: the first draft ended the chat section with "Chưa có tài khoản? Hỏi studio … bằng tài khoản được cấp", a policy the brief never gives (NEVER 11); removed before committing. The first draft of `Story` also kept waiting for the scene in empty mode, where it can never come; it now falls back to the photo screen.
+Rejected: nothing.
+By hand: none.

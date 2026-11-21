@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
 import Button from './Button.jsx';
-import { formatVND, packages } from '../data.js';
+import { formatVND } from '../utils/money.js';
 
 const PLACES = ['at-right', 'at-left', 'at-lefttop'];
 
 // The 3D story: a tall section whose stage stays on screen while the scene follows the scroll.
 // `start` comes from src/story/scene.js. It moves the words and the canvas, and returns a stop function.
-export default function StoryStage({ start }) {
+// `packages` are the home page's catalogue cards from the API (three, each with its photo).
+export default function StoryStage({ start, packages }) {
   const storyRef = useRef(null);
   const canvasRef = useRef(null);
   const barRef = useRef(null);
@@ -22,7 +23,7 @@ export default function StoryStage({ start }) {
       veil: veilRef.current,
       packages,
     });
-  }, [start]);
+  }, [start, packages]);
 
   return (
     <section className="story" ref={storyRef} aria-label="Câu chuyện trong lớp học">
@@ -47,10 +48,8 @@ export default function StoryStage({ start }) {
         </div>
         {packages.map((item, i) => (
           <div className={`cap ${PLACES[i]}`} key={item.id}>
-            <h2 className="story-title">
-              {item.name} <em>{item.line}</em>
-            </h2>
-            <p>{item.text}</p>
+            <h2 className="story-title">{item.name}</h2>
+            <p>{item.summary}</p>
             <p className="cap-price">
               Từ {formatVND(item.price)}
               {item.unit}
