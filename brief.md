@@ -207,6 +207,12 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 
 > làm G11
 
+> mình cần tự kiểm các trang như thế nào
+
+> commit luôn cho đúng quy định
+
+> push
+
 ### 2.9 Contract 04-schedule (Khánh, 2026-11-21)
 
 > Tạo nhánh mới để bắt đầu làm các task lead giao, cần nhắc lại về file brief.md và AI-LOG.md. Đó là brief.md bạn sẽ ghi vào những câu prompt khi bắt đầu làm (có thể sau khi tạo nhánh là bắt đầu làm nè), còn file AI-LOG.md bạn có thể tham khảo các viết của An - tức là khi tôi prompt và bạn chỉnh hết file theo yêu cầu đó và kết thúc phiên của câu hỏi đó thì bạn sẽ commit hết + ghi vào AI-LOG.md. Bạn hãy tạo nhánh đi + response lại tôi đã hiểu ý làm của 2 file đó chưa. Ngoài ra các rule khác vẫn cứ đọc codebase coi các yêu cầu của lead (An) để thực hiện không thiếu hành động nào
@@ -250,3 +256,7 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 ### 2.17 Mocks for 06-payments, 07-reminders, and 08-jobs (Khánh, 2026-11-21)
 
 > Oke tiếp tục viết mock 06-07-08 luôn (nhưng vẫn mỗi commit là 1 phần nha). Làm và kiểm tra kỹ
+
+### 2.18 Merge main and PR for contracts 04–08 and mocks (Khánh, 2026-11-21)
+
+> Tạo pull request vào main, và viết comment những gì đã thực hiện được sau đó request cho lead An review

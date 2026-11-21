@@ -1817,6 +1817,15 @@ Changed: the screenshot at 1280 px showed "Quản trị hệ thống · Quản t
 Rejected: renaming the Superadmin in the contract and seed only to avoid the repeat.
 By hand: none.
 
+### 2026-11-21 — how An checks the pages by hand
+Commit: the commit that adds this entry, after `fcc61bf`.
+Tool: Claude Code (Claude Opus 5.5). The console snippet was tried with Playwright on a small test page outside the repository: it reported the sideways scroll, the overflowing element, an unlabelled input, small controls and small text.
+Asked for: how An checks the pages without the assistant ("mình cần tự kiểm các trang như thế nào").
+Kept: the steps in the chat, following `brief.md` *How done is checked* and `HARNESS.md` section 6: build and preview with the mock; every route of `FRONTEND.md` section 4 opened directly, signed in as its role, at 360, 768 and 1280 px; one console snippet for the two Console lines of PA#2 plus `h1`, labels, 44 px and 16 px; the four mock modes on each data screen, with the mock's log for repeated requests; the built steps walked through the app's own links; the W3C paste with `copy(...)` and a screenshot in `checks/`; the four gates.
+Changed: the exact wording of the PA#2 rubric's two Console lines is not in the repository; the snippet rebuilds them from earlier entries (the sideways scroll and the elements past the edge). An should compare it with the rubric.
+Rejected: nothing yet.
+By hand: An's request; the checks themselves are An's.
+
 ### 2026-11-21 — contract file 04, schedule (staff, rooms, clash check)
 Commit: the commit that adds this entry with `docs/api/04-schedule.md`, `docs/api/README.md` and `brief.md`, after `0404bda` (which committed `.gitignore` and `AGENTS.md`). The mock follows in the next step.
 Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
@@ -1912,6 +1921,15 @@ Commit: the commit that adds this entry with `mock/data/jobs.json`, `mock/data/p
 Tool: Antigravity (Gemini 4 Hydrogen); `npm test` (`contract-check.mjs`, error/slow/restart modes), `npm run format:check`, `npm run lint`, `npm run build`, and ephemeral node checks for `empty` mode and `200` cancel.
 Asked for: third part of the request to implement mocks `06`–`08` with one commit per resource (`08-jobs`).
 Kept: awaiting An's review. Left An's route files untouched; added `mock/data/jobs.json` and `mock/data/previews.json`, implemented `mock/routes/jobs.mjs` (`GET /api/jobs`, `PATCH /api/jobs/:id`, `POST /api/bookings/:id/previews` with Node built-in `multipart/form-data` parsing draining past-limit uploads to prevent `ECONNRESET`, plus `syncJobsForBooking`), wired `syncJobsForBooking` into `payments.mjs` and `bookings.mjs`, registered `jobs` in `mock/server.mjs`, and updated `mock/data/README.md`. Checks: `npm run format:check`, `npm run lint`, `npm test` (`4/4` suites pass, including `120/120` examples in `contract-check.mjs`, `34/34` endpoints covered, and `0` value notes), and `npm run build` all pass; `MOCK_MODE=empty` returns `[]` for all new list endpoints, and cancelling `GS-1020` on a fresh mock returns `200` *Đã hủy* and frees `2026-10-17` `13:00–16:00`.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
+
+### 2026-11-21 — merge origin/main and prepare PR for contracts and mocks 04–08
+Commit: the merge commit that adds this entry with `brief.md`, merging `origin/main` (`6d14e93`) into `feature/pa3-khanh` after `f5be335`.
+Tool: Antigravity (Gemini 4 Hydrogen); `git diff --check`, `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: create a pull request into `main`, post a comment summarizing what was implemented, and request a review from lead An ("Tạo pull request vào main, và viết comment những gì đã thực hiện được sau đó request cho lead An review").
+Kept: awaiting An's review. Merged `origin/main` (`6d14e93`, carrying `0e5bfbc` and `6d14e93`) into `feature/pa3-khanh` instead of rebasing so commit SHAs referenced in `HARNESS.md` and `AI-LOG.md` stay unchanged, kept both An's and Khánh's entries intact in chronological order without rewriting past logs, recorded prompt `2.18` in `brief.md`, and prepared the branch to push and open a PR into `main` for An (`ngothuanan12-fit-hcmus`) to review without self-merging. Checks: `git diff --check`, `npm run format:check`, `npm run lint`, `npm test` (`4/4` suites pass), and `npm run build` all pass cleanly.
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
