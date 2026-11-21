@@ -43,7 +43,7 @@ Moves: a new conversation starts as *Chưa trả lời*; a studio message or pro
 | `request` | object or `null` | With `kind` `request`: the booking request (below); otherwise `null` |
 | `proposal` | object or `null` | With `kind` `proposal` or `answer`: the proposal (below), with its current status; otherwise `null` |
 
-**Booking request**: `serviceId`, `serviceName`, `packageId` (or `null`), `packageName` (or `null`), `date` (`YYYY-MM-DD`), `time` (`HH:MM`), `people` (integer), `extras` (a list of `{ "extraId", "name", "modelId", "size" }`; `modelId` and `size` are `null` except for a costume).
+**Booking request**: `serviceId`, `serviceName`, `packageId` (or `null`), `packageName` (or `null`), `date` (`YYYY-MM-DD`), `time` (`HH:MM`), `people` (integer), `extras` (a list of `{ "extraId", "name", "modelId", "modelName", "size" }`; `modelId`, `modelName` and `size` are `null` except for a costume).
 
 **Proposal**: `id` (`pr-…`), `date`, `makeup` (`{ "from", "to", "staffId", "staffName" }` or `null`), `shoot` (`{ "from", "to", "staffId", "staffName", "roomId", "roomName" }`), `status` (`open`, `agreed`, `declined`, or `replaced` when a newer proposal is made on the same conversation).
 
@@ -191,7 +191,7 @@ Content-Type: application/json
 HTTP/1.1 201 Created
 Content-Type: application/json
 
-{"id": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "status": "Chưa trả lời", "lastMessage": {"from": "customer", "text": "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", "at": "2026-10-20T09:40:00+07:00"}, "updatedAt": "2026-10-20T09:40:00+07:00", "bookingId": null, "messages": [{"id": "m-1", "from": "customer", "authorName": "Nguyễn Thùy Linh", "kind": "request", "text": "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", "at": "2026-10-20T09:40:00+07:00", "request": {"serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "time": "09:00", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "size": null}]}, "proposal": null}]}
+{"id": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "status": "Chưa trả lời", "lastMessage": {"from": "customer", "text": "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", "at": "2026-10-20T09:40:00+07:00"}, "updatedAt": "2026-10-20T09:40:00+07:00", "bookingId": null, "messages": [{"id": "m-1", "from": "customer", "authorName": "Nguyễn Thùy Linh", "kind": "request", "text": "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", "at": "2026-10-20T09:40:00+07:00", "request": {"serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "time": "09:00", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null}]}, "proposal": null}]}
 ```
 
 Nothing to send:
@@ -245,7 +245,7 @@ Authorization: Bearer {{token:linh}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "status": "Chưa trả lời", "lastMessage": {"from": "customer", "text": "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", "at": "2026-10-20T09:40:00+07:00"}, "updatedAt": "2026-10-20T09:40:00+07:00", "bookingId": null, "messages": [{"id": "m-1", "from": "customer", "authorName": "Nguyễn Thùy Linh", "kind": "request", "text": "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", "at": "2026-10-20T09:40:00+07:00", "request": {"serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "time": "09:00", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "size": null}]}, "proposal": null}]}
+{"id": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "status": "Chưa trả lời", "lastMessage": {"from": "customer", "text": "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", "at": "2026-10-20T09:40:00+07:00"}, "updatedAt": "2026-10-20T09:40:00+07:00", "bookingId": null, "messages": [{"id": "m-1", "from": "customer", "authorName": "Nguyễn Thùy Linh", "kind": "request", "text": "Gói tốt nghiệp có makeup còn lịch 24/10 lúc 09:00 không?", "at": "2026-10-20T09:40:00+07:00", "request": {"serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "time": "09:00", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null}]}, "proposal": null}]}
 ```
 
 Another customer's conversation:
@@ -504,3 +504,4 @@ Content-Type: application/json
 ## Changes
 
 - 2026-11-20 — First version. No client code calls these endpoints yet.
+- 2026-11-21 — A request's extras gain `modelName`, the costume model's name, so a screen can show "Áo cử nhân" without loading the catalogue again. No client code calls these endpoints yet.

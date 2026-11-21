@@ -1753,3 +1753,12 @@ Kept: every check passes. Normal mode at 360, 768 and 1280 px: three package car
 Changed: one false failure in the check itself: it collected the three *Thử lại* buttons first and clicked them in turn, but each press replaces its block, so the third button was gone; the check now presses the first remaining button until none is left.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-21 — 03-conversations: a costume extra gains `modelName`, before G3 calls it
+Commit: the commit that adds this entry with `docs/api/03-conversations.md`, `mock/data/conversations.json` and `mock/routes/conversations.mjs`, after `ad9a6c4` (pushed, CI green).
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check on a fresh mock).
+Asked for: G3 and G6 on the customer's side ("làm G3 và G6 phía khách"); while building the message cards, a gap in the contract.
+Kept: awaiting An's review. Each extra of a booking request now has `modelName` next to `modelId` (`null` unless it is a costume), so a conversation screen can show "Áo cử nhân, size M" without loading the catalogue a second time. Field list, the two examples, the seed and the mock carry it; a dated line in `## Changes`. Contract, then mock, then the client.
+Changed: the gap was in the contract as the assistant wrote it on 2026-11-20, found when the request card could only show the model's id. Checks: contract-check passes every example; `npm test` 4/4; format and lint pass.
+Rejected: loading `/api/extras` on the conversation screen only to look up a name.
+By hand: none.

@@ -105,12 +105,12 @@ function checkRequest(db, r, fields) {
         const extra = db.extras.find((e) => e.id === x?.extraId);
         if (!extra) return false;
         if (extra.kind !== 'costume') {
-          extras.push({ extraId: extra.id, name: extra.name, modelId: null, size: null });
+          extras.push({ extraId: extra.id, name: extra.name, modelId: null, modelName: null, size: null });
           return true;
         }
         const model = extra.models.find((m) => m.id === x.modelId);
         if (!model || !model.sizes.includes(x.size)) return false;
-        extras.push({ extraId: extra.id, name: extra.name, modelId: model.id, size: x.size });
+        extras.push({ extraId: extra.id, name: extra.name, modelId: model.id, modelName: model.name, size: x.size });
         return true;
       });
     if (!fine) fields['request.extras'] = 'Dịch vụ thêm không hợp lệ.';
