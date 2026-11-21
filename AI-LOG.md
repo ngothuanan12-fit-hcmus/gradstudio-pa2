@@ -1879,3 +1879,12 @@ Kept: awaiting An's review. Left An's route files and `users.json` untouched; ad
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — mock answers 05-bookings
+Commit: the commit that adds this entry with `mock/data/bookings.json`, `mock/routes/bookings.mjs`, `mock/server.mjs`, `mock/data/README.md`, and `brief.md`, after `8a714f8`.
+Tool: Antigravity (Gemini 4 Hydrogen); `tools/contract-check.mjs`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: write the mock for `05-bookings.md` ("Tiếp tục").
+Kept: awaiting An's review. Left An's route files untouched; added `mock/data/bookings.json` (`GS-1020`–`GS-1023` matching `mock/data/README.md`), implemented `mock/routes/bookings.mjs` (`GET /api/bookings`, `POST /api/bookings`, `GET /api/bookings/:id`, `PATCH /api/bookings/:id`, `PUT /api/bookings/:id/file-link`, `POST /api/bookings/:id/cancel`, plus exported `bookingOut` and `syncBookingBusy` helpers for `06-payments`), registered `bookings` in `mock/server.mjs`, and updated `mock/data/README.md` and `brief.md`. Reused `checkSchedule` and `validateScheduleInput` from `mock/routes/schedule.mjs` so booking creation and rescheduling share one clash-check path; `POST /api/bookings` keeps `GS-1024` in *Chờ cọc 30%* without adding `busy` blocks until deposit succeeds (`06-payments`). Checks: `npm run format:check`, `npm run lint`, and `npm run build` pass; full `contract-check.mjs` passes all 25/25 `05-bookings.md` examples (`89/120` overall, remaining 31 failures are only `06`–`08` routes not yet written).
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.
