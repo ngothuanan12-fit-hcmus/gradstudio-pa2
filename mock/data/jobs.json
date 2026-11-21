@@ -1,0 +1,90 @@
+[
+  {
+    "id": "job-gs-1020-makeup",
+    "bookingId": "GS-1020",
+    "staffId": "u-mai",
+    "role": "makeup",
+    "date": "2026-10-17",
+    "from": "13:00",
+    "to": "14:00",
+    "roomName": null,
+    "status": "Hoàn thành"
+  },
+  {
+    "id": "job-gs-1020-shoot",
+    "bookingId": "GS-1020",
+    "staffId": "u-tuan",
+    "role": "shoot",
+    "date": "2026-10-17",
+    "from": "14:00",
+    "to": "16:00",
+    "roomName": "Phòng B",
+    "status": "Hoàn thành"
+  },
+  {
+    "id": "job-gs-1021-makeup",
+    "bookingId": "GS-1021",
+    "staffId": "u-mai",
+    "role": "makeup",
+    "date": "2026-10-10",
+    "from": "09:00",
+    "to": "10:00",
+    "roomName": null,
+    "status": "Hoàn thành"
+  },
+  {
+    "id": "job-gs-1021-shoot",
+    "bookingId": "GS-1021",
+    "staffId": "u-tuan",
+    "role": "shoot",
+    "date": "2026-10-10",
+    "from": "10:00",
+    "to": "12:00",
+    "roomName": "Phòng B",
+    "status": "Hoàn thành"
+  },
+  {
+    "id": "job-gs-1022-makeup",
+    "bookingId": "GS-1022",
+    "staffId": "u-mai",
+    "role": "makeup",
+    "date": "2026-10-18",
+    "from": "13:00",
+    "to": "14:00",
+    "roomName": null,
+    "status": "Hoàn thành"
+  },
+  {
+    "id": "job-gs-1022-shoot",
+    "bookingId": "GS-1022",
+    "staffId": "u-tuan",
+    "role": "shoot",
+    "date": "2026-10-18",
+    "from": "14:00",
+    "to": "16:00",
+    "roomName": "Phòng B",
+    "status": "Hoàn thành"
+  },
+  {
+    "id": "job-gs-1022-edit",
+    "bookingId": "GS-1022",
+    "staffId": "u-staff3",
+    "role": "edit",
+    "date": "2026-10-18",
+    "from": "16:00",
+    "to": "18:00",
+    "roomName": null,
+    "status": "Đang thực hiện"
+  },
+  {
+    "id": "job-gs-1023-makeup",
+    "bookingId": "GS-1023",
+    "staffId": "u-mai",
+    "role": "makeup",
+    "date": "2026-10-24",
+    "from": "08:00",
+    "to": "12:00",
+    "roomName": null,
+    "status": "Chưa bắt đầu"
+  }
+]

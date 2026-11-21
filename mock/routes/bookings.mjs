@@ -1,5 +1,6 @@
 // docs/api/05-bookings.md: bookings (create from agreed conversation, read, change with clash check, file link, cancel).
 import { currentUser, fail, forbidden, invalid, notFound, ok, unauthenticated } from '../lib.mjs';
+import { syncJobsForBooking } from './jobs.mjs';
 import { syncReminderForBooking } from './reminders.mjs';
 import { checkSchedule, roomName, userName, validateScheduleInput } from './schedule.mjs';
 
@@ -334,6 +335,7 @@ function update({ req, db, params, body }) {
 
   syncBookingBusy(db, booking);
   syncReminderForBooking(db, booking);
+  syncJobsForBooking(db, booking);
   return ok(bookingOut(db, booking));
 }
 
@@ -366,6 +368,7 @@ function cancel({ req, db, params, body }) {
   }
   booking.status = 'Đã hủy';
   syncBookingBusy(db, booking);
+  syncJobsForBooking(db, booking);
   if (Array.isArray(db.reminders)) {
     db.reminders = db.reminders.filter((r) => r.bookingId !== booking.id);
   }

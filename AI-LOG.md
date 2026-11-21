@@ -1906,3 +1906,12 @@ Kept: awaiting An's review. Left An's route files untouched; added `mock/data/re
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — mock answers 08-jobs
+Commit: the commit that adds this entry with `mock/data/jobs.json`, `mock/data/previews.json`, `mock/routes/jobs.mjs`, `mock/routes/payments.mjs`, `mock/routes/bookings.mjs`, `mock/server.mjs`, and `mock/data/README.md`, after `90c555f`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm test` (`contract-check.mjs`, error/slow/restart modes), `npm run format:check`, `npm run lint`, `npm run build`, and ephemeral node checks for `empty` mode and `200` cancel.
+Asked for: third part of the request to implement mocks `06`–`08` with one commit per resource (`08-jobs`).
+Kept: awaiting An's review. Left An's route files untouched; added `mock/data/jobs.json` and `mock/data/previews.json`, implemented `mock/routes/jobs.mjs` (`GET /api/jobs`, `PATCH /api/jobs/:id`, `POST /api/bookings/:id/previews` with Node built-in `multipart/form-data` parsing draining past-limit uploads to prevent `ECONNRESET`, plus `syncJobsForBooking`), wired `syncJobsForBooking` into `payments.mjs` and `bookings.mjs`, registered `jobs` in `mock/server.mjs`, and updated `mock/data/README.md`. Checks: `npm run format:check`, `npm run lint`, `npm test` (`4/4` suites pass, including `120/120` examples in `contract-check.mjs`, `34/34` endpoints covered, and `0` value notes), and `npm run build` all pass; `MOCK_MODE=empty` returns `[]` for all new list endpoints, and cancelling `GS-1020` on a fresh mock returns `200` *Đã hủy* and frees `2026-10-17` `13:00–16:00`.
+Changed: nothing.
+Rejected: nothing.
+By hand: nothing.

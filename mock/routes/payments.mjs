@@ -1,6 +1,7 @@
 // docs/api/06-payments.md: deposit (30%) and remainder (70%) through the test gateway.
 import { currentUser, fail, forbidden, invalid, notFound, ok, unauthenticated } from '../lib.mjs';
 import { bookingOut, syncBookingBusy } from './bookings.mjs';
+import { syncJobsForBooking } from './jobs.mjs';
 import { syncReminderForBooking } from './reminders.mjs';
 import { checkSchedule } from './schedule.mjs';
 
@@ -166,6 +167,7 @@ function applyResult({ req, db, params, body }) {
     // R1: slot is held once the deposit succeeds, so add the booking's blocks to db.busy.
     syncBookingBusy(db, booking);
     syncReminderForBooking(db, booking);
+    syncJobsForBooking(db, booking);
     payment.status = 'succeeded';
     payment.completedAt = at;
     payment.message = 'Thanh toán cọc 30% thành công. Lịch chụp đã được giữ.';
