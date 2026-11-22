@@ -110,6 +110,9 @@ Every endpoint the client calls **and that has an example** in its file. contrac
 | `PATCH` | `/api/jobs/:id` | staff (assigned), admin | `08-jobs.md` |
 | `POST` | `/api/bookings/:id/previews` | staff (assigned), admin | `08-jobs.md` |
 | `GET` | `/api/previews/:id` | customer (own), staff (assigned), admin | `08-jobs.md` |
+| `GET` | `/api/bookings/:id/previews` | customer (own), staff (assigned), admin | `09-gallery.md` |
+| `PUT` | `/api/bookings/:id/selection` | customer (own) | `09-gallery.md` |
+| `POST` | `/api/bookings/:id/receive` | customer (own) | `09-gallery.md` |
 | `GET` | `/api/admins` | superadmin | `10-admin.md` |
 | `POST` | `/api/admins` | superadmin | `10-admin.md` |
 | `GET` | `/api/settings` | superadmin | `10-admin.md` |
@@ -117,11 +120,7 @@ Every endpoint the client calls **and that has an example** in its file. contrac
 
 ### Planned
 
-Endpoints designed but not yet written up with examples, by file. Not a table, so contract-check does not read them yet. Only `09-gallery.md` remains planned; `01`–`08` and `10` are in the table above.
-
-- GET /api/bookings/:id/previews · customer (own), staff (assigned), admin · `09-gallery.md`
-- PUT /api/bookings/:id/selection · customer (own) · `09-gallery.md`
-- POST /api/bookings/:id/receive · customer (own) · `09-gallery.md`
+None: every endpoint has its examples and sits in the table above.
 
 ## Changes
 
@@ -141,3 +140,4 @@ Once client code calls an endpoint, every change to it gets a line here or in it
 - 2026-11-22 — Update the booking status convention (*Đã hủy* as a team assumption) and the *Planned* note after `04`–`08` moved into the endpoint table (PR #5 review fix). No client code calls these endpoints yet.
 - 2026-11-22 — Add `GET /api/previews/:id` to the endpoint table (`08-jobs.md`, agreed item 6). No client code calls it yet.
 - 2026-11-22 — *Đã hủy* is now the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)), no longer a team assumption. No change to any endpoint.
+- 2026-11-22 — The three endpoints of `09-gallery.md` move from *Planned* to the table, with their examples. No client code calls them yet.

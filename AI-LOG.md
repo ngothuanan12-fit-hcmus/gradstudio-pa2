@@ -2187,3 +2187,12 @@ Changed: the assistant's command for `d290b46` ran the format check, then commit
 Rejected: amending `d290b46`; a new commit keeps the slip visible.
 By hand: none.
 
+### 2026-11-22 — contract 09, gallery (G9)
+Commit: the commit that adds this entry with `docs/api/09-gallery.md` and `docs/api/README.md`. The mock follows.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check).
+Asked for: what can be redone now after the product owners' answers; `09-gallery.md` waited only on 05 and 06, which are merged.
+Kept: awaiting An's review. Three endpoints: `GET /api/bookings/:id/previews` (the gallery: `limit`, `locked`, `selected`, `savedAt`, previews), `PUT /api/bookings/:id/selection` (1 to `editedPhotos`, own previews only, none twice; changeable until the 70% is paid, then `409`), `POST /api/bookings/:id/receive` (*Nhận ảnh*: needs the 70% paid and the file link; the booking and its conversation become *Hoàn thành*). Rules 1 and 3 cite the product owners; rule 2 points to the team's reading in 06. The examples walk the seed story: GS-1020, 31 photos refused and 30 accepted; GS-1022, a choice changed before paying, the 70% paid through `06-payments.md`, the choice locked, *Nhận ảnh*, `c-customer2` *Hoàn thành*. Fields Khánh is about to change (`pricing`, payment messages) are written as `…` so his next PR does not break these examples. The README table gets the three rows; *Planned* is now empty.
+Changed: with the contract alone, contract-check fails the 16 examples of 09 that need its mock (404, and the remainder refused for want of a choice); every other file still passes. CI is red on this commit until the mock commit.
+Rejected: a separate `GET` for the choice: the gallery answer carries it, so G9 loads one thing.
+By hand: none.
+
