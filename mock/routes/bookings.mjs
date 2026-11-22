@@ -327,6 +327,10 @@ function update({ req, db, params, body }) {
   if (b.people !== undefined) booking.people = b.people;
   if (b.sessionType !== undefined) booking.sessionType = b.sessionType.trim();
   if (b.extras !== undefined) booking.extras = nextExtras;
+  if (touchesSlot && booking.status === 'Chờ cọc 30%' && booking.payment.depositStatus === 'paid') {
+    // Team assumption (follow-up question for product owners): moving a deposit-paid unheld booking to a free slot locks its slot.
+    booking.status = 'Đã đặt lịch';
+  }
 
   syncBookingBusy(db, booking);
   syncReminderForBooking(db, booking);

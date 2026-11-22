@@ -2330,3 +2330,13 @@ Kept: awaiting An's review. Updated Rule 1 and `PATCH /api/bookings/:id` in `doc
 Changed: `contract-check.mjs` does not test the new behavior yet because running a live concurrent deposit (`POST /api/payments`) inline in `05`/`06` would consume `pay-3` before `09-gallery.md`; verified on its own fresh mock process in `test/mock.test.mjs` next.
 Rejected: shifting downstream `09-gallery.md` `pay-3` expectations or modifying An's `docs/api/09-gallery.md` to make room for an inline payment example.
 By hand: none.
+
+### 2026-11-23 — mock 05/06: promote deposit-paid unheld bookings on free-slot reschedule
+
+Commit: the commit that adds this entry with `mock/routes/bookings.mjs` and `test/mock.test.mjs`, after `74e9fba`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npx prettier --write`, `npm run format:check`, `npm run lint`, `npm test`, and `contract-check.mjs --strict-values`.
+Asked for: mock and test side of the `05-bookings.md` / `06-payments.md` contract update (`74e9fba`).
+Kept: awaiting An's review. Updated `PATCH /api/bookings/:id` (`update`) in `mock/routes/bookings.mjs` so when `touchesSlot` passes `checkSchedule` on a booking in *Chờ cọc 30%* whose `payment.depositStatus` is already `'paid'`, the booking transitions to `'Đã đặt lịch'` before `syncBookingBusy`, `syncReminderForBooking`, and `syncJobsForBooking` run (leaving unpaid *Chờ cọc 30%* bookings and non-slot `PATCH` updates in `'Chờ cọc 30%'`). Added a dedicated integration test in `test/mock.test.mjs` covering clashing move (`409`), metadata-only `PATCH` (`sessionType`, remains `'Chờ cọc 30%'`), unpaid move (remains `'Chờ cọc 30%'`, 0 blocks), and free-slot move of a lost-race paid booking (`Đã đặt lịch`, `busy` block created, 1 reminder, 1 job, and remainder reaching photo-selection guard). Checks: `npm run format:check`, `npm run lint` (`--max-warnings 0`), `npm test` (`10/10` passing), and `contract-check.mjs --strict-values` (`148/148` examples, `0 FAIL`, `38/38` endpoints) all pass.
+Changed: `npm run format:check` first failed on long lines in the new `test/mock.test.mjs` test (fixed via `npx prettier --write test/mock.test.mjs`), and the first run of the new test in `test/mock.test.mjs` failed with `TypeError` at `resB.booking` because `payB` (`POST /api/payments`) was started after `payA` had already succeeded (which triggers `checkBookingResources` `409` at payment creation rather than concurrent checkout before both settle; fixed by creating both `payA` and `payB` before settling `payA`, matching `06-payments.md` rule 3).
+Rejected: promoting a `'Chờ cọc 30%'` + `'paid'` booking on non-slot metadata `PATCH` edits where resources were not re-checked against `busy`.
+By hand: none.

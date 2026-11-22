@@ -466,3 +466,172 @@ test('concurrent second deposit is recorded as succeeded with reason while booki
     await mock.stop();
   }
 });
+
+test('rescheduling a deposit-paid unheld booking to a free slot moves it to Đã đặt lịch and holds busy blocks', async () => {
+  const mock = await startMock('normal', 3210);
+  try {
+    const admin = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const linh = { Authorization: 'Bearer token-u-linh', 'Content-Type': 'application/json' };
+    const minhAnh = { Authorization: 'Bearer token-u-customer2', 'Content-Type': 'application/json' };
+
+    const createBooking = async (custHeaders, date, time) => {
+      const conv = await (
+        await fetch(`${mock.base}/api/conversations`, {
+          method: 'POST',
+          headers: custHeaders,
+          body: JSON.stringify({
+            text: `Đặt lịch ${date} ${time}`,
+            request: {
+              serviceId: 'tot-nghiep',
+              packageId: 'tot-nghiep-premium',
+              date,
+              time,
+              people: 1,
+            },
+          }),
+        })
+      ).json();
+      const proposed = await (
+        await fetch(`${mock.base}/api/conversations/${conv.id}/proposals`, {
+          method: 'POST',
+          headers: admin,
+          body: JSON.stringify({
+            date,
+            makeup: null,
+            shoot: { from: time, to: '12:00', staffId: 'u-tuan', roomId: 'r-b' },
+          }),
+        })
+      ).json();
+      const proposalId = proposed.messages[proposed.messages.length - 1].proposal.id;
+      await fetch(`${mock.base}/api/conversations/${conv.id}/proposals/${proposalId}/answer`, {
+        method: 'POST',
+        headers: custHeaders,
+        body: JSON.stringify({ answer: 'agree' }),
+      });
+      return (
+        await fetch(`${mock.base}/api/bookings`, {
+          method: 'POST',
+          headers: admin,
+          body: JSON.stringify({
+            conversationId: conv.id,
+            serviceId: 'tot-nghiep',
+            packageId: 'tot-nghiep-premium',
+            people: 1,
+          }),
+        })
+      ).json();
+    };
+
+    const bookingA = await createBooking(linh, '2026-10-25', '10:00');
+    const bookingB = await createBooking(minhAnh, '2026-10-25', '10:00');
+    const bookingUnpaid = await createBooking(linh, '2026-10-28', '10:00');
+
+    const payAReq = await fetch(`${mock.base}/api/payments`, {
+      method: 'POST',
+      headers: linh,
+      body: JSON.stringify({ bookingId: bookingA.id, kind: 'deposit' }),
+    });
+    assert.equal(payAReq.status, 201);
+    const payA = await payAReq.json();
+
+    const payBReq = await fetch(`${mock.base}/api/payments`, {
+      method: 'POST',
+      headers: minhAnh,
+      body: JSON.stringify({ bookingId: bookingB.id, kind: 'deposit' }),
+    });
+    assert.equal(payBReq.status, 201);
+    const payB = await payBReq.json();
+
+    const okAReq = await fetch(`${mock.base}/api/payments/${payA.id}/result`, {
+      method: 'POST',
+      headers: linh,
+      body: JSON.stringify({ result: 'success' }),
+    });
+    assert.equal(okAReq.status, 200);
+
+    const resBReq = await fetch(`${mock.base}/api/payments/${payB.id}/result`, {
+      method: 'POST',
+      headers: minhAnh,
+      body: JSON.stringify({ result: 'success' }),
+    });
+    assert.equal(resBReq.status, 200);
+    const resB = await resBReq.json();
+    assert.equal(resB.booking.status, 'Chờ cọc 30%');
+    assert.equal(resB.booking.payment.depositStatus, 'paid');
+
+    // Still-clashing target slot is refused with 409 and keeps Chờ cọc 30%.
+    const clashingMove = await fetch(`${mock.base}/api/bookings/${bookingB.id}`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({
+        date: '2026-10-25',
+        makeup: null,
+        shoot: { from: '10:30', to: '12:30', staffId: 'u-tuan', roomId: 'r-b' },
+      }),
+    });
+    assert.equal(clashingMove.status, 409);
+
+    // Editing a non-slot field alone must not silently claim a clashing slot.
+    const metaOnly = await fetch(`${mock.base}/api/bookings/${bookingB.id}`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ sessionType: 'Tốt nghiệp nhóm' }),
+    });
+    assert.equal(metaOnly.status, 200);
+    assert.equal((await metaOnly.json()).status, 'Chờ cọc 30%');
+
+    // Moving unpaid Chờ cọc 30% booking still keeps Chờ cọc 30% and adds no busy blocks.
+    const unpaidMove = await fetch(`${mock.base}/api/bookings/${bookingUnpaid.id}`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({
+        date: '2026-10-29',
+        makeup: null,
+        shoot: { from: '14:00', to: '16:00', staffId: 'u-tuan', roomId: 'r-b' },
+      }),
+    });
+    assert.equal(unpaidMove.status, 200);
+    assert.equal((await unpaidMove.json()).status, 'Chờ cọc 30%');
+    const schedUnpaid = await (await fetch(`${mock.base}/api/schedule?date=2026-10-29`, { headers: admin })).json();
+    assert.equal(schedUnpaid.blocks.length, 0);
+
+    // Moving deposit-paid unheld bookingB to a free slot moves it to Đã đặt lịch and holds busy, reminder, jobs.
+    const freeMove = await fetch(`${mock.base}/api/bookings/${bookingB.id}`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({
+        date: '2026-10-26',
+        makeup: null,
+        shoot: { from: '14:00', to: '16:00', staffId: 'u-tuan', roomId: 'r-b' },
+      }),
+    });
+    assert.equal(freeMove.status, 200);
+    const movedBody = await freeMove.json();
+    assert.equal(movedBody.status, 'Đã đặt lịch');
+    assert.equal(movedBody.payment.depositStatus, 'paid');
+
+    const schedMoved = await (await fetch(`${mock.base}/api/schedule?date=2026-10-26`, { headers: admin })).json();
+    assert.equal(schedMoved.blocks.length, 1);
+    assert.equal(schedMoved.blocks[0].bookingId, bookingB.id);
+
+    const reminders = await (
+      await fetch(`${mock.base}/api/reminders?bookingId=${bookingB.id}`, { headers: admin })
+    ).json();
+    assert.equal(reminders.length, 1);
+
+    const jobs = await (await fetch(`${mock.base}/api/jobs?bookingId=${bookingB.id}`, { headers: admin })).json();
+    assert.equal(jobs.length, 1);
+    assert.equal(jobs[0].staffId, 'u-tuan');
+
+    const remainderGuard = await fetch(`${mock.base}/api/payments`, {
+      method: 'POST',
+      headers: minhAnh,
+      body: JSON.stringify({ bookingId: bookingB.id, kind: 'remainder' }),
+    });
+    assert.equal(remainderGuard.status, 409);
+    const remainderBody = await remainderGuard.json();
+    assert.equal(remainderBody.error.message, 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
+  } finally {
+    await mock.stop();
+  }
+});
