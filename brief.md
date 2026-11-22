@@ -307,3 +307,11 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 > đã ghi danh sách route vào FRONTEND.md mục 4 (bảng "Agreed for the screens not built yet"). em xem có chỗ nào cần đổi thì nhắn mình trước khi dựng màn. Mã booking và mã thanh toán để trong đường dẫn, không để trong query.
 > Sửa lại 06-payments.md cho khớp tên route /thanh-toan/:paymentId và /thanh-toan/:paymentId/ket-qua.
 > Rồi tiến hành luôn các bước 1. 2. 3.
+
+### 2.12 Second review of PR #5 (2026-11-22)
+
+> push từng commit
+
+> kiểm tra lại việc Khánh mới pr
+
+> Đồng ý

@@ -2059,3 +2059,13 @@ Kept: awaiting An's review. Checked `FRONTEND.md` section 4 (*Agreed for the scr
 Changed: isolated clean-context review caught three subtle issues: `mock/data/README.md` line 66 still claimed `GS-1022` had 30 photos chosen and `06-payments.md` paid its remainder (contradicting line 81 and `06-payments.md`), `hasChosenItems` fell back to `true` on empty/unrecognized selection objects, and `applyResult` lacked a `Đã hủy`/`Hoàn thành` status check when applying `success`.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-22 — second review of PR #5 (`2561ebc`): approve with two follow-ups
+Commit: the commit that adds this entry (log only).
+Tool: Claude Code (Claude Opus 5.5); the gates on a `git archive` copy of `2561ebc`; `tools/contract-check.mjs --strict-values` against a mock the check script starts and stops itself (port 3106).
+Asked for: check Khánh's new commits on PR #5, then approve and merge with a merge commit. Auto mode refused both GitHub actions; An approved and merged PR #5 on GitHub.
+Kept: every item of the first review is done: a real test for the cancel `200`, the paid deposit locked (with `409` for a total below it or a price change after the remainder), per-field `400` errors on `PATCH`, the README lines, the remainder only after a saved photo choice, `GET /api/previews/:id` serving the image, the payment routes, the minor points, and AI-LOG entries that now record findings. Checks: `npm test` 7/7 (tests only added), Prettier and ESLint pass, strict contract-check 130/130 examples and 35/35 endpoints; no file outside Khánh's scope changed. Follow-ups posted with the approval: `08-jobs.md` says `<img>` loads previews directly, but the endpoint needs the token, so the screen must load it with the token into an object URL; the empty-body `PATCH` message belongs to the form, not to `date`. For `09-gallery.md`: more seed previews on GS-1022, announced to Khánh before the commit.
+Changed: the assistant's first command for the strict run ended with `pkill -f "mock/server.mjs"`, which would stop every mock on the machine, An's included (NEVER 14); a hook held the command back, and the run was redone with a script that stops only the mock it started.
+The `<img>` wording of follow-up 1 came from the assistant's own reply to Khánh on the agreed items ("để trình duyệt tải qua `<img>`"), which forgot that the endpoint needs the token; found while resolving the rebase of this entry onto the merged `brief.md`, where Khánh's prompt quotes that reply.
+Rejected: a squash merge, which would hide the per-part commits the rubric reads.
+By hand: none.
