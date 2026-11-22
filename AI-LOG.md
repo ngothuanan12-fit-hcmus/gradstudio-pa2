@@ -2268,3 +2268,12 @@ Changed: nothing.
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — contract 05: package-only pricing, empty PATCH error shape, PO cancel decision
+Commit: the commit that adds this entry with `docs/api/05-bookings.md`, after `3f338ed`. The mock follows.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm test` (`contract-check`).
+Asked for: sync `05-bookings.md` with the product owners' answers ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)) and An's review fix on empty-body `PATCH /api/bookings/:id`.
+Kept: awaiting An's review. Removed `total` from `PATCH /api/bookings/:id` and simplified `pricing.items` to `{ "label", "amount" }` for the server-computed package price (using `people` for per-person packages; extras add `0đ`, Admin cannot adjust or discount totals), removed costume stock checks, replaced the `{"total": 2000000}` refusal example on `GS-1023` with `{"people": 5}` (`409` below paid deposit), moved `*Đã hủy*` / Admin-only / outside-system refund rules from team assumptions to the product owners' decision, and changed the empty-body `PATCH /api/bookings/:id` response to a form-level `error.message` (`"Chọn thông tin cần thay đổi."`) with empty `fields` `{}` instead of `fields.date`. Added the dated line in `## Changes`.
+Changed: with the contract changed ahead of the mock, `npm test` fails `contract-check` on `10` examples in `05-bookings.md` (`138/148` passing: 9 booking responses at `05-bookings.md:143, 174, 202, 265, 356, 373, 407, 424, 523` still returning `pricing.items[].included`, and empty `PATCH` at `05-bookings.md:458` still returning `$.error.fields.date`); resolved in the mock commit next.
+Rejected: keeping `included` / `amount: null` extra lines in `pricing.items` when extras have no price of their own.
+By hand: none.
+

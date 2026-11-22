@@ -2,12 +2,12 @@
 
 What the Admin and customer do with bookings: create a booking once the customer agrees in chat (`03-conversations.md`, step G6), read bookings and payment status (steps G7, G10), reschedule or cancel with the clash check at the new time, and add the final file link (step G10). Deposits and remainders are in `06-payments.md`; previews, photo selection, and *Nhận ảnh* are in `09-gallery.md`.
 
-Only bookings in *Đã đặt lịch* hold staff, rooms, and costume stock (R1). Creating a booking starts it in *Chờ cọc 30%* and links it to the conversation (`bookingId`), without holding any slot yet; the slot is held only when the 30% deposit succeeds (`06-payments.md`).
+Only bookings in *Đã đặt lịch* hold staff and rooms (R1). Creating a booking starts it in *Chờ cọc 30%* and links it to the conversation (`bookingId`), without holding any slot yet; the slot is held only when the 30% deposit succeeds (`06-payments.md`).
 
-**Team assumptions and sample data.** Until the product owners answer (`FRONTEND.md`, section 5):
-1. A cancelled booking's status is *Đã hủy*; only the Admin may cancel or change a booking, and any deposit refund rule waits for the product owners.
-2. Each package lists the extras it already includes (`includes` in `02-catalogue.md`); an included extra shows `0đ` in `pricing.items`, while an extra outside the package is added to the total (`null` while its price waits for the product owners).
-3. For a class yearbook, the package price is multiplied by `people` (the Admin confirms the representative's estimated head count and may adjust the total).
+**Product owner decisions, team assumptions, and sample data.** Per the product owners' answers ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)):
+1. A cancelled booking's status is *Đã hủy* (seen by the Admin and customer). Only the Admin cancels, from *Chờ cọc 30%* or *Đã đặt lịch* (*Hoàn thành* answers `409`); cancelling frees staff and rooms and removes reminders. There is no refund tracking in the system: the booking keeps what was paid in `payment`, and the studio refunds outside the system. Rescheduling checks availability at the new time without the customer agreeing again; the status stays, while reminders and jobs update.
+2. Extras have no price of their own: a booking costs its package's price (`pack.price * people` when `pack.priceUnit` is `"người"`, otherwise `pack.price`), computed by the server. The Admin cannot edit or discount a price. Extras are recorded only so the Admin can plan make-up staff and prepare costumes; costume stock is not checked. *Still open:* whether every package may record make-up or a costume (team assumption: yes).
+3. *Still open:* For a class yearbook (`Kỷ yếu lớp`, `350.000đ/người`), the team assumes the representative estimates head count, the Admin confirms `people`, and the server recomputes the price from `people` (no price typed by hand).
 
 ## Statuses
 
@@ -16,7 +16,7 @@ Only bookings in *Đã đặt lịch* hold staff, rooms, and costume stock (R1).
 | `Chờ cọc 30%` | Created from an agreed conversation; slot is not held yet |
 | `Đã đặt lịch` | 30% deposit succeeded (`06-payments.md`); slot is held |
 | `Hoàn thành` | Customer received the final files via *Nhận ảnh* (`09-gallery.md`) |
-| `Đã hủy` | Cancelled by the Admin (*team assumption*); any held slot is released |
+| `Đã hủy` | Cancelled by the Admin (product owners' decision); held blocks released, reminders removed, paid amounts stay in `payment` |
 
 ## Objects
 
@@ -39,7 +39,7 @@ Only bookings in *Đã đặt lịch* hold staff, rooms, and costume stock (R1).
 | `makeup` | object or `null` | `{ "from", "to", "staffId", "staffName" }` |
 | `shoot` | object | `{ "from", "to", "staffId", "staffName", "roomId", "roomName" }` |
 | `status` | string | One of the four statuses above |
-| `pricing` | object | `{ "items": [{ "label", "amount", "included" }], "total", "deposit", "remainder" }` (amounts in integer đồng, computed by the API; `amount` is `null` if an unincluded extra's price is *waiting*) |
+| `pricing` | object | `{ "items": [{ "label", "amount" }], "total", "deposit", "remainder" }` (amounts in integer đồng, computed by the API from the package price and `people`; extras add `0đ`) |
 | `payment` | object | `{ "depositStatus", "depositPaidAt", "remainderStatus", "remainderPaidAt" }`; status is `unpaid` or `paid`, timestamps are ISO 8601 with offset or `null` |
 | `fileLink` | string or `null` | Final delivery URL added by the Admin in step G10 |
 
@@ -68,7 +68,7 @@ Errors:
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not the Admin | — |
 | `404` | `NOT_FOUND` | unknown conversation | — |
-| `409` | `CONFLICT` | conversation is not *Đã chốt lịch*, already has a booking, or the agreed time/costume now clashes with held bookings | `details` (`conflicts`, `freeTime`) when a clash occurs |
+| `409` | `CONFLICT` | conversation is not *Đã chốt lịch*, already has a booking, or the agreed time now clashes with held bookings | `details` (`conflicts`, `freeTime`) when a clash occurs |
 
 Refused when the customer has not agreed to a proposed time yet (`c-uyen`, R2):
 
@@ -152,7 +152,7 @@ Content-Type: application/json
 HTTP/1.1 201 Created
 Content-Type: application/json
 
-{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
 ```
 
 ## GET /api/bookings
@@ -180,7 +180,7 @@ Authorization: Bearer {{token:linh}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}]
+[{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}]
 ```
 
 Thảo lists all bookings:
@@ -208,7 +208,7 @@ Authorization: Bearer {{token:thao}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}]
+[{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}]
 ```
 
 Invalid status query:
@@ -271,7 +271,7 @@ Authorization: Bearer {{token:linh}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
 ```
 
 Another customer cannot see Linh's booking:
@@ -304,12 +304,12 @@ Content-Type: application/json
 
 ## PATCH /api/bookings/:id
 
-Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, head count (`people`), confirmed `total` (for class yearbook adjustment), `sessionType`, or `extras`. Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks and costumes) before applying any time, staff, room, or costume change. If the booking is in *Đã đặt lịch*, its held blocks in `busy` are updated too.
+Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, confirmed head count (`people`), `sessionType`, or `extras`. Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks) before applying any time, staff, or room change. The Admin cannot type or discount a total price; the server recomputes package pricing from `people`. The booking's status stays unchanged; if *Đã đặt lịch*, held blocks in `busy`, pending reminders, and assigned jobs update.
 
-**Deposit and remainder after price changes:**
+**Deposit and remainder after head-count changes:**
 - Before the 30% deposit is paid (`payment.depositStatus` = `unpaid`), `pricing.deposit` is `Math.round(total * 0.3)` and `pricing.remainder` is `total - deposit`.
-- Once the deposit is already `paid`, **`pricing.deposit` stays locked at the deposit amount already paid** (it is never recomputed when `total`, `people`, or `extras` change), and `pricing.remainder` becomes `pricing.total - pricing.deposit`.
-- Setting `total` below the already-paid deposit is refused with `409` (any refund rule waits for the product owners). Changing `total`, `people`, or `extras` after `payment.remainderStatus` is `paid` is also refused with `409`.
+- Once the deposit is already `paid`, **`pricing.deposit` stays locked at the deposit amount already paid** (it is never recomputed when `people` changes), and `pricing.remainder` becomes `pricing.total - pricing.deposit`.
+- Lowering `people` so the recomputed `total` falls below the already-paid deposit is refused with `409` (no in-app refund tracking per the product owners). Changing `people` after `payment.remainderStatus` is `paid` is also refused with `409`.
 
 Body (all fields optional; at least one field must be sent):
 
@@ -318,8 +318,7 @@ Body (all fields optional; at least one field must be sent):
 | `date` | string | `YYYY-MM-DD`, a real date |
 | `makeup` | object or `null` | `{ "from", "to", "staffId" }` |
 | `shoot` | object | `{ "from", "to", "staffId", "roomId" }` |
-| `people` | integer | 1 to 200 |
-| `total` | integer | `>= 0` (Admin adjustment, e.g. for class yearbook confirmation) |
+| `people` | integer | 1 to 200 (the server recomputes package total for per-person packages) |
 | `sessionType` | string | 1 to 100 characters |
 | `extras` | list | same rules as `POST /api/bookings` |
 
@@ -329,11 +328,11 @@ Errors:
 
 | Status | `code` | When | `fields` or `details` |
 |---|---|---|---|
-| `400` | `VALIDATION_ERROR` | empty body (none of the fields sent), or any sent field is invalid | empty body: `date`: `"Chọn thông tin cần thay đổi."`; `date`: `"Ngày theo dạng YYYY-MM-DD."`; `makeup.from` / `shoot.from`: `"Giờ theo dạng HH:MM."`; `makeup.to` / `shoot.to`: `"Giờ theo dạng HH:MM."` or `"Giờ kết thúc phải sau giờ bắt đầu."`; `makeup.staffId` / `shoot.staffId`: `"Không có nhân viên này."`; `shoot.roomId`: `"Không có phòng này."`; `people`: `"Số người từ 1 đến 200."`; `total`: `"Tổng tiền phải là số nguyên không âm."`; `sessionType`: `"Loại buổi chụp từ 1 đến 100 ký tự."`; `extras`: `"Dịch vụ thêm không hợp lệ."` |
+| `400` | `VALIDATION_ERROR` | empty body (none of the fields sent), or any sent field is invalid | empty body: form-level `error.message` `"Chọn thông tin cần thay đổi."` with empty `fields` `{}`; `date`: `"Ngày theo dạng YYYY-MM-DD."`; `makeup.from` / `shoot.from`: `"Giờ theo dạng HH:MM."`; `makeup.to` / `shoot.to`: `"Giờ theo dạng HH:MM."` or `"Giờ kết thúc phải sau giờ bắt đầu."`; `makeup.staffId` / `shoot.staffId`: `"Không có nhân viên này."`; `shoot.roomId`: `"Không có phòng này."`; `people`: `"Số người từ 1 đến 200."`; `sessionType`: `"Loại buổi chụp từ 1 đến 100 ký tự."`; `extras`: `"Dịch vụ thêm không hợp lệ."` |
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not the Admin | — |
 | `404` | `NOT_FOUND` | unknown booking | — |
-| `409` | `CONFLICT` | booking is *Hoàn thành* or *Đã hủy*, requested slot/costume clashes with held bookings, `total` is below already-paid deposit, or price edited after remainder is `paid` | `details` (`conflicts`, `freeTime`) on a clash |
+| `409` | `CONFLICT` | booking is *Hoàn thành* or *Đã hủy*, requested slot clashes with held bookings, recomputed `total` falls below already-paid deposit, or `people` changed after remainder is `paid` | `details` (`conflicts`, `freeTime`) on a clash |
 
 Refused when trying to move GS-1024 to 09:00 (Mai busy 08:00–12:00):
 
@@ -366,7 +365,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "14:00", "to": "15:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "15:00", "to": "17:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "14:00", "to": "15:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "15:00", "to": "17:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
 ```
 
 Restoring GS-1024 to the brief's agreed 13:00–14:00 and 14:00–16:00 slots (for `06-payments.md`–`08-jobs.md`):
@@ -383,7 +382,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
 ```
 
 Cannot change a completed booking (`GS-1021`):
@@ -417,7 +416,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "GS-1023", "conversationId": null, "customer": {"id": "u-khoa", "name": "Võ Đăng Khoa"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "ky-yeu", "serviceName": "Kỷ yếu lớp", "packageId": "ky-yeu-lop", "packageName": "Gói Kỷ yếu lớp", "durationMinutes": null, "editedPhotos": null, "sessionType": "Kỷ yếu lớp", "people": 22, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Kỷ yếu lớp (22 người)", "amount": 7700000, "included": false}, {"label": "Makeup", "amount": null, "included": false}], "total": 7700000, "deposit": 2100000, "remainder": 5600000}, "payment": {"depositStatus": "paid", "depositPaidAt": "2026-10-14T09:00:00+07:00", "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+{"id": "GS-1023", "conversationId": null, "customer": {"id": "u-khoa", "name": "Võ Đăng Khoa"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "ky-yeu", "serviceName": "Kỷ yếu lớp", "packageId": "ky-yeu-lop", "packageName": "Gói Kỷ yếu lớp", "durationMinutes": null, "editedPhotos": null, "sessionType": "Kỷ yếu lớp", "people": 22, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Kỷ yếu lớp (22 người)", "amount": 7700000}], "total": 7700000, "deposit": 2100000, "remainder": 5600000}, "payment": {"depositStatus": "paid", "depositPaidAt": "2026-10-14T09:00:00+07:00", "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
 ```
 
 Restoring GS-1023 to its seed head count (`20` people, `total` `7000000`, `deposit` `2100000`, `remainder` `4900000`):
@@ -434,17 +433,17 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "GS-1023", "conversationId": null, "customer": {"id": "u-khoa", "name": "Võ Đăng Khoa"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "ky-yeu", "serviceName": "Kỷ yếu lớp", "packageId": "ky-yeu-lop", "packageName": "Gói Kỷ yếu lớp", "durationMinutes": null, "editedPhotos": null, "sessionType": "Kỷ yếu lớp", "people": 20, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Kỷ yếu lớp (20 người)", "amount": 7000000, "included": false}, {"label": "Makeup", "amount": null, "included": false}], "total": 7000000, "deposit": 2100000, "remainder": 4900000}, "payment": {"depositStatus": "paid", "depositPaidAt": "2026-10-14T09:00:00+07:00", "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+{"id": "GS-1023", "conversationId": null, "customer": {"id": "u-khoa", "name": "Võ Đăng Khoa"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "ky-yeu", "serviceName": "Kỷ yếu lớp", "packageId": "ky-yeu-lop", "packageName": "Gói Kỷ yếu lớp", "durationMinutes": null, "editedPhotos": null, "sessionType": "Kỷ yếu lớp", "people": 20, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Kỷ yếu lớp (20 người)", "amount": 7000000}], "total": 7000000, "deposit": 2100000, "remainder": 4900000}, "payment": {"depositStatus": "paid", "depositPaidAt": "2026-10-14T09:00:00+07:00", "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
 ```
 
-Refused when setting `total` below the already-paid deposit (`GS-1023` paid `2100000`):
+Refused when lowering head count puts `total` below the already-paid deposit (`GS-1023` paid `2100000`, `5 * 350000 = 1750000`):
 
 ```http
 PATCH /api/bookings/GS-1023
 Authorization: Bearer {{token:thao}}
 Content-Type: application/json
 
-{"total": 2000000}
+{"people": 5}
 ```
 
 ```http
@@ -454,7 +453,7 @@ Content-Type: application/json
 {"error": {"code": "CONFLICT", "message": "Tổng tiền không được nhỏ hơn tiền cọc đã thanh toán."}}
 ```
 
-Empty body on `PATCH`:
+Empty body on `PATCH` (form-level error, not tied to `date`):
 
 ```http
 PATCH /api/bookings/GS-1024
@@ -468,7 +467,7 @@ Content-Type: application/json
 HTTP/1.1 400 Bad Request
 Content-Type: application/json
 
-{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"date": "Chọn thông tin cần thay đổi."}}}
+{"error": {"code": "VALIDATION_ERROR", "message": "Chọn thông tin cần thay đổi.", "fields": {}}}
 ```
 
 Invalid fields on `PATCH`:
@@ -478,14 +477,14 @@ PATCH /api/bookings/GS-1024
 Authorization: Bearer {{token:thao}}
 Content-Type: application/json
 
-{"people": 0, "total": -1, "sessionType": ""}
+{"people": 0, "sessionType": ""}
 ```
 
 ```http
 HTTP/1.1 400 Bad Request
 Content-Type: application/json
 
-{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"people": "Số người từ 1 đến 200.", "total": "Tổng tiền phải là số nguyên không âm.", "sessionType": "Loại buổi chụp từ 1 đến 100 ký tự."}}}
+{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"people": "Số người từ 1 đến 200.", "sessionType": "Loại buổi chụp từ 1 đến 100 ký tự."}}}
 ```
 
 A customer cannot edit a booking directly:
@@ -533,7 +532,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "GS-1022", "conversationId": "c-customer2", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-18", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "paid", "depositPaidAt": …, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": "https://drive.gradstudio.test/gs-1022-final"}
+{"id": "GS-1022", "conversationId": "c-customer2", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-18", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "paid", "depositPaidAt": …, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": "https://drive.gradstudio.test/gs-1022-final"}
 ```
 
 Refused while GS-1024 has not paid its deposit (*Chờ cọc 30%*):
@@ -572,7 +571,7 @@ Content-Type: application/json
 
 ## POST /api/bookings/:id/cancel
 
-Who: the Admin (team assumption until the product owners answer). Cancels a booking in *Chờ cọc 30%* or *Đã đặt lịch*, moves its status to *Đã hủy*, and releases any held blocks in `busy`. Refused with `409` if already *Hoàn thành* or *Đã hủy*.
+Who: the Admin (product owners' decision, [answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)). Cancels a booking in *Chờ cọc 30%* or *Đã đặt lịch*, moves its status to *Đã hủy*, releases any held blocks in `busy`, and removes its reminders and pending jobs. Paid amounts stay recorded in `payment` (there is no refund management in the system; the studio refunds outside the system). Refused with `409` if already *Hoàn thành* or *Đã hủy*.
 
 Body: optional `{ "reason" }` (string, 0 to 500 characters).
 
@@ -637,3 +636,4 @@ Content-Type: application/json
 
 - 2026-11-21 — First version. No client code calls these endpoints yet.
 - 2026-11-22 — Lock `pricing.deposit` once the deposit is `paid` when `total`, `people`, or `extras` change (refuse `total` below paid deposit or price changes after remainder is `paid`), document full per-field `400` validation errors with examples on `PATCH /api/bookings/:id`, and replace the untrue mock-test claim on `POST /api/bookings/:id/cancel` with an accurate reference to `test/mock.test.mjs` (PR #5 review fixes). No client code calls these endpoints yet.
+- 2026-11-22 — Compute `pricing` from package price and `people` only (extras add no price; remove `total` from `PATCH /api/bookings/:id` and `included` from `pricing.items`), drop costume stock checks, move `*Đã hủy*` / Admin-only / outside-system refund rules to the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)), and make the empty-body `PATCH /api/bookings/:id` error a form-level `error.message` with empty `fields` `{}` instead of `fields.date`. No client code calls these endpoints yet.
