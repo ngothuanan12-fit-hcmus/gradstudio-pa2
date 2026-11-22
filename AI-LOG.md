@@ -2097,3 +2097,12 @@ Changed: the entries of `0a0c98b` and `1e07c34` say eight examples failed. The a
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — HARNESS: the two red-then-green CI pairs, and incident 13
+Commit: the commit that adds this entry with `HARNESS.md`.
+Tool: Claude Code (Claude Opus 5.5); run numbers read from GitHub Actions.
+Asked for: record the run numbers of the two CI pairs in the gates section, and the `pkill` command held back by a hook as an incident ("Có").
+Kept: awaiting An's review. Gates table: the Tests row now names its real red runs, `1b8b199` (43/45, run `44930700371`) fixed by `1be6474` (`44930772438`), and `0a0c98b` (97/132, `45009556484`) fixed by `1e07c34` (`45009659241`), with links; the CI row points to them. Incident 13: the `pkill` command, caught by a hook, not by the assistant.
+Changed: nothing beyond the request.
+Rejected: nothing.
+By hand: none.
+

@@ -322,3 +322,6 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 
 > làm việc 1 luôn
 
+> push từng commit
+
+> Có
