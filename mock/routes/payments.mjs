@@ -3,7 +3,7 @@ import { currentUser, fail, forbidden, invalid, notFound, ok, unauthenticated } 
 import { bookingOut, syncBookingBusy } from './bookings.mjs';
 import { syncJobsForBooking } from './jobs.mjs';
 import { syncReminderForBooking } from './reminders.mjs';
-import { checkSchedule } from './schedule.mjs';
+import { checkSchedule, costumeListFromExtras } from './schedule.mjs';
 
 let nextPayment = 1;
 let minutes = 0;
@@ -22,20 +22,34 @@ function caller(req, db, roles) {
   return { user };
 }
 
-function costumeList(extras) {
-  return (extras || [])
-    .filter((x) => x.extraId === 'trang-phuc' && x.modelId && x.size)
-    .map((x) => ({ modelId: x.modelId, size: x.size, quantity: x.quantity || 1 }));
-}
-
 function checkBookingResources(db, booking) {
   return checkSchedule(db, {
     date: booking.date,
     makeup: booking.makeup,
     shoot: booking.shoot,
-    costumes: costumeList(booking.extras),
+    costumes: costumeListFromExtras(db, booking.extras),
     excludeBookingId: booking.id,
   });
+}
+
+function hasChosenItems(entry) {
+  if (!entry) return false;
+  if (Array.isArray(entry)) return entry.length > 0;
+  if (typeof entry === 'object') {
+    for (const key of ['previewIds', 'photoIds', 'photos', 'items', 'selected']) {
+      if (Array.isArray(entry[key])) return entry[key].length > 0;
+    }
+    return true;
+  }
+  return Boolean(entry);
+}
+
+function hasPhotoSelection(db, bookingId) {
+  const sel = db.selections;
+  if (!sel) return false;
+  if (Array.isArray(sel)) return sel.some((item) => item && item.bookingId === bookingId && hasChosenItems(item));
+  if (typeof sel === 'object') return hasChosenItems(sel[bookingId]);
+  return false;
 }
 
 // --- handlers
@@ -63,7 +77,7 @@ function start({ req, db, body }) {
   const fields = {};
   if (typeof b.bookingId !== 'string' || b.bookingId.trim() === '') fields.bookingId = 'Chọn booking.';
   if (b.kind !== 'deposit' && b.kind !== 'remainder') {
-    fields.kind = 'Loại thanh toán là deposit hoặc remainder.';
+    fields.kind = 'Chọn thanh toán cọc hoặc phần còn lại.';
   }
   if (Object.keys(fields).length) return invalid(fields);
 
@@ -86,6 +100,9 @@ function start({ req, db, body }) {
   } else {
     if (booking.payment.depositStatus !== 'paid') {
       return fail(409, 'CONFLICT', 'Cần thanh toán cọc 30% trước khi thanh toán phần còn lại.');
+    }
+    if (!hasPhotoSelection(db, booking.id)) {
+      return fail(409, 'CONFLICT', 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
     }
     if (booking.payment.remainderStatus === 'paid') {
       return fail(409, 'CONFLICT', 'Booking này đã thanh toán phần còn lại.');
@@ -128,7 +145,7 @@ function applyResult({ req, db, params, body }) {
   if (!payment || payment.customerId !== user.id) return notFound();
   const result = body?.result;
   if (result !== 'success' && result !== 'fail') {
-    return invalid({ result: 'Chọn success hoặc fail.' });
+    return invalid({ result: 'Chọn thành công hoặc thất bại.' });
   }
   if (payment.status !== 'pending') {
     return fail(409, 'CONFLICT', 'Kết quả thanh toán này đã được ghi nhận.');
@@ -162,6 +179,7 @@ function applyResult({ req, db, params, body }) {
       });
     }
     booking.status = 'Đã đặt lịch';
+    booking.paidDeposit = payment.amount;
     booking.payment.depositStatus = 'paid';
     booking.payment.depositPaidAt = at;
     // R1: slot is held once the deposit succeeds, so add the booking's blocks to db.busy.
@@ -176,6 +194,12 @@ function applyResult({ req, db, params, body }) {
 
   if (booking.payment.depositStatus !== 'paid') {
     return fail(409, 'CONFLICT', 'Cần thanh toán cọc 30% trước khi thanh toán phần còn lại.');
+  }
+  if (!hasPhotoSelection(db, booking.id)) {
+    return fail(409, 'CONFLICT', 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
+  }
+  if (booking.payment.remainderStatus === 'paid') {
+    return fail(409, 'CONFLICT', 'Booking này đã thanh toán phần còn lại.');
   }
   booking.payment.remainderStatus = 'paid';
   booking.payment.remainderPaidAt = at;

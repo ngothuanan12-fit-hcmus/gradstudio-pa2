@@ -78,7 +78,7 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 | `03-conversations.md` | `c-anh`, `c-uyen`, `c-customer2`, `c-bao` | `c-linh` agreed (proposal `pr-1`: make-up 13:00–14:00 with Mai, shoot 14:00–16:00 with Tuấn in Phòng B); `c-anh` back to *Đang tư vấn* after declining `pr-2` |
 | `04-schedule.md` | GS-1023 (Mai busy 08:00–12:00) | nothing |
 | `05-bookings.md` | `c-uyen` (not agreed), `c-linh` (agreed), GS-1022 | GS-1024 in Chờ cọc 30%; GS-1022 with its file link |
-| `06-payments.md` | GS-1024, GS-1022 | GS-1024 Đã đặt lịch (after one failed and one successful deposit); GS-1022 fully paid |
+| `06-payments.md` | GS-1024, GS-1022 | GS-1024 Đã đặt lịch (after one failed and one successful deposit); GS-1022 remainder stays unpaid until photo selection in `09-gallery.md` |
 | `07-reminders.md` | GS-1024 booked | nothing |
 | `08-jobs.md` | GS-1024's jobs (Mai, Tuấn), GS-1022's job (`u-staff3`) | a preview on GS-1024 |
 | `09-gallery.md` | GS-1020, GS-1022 | 30 photos chosen on GS-1020; GS-1022 Hoàn thành |
@@ -111,3 +111,4 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 - 2026-11-20 — GS-1023's representative is now Võ Đăng Khoa (`u-khoa`): Uyên had both a booked GS-1023 and a conversation with no agreed time, which did not fit together.
 - 2026-11-20 — Files for `03-conversations.md`: conversations, proposals, rooms, busy times, free times.
 - 2026-11-20 — `settings.json` for `10-admin.md`.
+- 2026-11-22 — Update `06-payments.md` outcome: `GS-1022` remainder payment waits for `db.selections` from `09-gallery.md` before succeeding.

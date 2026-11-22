@@ -2032,3 +2032,12 @@ Kept: awaiting An's review. Updated `mock/routes/bookings.mjs` to lock `pricing.
 Changed: initial edit to `mock/routes/bookings.mjs` failed `npm run format:check` on a line over Prettier's width; formatted with `prettier --write` and re-verified cleanly. Earlier PR #5 review (`5617bea`) also caught the recomputed `deposit` bug on `GS-1022` and missing cancel test evidence.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-22 — mock 06-payments: require selection for remainder, share costume helper, Vietnamese errors
+Commit: the commit that adds this entry with `mock/routes/payments.mjs` and `mock/data/README.md`, after `7d5283d`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm run build`, `node --test test/mock.test.mjs` (filtered), `tools/contract-check.mjs --strict-values`.
+Asked for: implement agreed item 5 and PR #5 minor fixes in `mock/routes/payments.mjs` and `mock/data/README.md` (check `db.selections` before allowing 70% remainder, reuse `costumeListFromExtras`, translate validation messages).
+Kept: awaiting An's review. Updated `mock/routes/payments.mjs` to replace the local `costumeList` helper with shared `costumeListFromExtras(db, extras)` from `schedule.mjs`, translate `fields.kind` and `fields.result` to Vietnamese matching `06-payments.md`, record `booking.paidDeposit` when deposit succeeds, and refuse `remainder` payments in both `start` and `applyResult` with `409` (`"Cần chọn ảnh trước khi thanh toán 70% còn lại."`) when `hasPhotoSelection(db, booking.id)` sees no saved selection in `db.selections` (covering absent `db.selections`, empty arrays, and map/array formats). Updated `mock/data/README.md` to reflect `GS-1022` remainder waiting for `09-gallery.md`. Checks: `npm run format:check`, `npm run lint`, `npm run build`, and all 5 isolated `node --test` suites pass; `contract-check.mjs --strict-values` passes `127/130` (`0` failures in `01`–`07` and `10`; remaining 3 failures are only the pending `08-jobs.md` preview image endpoint changes).
+Changed: PR #5 minor review (`5617bea`) caught hardcoded `'trang-phuc'` in `costumeList` and mixed-English validation strings (`deposit`/`remainder`, `success`/`fail`) in `payments.mjs`.
+Rejected: nothing.
+By hand: nothing.
