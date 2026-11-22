@@ -58,6 +58,7 @@ Actions page: <https://github.com/ngothuanan12-fit-hcmus/gradstudio-pa2/actions>
 | 2026-11-18 | `cb7f34f` | Rewritten for PA#3: `client/`, contract first, mock modes, gates; NEVER 4, 7 and 12 tagged with PA#2 incidents | The PA#3–PA#5 rubrics |
 | 2026-11-18 | `ca218e1` | Cut to 464 words; screen rules moved to `brief.md` | The PA#5 rubric asks for a two-minute read |
 | 2026-11-21 | the commit after `22148ff` | Added NEVER 14 (stop only a process you started, after checking its parent) and NEVER 15 (test a commit on a `git archive` copy with its own ports) | Incidents 8 and 9 in section 5; proposed by the G2 review, approved by An |
+| 2026-11-21 | `0404bda` | Updated `AGENTS.md` with CodeGraph and `ast-grep` analysis guidance (and `.gitignore` for `.codegraph/`) | Khánh's local code-analysis setup; future machine-only settings stay in `.gitignore` without committing |
 
 ## 5. Self-review: what the harness caught
 

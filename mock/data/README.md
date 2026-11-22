@@ -63,7 +63,7 @@ One in each status the brief names, so step G4 shows all four.
 |---|---|---|---|---|---|---|
 | GS-1020 | `u-customer2` | Gói Tốt nghiệp Premium | 17/10/2026 (*sample*) | Đã đặt lịch | Deposit paid, shoot done, 40 previews (*sample* count), **no photos chosen** | `09-gallery.md`: choosing 30 is accepted, 31 refused (R5) |
 | GS-1021 | `u-bao` | Gói Tốt nghiệp Premium | 10/10/2026 (*sample*) | Hoàn thành | Everything paid, photos chosen, file link, *Nhận ảnh* pressed | History; *Hoàn thành* in lists |
-| GS-1022 | `u-customer2` | Gói Tốt nghiệp Premium | 18/10/2026 (*sample*) | Đã đặt lịch | Deposit paid, shoot done, 30 photos chosen, **remainder not paid, no file link**; editing job with `u-staff3` | `05-bookings.md` adds the file link (G10); `06-payments.md` pays the remainder; `09-gallery.md` presses *Nhận ảnh* → Hoàn thành (R6) |
+| GS-1022 | `u-customer2` | Gói Tốt nghiệp Premium | 18/10/2026 (*sample*) | Đã đặt lịch | Deposit paid, shoot done, **no photos chosen yet, remainder not paid, no file link**; editing job with `u-staff3` | `05-bookings.md` adds the file link (G10); `06-payments.md` refuses remainder before selection; `09-gallery.md` chooses photos, pays the remainder, and presses *Nhận ảnh* → Hoàn thành (R6) |
 | GS-1023 | `u-khoa` | Kỷ yếu lớp, estimated 20 people (*sample*), confirmed by the Admin at 7.000.000đ (350.000đ × 20; *assumption*: the representative estimates, the Admin confirms and adjusts) | 24/10/2026, make-up 08:00–12:00 with Mai, Phòng A | Đã đặt lịch | Deposit paid | Makes Mai busy 08:00–12:00, so 09:00 clashes (R1, G5) |
 | GS-1024 | `u-linh` | Gói Tốt nghiệp Premium, Tốt nghiệp cá nhân, 1.800.000đ | 24/10/2026, make-up 13:00–14:00 with Mai, shoot 14:00–16:00 with Tuấn in Phòng B | *created by* `05-bookings.md` → Chờ cọc 30% | — | `06` deposit (success → Đã đặt lịch, failure → stays); `07` its reminder; `08` Mai's and Tuấn's jobs and a preview upload |
 
@@ -78,7 +78,7 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 | `03-conversations.md` | `c-anh`, `c-uyen`, `c-customer2`, `c-bao` | `c-linh` agreed (proposal `pr-1`: make-up 13:00–14:00 with Mai, shoot 14:00–16:00 with Tuấn in Phòng B); `c-anh` back to *Đang tư vấn* after declining `pr-2` |
 | `04-schedule.md` | GS-1023 (Mai busy 08:00–12:00) | nothing |
 | `05-bookings.md` | `c-uyen` (not agreed), `c-linh` (agreed), GS-1022 | GS-1024 in Chờ cọc 30%; GS-1022 with its file link |
-| `06-payments.md` | GS-1024, GS-1022 | GS-1024 Đã đặt lịch (after one failed and one successful deposit); GS-1022 fully paid |
+| `06-payments.md` | GS-1024, GS-1022 | GS-1024 Đã đặt lịch (after one failed and one successful deposit); GS-1022 remainder stays unpaid until photo selection in `09-gallery.md` |
 | `07-reminders.md` | GS-1024 booked | nothing |
 | `08-jobs.md` | GS-1024's jobs (Mai, Tuấn), GS-1022's job (`u-staff3`) | a preview on GS-1024 |
 | `09-gallery.md` | GS-1020, GS-1022 | 30 photos chosen on GS-1020; GS-1022 Hoàn thành |
@@ -92,9 +92,15 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 | `services.json`, `extras.json`, `photos.json`, `reviews.json` | The catalogue | `catalogue`, `conversations` |
 | `conversations.json` | Conversations and their messages; a message points at its proposal by id | `conversations` |
 | `proposals.json` | Proposed times, with their status | `conversations` |
-| `rooms.json` | Rooms | `conversations`; `04-schedule.md` may add fields |
+| `rooms.json` | Rooms | `conversations`, `schedule` |
+| `staff.json` | Staff specialties (`makeup`, `photographer`, *sample*) | `schedule` |
+| `costumes.json` | Costume stock counts per model and size (*sample*, `5` each) | `schedule` |
+| `bookings.json` | Seed bookings (`GS-1020`–`GS-1023`) and newly created bookings | `schedule`, `bookings`, `payments` |
+| `payments.json` | Payment records for deposits and remainders | `payments` |
+| `reminders.json` | Scheduled reminders for booked sessions (`Đã đặt lịch`) | `reminders`, `payments`, `bookings` |
+| `jobs.json`, `previews.json` | Assigned staff jobs and preview metadata (seed samples use `client/public/photos/*.webp`) | `jobs`, `payments`, `bookings` |
 | `busy.json` | Times when a person or a room is held by a booking in *Đã đặt lịch* (R1: a booking in *Chờ cọc 30%* holds nothing) | the clash check in `conversations`; `04-schedule.md` and `06-payments.md` (a successful deposit adds the booking's blocks) |
-| `freeTimes.json` | The free time the API offers for a date with a clash (the mock may answer fixed values, PA#3 rubric) | the clash check |
+| `freeTimes.json` | The free time the API offers for a date with a clash (the mock may answer fixed values, PA#3 rubric) | the clash check (`conversations`, `schedule`) |
 | `settings.json` | Opening hours (*sample*, 08:00–18:00) and `reminderHoursBefore` (24, from the brief) | `admin`; the reminders of `07-reminders.md` |
 
 ## Changes
@@ -105,3 +111,4 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 - 2026-11-20 — GS-1023's representative is now Võ Đăng Khoa (`u-khoa`): Uyên had both a booked GS-1023 and a conversation with no agreed time, which did not fit together.
 - 2026-11-20 — Files for `03-conversations.md`: conversations, proposals, rooms, busy times, free times.
 - 2026-11-20 — `settings.json` for `10-admin.md`.
+- 2026-11-22 — Update `06-payments.md` outcome: `GS-1022` remainder payment waits for `db.selections` from `09-gallery.md` before succeeding.

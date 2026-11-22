@@ -12,7 +12,12 @@ import { fail, notFound } from './lib.mjs';
 import auth from './routes/auth.mjs';
 import catalogue from './routes/catalogue.mjs';
 import admin from './routes/admin.mjs';
+import bookings from './routes/bookings.mjs';
 import conversations from './routes/conversations.mjs';
+import jobs from './routes/jobs.mjs';
+import payments from './routes/payments.mjs';
+import reminders from './routes/reminders.mjs';
+import schedule from './routes/schedule.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT) || 3001;
@@ -26,7 +31,17 @@ if (!(MODE in DELAY)) {
 }
 
 // One module per resource, each a list of { method, path, handler }. Paths may hold :params.
-const ROUTES = [...auth, ...catalogue, ...conversations, ...admin].map((route) => ({
+const ROUTES = [
+  ...auth,
+  ...catalogue,
+  ...conversations,
+  ...schedule,
+  ...bookings,
+  ...payments,
+  ...reminders,
+  ...jobs,
+  ...admin,
+].map((route) => ({
   ...route,
   pattern: new RegExp(`^${route.path.replace(/:(\w+)/g, '(?<$1>[^/]+)')}$`),
 }));
@@ -97,11 +112,21 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  if (MODE === 'empty' && answer.status < 400) answer = { ...answer, body: emptyLists(answer.body) };
+  if (MODE === 'empty' && answer.status < 400 && !answer.raw) {
+    answer = { ...answer, body: emptyLists(answer.body) };
+  }
 
   setTimeout(() => {
-    res.writeHead(answer.status, { 'Content-Type': 'application/json; charset=utf-8' });
-    res.end(JSON.stringify(answer.body));
+    if (answer.raw) {
+      res.writeHead(answer.status, {
+        'Content-Type': answer.contentType || 'application/octet-stream',
+        'Content-Length': String(answer.raw.length),
+      });
+      res.end(answer.raw);
+    } else {
+      res.writeHead(answer.status, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify(answer.body));
+    }
     console.log(`${req.method} ${url.pathname}${url.search} ${answer.status}`);
   }, DELAY[MODE]);
 });
