@@ -308,7 +308,7 @@ Content-Type: application/json
 
 ## POST /api/conversations/:id/proposals
 
-Who: the Admin. Proposes a time in the chat (step G5). The API checks the people and the room at that time against bookings that hold a slot (*Đã đặt lịch*; a booking in *Chờ cọc 30%* does not, brief section 3). A clash is refused with `409`, saying who is busy and when, and which time is free instead. An accepted proposal becomes a message of kind `proposal`; an earlier open proposal on the same conversation becomes `replaced`; a *Chưa trả lời* conversation becomes *Đang tư vấn*. A conversation that already has a booking takes no new proposal: that booking's time is changed in the booking itself (`PATCH /api/bookings/:id`, `05-bookings.md`, step G10), and the refusal names the booking in `details.bookingId`, so the screen can link to it.
+Who: the Admin. Proposes a time in the chat (step G5). The API runs the clash check of `04-schedule.md` (`POST /api/schedule/check`), with the same rules: the people and the room against bookings that hold a slot (*Đã đặt lịch*; a booking in *Chờ cọc 30%* does not, brief section 3), the studio's opening hours, and the stock of the costumes the Admin enters. A clash is refused with `409`, saying who or what is not available and when, and which time is free instead when there is one. The costumes are checked, not kept with the proposal: the booking's extras are sent when the booking is created (`05-bookings.md`). An accepted proposal becomes a message of kind `proposal`; an earlier open proposal on the same conversation becomes `replaced`; a *Chưa trả lời* conversation becomes *Đang tư vấn*. A conversation that already has a booking takes no new proposal: that booking's time is changed in the booking itself (`PATCH /api/bookings/:id`, `05-bookings.md`, step G10), and the refusal names the booking in `details.bookingId`, so the screen can link to it.
 
 Body:
 
@@ -317,6 +317,7 @@ Body:
 | `date` | string | yes | `YYYY-MM-DD` |
 | `makeup` | object or `null` | no | `from`, `to` (`HH:MM`, `to` after `from`), `staffId` (a staff member) |
 | `shoot` | object | yes | `from`, `to` (`HH:MM`, `to` after `from`), `staffId` (a staff member), `roomId` (a room) |
+| `costumes` | list | no | each `{ "modelId", "size", "quantity" }` (`modelId` and `size` from `02-catalogue.md`; `quantity` an integer 1 to 200, `1` when left out). The Admin enters them; the screen may fill them from the customer's request (`request.extras`) |
 
 Success: `201` with the whole conversation, the proposal last.
 
@@ -324,11 +325,11 @@ Errors:
 
 | Status | `code` | When | `fields` or `details` |
 |---|---|---|---|
-| `400` | `VALIDATION_ERROR` | a field missing or outside its limits | `fields`, keyed `date`, `makeup.from`, `shoot.staffId`, …: "Ngày theo dạng YYYY-MM-DD.", "Giờ theo dạng HH:MM.", "Giờ kết thúc phải sau giờ bắt đầu.", "Không có nhân viên này.", "Không có phòng này." |
+| `400` | `VALIDATION_ERROR` | a field missing or outside its limits | `fields`, keyed `date`, `makeup.from`, `shoot.staffId`, …: "Ngày theo dạng YYYY-MM-DD.", "Giờ theo dạng HH:MM.", "Giờ kết thúc phải sau giờ bắt đầu.", "Không có nhân viên này.", "Không có phòng này."; `costumes`: "Trang phục không hợp lệ." |
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not the Admin | — |
 | `404` | `NOT_FOUND` | unknown conversation | — |
-| `409` | `CONFLICT` | a person or the room is busy then | `details.conflicts`: a list of `{ "who", "kind" (`staff` or `room`), "date", "from", "to" }`; `details.freeTime`: `{ "makeup": { "from", "to" }, "shoot": { "from", "to" } }`, or `null` when the API has none to offer |
+| `409` | `CONFLICT` | a person or the room is busy then, the time is outside opening hours, or a costume is out of stock that day | `details.conflicts`: a list of `{ "who", "kind" (`staff`, `room`, `hours` or `costume`), "date", "from", "to" }` (`from` and `to` are the opening hours for `hours`, `null` for `costume`); `details.freeTime`: `{ "makeup": { "from", "to" }, "shoot": { "from", "to" } }` when every conflict is a busy person or room and the API has a time that is really free that day, otherwise `null` |
 | `409` | `CONFLICT` | the conversation already has a booking | `details.bookingId`: that booking's id |
 
 09:00, the time Linh asked for, clashes: Mai is busy 08:00–12:00:
@@ -346,6 +347,40 @@ HTTP/1.1 409 Conflict
 Content-Type: application/json
 
 {"error": {"code": "CONFLICT", "message": "Mai (makeup) bận 08:00–12:00 ngày 24/10/2026. Giờ trống: makeup 13:00–14:00, chụp 14:00–16:00.", "details": {"conflicts": [{"who": "Mai", "kind": "staff", "date": "2026-10-24", "from": "08:00", "to": "12:00"}], "freeTime": {"makeup": {"from": "13:00", "to": "14:00"}, "shoot": {"from": "14:00", "to": "16:00"}}}}}
+```
+
+Outside the studio's opening hours (`08:00`–`18:00`), so no free time is offered:
+
+```http
+POST /api/conversations/c-linh/proposals
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"date": "2026-10-25", "makeup": null, "shoot": {"from": "17:00", "to": "19:00", "staffId": "u-tuan", "roomId": "r-b"}}
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{"error": {"code": "CONFLICT", "message": "Ngoài giờ mở cửa studio (08:00–18:00).", "details": {"conflicts": [{"who": "Giờ mở cửa studio", "kind": "hours", "date": "2026-10-25", "from": "08:00", "to": "18:00"}], "freeTime": null}}}
+```
+
+More costumes than the stock that day (6 *Áo dài trắng* in size L, sample stock 5):
+
+```http
+POST /api/conversations/c-linh/proposals
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "roomId": "r-b"}, "costumes": [{"modelId": "ao-dai-trang", "size": "L", "quantity": 6}]}
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{"error": {"code": "CONFLICT", "message": "Áo dài trắng (size L) chỉ còn 5 bộ ngày 24/10/2026.", "details": {"conflicts": [{"who": "Áo dài trắng (size L)", "kind": "costume", "date": "2026-10-24", "from": null, "to": null}], "freeTime": null}}}
 ```
 
 The free time, proposed:
@@ -524,3 +559,4 @@ Content-Type: application/json
 - 2026-11-20 — First version. No client code calls these endpoints yet.
 - 2026-11-21 — A request's extras gain `modelName`, the costume model's name, so a screen can show "Áo cử nhân" without loading the catalogue again. No client code calls these endpoints yet.
 - 2026-11-22 — `POST /api/conversations/:id/proposals` refuses a conversation that already has a booking (`409`, with `details.bookingId`); until now a new proposal could be agreed again after the booking was made. Found in Khánh's review of PR #5. No client code calls this endpoint yet.
+- 2026-11-22 — `POST /api/conversations/:id/proposals` runs the clash check of `04-schedule.md`: it also refuses a time outside opening hours and costumes out of stock, takes an optional `costumes` list (entered by the Admin), and offers free time only when that time is really free; `conflicts.kind` gains `hours` and `costume`. Until now the proposal had its own check, which left out hours and stock and offered the fixed free time even once it was held. Found in Khánh's review of PR #5. No client code calls this endpoint yet.

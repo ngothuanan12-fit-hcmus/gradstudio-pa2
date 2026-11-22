@@ -2069,3 +2069,13 @@ Changed: the assistant's first command for the strict run ended with `pkill -f "
 The `<img>` wording of follow-up 1 came from the assistant's own reply to Khánh on the agreed items ("để trình duyệt tải qua `<img>`"), which forgot that the endpoint needs the token; found while resolving the rebase of this entry onto the merged `brief.md`, where Khánh's prompt quotes that reply.
 Rejected: a squash merge, which would hide the per-part commits the rubric reads.
 By hand: none.
+
+### 2026-11-22 — contract 03: the proposal runs the clash check of 04, with costumes entered by the Admin
+Commit: the commit that adds this entry with `docs/api/03-conversations.md` and `brief.md`. The mock follows in the next commit.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check).
+Asked for: step 1 of the plan of 2026-11-22: one clash check for proposals and for `04-schedule.md`, costume stock by option (b).
+Kept: awaiting An's review. `POST /api/conversations/:id/proposals` follows the rules of `POST /api/schedule/check`: people and room, opening hours, and the stock of an optional `costumes` list the Admin enters (the screen may fill it from `request.extras`); the costumes are checked, not kept with the proposal, since the booking's extras are sent at creation (05). `conflicts.kind` gains `hours` and `costume`; `freeTime` is given only when every conflict is a busy person or room and the time is really free. Two examples (outside opening hours; 6 *Áo dài trắng* size L against a stock of 5), a `costumes` message for `400`, a dated line in `## Changes`.
+Changed: with the contract alone, contract-check fails as expected: the mock still has its own check, so both new examples get `201`, and the two extra proposals shift every later id (`pr-1`, `pr-2`, then GS-1024 in 05). CI is red on this commit until the mock lands.
+Rejected: keeping the costumes on the proposal: the proposal object and its examples would change for something the booking already carries.
+By hand: none.
+

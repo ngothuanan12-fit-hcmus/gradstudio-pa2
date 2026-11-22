@@ -315,3 +315,10 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 > kiểm tra lại việc Khánh mới pr
 
 > Đồng ý
+
+### 2.13 The proposal uses the clash check of 04 (2026-11-22)
+
+> đã merge PR #5, pull về rồi push
+
+> làm việc 1 luôn
+
