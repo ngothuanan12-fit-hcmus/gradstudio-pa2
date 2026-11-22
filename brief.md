@@ -344,3 +344,56 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 > giờ mình thiết lại những gì theo các thay đổi thì làm trước, cái nào cần chờ thì làm sau
 
 > tiếp tục
+
+### 2.20 PO decisions sync and review fixes on contracts & mocks 04, 05, 06, 08 (Khánh, 2026-11-22)
+
+Applied Lead An's review fixes and the 2026-11-22 product owners' answers onto a fresh branch from `origin/main` (`5038348`), one commit per contract then mock:
+
+> + pull main rồi làm trên nhánh mới. Mỗi file: contract trước, mock sau, mỗi thay đổi thêm một dòng có ngày vào ## Changes
+> - 04-schedule.md + schedule.mjs + freeTimes.json: bỏ kiểm tra tồn kho trang phục (`costumes`, `costumeAvailability`, `kind: "costume"`); mỗi ngày trong `freeTimes.json` có vài khung giờ và `checkSchedule` chọn khung đầu tiên còn trống thật.
+> - 05-bookings.md + bookings.mjs: dịch vụ thêm không tính tiền và Admin không sửa/giảm tổng tiền (`total` bỏ khỏi `PATCH /api/bookings/:id`, giá booking luôn là giá gói tính từ `people`), *Đã hủy* và không hoàn tiền trong hệ thống theo quyết định của khách hàng (kèm link), và thông báo `"Chọn thông tin cần thay đổi."` khi body rỗng của `PATCH` là lỗi chung cả form (`fields: {}`), không gắn vào `date`.
+> - 06-payments.md + payments.mjs: thông báo thanh toán thất bại đúng mẫu `"Thanh toán không thành công, booking vẫn chờ cọc"` (và giữ chờ 70%); khi hai người đặt trùng giờ đều tới bước thanh toán và người sau trả tiền thành công thì ghi nhận đã nhận tiền (`succeeded`), booking vẫn giữ `Chờ cọc 30%` kèm lý do, không cho trả cọc lại (`409`), không hoàn tiền tự động.
+> - 08-jobs.md + jobs.mjs + jobs.json: đổi `*Đang thực hiện*` thành `Đang làm`, làm rõ trạng thái việc không đổi trạng thái booking, và sửa câu `GET /api/previews/:id` đòi token nên client tải ảnh bằng token rồi đưa object URL vào `<img>`.
+
+### 2.21 G4–G6 Admin conversations, clash check, and booking UI (Khánh, 2026-11-22)
+
+Carried over from `feature/pa3-ui` (`4cf690d`) and synced with `main` (`5038348`) plus the PO-updated contracts (`04`, `05`, `06`, `08`).
+
+> Tạo nhánh mới để chuẩn bị làm UI
+
+> ## 0. Nguyên tắc bắt buộc (đọc trước khi làm)
+> Trước khi viết bất kỳ dòng code nào, bắt buộc đọc: `CLAUDE.md`, `AGENTS.md`, `FRONTEND.md`, `brief.md`, `docs/api/{README,02-catalogue,03-conversations,04-schedule,05-bookings,06-payments}.md`, `client/src/{App.jsx,layouts/AdminLayout.jsx,styles/{tokens,base,ui}.css,api/client.js,hooks/useApi.js,forms/{useForm,useAction}.js}`. Không sửa `docs/api/`, `mock/`, `tools/contract-check.mjs`; giữ `<AccountBar />`, `<RequireRole roles={['admin']}>`, toàn bộ danh sách `NEVER`, 3 trạng thái dữ liệu (Loading, Error + Retry, Empty), và an toàn tiến trình/cổng test.
+>
+> ## 1. Đặc tả giao diện (theo ảnh mẫu) & toàn bộ chức năng ẩn
+> Dựng giao diện `/quan-ly` và `/quan-ly/hoi-thoai/:id` với theme `studio`, bố cục 3 cột responsive `<768px` / `768–1279px` / `>=1280px`, thu/mở panel phải `[|]`, cột trái `Hội thoại` (`#conv-search`, 5 pill lọc trạng thái cuộn ngang nội bộ, `.conv-status-dot`), cột giữa chat Messenger gom nhóm `<4 phút`, mốc thời gian, `RequestCard`/`ProposalCard`/thẻ `Báo giá`, chip thao tác nhanh theo trạng thái, form nhập tin nhắn có validation; cột phải 4 màn hình theo trạng thái (`Tư vấn nhanh`, `Tư vấn & Báo giá` trượt ngang sang Form đề xuất giờ có kiểm tra trùng live & khóa `Tạo booking`, `BookingForm` với Custom `DatePicker` & Custom `Select` bàn phím + tạo `GS-1024` không reload, `InvoicePanel` xem & gửi hóa đơn); modal `ScheduleSheet` & `ResourceSchedule` 3 chế độ `Ngày`/`Tuần`/`Tháng`, 5 loại block, `EventPopover`, bẫy focus và trả focus khi nhấn `Escape`.
+>
+> ## 2. Điều phối 2 Worker & Vòng lặp đồng thuận (Consensus Loop)
+> Worker 1 (Implementer & Gate Tester) + Worker 2 (Visual & E2E Verifier bằng Playwright + `web_tools` ở `1280×800`, `768×1024`, `360×800`, 4 `MOCK_MODE`, luồng Linh -> `GS-1024`, đối chiếu 4 ảnh mẫu); chỉ kết thúc khi cả 2 worker `ĐỒNG THUẬN KẾT THÚC`.
+
+> Khi xong 1 câu hỏi và hoàn thành task dù tốt hay không vẫn phải commit hết + ghi AI-LOG.md và brief.md
+
+> Khi hội thoại có bookingId thì ẩn form đề xuất, hiện link tới `/quan-ly/booking/:id`; bỏ tồn kho trang phục và bỏ giả định giá dịch vụ thêm theo quyết định PO.
+> Tiếp tục (nhưng vừa rồi có vấn đề tràn ram nên đã crash chương trình) lần này làm kĩ lại
+
+### 2.22 Single-spawn mock guard, PR #6 submission, and PR #6 review fixes (Khánh, 2026-11-22 – 2026-11-23)
+
+Appended verbatim prompts after resolving the earlier inline-spawn OOM crash through opening PR #6 and addressing Lead An's review feedback (`74e9fba`–`7d5965b`):
+
+> Nguyên nhân 2 lần crash trước KHÔNG phải do `npm test`, mà do lỗi fork bomb trong đoạn `node -e` bạn tự viết:
+> - `out += d` giữ nguyên chuỗi `"GradStudio mock on"` mãi mãi, trong khi `mock/server.mjs` log mỗi HTTP request ra `stdout`.
+> - Vì không có biến cờ `started`, mỗi chunk `stdout` sau đó đều làm `out.includes("GradStudio mock on")` đúng lại, spawn thêm hàng trăm tiến trình `tools/contract-check.mjs` chạy song song gây tràn RAM (13 GB) và bị OOM kill.
+>
+> Quy tắc bắt buộc từ giờ khi chạy `contract-check.mjs` với `mock/server.mjs`:
+> 1. TUYỆT ĐỐI không gọi `spawn(...)` trực tiếp trong `stdout.on("data")` mà không có guard một lần (`if (started) return; started = true;`).
+> 2. Dùng pattern an toàn (chỉ spawn đúng 1 lần, không tích lũy `out` sau khi đã start):
+>    - Đặt `let started = false;`, khi `!started && out.includes("GradStudio mock on")` thì set `started = true; out = "";` rồi mới spawn `contract-check.mjs` một lần duy nhất (hoặc bọc bước chờ start trong `new Promise` giống `startMock` ở `test/mock.test.mjs`, rồi `await` xong mới `spawn`).
+>
+> Bây giờ hãy tiếp tục từ thay đổi đang dở ở `docs/api/06-payments.md`, dùng pattern an toàn ở trên nếu cần chạy `--strict-values`, rồi hoàn tất các bước tiếp theo.
+
+> Push lên github + tạo pull request tới An và comment những gì đã làm được.
+
+> Còn những trang UI nào cần phải làm
+
+> Đã có comment phải hồi lại pull request, pull về và fix theo chỉ dẫn
+
+> Hãy cập nhật vào brief.md, rồi push lên lại

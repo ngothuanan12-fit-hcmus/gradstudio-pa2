@@ -15,8 +15,8 @@ export const forbidden = () => fail(403, 'FORBIDDEN', 'Bạn không có quyền 
 export const notFound = () => fail(404, 'NOT_FOUND', 'Không tìm thấy.');
 
 // A 400 with one message per field; `fields` is an object, e.g. { email: 'Nhập e-mail.' }.
-export function invalid(fields) {
-  return fail(400, 'VALIDATION_ERROR', 'Thông tin chưa hợp lệ.', { fields });
+export function invalid(fields, message = 'Thông tin chưa hợp lệ.') {
+  return fail(400, 'VALIDATION_ERROR', message, { fields });
 }
 
 // The mock's token is `token-<user id>`, so it still works after the mock restarts (PA#3 rubric).

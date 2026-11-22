@@ -1,10 +1,10 @@
 # Schedule
 
-What the Admin uses to list staff and rooms, inspect a day's busy blocks and costume stock, and run the clash check before proposing a time (`03-conversations.md`, step G5) or changing a booking (`05-bookings.md`, step G10). Every endpoint here answers `401` without a token and `403` to any role other than `admin`.
+What the Admin uses to list staff and rooms, inspect a day's busy blocks, and run the clash check before proposing a time (`03-conversations.md`, step G5) or changing a booking (`05-bookings.md`, step G10). Every endpoint here answers `401` without a token and `403` to any role other than `admin`.
 
-Only bookings that hold a slot (*Đã đặt lịch*) block staff, rooms, and costume stock (R1); a booking in *Chờ cọc 30%* holds nothing. Two windows `[aFrom, aTo)` and `[bFrom, bTo)` on the same date overlap when `aFrom < bTo` and `bFrom < aTo`, so back-to-back slots such as `13:00–14:00` make-up and `14:00–16:00` shoot do not clash. Every slot must also sit inside the studio's `openingHours` (`settings.json`).
+Only bookings that hold a slot (*Đã đặt lịch*) block staff and rooms (R1); a booking in *Chờ cọc 30%* holds nothing. Two windows `[aFrom, aTo)` and `[bFrom, bTo)` on the same date overlap when `aFrom < bTo` and `bFrom < aTo`, so back-to-back slots such as `13:00–14:00` make-up and `14:00–16:00` shoot do not clash. Every slot must also sit inside the studio's `openingHours` (`settings.json`).
 
-**Team assumption and sample data.** Until the product owners answer (`FRONTEND.md`, section 5), costume rental stock is checked by model, size, and date. In the seed, `Phòng A` (`r-a`), `Hoàng Gia Huy` (`u-staff3`), each staff member's specialty, and the costume stock counts (`5` per model and size) are *sample* values filling the story.
+**Product owner decision and sample data.** Per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)), costume stock is not checked and the clash check covers people and rooms only (studio opening hours remain a team rule). In the seed, `Phòng A` (`r-a`), `Hoàng Gia Huy` (`u-staff3`), and each staff member's specialty are *sample* values filling the story.
 
 ## Objects
 
@@ -33,22 +33,14 @@ Only bookings that hold a slot (*Đã đặt lịch*) block staff, rooms, and co
 | `staffId`, `staffName` | string | The assigned staff member |
 | `roomId`, `roomName` | string or `null` | `null` for a make-up-only block |
 
-**Costume stock** (on one date)
-
-| Field | Type | Notes |
-|---|---|---|
-| `modelId`, `modelName` | string | From `02-catalogue.md` |
-| `size` | string | From that model's `sizes` |
-| `total`, `used`, `available` | integer | `available = total - used` |
-
 **Clash check result**
 
 | Field | Type | Notes |
 |---|---|---|
 | `available` | boolean | `true` when there are no conflicts |
 | `message` | string | Vietnamese summary ready for the screen |
-| `conflicts` | list | Each `{ "who", "kind", "date", "from", "to" }`; `kind` is `staff`, `room`, `costume`, or `hours`; `from` and `to` are `null` for `costume` |
-| `freeTime` | object or `null` | `{ "makeup": { "from", "to" }, "shoot": { "from", "to" } }` when a time clash has a suggested slot on that date, otherwise `null` |
+| `conflicts` | list | Each `{ "who", "kind", "date", "from", "to" }`; `kind` is `staff`, `room`, or `hours` |
+| `freeTime` | object or `null` | `{ "makeup": { "from", "to" }, "shoot": { "from", "to" } }` — the first candidate free window on that date whose slots do not overlap held `busy` blocks and sit inside `openingHours` when a time clash occurs (`staff`/`room` only), otherwise `null` |
 
 ## GET /api/staff
 
@@ -175,7 +167,7 @@ Content-Type: application/json
 
 ## GET /api/schedule
 
-Who: the Admin. Returns the studio's opening hours, held busy blocks, costume stock counts, and any suggested free window for one `date`.
+Who: the Admin. Returns the studio's opening hours, held busy blocks, and the first candidate free window on `date` that does not overlap held blocks (or `null` when none / when the day has no held bookings).
 
 Query:
 
@@ -183,7 +175,7 @@ Query:
 |---|---|---|---|
 | `date` | string | yes | `YYYY-MM-DD`, a real date |
 
-Success: `200` with `{ "date", "openingHours", "blocks", "costumes", "freeTime" }`.
+Success: `200` with `{ "date", "openingHours", "blocks", "freeTime" }`.
 
 Errors:
 
@@ -204,7 +196,7 @@ Authorization: Bearer {{token:thao}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"date": "2026-10-24", "openingHours": {"open": "08:00", "close": "18:00"}, "blocks": [{"bookingId": "GS-1023", "date": "2026-10-24", "from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}], "costumes": [{"modelId": "ao-cu-nhan", "modelName": "Áo cử nhân", "size": "S", "total": 5, "used": 0, "available": 5}, …], "freeTime": {"makeup": {"from": "13:00", "to": "14:00"}, "shoot": {"from": "14:00", "to": "16:00"}}}
+{"date": "2026-10-24", "openingHours": {"open": "08:00", "close": "18:00"}, "blocks": [{"bookingId": "GS-1023", "date": "2026-10-24", "from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}], "freeTime": {"makeup": {"from": "13:00", "to": "14:00"}, "shoot": {"from": "14:00", "to": "16:00"}}}
 ```
 
 A day with no held bookings (`2026-10-25`):
@@ -218,7 +210,7 @@ Authorization: Bearer {{token:thao}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"date": "2026-10-25", "openingHours": {"open": "08:00", "close": "18:00"}, "blocks": [], "costumes": [{"modelId": "ao-cu-nhan", "modelName": "Áo cử nhân", "size": "S", "total": 5, "used": 0, "available": 5}, …], "freeTime": null}
+{"date": "2026-10-25", "openingHours": {"open": "08:00", "close": "18:00"}, "blocks": [], "freeTime": null}
 ```
 
 A date in the wrong format:
@@ -237,7 +229,7 @@ Content-Type: application/json
 
 ## POST /api/schedule/check
 
-Who: the Admin. Checks whether a candidate time, make-up artist, photographer, room, and optional costumes clash with held bookings, studio opening hours, or costume stock on `date`. Never modifies state.
+Who: the Admin. Checks whether a candidate time, make-up artist, photographer, and room clash with held bookings or studio opening hours on `date`. Never modifies state.
 
 Body:
 
@@ -246,8 +238,7 @@ Body:
 | `date` | string | yes | `YYYY-MM-DD`, a real date |
 | `makeup` | object or `null` | no | `from`, `to` (`HH:MM`, `to` after `from`), `staffId` (a staff member) |
 | `shoot` | object | yes | `from`, `to` (`HH:MM`, `to` after `from`), `staffId` (a staff member), `roomId` (a room) |
-| `costumes` | list | no | each `{ "modelId", "size", "quantity" }` (`modelId` and `size` from `02-catalogue.md`; `quantity` optional integer 1 to 200, defaults to `1`) |
-| `excludeBookingId` | string | no | a booking id whose held blocks and costumes are ignored (used when rescheduling in `05-bookings.md`) |
+| `excludeBookingId` | string | no | a booking id whose held blocks are ignored (used when rescheduling in `05-bookings.md`) |
 
 Success: `200` with the clash check result (`available`, `message`, `conflicts`, `freeTime`).
 
@@ -255,7 +246,7 @@ Errors:
 
 | Status | `code` | When | `fields` |
 |---|---|---|---|
-| `400` | `VALIDATION_ERROR` | a field is missing or outside its limits | `date`: "Ngày theo dạng YYYY-MM-DD."; `makeup.from` / `shoot.from`: "Giờ theo dạng HH:MM."; `makeup.to` / `shoot.to`: "Giờ theo dạng HH:MM." or "Giờ kết thúc phải sau giờ bắt đầu."; `makeup.staffId` / `shoot.staffId`: "Không có nhân viên này."; `shoot.roomId`: "Không có phòng này."; `costumes`: "Trang phục không hợp lệ." |
+| `400` | `VALIDATION_ERROR` | a field is missing or outside its limits | `date`: "Ngày theo dạng YYYY-MM-DD."; `makeup.from` / `shoot.from`: "Giờ theo dạng HH:MM."; `makeup.to` / `shoot.to`: "Giờ theo dạng HH:MM." or "Giờ kết thúc phải sau giờ bắt đầu."; `makeup.staffId` / `shoot.staffId`: "Không có nhân viên này."; `shoot.roomId`: "Không có phòng này." |
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not the Admin | — |
 
@@ -283,7 +274,7 @@ POST /api/schedule/check
 Authorization: Bearer {{token:thao}}
 Content-Type: application/json
 
-{"date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "roomId": "r-b"}, "costumes": [{"modelId": "ao-cu-nhan", "size": "M", "quantity": 1}]}
+{"date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "roomId": "r-b"}}
 ```
 
 ```http
@@ -291,23 +282,6 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {"available": true, "message": "Lịch trống: makeup 13:00–14:00 với Mai, chụp 14:00–16:00 với Tuấn tại Phòng B.", "conflicts": [], "freeTime": null}
-```
-
-Checking more costumes than available on `2026-10-24` (6 requested against sample stock of 5):
-
-```http
-POST /api/schedule/check
-Authorization: Bearer {{token:thao}}
-Content-Type: application/json
-
-{"date": "2026-10-24", "makeup": null, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-staff3", "roomId": "r-a"}, "costumes": [{"modelId": "ao-dai-trang", "size": "L", "quantity": 6}]}
-```
-
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{"available": false, "message": "Áo dài trắng (size L) chỉ còn 5 bộ ngày 24/10/2026.", "conflicts": [{"who": "Áo dài trắng (size L)", "kind": "costume", "date": "2026-10-24", "from": null, "to": null}], "freeTime": null}
 ```
 
 Excluding GS-1023 itself ignores its held block (for rescheduling):
@@ -381,3 +355,4 @@ Content-Type: application/json
 ## Changes
 
 - 2026-11-21 — First version. No client code calls these endpoints yet.
+- 2026-11-22 — Remove costume stock checking (`schedule.costumes`, `costumes` field, `Costume stock` object, `costume` conflict kind) per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)); `checkSchedule` covers staff, rooms, and studio opening hours, and `freeTime` chooses the first candidate window for a date that does not clash with held `busy` blocks. No client code calls these endpoints yet.

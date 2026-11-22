@@ -50,9 +50,12 @@ One row per route, as the browser shows it (`BrowserRouter`). A route that exist
 | `/tu-van` | customer (protected) | G3 | `GET /api/conversations`, `GET /api/services`, `GET /api/extras`, `POST /api/conversations` |
 | `/tu-van/:id` (e.g. `/tu-van/c-anh` as `customer2`; `/tu-van/c-linh` after G3) | customer (protected) | G3, G6 | `GET /api/conversations/:id`, `POST /api/conversations/:id/messages`, `POST /api/conversations/:id/proposals/:proposalId/answer` |
 | `/lich-chup` | customer (protected) | G7 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
-| `/quan-ly` | admin (protected) | G4–G6 (still the PA#2 page, not yet on the API) | `GET /api/auth/me` on load |
 | `/lich-chup/:id/anh` (e.g. `/lich-chup/GS-1022/anh` as `customer2`) | customer (protected) | G9 | `GET /api/bookings/:id`, `GET /api/bookings/:id/previews`, `GET /api/previews/:id` (each photo), `PUT /api/bookings/:id/selection`, `POST /api/payments`, `POST /api/bookings/:id/receive` |
 | `/thanh-toan/:paymentId` | customer (protected) | G7, not built yet: says so plainly (G9's payment leads here) | `GET /api/auth/me` on load |
+| `/quan-ly` | admin (protected) | G4–G6 | `GET /api/conversations`, `GET /api/conversations/:id`, `GET /api/services`, `GET /api/extras`, `GET /api/staff`, `GET /api/rooms`, `GET /api/schedule`, `POST /api/schedule/check`, `GET /api/bookings`, `GET /api/bookings/:id`, `GET /api/payments`, `POST /api/conversations/:id/messages`, `POST /api/conversations/:id/proposals`, `POST /api/bookings` |
+| `/quan-ly/hoi-thoai/:id` | admin (protected) | G4–G6 | `GET /api/conversations`, `GET /api/conversations/:id`, `GET /api/services`, `GET /api/extras`, `GET /api/staff`, `GET /api/rooms`, `GET /api/schedule`, `POST /api/schedule/check`, `GET /api/bookings`, `GET /api/bookings/:id`, `GET /api/payments`, `POST /api/conversations/:id/messages`, `POST /api/conversations/:id/proposals`, `POST /api/bookings` |
+| `/quan-ly/booking` | admin (protected) | G10, not built yet: says so plainly | `GET /api/auth/me` on load |
+| `/quan-ly/booking/:id` | admin (protected) | G10, not built yet: says so plainly (links from G5/G6 lead here) | `GET /api/auth/me` on load |
 | `/cong-viec` | staff (protected) | G8, not built yet: says so plainly | `GET /api/auth/me` on load |
 | `/quan-tri` | Superadmin (protected) | G11 | `GET /api/admins`, `POST /api/admins`, `GET /api/settings`, `PUT /api/settings` |
 | any other path | anyone | not-found screen | — |
@@ -63,8 +66,6 @@ A protected route opened while signed out goes to `/dang-nhap` (step G2) and bac
 
 | Path | Role | Steps |
 |---|---|---|
-| `/quan-ly` | admin | G4, conversation list (the Admin's home) |
-| `/quan-ly/hoi-thoai/:id` | admin | G4–G6, conversation, clash check, proposal, *Tạo booking* |
 | `/quan-ly/booking` | admin | G10, bookings with payment status |
 | `/quan-ly/booking/:id` | admin | G10, change, cancel, final file link |
 | `/lich-chup` | customer | G7, my bookings and reminders (the customer's home) |
@@ -103,4 +104,4 @@ No CSS framework (plain CSS with the tokens in `client/src/styles/tokens.css`) a
 
 ## 7. Not done
 
-Built on the API: G1, G2, G3, G6 (the customer's side), G9 and G11. Not built yet: G4, G5, G6 (the Admin's side), G7 (with the test payment gateway that G9's payment leads to), G8 and G10 (Khánh's screens; their contract files 04–08 are written). `/lich-chup` and `/quan-ly` are still the PA#2 pages.
+Built on the API: G1, G2, G3, G4, G5, G6 (customer and Admin sides), G9 and G11. Not built yet: G7 (with the test payment gateway), G8 and G10 (Khánh's screens; contracts `04`–`08` updated). `/lich-chup` is still the PA#2 page.

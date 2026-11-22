@@ -2,7 +2,7 @@
 import { currentUser, fail, forbidden, invalid, notFound, ok, unauthenticated } from '../lib.mjs';
 import { syncJobsForBooking } from './jobs.mjs';
 import { syncReminderForBooking } from './reminders.mjs';
-import { checkSchedule, costumeListFromExtras, roomName, userName, validateScheduleInput } from './schedule.mjs';
+import { checkSchedule, roomName, userName, validateScheduleInput } from './schedule.mjs';
 
 const BOOKING_STATUSES = ['Chờ cọc 30%', 'Đã đặt lịch', 'Hoàn thành', 'Đã hủy'];
 
@@ -67,18 +67,8 @@ function paidDepositAmount(db, booking) {
 function computePricing(db, booking) {
   const { pack } = findServiceAndPackage(db, booking.serviceId, booking.packageId);
   const baseLabel = pack.priceUnit === 'người' ? `${pack.name} (${booking.people} người)` : pack.name;
-  const baseAmount = pack.priceUnit === 'người' ? pack.price * booking.people : pack.price;
-  const items = [{ label: baseLabel, amount: baseAmount, included: false }];
-  for (const x of booking.extras) {
-    const def = db.extras.find((e) => e.id === x.extraId);
-    const included = pack.includes.includes(x.extraId);
-    const model = def?.models.find((m) => m.id === x.modelId);
-    const label = model ? `${def.name}: ${model.name} (${x.size})` : def.name;
-    const amount = included ? 0 : typeof def.price !== 'number' ? null : def.price * (x.quantity || 1);
-    items.push({ label, amount, included });
-  }
-  const computedTotal = items.reduce((sum, it) => sum + (typeof it.amount === 'number' ? it.amount : 0), 0);
-  const total = typeof booking.totalOverride === 'number' ? booking.totalOverride : computedTotal;
+  const total = pack.priceUnit === 'người' ? pack.price * booking.people : pack.price;
+  const items = [{ label: baseLabel, amount: total }];
   const lockedDeposit = booking.payment.depositStatus === 'paid' ? paidDepositAmount(db, booking) : undefined;
   const deposit = typeof lockedDeposit === 'number' ? lockedDeposit : Math.round(total * 0.3);
   const remainder = total - deposit;
@@ -210,7 +200,6 @@ function create({ req, db, body }) {
       staffId: proposal.shoot.staffId,
       roomId: proposal.shoot.roomId,
     },
-    costumes: costumeListFromExtras(db, extras),
   });
   if (!check.available) {
     return fail(409, 'CONFLICT', check.message, {
@@ -239,7 +228,6 @@ function create({ req, db, body }) {
       roomId: proposal.shoot.roomId,
     },
     status: 'Chờ cọc 30%',
-    totalOverride: null,
     payment: { depositStatus: 'unpaid', depositPaidAt: null, remainderStatus: 'unpaid', remainderPaidAt: null },
     fileLink: null,
   };
@@ -279,17 +267,14 @@ function update({ req, db, params, body }) {
   }
 
   const b = body && typeof body === 'object' && !Array.isArray(body) ? body : {};
-  const allowedKeys = ['date', 'makeup', 'shoot', 'people', 'total', 'sessionType', 'extras'];
+  const allowedKeys = ['date', 'makeup', 'shoot', 'people', 'sessionType', 'extras'];
   if (!allowedKeys.some((k) => b[k] !== undefined)) {
-    return invalid({ date: 'Chọn thông tin cần thay đổi.' });
+    return invalid({}, 'Chọn thông tin cần thay đổi.');
   }
 
   const fields = {};
   if (b.people !== undefined && (!Number.isInteger(b.people) || b.people < 1 || b.people > 200)) {
     fields.people = 'Số người từ 1 đến 200.';
-  }
-  if (b.total !== undefined && (!Number.isInteger(b.total) || b.total < 0)) {
-    fields.total = 'Tổng tiền phải là số nguyên không âm.';
   }
   if (
     b.sessionType !== undefined &&
@@ -309,30 +294,24 @@ function update({ req, db, params, body }) {
   Object.assign(fields, schedFields);
   if (Object.keys(fields).length) return invalid(fields);
 
-  const touchesPrice = b.total !== undefined || b.people !== undefined || b.extras !== undefined;
+  const touchesPrice = b.people !== undefined;
   if (touchesPrice && booking.payment.remainderStatus === 'paid') {
     return fail(409, 'CONFLICT', 'Booking đã thanh toán đủ, không thể đổi giá.');
   }
   if (touchesPrice && booking.payment.depositStatus === 'paid') {
-    const candidate = {
-      ...booking,
-      people: b.people !== undefined ? b.people : booking.people,
-      totalOverride: b.total !== undefined ? b.total : b.people !== undefined ? null : booking.totalOverride,
-      extras: b.extras !== undefined ? nextExtras : booking.extras,
-    };
+    const candidate = { ...booking, people: b.people };
     const nextPricing = computePricing(db, candidate);
     if (nextPricing.total < nextPricing.deposit) {
       return fail(409, 'CONFLICT', 'Tổng tiền không được nhỏ hơn tiền cọc đã thanh toán.');
     }
   }
 
-  const touchesSlot = b.date !== undefined || b.makeup !== undefined || b.shoot !== undefined || b.extras !== undefined;
+  const touchesSlot = b.date !== undefined || b.makeup !== undefined || b.shoot !== undefined;
   if (touchesSlot) {
     const check = checkSchedule(db, {
       date: parsed.date,
       makeup: parsed.makeup,
       shoot: parsed.shoot,
-      costumes: costumeListFromExtras(db, nextExtras),
       excludeBookingId: booking.id,
     });
     if (!check.available) {
@@ -346,10 +325,12 @@ function update({ req, db, params, body }) {
   booking.makeup = parsed.makeup;
   booking.shoot = parsed.shoot;
   if (b.people !== undefined) booking.people = b.people;
-  if (b.total !== undefined) booking.totalOverride = b.total;
-  else if (b.people !== undefined) booking.totalOverride = null;
   if (b.sessionType !== undefined) booking.sessionType = b.sessionType.trim();
   if (b.extras !== undefined) booking.extras = nextExtras;
+  if (touchesSlot && booking.status === 'Chờ cọc 30%' && booking.payment.depositStatus === 'paid') {
+    // Team assumption (follow-up question for product owners): moving a deposit-paid unheld booking to a free slot locks its slot.
+    booking.status = 'Đã đặt lịch';
+  }
 
   syncBookingBusy(db, booking);
   syncReminderForBooking(db, booking);
