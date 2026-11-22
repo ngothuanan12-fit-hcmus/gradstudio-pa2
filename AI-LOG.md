@@ -2178,3 +2178,12 @@ Changed: the note was the assistant's wording of 2026-11-21 (G1), written before
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — format fix for `d290b46`
+Commit: the commit that adds this entry with `client/src/pages/Home.jsx` and `client/src/components/StoryStage.jsx`, after `d290b46`.
+Tool: Prettier (`npm run format:check`), ESLint.
+Asked for: the same step as `d290b46`.
+Kept: the two longer lines of `d290b46` wrapped as Prettier wants; no wording changed. `npm run format:check` and `npm run lint` pass.
+Changed: the assistant's command for `d290b46` ran the format check, then committed even though the check failed: the commit was joined with `;` instead of `&&`. Caught by the format check's own output in that run, before any push, so CI never saw it. Later commit commands are chained with `&&` after the checks.
+Rejected: amending `d290b46`; a new commit keeps the slip visible.
+By hand: none.
+

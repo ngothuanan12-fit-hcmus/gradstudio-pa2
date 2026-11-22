@@ -61,7 +61,9 @@ export default function StoryStage({ start, packages }) {
             Chưa chọn được gói? <em>chat với studio nhé</em>
           </h2>
           <p>Giá từng gói và khung chat ở ngay bên dưới.</p>
-          <p className="cap-note">Giá booking là giá gói, kỷ yếu lớp tính theo số người. Dịch vụ thêm không tính tiền.</p>
+          <p className="cap-note">
+            Giá booking là giá gói, kỷ yếu lớp tính theo số người. Dịch vụ thêm không tính tiền.
+          </p>
         </div>
         <div className="story-actions stage-links">
           <Button href="#goi-chup">Xem gói chụp</Button>
