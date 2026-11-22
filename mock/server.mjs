@@ -14,6 +14,7 @@ import catalogue from './routes/catalogue.mjs';
 import admin from './routes/admin.mjs';
 import bookings from './routes/bookings.mjs';
 import conversations from './routes/conversations.mjs';
+import gallery from './routes/gallery.mjs';
 import jobs from './routes/jobs.mjs';
 import payments from './routes/payments.mjs';
 import reminders from './routes/reminders.mjs';
@@ -40,6 +41,7 @@ const ROUTES = [
   ...payments,
   ...reminders,
   ...jobs,
+  ...gallery,
   ...admin,
 ].map((route) => ({
   ...route,

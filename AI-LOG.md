@@ -2205,3 +2205,12 @@ Changed: the first version of `bd82f86` assumed every package has a number; foun
 Rejected: treating `null` as "no limit", which would invent a policy (CLAUDE.md, NEVER 11).
 By hand: none.
 
+### 2026-11-22 — mock 09: gallery, choice and Nhận ảnh
+Commit: the commit that adds this entry with `mock/routes/gallery.mjs`, `mock/server.mjs`, `mock/data/previews.json`, `mock/data/selections.json` and `mock/data/README.md`, after `e027021`.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check), format and lint.
+Asked for: the mock side of `bd82f86` and `e027021`.
+Kept: awaiting An's review. `gallery.mjs` answers the three endpoints: access as in `GET /api/previews/:id` (customer own, staff with a job on the booking, Admin); the choice checked for count, duplicates and own previews, then for *Đã đặt lịch*, the 70% and a `null` limit; *Nhận ảnh* moves the booking and its conversation to *Hoàn thành* and answers with `bookingOut` from Khánh's `bookings.mjs`, so the booking keeps one shape. Choices live in `selections.json` (`db.selections`), which Khánh's payments already read. Seed: 39 more previews on GS-1020 and 4 on GS-1022 in Khánh's `previews.json` (announced to Khánh beforehand), reusing the eight sample photos, with their real file sizes.
+Changed: the first draft of *Nhận ảnh* returned a hand-built answer instead of the booking's shape; replaced by `bookingOut` before any run. Checks: `npm test` 7/7, all 149 examples of the eleven files answer as written, including the 16 of 09 that failed on `bd82f86`; format and lint pass.
+Rejected: freeing the booking's held blocks on *Nhận ảnh*: the product owners name only cancelling as freeing people and rooms.
+By hand: none.
+

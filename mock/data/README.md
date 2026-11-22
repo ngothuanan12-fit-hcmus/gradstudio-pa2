@@ -99,6 +99,8 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 | `payments.json` | Payment records for deposits and remainders | `payments` |
 | `reminders.json` | Scheduled reminders for booked sessions (`Đã đặt lịch`) | `reminders`, `payments`, `bookings` |
 | `jobs.json`, `previews.json` | Assigned staff jobs and preview metadata (seed samples use `client/public/photos/*.webp`) | `jobs`, `payments`, `bookings` |
+| `previews.json` (seed rows) | 40 previews on GS-1020 and 5 on GS-1022 (*sample*: the licensed photos of the home page reused), so G9 has photos to choose from | `gallery` |
+| `selections.json` | The customers' photo choices, one row per booking (`bookingId`, `previewIds`, `savedAt`); empty at start | `gallery`; `payments` (the remaining 70% needs a choice) |
 | `busy.json` | Times when a person or a room is held by a booking in *Đã đặt lịch* (R1: a booking in *Chờ cọc 30%* holds nothing) | the clash check in `conversations`; `04-schedule.md` and `06-payments.md` (a successful deposit adds the booking's blocks) |
 | `freeTimes.json` | The free time the API offers for a date with a clash (the mock may answer fixed values, PA#3 rubric) | the clash check (`conversations`, `schedule`) |
 | `settings.json` | Opening hours (*sample*, 08:00–18:00) and `reminderHoursBefore` (24, from the brief) | `admin`; the reminders of `07-reminders.md` |
