@@ -331,3 +331,11 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 > gửi lại cho mình 7 câu hỏi
 > soạn đoạn tin nhắn cho Khánh
 
+### 2.15 The product owners' answers (2026-11-22)
+
+> (An's summary of the answers to the seven questions, then the post of ten questions and the product owners' answers, pasted)
+> bạn xem có cần sửa gì trong các việc làm tiếp theo không
+
+> đồng ý, làm bước 1 và soạn tin nhắn cho Khánh
+> link bài trả lời https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798
+

@@ -54,7 +54,7 @@ Every error, from every endpoint, has this body:
 - Ids are strings: users `u-linh`, conversations `c-…`, bookings `GS-1024`, others with a short prefix named in their file.
 - Dates are `YYYY-MM-DD`; times `HH:MM`; both in the studio's time (Asia/Ho_Chi_Minh). A moment (a message sent, a reminder due) is ISO 8601 with its offset: `2026-10-23T13:00:00+07:00`.
 - Money is an integer number of đồng (`1800000`), computed by the API; the client formats it.
-- Status values are the brief's Vietnamese names, exactly: conversations `Chưa trả lời`, `Đang tư vấn`, `Đã chốt lịch`, `Hoàn thành`; bookings `Chờ cọc 30%`, `Đã đặt lịch`, `Hoàn thành`, `Đã hủy` (`Đã hủy` is a team assumption until the product owners answer; see `05-bookings.md`).
+- Status values are the brief's Vietnamese names, exactly: conversations `Chưa trả lời`, `Đang tư vấn`, `Đã chốt lịch`, `Hoàn thành`; bookings `Chờ cọc 30%`, `Đã đặt lịch`, `Hoàn thành`, `Đã hủy` (`Đã hủy` decided by the product owners, [answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798); see `05-bookings.md`).
 
 ## Files
 
@@ -140,3 +140,4 @@ Once client code calls an endpoint, every change to it gets a line here or in it
 - 2026-11-21 — Add the three endpoints of `08-jobs.md` to the table. No client code calls them yet.
 - 2026-11-22 — Update the booking status convention (*Đã hủy* as a team assumption) and the *Planned* note after `04`–`08` moved into the endpoint table (PR #5 review fix). No client code calls these endpoints yet.
 - 2026-11-22 — Add `GET /api/previews/:id` to the endpoint table (`08-jobs.md`, agreed item 6). No client code calls it yet.
+- 2026-11-22 — *Đã hủy* is now the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)), no longer a team assumption. No change to any endpoint.

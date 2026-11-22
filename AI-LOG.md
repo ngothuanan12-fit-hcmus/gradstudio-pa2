@@ -2115,3 +2115,12 @@ Changed: nothing.
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — the product owners' answers in FRONTEND.md section 5
+Commit: the commit that adds this entry with `FRONTEND.md`, `docs/api/README.md` and `brief.md`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: what the product owners' answers change in the next steps, then step 1 of the plan (record the decisions, then contracts 03 and 02 with their mock and client).
+Kept: awaiting An's review. Section 5 gives each question its decision and the post's link; what is still open (the reminder text; what follows a declined proposal; the yearbook head count; whether every package may record extras; whether opening hours limit a proposal) stays a marked team assumption. The other answers of the same post are listed under the table. The README's booking statuses cite the decision for *Đã hủy*. The yearbook assumption changes: the Admin confirms the head count and the server computes the price, since the product owners forbid a price typed by hand.
+Changed: the answers overturn three things the assistant had built or recommended: costume stock checked by model, size and date (in `02`, `03`, `04`–`06` and An's assumption of 2026-11-20); extras with prices of their own and an Admin who adjusts the total (`02`, `05`); and the job status *Đang thực hiện* (`08`, the brief gave none). Option (b) of 2026-11-22, costumes entered on a proposal, is no longer needed. Each is undone in its own file, contract first; Khánh's files through the message drafted with this step.
+Rejected: nothing.
+By hand: none.
+
