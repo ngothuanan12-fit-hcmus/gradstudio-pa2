@@ -7,6 +7,8 @@ import Gallery from './pages/Gallery.jsx';
 import Home from './pages/Home.jsx';
 import LichChup from './pages/LichChup.jsx';
 import NotFound from './pages/NotFound.jsx';
+import PaymentGateway from './pages/PaymentGateway.jsx';
+import PaymentResult from './pages/PaymentResult.jsx';
 import QuanLy from './pages/QuanLy.jsx';
 import QuanTri from './pages/QuanTri.jsx';
 import SignIn from './pages/SignIn.jsx';
@@ -50,12 +52,19 @@ export default function App() {
           </RequireRole>
         }
       />
-      {/* The test payment gateway, until step G7 builds it; G9's payment leads here. */}
       <Route
         path="/thanh-toan/:paymentId"
         element={
           <RequireRole roles={['customer']}>
-            <ComingSoon title="Cổng thanh toán thử nghiệm" step="G7" customer />
+            <PaymentGateway />
+          </RequireRole>
+        }
+      />
+      <Route
+        path="/thanh-toan/:paymentId/ket-qua"
+        element={
+          <RequireRole roles={['customer']}>
+            <PaymentResult />
           </RequireRole>
         }
       />

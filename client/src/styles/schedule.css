@@ -26,6 +26,13 @@
   border: 2px solid var(--accent);
   background: var(--accent-soft);
 }
+.week-cell.is-shoot.is-off {
+  border: 2px dashed var(--danger);
+  background: var(--danger-soft);
+}
+.week-cell.is-shoot.is-off .week-mark {
+  color: var(--danger);
+}
 .week-dow {
   color: var(--ink-muted);
   font-size: 16px;
@@ -46,6 +53,9 @@
 .week-shoot-line {
   color: var(--accent);
   font-weight: 600;
+}
+.week-shoot-line.is-off {
+  color: var(--danger);
 }
 
 .day-title {
@@ -223,4 +233,148 @@
     grid-column: 1;
     grid-row: 1;
   }
+}
+
+/* Multi-booking switcher (e.g. customer2) */
+.booking-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+.booking-switch-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  min-height: var(--control-height-sm);
+  padding: var(--space-8) var(--space-16);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--ink);
+  font: 600 16px/22px var(--font-sans);
+  cursor: pointer;
+}
+.booking-switch-btn[aria-pressed='true'] {
+  border: 2px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.booking-switch-meta {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--ink-muted);
+}
+
+/* Schedule alerts & deposit sections */
+.deposit-form,
+.deposit-state-actions,
+.deposit-history-block,
+.gateway-action-box {
+  display: grid;
+  gap: var(--space-12);
+}
+.deposit-history-block {
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--line);
+}
+.deposit-history-title {
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+}
+
+.schedule-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+  padding: var(--space-12);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--ink);
+}
+.schedule-alert .icon {
+  margin-top: 3px;
+}
+.schedule-alert.is-free {
+  background: var(--free-soft);
+  border-color: var(--free);
+}
+.schedule-alert.is-free .icon {
+  color: var(--free);
+}
+.schedule-alert.is-danger {
+  background: var(--danger-soft);
+  border: 2px solid var(--danger);
+}
+.schedule-alert.is-danger .icon {
+  color: var(--danger);
+}
+.schedule-alert.is-notice {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.schedule-alert.is-notice .icon {
+  color: var(--accent);
+}
+.schedule-alert.is-neutral {
+  background: var(--busy);
+  border-color: var(--line-strong);
+}
+
+.schedule-pay-list,
+.reminder-list {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.schedule-pay-item,
+.reminder-item {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-12);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+}
+.schedule-pay-top,
+.schedule-pay-meta,
+.reminder-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-12);
+}
+.schedule-pay-meta,
+.schedule-pay-note,
+.reminder-meta {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-muted);
+}
+.reminder-due {
+  font-weight: 600;
+}
+.reminder-msg {
+  overflow-wrap: anywhere;
+}
+
+.payment-gateway-grid {
+  display: grid;
+  gap: var(--space-24);
+}
+.gateway-booking-meta {
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--line);
+}
+.payment-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-12);
 }
