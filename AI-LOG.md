@@ -2088,3 +2088,12 @@ Changed: lint failed once on `isStaff`, left unused after `checkSlot` went; remo
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — correction: the red run of `0a0c98b` failed 35 examples, not eight
+Commit: the commit that adds this entry (log only).
+Tool: GitHub Actions, runs `45009556484` (`0a0c98b`, red) and `45009659241` (`1e07c34`, green).
+Asked for: push `0a0c98b` and `1e07c34` one at a time.
+Kept: the red run then the green run, as planned: contract 03 alone answers 97 of 132 examples (35 FAIL lines), the mock commit after it answers all of them.
+Changed: the entries of `0a0c98b` and `1e07c34` say eight examples failed. The assistant read that number from a local run whose output it had cut to its first eight lines (`head`), not from the summary line; the CI log of run `45009556484` shows 35. The two extra proposals shift every later proposal, booking and payment id, so most examples of 05 to 08 failed too. The earlier entries stay as written (CLAUDE.md, *How we work* 4); this entry corrects them.
+Rejected: nothing.
+By hand: none.
+
