@@ -2286,3 +2286,12 @@ Changed: `contract-check` still fails on `06-payments.md:206` and `06-payments.m
 Rejected: editing `docs/api/06-payments.md` inside this mock commit, which would mix files across parts.
 By hand: none.
 
+### 2026-11-22 — contract 06: PO payment fail wording, concurrent deposit rule, aligned pricing examples
+Commit: the commit that adds this entry with `docs/api/06-payments.md`, after `2153dc0`. The mock follows.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm test`, safe single-shot `contract-check --strict-values`.
+Asked for: sync `06-payments.md` with the product owners' answers ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)).
+Kept: awaiting An's review. Dropped costume stock re-checking from deposit rules, updated failed payment messages to `"Thanh toán không thành công, booking vẫn chờ cọc."` (deposit) and `"Thanh toán không thành công, booking vẫn chờ thanh toán 70% còn lại."` (remainder) with unlimited retries, specified the concurrent second-customer deposit rule (`POST /api/payments/:id/result` records `payment.status = "succeeded"` and `booking.payment.depositStatus = "paid"` while keeping booking status *Chờ cọc 30%* with the conflict reason in `payment.message`, no auto-refund, `409` on duplicate deposit or pre-booked remainder), and aligned GS-1024's embedded `pricing` JSON in `06-payments.md` with `05-bookings.md`. Added the dated line in `## Changes`. Checks: `npm run format:check`, `npm run lint`, and `npm test` (`8/8` passing, `148/148` example shapes) pass.
+Changed: `contract-check --strict-values` still fails `2` lines (`06-payments.md:206` and `06-payments.md:340`, `146/148` passing) because `mock/routes/payments.mjs` still returns the old failure text (`"Thanh toán cọc chưa thành công. Bạn có thể thử lại."`) until the mock commit next. Earlier while attempting the `--strict-values` script, an inline `node -e` listener on `mock/server.mjs` stdout lacked a single-run `started` guard and kept re-spawning `contract-check.mjs` on request logs (causing an OOM crash); switched to an awaited single-start `Promise` that removes the stdout listener before spawning one check process cleanly.
+Rejected: marking a concurrent clashing deposit as `failed` or returning `409` after money arrives, against the product owners' decision.
+By hand: none.
+

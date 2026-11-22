@@ -2,14 +2,14 @@
 
 Deposit (30%, step G7) and remainder (70%, step G9) payments through the app's test gateway. A payment starts as `pending`, the customer chooses success or failure on the test gateway route (`/thanh-toan/:paymentId`, returning to `/thanh-toan/:paymentId/ket-qua`, matching `FRONTEND.md` section 4), and the result is recorded once through `POST /api/payments/:id/result`.
 
-**Rules (R1, brief section 3, and team reading of G9):**
-1. A booking's time, staff, room, and costume stock are held **only after the 30% deposit succeeds** and the resources are checked again against already-booked slots (*Đã đặt lịch*).
-2. When a deposit succeeds, the booking moves from *Chờ cọc 30%* to *Đã đặt lịch*, and its make-up and shoot blocks are added to `busy` so the clash check (`03-conversations.md`, `04-schedule.md`, `05-bookings.md`) sees them.
-3. **Team reading of step G9 in the brief:** the remaining 70% follows the order *chọn ảnh → trả 70% → Nhận ảnh*. A remainder payment can only be initiated or applied after the 30% deposit is `paid` **and** the customer has saved their photo selection (`09-gallery.md`), otherwise the API answers `409` (`"Cần chọn ảnh trước khi thanh toán 70% còn lại."`). When a remainder payment succeeds, `payment.remainderStatus` becomes `paid`; the booking stays *Đã đặt lịch* until the customer presses *Nhận ảnh* (`09-gallery.md`).
+**Rules (R1, brief section 3, product owners' decisions, and team reading of G9):**
+1. A booking's time, staff, and room are held **only after the 30% deposit succeeds** and the resources are checked again against already-booked slots (*Đã đặt lịch*). Costume stock is not checked ([product owners](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)).
+2. When a deposit succeeds on a free slot, the booking moves from *Chờ cọc 30%* to *Đã đặt lịch*, and its make-up and shoot blocks are added to `busy` so the clash check (`03-conversations.md`, `04-schedule.md`, `05-bookings.md`) sees them.
+3. **Concurrent second-customer deposit ([product owners](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)):** if two bookings in *Chờ cọc 30%* reach checkout together for overlapping resources and the first customer pays first, when the second customer's deposit finishes (`POST /api/payments/:id/result` with `result: "success"`), the payment is still recorded as **`succeeded`** (never `failed`) and `booking.payment.depositStatus` becomes **`paid`** (preventing paying twice, `409`), while the booking **keeps status *Chờ cọc 30%*** (no blocks added to `busy`) and `payment.message` explains that the slot is already held by another customer. No auto-refund happens; the Admin refunds outside the system or cancels the booking (`05-bookings.md`). Verified end to end in `test/mock.test.mjs`.
+4. **Failed payments & retries ([product owners](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)):** when `result: "fail"` is recorded, the booking keeps its status (*Chờ cọc 30%* or *Đã đặt lịch* waiting for 70%), with message `"Thanh toán không thành công, booking vẫn chờ cọc."` (deposit) or `"Thanh toán không thành công, booking vẫn chờ thanh toán 70% còn lại."` (remainder), and unlimited retries via `POST /api/payments`. An amount already `paid` answers `409`.
+5. **Team reading of step G9 in the brief:** the remaining 70% follows the order *chọn ảnh → trả 70% → Nhận ảnh*. A remainder payment requires the booking in *Đã đặt lịch*, deposit `paid`, and a saved photo selection (`09-gallery.md`), otherwise the API answers `409` (`"Cần chọn ảnh trước khi thanh toán 70% còn lại."`). When a remainder payment succeeds, `payment.remainderStatus` becomes `paid`; the booking stays *Đã đặt lịch* until *Nhận ảnh* (`09-gallery.md`).
 
-**Team assumptions.** Until the product owners answer (`FRONTEND.md`, section 5):
-- When a deposit attempt fails, the booking stays *Chờ cọc 30%* with a Vietnamese failure message, no slot is held, and the customer may start a new payment attempt to try again.
-- For PA#3, because there is no external payment provider, the signed-in customer records the test gateway outcome directly via `POST /api/payments/:id/result`.
+**Team assumption.** For PA#3, because there is no external payment provider, the signed-in customer records the test gateway outcome directly via `POST /api/payments/:id/result`.
 
 ## Objects
 
@@ -64,7 +64,7 @@ Errors:
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not a customer | — |
 | `404` | `NOT_FOUND` | unknown booking or another customer's booking | — |
-| `409` | `CONFLICT` | booking is *Đã hủy* or *Hoàn thành*; `deposit` already `paid`; `remainder` requested before `deposit` is `paid`, before a photo selection is saved, or already `paid`; `amount` is `null`; or resources now clash on `deposit` | `details` (`conflicts`, `freeTime`) on a clash |
+| `409` | `CONFLICT` | booking is *Đã hủy* or *Hoàn thành*; `deposit` already `paid`; `remainder` requested before *Đã đặt lịch* (`deposit` unpaid or concurrent clash left slot unheld), before a photo selection is saved, or already `paid`; `amount` is `null`; or resources now clash on `deposit` before opening checkout | `details` (`conflicts`, `freeTime`) on a pre-checkout clash |
 
 Another customer cannot pay for GS-1022 (`linh` vs `customer2`):
 
@@ -189,7 +189,7 @@ Content-Type: application/json
 
 ## POST /api/payments/:id/result
 
-Who: the payment's customer. Records the outcome chosen on the test gateway (`success` or `fail`). An already-finished payment answers `409`. When `result` is `success` for a `deposit`, resources are checked again before moving the booking to *Đã đặt lịch* and adding its time blocks to `busy`.
+Who: the payment's customer. Records the outcome chosen on the test gateway (`success` or `fail`). An already-finished payment answers `409`. When `result` is `success` for a `deposit`, resources are checked again: if free, the booking moves to *Đã đặt lịch* and adds its time blocks to `busy`; if another customer's deposit has already taken those resources, `payment.status` is still recorded as `succeeded` (received, with `booking.payment.depositStatus` set to `paid`) while `booking.status` remains *Chờ cọc 30%* and `payment.message` carries the reason.
 
 Body:
 
@@ -199,7 +199,7 @@ Body:
 
 Success: `200` with `{ "payment", "booking" }`.
 
-Errors: `400` (`result`: `"Chọn thành công hoặc thất bại."`), `401`, `403`, `404`, `409` (payment result already applied, missing photo selection for `remainder`, or resources clashed on re-check with `details`).
+Errors: `400` (`result`: `"Chọn thành công hoặc thất bại."`), `401`, `403`, `404`, `409` (payment result already applied, amount already paid, missing photo selection, or booking not *Đã đặt lịch* for `remainder`).
 
 First deposit attempt fails: GS-1024 stays *Chờ cọc 30%*:
 
@@ -215,7 +215,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"payment": {"id": "pay-1", "bookingId": "GS-1024", "customerId": "u-linh", "kind": "deposit", "amount": 540000, "status": "failed", "message": "Thanh toán cọc chưa thành công. Bạn có thể thử lại.", "createdAt": …, "completedAt": …}, "booking": {"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}}
+{"payment": {"id": "pay-1", "bookingId": "GS-1024", "customerId": "u-linh", "kind": "deposit", "amount": 540000, "status": "failed", "message": "Thanh toán không thành công, booking vẫn chờ cọc.", "createdAt": …, "completedAt": …}, "booking": {"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}}
 ```
 
 Applying a result to the same payment twice is refused with `409`:
@@ -281,7 +281,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"payment": {"id": "pay-2", "bookingId": "GS-1024", "customerId": "u-linh", "kind": "deposit", "amount": 540000, "status": "succeeded", "message": "Thanh toán cọc 30% thành công. Lịch chụp đã được giữ.", "createdAt": …, "completedAt": …}, "booking": {"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "paid", "depositPaidAt": …, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}}
+{"payment": {"id": "pay-2", "bookingId": "GS-1024", "customerId": "u-linh", "kind": "deposit", "amount": 540000, "status": "succeeded", "message": "Thanh toán cọc 30% thành công. Lịch chụp đã được giữ.", "createdAt": …, "completedAt": …}, "booking": {"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "paid", "depositPaidAt": …, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}}
 ```
 
 Starting another deposit after GS-1024 is already paid is refused with `409`:
@@ -346,10 +346,11 @@ Authorization: Bearer {{token:linh}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "pay-2", "bookingId": "GS-1024", "customerId": "u-linh", "kind": "deposit", "amount": 540000, "status": "succeeded", "message": "Thanh toán cọc 30% thành công. Lịch chụp đã được giữ.", "createdAt": …, "completedAt": …}, {"id": "pay-1", "bookingId": "GS-1024", "customerId": "u-linh", "kind": "deposit", "amount": 540000, "status": "failed", "message": "Thanh toán cọc chưa thành công. Bạn có thể thử lại.", "createdAt": …, "completedAt": …}]
+[{"id": "pay-2", "bookingId": "GS-1024", "customerId": "u-linh", "kind": "deposit", "amount": 540000, "status": "succeeded", "message": "Thanh toán cọc 30% thành công. Lịch chụp đã được giữ.", "createdAt": …, "completedAt": …}, {"id": "pay-1", "bookingId": "GS-1024", "customerId": "u-linh", "kind": "deposit", "amount": 540000, "status": "failed", "message": "Thanh toán không thành công, booking vẫn chờ cọc.", "createdAt": …, "completedAt": …}]
 ```
 
 ## Changes
 
 - 2026-11-21 — First version. No client code calls these endpoints yet.
 - 2026-11-22 — Require a saved photo selection (`selections` from `09-gallery.md`) before paying the remaining 70% under the team's reading of G9 (replacing GS-1022's remainder-success example with the `409` refusal before selection), align test gateway route names to `/thanh-toan/:paymentId` and `/thanh-toan/:paymentId/ket-qua` (`FRONTEND.md` section 4), state the browser gateway-result assumption explicitly, and replace mixed-English validation messages (`fields.kind` and `fields.result`) with Vietnamese (PR #5 review & agreed items 5, 7). No client code calls these endpoints yet.
+- 2026-11-22 — Adopt the product owners' answers ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)): drop costume stock re-checking, update failed payment messages (`"Thanh toán không thành công, booking vẫn chờ cọc."` / still waiting for 70%), record a second concurrent customer's clashing deposit as `succeeded` (`depositStatus: "paid"`, `409` on retry) while keeping booking status *Chờ cọc 30%* with the conflict reason in `payment.message`, and align GS-1024's `pricing` example to the updated `05-bookings.md` shape. No client code calls these endpoints yet.
