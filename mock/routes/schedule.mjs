@@ -25,48 +25,22 @@ function caller(req, db, roles) {
   return { user };
 }
 
-function costumeModels(db) {
-  return db.extras.filter((e) => e.kind === 'costume').flatMap((e) => e.models || []);
-}
+// Temporary no-op export until Mock 05 and Mock 06 drop their imports.
+export const costumeListFromExtras = () => [];
 
-export function costumeListFromExtras(db, extras) {
-  const costumeIds = new Set(db.extras.filter((e) => e.kind === 'costume').map((e) => e.id));
-  return (extras || [])
-    .filter((x) => costumeIds.has(x.extraId) && x.modelId && x.size)
-    .map((x) => ({ modelId: x.modelId, size: x.size, quantity: x.quantity || 1 }));
-}
-
-function costumeAvailability(db, date, excludeBookingId = null) {
-  const models = costumeModels(db);
-  const costumeIds = new Set(db.extras.filter((e) => e.kind === 'costume').map((e) => e.id));
-  const heldBookings = (db.bookings || []).filter(
-    (b) => b.status === 'Đã đặt lịch' && b.date === date && b.id !== excludeBookingId,
+function freeTimeFor(db, date, excludeBookingId = null) {
+  const dayBusy = db.busy.filter((b) => b.date === date && b.bookingId !== excludeBookingId);
+  if (!dayBusy.length) return null;
+  const raw = db.freeTimes[date] ?? db.freeTimes.default;
+  const candidates = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  const { open, close } = db.settings.openingHours;
+  const fitsHours = (slot) => !slot || (slot.from >= open && slot.to <= close);
+  const overlapsBusy = (slot) => slot && dayBusy.some((b) => b.from < slot.to && slot.from < b.to);
+  return (
+    candidates.find(
+      (c) => fitsHours(c.makeup) && fitsHours(c.shoot) && !overlapsBusy(c.makeup) && !overlapsBusy(c.shoot),
+    ) || null
   );
-  return db.costumes.map((stock) => {
-    const model = models.find((m) => m.id === stock.modelId);
-    const used = heldBookings.reduce((sum, b) => {
-      const match = (b.extras || [])
-        .filter((x) => costumeIds.has(x.extraId) && x.modelId === stock.modelId && x.size === stock.size)
-        .reduce((acc, x) => acc + (x.quantity || 1), 0);
-      return sum + match;
-    }, 0);
-    return {
-      modelId: stock.modelId,
-      modelName: model ? model.name : stock.modelId,
-      size: stock.size,
-      total: stock.total,
-      used,
-      available: Math.max(0, stock.total - used),
-    };
-  });
-}
-
-function freeTimeFor(db, date) {
-  const candidate = db.freeTimes[date] || null;
-  if (!candidate) return null;
-  const overlapsBusy = (slot) => slot && db.busy.some((b) => b.date === date && b.from < slot.to && slot.from < b.to);
-  if (overlapsBusy(candidate.makeup) || overlapsBusy(candidate.shoot)) return null;
-  return candidate;
 }
 
 export function validateScheduleInput(db, input) {
@@ -92,23 +66,6 @@ export function validateScheduleInput(db, input) {
   if (!db.rooms.some((r) => r.id === s.roomId)) fields['shoot.roomId'] = 'Không có phòng này.';
   const shoot = { from: s.from, to: s.to, staffId: s.staffId, roomId: s.roomId };
 
-  const models = costumeModels(db);
-  const costumes = [];
-  if (b.costumes !== undefined) {
-    const fine =
-      Array.isArray(b.costumes) &&
-      b.costumes.every((item) => {
-        if (!item || typeof item !== 'object') return false;
-        const model = models.find((m) => m.id === item.modelId);
-        if (!model || !model.sizes.includes(item.size)) return false;
-        const qty = item.quantity === undefined ? 1 : item.quantity;
-        if (!Number.isInteger(qty) || qty < 1 || qty > 200) return false;
-        costumes.push({ modelId: model.id, size: item.size, quantity: qty });
-        return true;
-      });
-    if (!fine) fields.costumes = 'Trang phục không hợp lệ.';
-  }
-
   let excludeBookingId = null;
   if (b.excludeBookingId != null) {
     if (typeof b.excludeBookingId !== 'string' || b.excludeBookingId.trim() === '') {
@@ -118,7 +75,7 @@ export function validateScheduleInput(db, input) {
     }
   }
 
-  return { fields, parsed: { date: b.date, makeup, shoot, costumes, excludeBookingId } };
+  return { fields, parsed: { date: b.date, makeup, shoot, excludeBookingId } };
 }
 
 function slotClashes(db, date, part, slot, label, excludeBookingId) {
@@ -136,7 +93,7 @@ function slotClashes(db, date, part, slot, label, excludeBookingId) {
   return found;
 }
 
-export function checkSchedule(db, { date, makeup, shoot, costumes = [], excludeBookingId = null }) {
+export function checkSchedule(db, { date, makeup, shoot, excludeBookingId = null }) {
   const conflicts = [
     ...(makeup ? slotClashes(db, date, 'makeup', makeup, 'makeup', excludeBookingId) : []),
     ...slotClashes(db, date, 'shoot', shoot, 'chụp', excludeBookingId),
@@ -146,24 +103,6 @@ export function checkSchedule(db, { date, makeup, shoot, costumes = [], excludeB
   const outOfHours = [makeup, shoot].filter(Boolean).some((slot) => slot.from < open || slot.to > close);
   if (outOfHours) {
     conflicts.push({ who: 'Giờ mở cửa studio', kind: 'hours', date, from: open, to: close });
-  }
-
-  if (costumes.length) {
-    const stock = costumeAvailability(db, date, excludeBookingId);
-    const requested = new Map();
-    for (const c of costumes) {
-      const key = `${c.modelId}:${c.size}`;
-      requested.set(key, (requested.get(key) || 0) + c.quantity);
-    }
-    for (const [key, qty] of requested.entries()) {
-      const [modelId, size] = key.split(':');
-      const entry = stock.find((x) => x.modelId === modelId && x.size === size);
-      const avail = entry ? entry.available : 0;
-      if (qty > avail) {
-        const label = entry ? `${entry.modelName} (size ${size})` : `${modelId} (size ${size})`;
-        conflicts.push({ who: label, kind: 'costume', date, from: null, to: null, available: avail });
-      }
-    }
   }
 
   if (!conflicts.length) {
@@ -180,10 +119,9 @@ export function checkSchedule(db, { date, makeup, shoot, costumes = [], excludeB
   }
 
   const onlyTimeConflicts = conflicts.every((c) => c.kind === 'staff' || c.kind === 'room');
-  const freeTime = onlyTimeConflicts ? freeTimeFor(db, date) : null;
+  const freeTime = onlyTimeConflicts ? freeTimeFor(db, date, excludeBookingId) : null;
   const why = conflicts.map((c) => {
     if (c.kind === 'hours') return `Ngoài giờ mở cửa studio (${c.from}–${c.to})`;
-    if (c.kind === 'costume') return `${c.who} chỉ còn ${c.available} bộ ngày ${vnDate(c.date)}`;
     return `${c.who}${c.part ? ` (${c.part})` : ''} bận ${c.from}–${c.to} ngày ${vnDate(c.date)}`;
   });
   const offer = freeTime
@@ -239,7 +177,6 @@ function readSchedule({ req, db, query }) {
     date,
     openingHours: db.settings.openingHours,
     blocks,
-    costumes: costumeAvailability(db, date),
     freeTime: freeTimeFor(db, date),
   });
 }

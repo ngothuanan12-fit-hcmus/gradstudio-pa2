@@ -221,3 +221,95 @@ test('GET /api/previews/:id serves seed and uploaded image files', async () => {
     await mock.stop();
   }
 });
+
+test('checkSchedule picks the first candidate window still free after busy blocks fill earlier ones', async () => {
+  const mock = await startMock('normal', 3208);
+  try {
+    const adminHeaders = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const linhHeaders = { Authorization: 'Bearer token-u-linh', 'Content-Type': 'application/json' };
+    const convRes = await fetch(`${mock.base}/api/conversations`, {
+      method: 'POST',
+      headers: linhHeaders,
+      body: JSON.stringify({
+        text: 'Em hỏi lịch 24/10',
+        request: {
+          serviceId: 'tot-nghiep',
+          packageId: 'tot-nghiep-premium',
+          date: '2026-10-24',
+          time: '09:00',
+          people: 1,
+          extras: [{ extraId: 'makeup' }],
+        },
+      }),
+    });
+    assert.equal(convRes.status, 201, await convRes.clone().text());
+    const conv = await convRes.json();
+    const propRes = await fetch(`${mock.base}/api/conversations/${conv.id}/proposals`, {
+      method: 'POST',
+      headers: adminHeaders,
+      body: JSON.stringify({
+        date: '2026-10-24',
+        makeup: { from: '13:00', to: '14:00', staffId: 'u-mai' },
+        shoot: { from: '14:00', to: '16:00', staffId: 'u-tuan', roomId: 'r-b' },
+      }),
+    });
+    assert.equal(propRes.status, 201, await propRes.clone().text());
+    const ansRes = await fetch(`${mock.base}/api/conversations/${conv.id}/proposals/pr-1/answer`, {
+      method: 'POST',
+      headers: linhHeaders,
+      body: JSON.stringify({ answer: 'agree' }),
+    });
+    assert.equal(ansRes.status, 200, await ansRes.clone().text());
+    const bookRes = await fetch(`${mock.base}/api/bookings`, {
+      method: 'POST',
+      headers: adminHeaders,
+      body: JSON.stringify({
+        conversationId: conv.id,
+        serviceId: 'tot-nghiep',
+        packageId: 'tot-nghiep-premium',
+        people: 1,
+      }),
+    });
+    assert.equal(bookRes.status, 201, await bookRes.clone().text());
+    const booking = await bookRes.json();
+    const payRes = await fetch(`${mock.base}/api/payments`, {
+      method: 'POST',
+      headers: linhHeaders,
+      body: JSON.stringify({ bookingId: booking.id, kind: 'deposit' }),
+    });
+    assert.equal(payRes.status, 201, await payRes.clone().text());
+    const pay = await payRes.json();
+    const resRes = await fetch(`${mock.base}/api/payments/${pay.id}/result`, {
+      method: 'POST',
+      headers: linhHeaders,
+      body: JSON.stringify({ result: 'success' }),
+    });
+    assert.equal(resRes.status, 200, await resRes.clone().text());
+
+    const sched = await fetch(`${mock.base}/api/schedule?date=2026-10-24`, { headers: adminHeaders });
+    const schedBody = await sched.json();
+    assert.equal('costumes' in schedBody, false);
+    assert.deepEqual(schedBody.freeTime, {
+      makeup: { from: '16:00', to: '17:00' },
+      shoot: { from: '17:00', to: '18:00' },
+    });
+
+    const clash = await fetch(`${mock.base}/api/schedule/check`, {
+      method: 'POST',
+      headers: adminHeaders,
+      body: JSON.stringify({
+        date: '2026-10-24',
+        makeup: null,
+        shoot: { from: '14:00', to: '16:00', staffId: 'u-tuan', roomId: 'r-b' },
+      }),
+    });
+    const clashBody = await clash.json();
+    assert.equal(clashBody.available, false);
+    assert.deepEqual(clashBody.freeTime, {
+      makeup: { from: '16:00', to: '17:00' },
+      shoot: { from: '17:00', to: '18:00' },
+    });
+  } finally {
+    await mock.stop();
+  }
+});

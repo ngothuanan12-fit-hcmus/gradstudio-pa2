@@ -2241,3 +2241,12 @@ Changed: with the contract changed ahead of the mock, `npm test` fails `contract
 Rejected: keeping `costumes` on `GET /api/schedule`, which contradicts the product owners' decision that costume stock is not checked.
 By hand: none.
 
+### 2026-11-22 — mock 04: drop costume stock check and choose first truly free window
+Commit: the commit that adds this entry with `mock/routes/schedule.mjs`, `mock/data/freeTimes.json`, removal of `mock/data/costumes.json`, `mock/data/README.md`, and `test/mock.test.mjs`, after `d158444`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm test`.
+Asked for: the mock side of `04-schedule.md` (`d158444`).
+Kept: awaiting An's review. Removed costume stock calculation and validation from `mock/routes/schedule.mjs` (`GET /api/schedule` drops `costumes`; `checkSchedule` checks staff, rooms, and opening hours only) and deleted `mock/data/costumes.json`. Replaced single-window entries in `mock/data/freeTimes.json` with arrays of candidate windows per date (plus `default` for other dates) and updated `freeTimeFor` to pick the first candidate window inside opening hours that does not overlap held `busy` blocks on that date (returning `null` when a date has no held busy blocks). Added a temporary no-op `costumeListFromExtras` export stub in `mock/routes/schedule.mjs` so `bookings.mjs` and `payments.mjs` keep running until their own mock commits, updated `mock/data/README.md`, and added a unit test in `test/mock.test.mjs` verifying `freeTime` advances to `16:00–17:00` / `17:00–18:00` after `GS-1024` holds `13:00–16:00`. Checks: `npm run format:check`, `npm run lint`, and `npm test` (`8/8` passing, including all `148` examples in `contract-check`) pass.
+Changed: the first draft of the new `test/mock.test.mjs` test used `c-linh` directly on a fresh mock without creating `c-linh` first (`POST /api/conversations` -> `404`), caught on the isolated `node --test` run because asserting intermediate status codes was added only after the initial assertion failed with `13:00–14:00` instead of `16:00–17:00`; creating the conversation via `POST /api/conversations` fixed the test setup.
+Rejected: removing `costumeListFromExtras` before updating `bookings.mjs` and `payments.mjs`, which would break ESM imports before those separate commits.
+By hand: none.
+

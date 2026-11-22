@@ -94,7 +94,6 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 | `proposals.json` | Proposed times, with their status | `conversations` |
 | `rooms.json` | Rooms | `conversations`, `schedule` |
 | `staff.json` | Staff specialties (`makeup`, `photographer`, *sample*) | `schedule` |
-| `costumes.json` | Costume stock counts per model and size (*sample*, `5` each) | `schedule` |
 | `bookings.json` | Seed bookings (`GS-1020`–`GS-1023`) and newly created bookings | `schedule`, `bookings`, `payments` |
 | `payments.json` | Payment records for deposits and remainders | `payments` |
 | `reminders.json` | Scheduled reminders for booked sessions (`Đã đặt lịch`) | `reminders`, `payments`, `bookings` |
@@ -102,7 +101,7 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 | `previews.json` (seed rows) | 40 previews on GS-1020 and 5 on GS-1022 (*sample*: the licensed photos of the home page reused), so G9 has photos to choose from | `gallery` |
 | `selections.json` | The customers' photo choices, one row per booking (`bookingId`, `previewIds`, `savedAt`); empty at start | `gallery`; `payments` (the remaining 70% needs a choice) |
 | `busy.json` | Times when a person or a room is held by a booking in *Đã đặt lịch* (R1: a booking in *Chờ cọc 30%* holds nothing) | the clash check in `conversations`; `04-schedule.md` and `06-payments.md` (a successful deposit adds the booking's blocks) |
-| `freeTimes.json` | The free time the API offers for a date with a clash (the mock may answer fixed values, PA#3 rubric) | the clash check (`conversations`, `schedule`) |
+| `freeTimes.json` | Candidate free windows per date (plus `default`); the clash check picks the first window still free against held blocks | the clash check (`conversations`, `schedule`) |
 | `settings.json` | Opening hours (*sample*, 08:00–18:00) and `reminderHoursBefore` (24, from the brief) | `admin`; the reminders of `07-reminders.md` |
 
 ## Changes
@@ -114,3 +113,4 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 - 2026-11-20 — Files for `03-conversations.md`: conversations, proposals, rooms, busy times, free times.
 - 2026-11-20 — `settings.json` for `10-admin.md`.
 - 2026-11-22 — Update `06-payments.md` outcome: `GS-1022` remainder payment waits for `db.selections` from `09-gallery.md` before succeeding.
+- 2026-11-22 — Remove `costumes.json` (costume stock is not checked, per product owners' decision) and store multiple candidate windows per day in `freeTimes.json`.
