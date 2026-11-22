@@ -3,6 +3,7 @@ import RequireRole from './auth/RequireRole.jsx';
 import ComingSoon from './pages/ComingSoon.jsx';
 import Conversation from './pages/Conversation.jsx';
 import Conversations from './pages/Conversations.jsx';
+import Gallery from './pages/Gallery.jsx';
 import Home from './pages/Home.jsx';
 import LichChup from './pages/LichChup.jsx';
 import NotFound from './pages/NotFound.jsx';
@@ -38,6 +39,23 @@ export default function App() {
         element={
           <RequireRole roles={['customer']}>
             <LichChup />
+          </RequireRole>
+        }
+      />
+      <Route
+        path="/lich-chup/:id/anh"
+        element={
+          <RequireRole roles={['customer']}>
+            <Gallery />
+          </RequireRole>
+        }
+      />
+      {/* The test payment gateway, until step G7 builds it; G9's payment leads here. */}
+      <Route
+        path="/thanh-toan/:paymentId"
+        element={
+          <RequireRole roles={['customer']}>
+            <ComingSoon title="Cổng thanh toán thử nghiệm" step="G7" customer />
           </RequireRole>
         }
       />

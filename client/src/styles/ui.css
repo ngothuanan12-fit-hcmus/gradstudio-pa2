@@ -182,3 +182,15 @@
   color: var(--ink);
   background: var(--danger-soft);
 }
+
+/* The success line after an action. Empty, it takes no room. */
+.form-done {
+  margin: 0;
+}
+.form-done:not(:empty) {
+  padding: var(--space-12);
+  border: 1px solid var(--free);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--free-soft);
+}

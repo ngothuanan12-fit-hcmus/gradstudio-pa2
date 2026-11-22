@@ -28,7 +28,8 @@ export function configureApi(options) {
 }
 
 // `body` is sent as JSON, or as it is when it is FormData (the preview upload). `signal` lets the caller abort.
-export async function api(path, { method = 'GET', body, signal } = {}) {
+// Answers the Response once it is a success; any failure becomes an ApiError.
+async function send(path, { method = 'GET', body, signal } = {}) {
   const headers = {};
   const isForm = body instanceof FormData;
   if (body !== undefined && !isForm) headers['Content-Type'] = 'application/json';
@@ -53,10 +54,22 @@ export async function api(path, { method = 'GET', body, signal } = {}) {
     throw new ApiError(0, { error: { code: 'NETWORK', message } });
   }
 
-  const data = await res.json().catch(() => null);
   if (!res.ok) {
+    const data = await res.json().catch(() => null);
     if (res.status === 401 && sent) onUnauthorized();
     throw new ApiError(res.status, data);
   }
-  return data;
+  return res;
+}
+
+// A JSON answer.
+export async function api(path, options) {
+  const res = await send(path, options);
+  return res.json().catch(() => null);
+}
+
+// A file answer (a preview image, which needs the token, so a plain <img src> cannot load it).
+export async function apiBlob(path, options) {
+  const res = await send(path, options);
+  return res.blob();
 }

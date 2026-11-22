@@ -2214,3 +2214,12 @@ Changed: the first draft of *Nhận ảnh* returned a hand-built answer instead 
 Rejected: freeing the booking's held blocks on *Nhận ảnh*: the product owners name only cancelling as freeing people and rooms.
 By hand: none.
 
+### 2026-11-22 — step G9, the gallery screen
+Commit: the commit that adds this entry with the G9 screen, after `08a20b8`.
+Tool: Claude Code (Claude Opus 5.5); client lint and format. The test on a `git archive` copy follows.
+Asked for: continue with what can be done now (G9 after its contract and mock).
+Kept: awaiting An's review. `/lich-chup/:id/anh` (customer only) loads the booking and its gallery (two requests) and shows: the booking's package, date and status; three steps, each with its button and, when it cannot be done yet, the reason under it (linked by `aria-describedby`, the button kept focusable with `aria-disabled`): 1 choose photos (1 to `limit`, changeable until the 70% is paid), 2 pay the remaining 70% with its amount (a form whose submit creates the payment and moves to `/thanh-toan/:paymentId`), 3 *Nhận ảnh* (then the focus moves to the status line, and the final file link shows); then the previews as a grid of labelled checkboxes with a live count ("Đã chọn 4/30 ảnh (chưa lưu)", in red with how many to drop when over). Each photo is loaded with the token through the new `apiBlob` (`api/client.js` now shares one `send` for JSON and files) and shown from an object URL released on cleanup (`PreviewImage`). Until Khánh builds G7, `/thanh-toan/:paymentId` shows the "not ready" screen in the customer's layout (`ComingSoon` gains `customer`), not the not-found screen. `.form-done` moves from `superadmin.css` to `ui.css`, now that two screens use it. `FRONTEND.md`: routes and *Not done*.
+Changed: nothing yet; the check follows.
+Rejected: `<img src="/api/previews/…">`, which gets `401` without the token (the sentence of `08-jobs.md` that Khánh is fixing).
+By hand: none.
+

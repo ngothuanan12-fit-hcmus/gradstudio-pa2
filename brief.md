@@ -342,3 +342,5 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 > push
 
 > giờ mình thiết lại những gì theo các thay đổi thì làm trước, cái nào cần chờ thì làm sau
+
+> tiếp tục

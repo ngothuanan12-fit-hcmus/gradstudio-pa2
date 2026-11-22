@@ -8,3 +8,11 @@ export const CONVERSATION_TONE = {
   'Đã chốt lịch': 'confirmed',
   'Hoàn thành': 'done',
 };
+
+// The StatusBadge tone for each booking status (docs/api/05-bookings.md).
+export const BOOKING_TONE = {
+  'Chờ cọc 30%': 'pending',
+  'Đã đặt lịch': 'confirmed',
+  'Hoàn thành': 'done',
+  'Đã hủy': 'neutral',
+};
