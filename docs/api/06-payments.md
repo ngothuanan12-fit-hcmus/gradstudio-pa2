@@ -1,13 +1,15 @@
 # Payments
 
-Deposit (30%, step G7) and remainder (70%, step G9) payments through the app's test gateway. A payment starts as `pending`, the customer chooses success or failure on the test gateway route (`/thanh-toan/...`, returning to `/thanh-toan/ket-qua`), and the result is recorded once through `POST /api/payments/:id/result`.
+Deposit (30%, step G7) and remainder (70%, step G9) payments through the app's test gateway. A payment starts as `pending`, the customer chooses success or failure on the test gateway route (`/thanh-toan/:paymentId`, returning to `/thanh-toan/:paymentId/ket-qua`, matching `FRONTEND.md` section 4), and the result is recorded once through `POST /api/payments/:id/result`.
 
-**Rules (R1 and brief section 3):**
+**Rules (R1, brief section 3, and team reading of G9):**
 1. A booking's time, staff, room, and costume stock are held **only after the 30% deposit succeeds** and the resources are checked again against already-booked slots (*Đã đặt lịch*).
 2. When a deposit succeeds, the booking moves from *Chờ cọc 30%* to *Đã đặt lịch*, and its make-up and shoot blocks are added to `busy` so the clash check (`03-conversations.md`, `04-schedule.md`, `05-bookings.md`) sees them.
-3. When a remainder payment succeeds (after the 30% deposit is already `paid`), `payment.remainderStatus` becomes `paid`; the booking stays *Đã đặt lịch* until the customer presses *Nhận ảnh* (`09-gallery.md`).
+3. **Team reading of step G9 in the brief:** the remaining 70% follows the order *chọn ảnh → trả 70% → Nhận ảnh*. A remainder payment can only be initiated or applied after the 30% deposit is `paid` **and** the customer has saved their photo selection (`09-gallery.md`), otherwise the API answers `409` (`"Cần chọn ảnh trước khi thanh toán 70% còn lại."`). When a remainder payment succeeds, `payment.remainderStatus` becomes `paid`; the booking stays *Đã đặt lịch* until the customer presses *Nhận ảnh* (`09-gallery.md`).
 
-**Team assumption.** Until the product owners answer (`FRONTEND.md`, section 5): when a deposit attempt fails, the booking stays *Chờ cọc 30%* with a Vietnamese failure message, no slot is held, and the customer may start a new payment attempt to try again.
+**Team assumptions.** Until the product owners answer (`FRONTEND.md`, section 5):
+- When a deposit attempt fails, the booking stays *Chờ cọc 30%* with a Vietnamese failure message, no slot is held, and the customer may start a new payment attempt to try again.
+- For PA#3, because there is no external payment provider, the signed-in customer records the test gateway outcome directly via `POST /api/payments/:id/result`.
 
 ## Objects
 
@@ -58,11 +60,11 @@ Errors:
 
 | Status | `code` | When | `fields` or `details` |
 |---|---|---|---|
-| `400` | `VALIDATION_ERROR` | missing `bookingId` or invalid `kind` | `bookingId`: "Chọn booking."; `kind`: "Loại thanh toán là deposit hoặc remainder." |
+| `400` | `VALIDATION_ERROR` | missing `bookingId` or invalid `kind` | `bookingId`: "Chọn booking."; `kind`: "Chọn thanh toán cọc hoặc phần còn lại." |
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not a customer | — |
 | `404` | `NOT_FOUND` | unknown booking or another customer's booking | — |
-| `409` | `CONFLICT` | booking is *Đã hủy* or *Hoàn thành*; `deposit` already `paid`; `remainder` requested before `deposit` is `paid` or already `paid`; `amount` is `null`; or resources now clash on `deposit` | `details` (`conflicts`, `freeTime`) on a clash |
+| `409` | `CONFLICT` | booking is *Đã hủy* or *Hoàn thành*; `deposit` already `paid`; `remainder` requested before `deposit` is `paid`, before a photo selection is saved, or already `paid`; `amount` is `null`; or resources now clash on `deposit` | `details` (`conflicts`, `freeTime`) on a clash |
 
 Another customer cannot pay for GS-1022 (`linh` vs `customer2`):
 
@@ -112,7 +114,7 @@ Content-Type: application/json
 HTTP/1.1 400 Bad Request
 Content-Type: application/json
 
-{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"kind": "Loại thanh toán là deposit hoặc remainder."}}}
+{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"kind": "Chọn thanh toán cọc hoặc phần còn lại."}}}
 ```
 
 Cannot pay remainder before deposit (`GS-1024` is still *Chờ cọc 30%*):
@@ -197,7 +199,7 @@ Body:
 
 Success: `200` with `{ "payment", "booking" }`.
 
-Errors: `400` (`result`: `"Chọn success hoặc fail."`), `401`, `403`, `404`, `409` (payment result already applied, or resources clashed on re-check with `details`).
+Errors: `400` (`result`: `"Chọn thành công hoặc thất bại."`), `401`, `403`, `404`, `409` (payment result already applied, missing photo selection for `remainder`, or resources clashed on re-check with `details`).
 
 First deposit attempt fails: GS-1024 stays *Chờ cọc 30%*:
 
@@ -231,6 +233,23 @@ HTTP/1.1 409 Conflict
 Content-Type: application/json
 
 {"error": {"code": "CONFLICT", "message": "Kết quả thanh toán này đã được ghi nhận."}}
+```
+
+Invalid result choice:
+
+```http
+POST /api/payments/pay-1/result
+Authorization: Bearer {{token:linh}}
+Content-Type: application/json
+
+{"result": "done"}
+```
+
+```http
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"result": "Chọn thành công hoặc thất bại."}}}
 ```
 
 Linh retries the deposit and succeeds: GS-1024 becomes *Đã đặt lịch* and its blocks are added to `busy`:
@@ -299,7 +318,7 @@ Content-Type: application/json
 {"available": false, "message": …, "conflicts": [{"who": "Tuấn", "kind": "staff", "date": "2026-10-24", "from": "14:00", "to": "16:00"}, {"who": "Phòng B", "kind": "room", "date": "2026-10-24", "from": "14:00", "to": "16:00"}], "freeTime": …}
 ```
 
-Minh Anh pays the remaining 70% for GS-1022 (`1.260.000đ`), leaving it ready for *Nhận ảnh* in `09-gallery.md`:
+Refused when trying to pay the remaining 70% before saving a photo selection (`GS-1022` has paid the deposit, no photo selection saved yet — team reading of step G9; `09-gallery.md` continues `GS-1022` through photo selection → 70% remainder → *Nhận ảnh*):
 
 ```http
 POST /api/payments
@@ -310,25 +329,10 @@ Content-Type: application/json
 ```
 
 ```http
-HTTP/1.1 201 Created
+HTTP/1.1 409 Conflict
 Content-Type: application/json
 
-{"id": "pay-3", "bookingId": "GS-1022", "customerId": "u-customer2", "kind": "remainder", "amount": 1260000, "status": "pending", "message": null, "createdAt": …, "completedAt": null}
-```
-
-```http
-POST /api/payments/pay-3/result
-Authorization: Bearer {{token:customer2}}
-Content-Type: application/json
-
-{"result": "success"}
-```
-
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{"payment": {"id": "pay-3", "bookingId": "GS-1022", "customerId": "u-customer2", "kind": "remainder", "amount": 1260000, "status": "succeeded", "message": "Thanh toán 70% còn lại thành công.", "createdAt": …, "completedAt": …}, "booking": {"id": "GS-1022", "conversationId": "c-customer2", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-18", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000, "included": false}, {"label": "Makeup", "amount": 0, "included": true}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "paid", "depositPaidAt": …, "remainderStatus": "paid", "remainderPaidAt": …}, "fileLink": "https://drive.gradstudio.test/gs-1022-final"}}
+{"error": {"code": "CONFLICT", "message": "Cần chọn ảnh trước khi thanh toán 70% còn lại."}}
 ```
 
 Linh lists her payments for GS-1024 (newest first):
@@ -348,3 +352,4 @@ Content-Type: application/json
 ## Changes
 
 - 2026-11-21 — First version. No client code calls these endpoints yet.
+- 2026-11-22 — Require a saved photo selection (`selections` from `09-gallery.md`) before paying the remaining 70% under the team's reading of G9 (replacing GS-1022's remainder-success example with the `409` refusal before selection), align test gateway route names to `/thanh-toan/:paymentId` and `/thanh-toan/:paymentId/ket-qua` (`FRONTEND.md` section 4), state the browser gateway-result assumption explicitly, and replace mixed-English validation messages (`fields.kind` and `fields.result`) with Vietnamese (PR #5 review & agreed items 5, 7). No client code calls these endpoints yet.
