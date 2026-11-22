@@ -1,26 +1,8 @@
 /* Step G9: the gallery. Photos in a grid that adds columns as the screen widens; each photo's checkbox row is a
    44 px tap target. */
-.gallery-steps {
+.gallery-step {
   display: grid;
-  gap: var(--space-16);
-}
-.step-list {
-  display: grid;
-  gap: var(--space-16);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.step-list > li {
-  display: grid;
-  gap: var(--space-8);
-  padding: var(--space-16);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-}
-.step-name {
-  margin: 0;
-  font-weight: 600;
+  gap: var(--space-12);
 }
 .step-note {
   margin: 0;

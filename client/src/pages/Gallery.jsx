@@ -16,8 +16,8 @@ import '../styles/gallery.css';
 
 const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
 
-// Step G9 (docs/api/09-gallery.md): choose the photos to be edited, pay the remaining 70%, then Nhận ảnh. Each step
-// says why it cannot be done yet, instead of a silent disabled button. Moving on to the payment page is a form's
+// Step G9 (docs/api/09-gallery.md): choose the photos to be edited, pay the remaining 70%, then Nhận ảnh, one section
+// per step in that order, the photos first. Each step says why it cannot be done yet, instead of a silent disabled button. Moving on to the payment page is a form's
 // submit (CLAUDE.md, NEVER 5).
 export default function Gallery() {
   const { id } = useParams();
@@ -122,77 +122,17 @@ export default function Gallery() {
                     <StatusBadge tone={BOOKING_TONE[b.status]}>{b.status}</StatusBadge>
                   </p>
 
-                  <section className="gallery-steps" aria-labelledby="gallery-steps-title">
-                    <h2 className="section-heading" id="gallery-steps-title">
-                      Các bước
+                  <section className="gallery-step" aria-labelledby="step-choose">
+                    <h2 className="section-heading" id="step-choose">
+                      1. Chọn ảnh để chỉnh sửa
                     </h2>
-                    <ol className="step-list">
-                      <li>
-                        <p className="step-name">1. Chọn ảnh để chỉnh sửa</p>
-                        <p className="step-note">
-                          {g.limit === null
-                            ? 'Gói này chưa có số ảnh chỉnh, studio sẽ báo lại.'
-                            : g.locked
-                              ? `Đã chốt ${g.selected.length} ảnh. Sau khi thanh toán 70%, lựa chọn không đổi được nữa.`
-                              : `Chọn từ 1 đến ${g.limit} ảnh. Đổi được cho tới khi thanh toán 70%.`}
-                        </p>
-                      </li>
-                      <li>
-                        <p className="step-name">2. Thanh toán 70% còn lại: {formatVND(b.pricing.remainder)}</p>
-                        <form className="step-form" noValidate onSubmit={payRemainder}>
-                          {pay.error ? (
-                            <p className="form-error" role="alert">
-                              {pay.error}
-                            </p>
-                          ) : null}
-                          <Button
-                            type="submit"
-                            aria-disabled={payWhy || pay.busy ? 'true' : undefined}
-                            aria-describedby={payWhy ? 'pay-why' : undefined}
-                          >
-                            {pay.busy ? 'Đang tạo thanh toán…' : 'Thanh toán 70%'}
-                          </Button>
-                          {payWhy ? (
-                            <span className="field-hint" id="pay-why">
-                              {payWhy}
-                            </span>
-                          ) : null}
-                        </form>
-                      </li>
-                      <li>
-                        <p className="step-name">3. Nhận ảnh</p>
-                        <form className="step-form" noValidate onSubmit={receivePhotos}>
-                          {receive.error ? (
-                            <p className="form-error" role="alert">
-                              {receive.error}
-                            </p>
-                          ) : null}
-                          <Button
-                            type="submit"
-                            aria-disabled={receiveWhy || receive.busy ? 'true' : undefined}
-                            aria-describedby={receiveWhy ? 'receive-why' : undefined}
-                          >
-                            {receive.busy ? 'Đang xác nhận…' : 'Nhận ảnh'}
-                          </Button>
-                          {receiveWhy ? (
-                            <span className="field-hint" id="receive-why">
-                              {receiveWhy}
-                            </span>
-                          ) : null}
-                          {b.fileLink && b.status === 'Hoàn thành' ? (
-                            <a className="file-link" href={b.fileLink}>
-                              Mở link ảnh đã chỉnh
-                            </a>
-                          ) : null}
-                        </form>
-                      </li>
-                    </ol>
-                  </section>
-
-                  <section className="chat-block" aria-labelledby="previews-title">
-                    <h2 className="section-heading" id="previews-title">
-                      Ảnh xem trước
-                    </h2>
+                    <p className="step-note">
+                      {g.limit === null
+                        ? 'Gói này chưa có số ảnh chỉnh, studio sẽ báo lại.'
+                        : g.locked
+                          ? `Đã chốt ${g.selected.length} ảnh. Sau khi thanh toán 70%, lựa chọn không đổi được nữa.`
+                          : `Chọn từ 1 đến ${g.limit} ảnh. Đổi được cho tới khi thanh toán 70%.`}
+                    </p>
                     {g.previews.length === 0 ? (
                       <EmptyState>Studio chưa tải ảnh xem trước lên.</EmptyState>
                     ) : (
@@ -237,6 +177,61 @@ export default function Gallery() {
                         ) : null}
                       </form>
                     )}
+                  </section>
+
+                  <section className="gallery-step" aria-labelledby="step-pay">
+                    <h2 className="section-heading" id="step-pay">
+                      2. Thanh toán 70% còn lại: {formatVND(b.pricing.remainder)}
+                    </h2>
+                    <form className="step-form" noValidate onSubmit={payRemainder}>
+                      {pay.error ? (
+                        <p className="form-error" role="alert">
+                          {pay.error}
+                        </p>
+                      ) : null}
+                      <Button
+                        type="submit"
+                        aria-disabled={payWhy || pay.busy ? 'true' : undefined}
+                        aria-describedby={payWhy ? 'pay-why' : undefined}
+                      >
+                        {pay.busy ? 'Đang tạo thanh toán…' : 'Thanh toán 70%'}
+                      </Button>
+                      {payWhy ? (
+                        <span className="field-hint" id="pay-why">
+                          {payWhy}
+                        </span>
+                      ) : null}
+                    </form>
+                  </section>
+
+                  <section className="gallery-step" aria-labelledby="step-receive">
+                    <h2 className="section-heading" id="step-receive">
+                      3. Nhận ảnh
+                    </h2>
+                    <form className="step-form" noValidate onSubmit={receivePhotos}>
+                      {receive.error ? (
+                        <p className="form-error" role="alert">
+                          {receive.error}
+                        </p>
+                      ) : null}
+                      <Button
+                        type="submit"
+                        aria-disabled={receiveWhy || receive.busy ? 'true' : undefined}
+                        aria-describedby={receiveWhy ? 'receive-why' : undefined}
+                      >
+                        {receive.busy ? 'Đang xác nhận…' : 'Nhận ảnh'}
+                      </Button>
+                      {receiveWhy ? (
+                        <span className="field-hint" id="receive-why">
+                          {receiveWhy}
+                        </span>
+                      ) : null}
+                      {b.fileLink && b.status === 'Hoàn thành' ? (
+                        <a className="file-link" href={b.fileLink}>
+                          Mở link ảnh đã chỉnh
+                        </a>
+                      ) : null}
+                    </form>
                   </section>
                 </>
               );

@@ -187,6 +187,14 @@
 .form-done {
   margin: 0;
 }
+/* Empty, it stays in the page for screen readers but takes no room (no gap in a grid). */
+.form-done:empty {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
 .form-done:not(:empty) {
   padding: var(--space-12);
   border: 1px solid var(--free);
