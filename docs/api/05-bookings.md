@@ -5,7 +5,7 @@ What the Admin and customer do with bookings: create a booking once the customer
 Only bookings in *Đã đặt lịch* hold staff and rooms (R1). Creating a booking starts it in *Chờ cọc 30%* and links it to the conversation (`bookingId`), without holding any slot yet; the slot is held only when the 30% deposit succeeds (`06-payments.md`).
 
 **Product owner decisions, team assumptions, and sample data.** Per the product owners' answers ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)):
-1. A cancelled booking's status is *Đã hủy* (seen by the Admin and customer). Only the Admin cancels, from *Chờ cọc 30%* or *Đã đặt lịch* (*Hoàn thành* answers `409`); cancelling frees staff and rooms and removes reminders. There is no refund tracking in the system: the booking keeps what was paid in `payment`, and the studio refunds outside the system. Rescheduling checks availability at the new time without the customer agreeing again; the status stays, while reminders and jobs update.
+1. A cancelled booking's status is *Đã hủy* (seen by the Admin and customer). Only the Admin cancels, from *Chờ cọc 30%* or *Đã đặt lịch* (*Hoàn thành* answers `409`); cancelling frees staff and rooms and removes reminders. There is no refund tracking in the system: the booking keeps what was paid in `payment`, and the studio refunds outside the system. Rescheduling checks availability at the new time without the customer agreeing again; normally the status stays unchanged (unpaid *Chờ cọc 30%* stays *Chờ cọc 30%*; *Đã đặt lịch* stays *Đã đặt lịch*), while reminders and jobs update. **Team assumption (follow-up question for the product owners):** if a booking's 30% deposit is already `paid` but the booking stayed *Chờ cọc 30%* because another customer paid first for the same slot (`06-payments.md` rule 3), moving it to a free time via `PATCH /api/bookings/:id` transitions it to *Đã đặt lịch*, adds its blocks to `busy`, and creates its pending reminder and assigned jobs.
 2. Extras have no price of their own: a booking costs its package's price (`pack.price * people` when `pack.priceUnit` is `"người"`, otherwise `pack.price`), computed by the server. The Admin cannot edit or discount a price. Extras are recorded only so the Admin can plan make-up staff and prepare costumes; costume stock is not checked. *Still open:* whether every package may record make-up or a costume (team assumption: yes).
 3. *Still open:* For a class yearbook (`Kỷ yếu lớp`, `350.000đ/người`), the team assumes the representative estimates head count, the Admin confirms `people`, and the server recomputes the price from `people` (no price typed by hand).
 
@@ -304,7 +304,7 @@ Content-Type: application/json
 
 ## PATCH /api/bookings/:id
 
-Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, confirmed head count (`people`), `sessionType`, or `extras`. Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks) before applying any time, staff, or room change. The Admin cannot type or discount a total price; the server recomputes package pricing from `people`. The booking's status stays unchanged; if *Đã đặt lịch*, held blocks in `busy`, pending reminders, and assigned jobs update.
+Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, confirmed head count (`people`), `sessionType`, or `extras`. Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks) before applying any time, staff, or room change. The Admin cannot type or discount a total price; the server recomputes package pricing from `people`. Normally the booking's status stays unchanged (if *Đã đặt lịch*, held blocks in `busy`, pending reminders, and assigned jobs update); however, under the team assumption in rule 1, if the booking is in *Chờ cọc 30%* with `payment.depositStatus` already `"paid"` (concurrent deposit race in `06-payments.md` rule 3) and `PATCH` updates `date`, `makeup`, or `shoot` to a free slot, it transitions to *Đã đặt lịch* and commits its `busy` blocks, reminder, and assigned jobs.
 
 **Deposit and remainder after head-count changes:**
 - Before the 30% deposit is paid (`payment.depositStatus` = `unpaid`), `pricing.deposit` is `Math.round(total * 0.3)` and `pricing.remainder` is `total - deposit`.
@@ -383,6 +383,33 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+```
+
+Illustrative recovery after a concurrent deposit clash (`06-payments.md` rule 3 — verified end to end on its own fresh mock process in `test/mock.test.mjs` so sequential ids `pay-3` in `09-gallery.md` stay untouched): moving `GS-1025` (`status: "Chờ cọc 30%"`, `payment.depositStatus: "paid"`) to a free slot moves it to *Đã đặt lịch*, adds its blocks to `busy`, schedules its reminder/jobs, and unlocks the remaining 70%:
+
+```json
+{
+  "request": {
+    "method": "PATCH",
+    "path": "/api/bookings/GS-1025",
+    "body": {
+      "date": "2026-10-26",
+      "makeup": null,
+      "shoot": { "from": "14:00", "to": "16:00", "staffId": "u-tuan", "roomId": "r-b" }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "id": "GS-1025",
+      "date": "2026-10-26",
+      "makeup": null,
+      "shoot": { "from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B" },
+      "status": "Đã đặt lịch",
+      "payment": { "depositStatus": "paid", "depositPaidAt": "...", "remainderStatus": "unpaid", "remainderPaidAt": null }
+    }
+  }
+}
 ```
 
 Cannot change a completed booking (`GS-1021`):
@@ -637,3 +664,4 @@ Content-Type: application/json
 - 2026-11-21 — First version. No client code calls these endpoints yet.
 - 2026-11-22 — Lock `pricing.deposit` once the deposit is `paid` when `total`, `people`, or `extras` change (refuse `total` below paid deposit or price changes after remainder is `paid`), document full per-field `400` validation errors with examples on `PATCH /api/bookings/:id`, and replace the untrue mock-test claim on `POST /api/bookings/:id/cancel` with an accurate reference to `test/mock.test.mjs` (PR #5 review fixes). No client code calls these endpoints yet.
 - 2026-11-22 — Compute `pricing` from package price and `people` only (extras add no price; remove `total` from `PATCH /api/bookings/:id` and `included` from `pricing.items`), drop costume stock checks, move `*Đã hủy*` / Admin-only / outside-system refund rules to the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)), and make the empty-body `PATCH /api/bookings/:id` error a form-level `error.message` with empty `fields` `{}` instead of `fields.date`. No client code calls these endpoints yet.
+- 2026-11-23 — Add team assumption (follow-up question for product owners): moving a *Chờ cọc 30%* booking whose `depositStatus` is already `paid` (concurrent deposit race in `06-payments.md` rule 3) to a free slot via `PATCH /api/bookings/:id` transitions it to *Đã đặt lịch*, commits its `busy` blocks, and schedules its reminder and jobs, with an illustrative JSON example (PR #6 review follow-up). No client code calls `PATCH /api/bookings/:id` yet (`G10`).

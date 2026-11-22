@@ -2320,3 +2320,13 @@ Checks: isolated `git archive fb357b6` Playwright runs (`normal`, `error`, `empt
 Changed: product code needed nothing (0 UI defects caught across Playwright checks); only verification script assumptions failed and were corrected across runs (`#schedule-sheet` view switchers are buttons inside `group "Chế độ xem lịch"` rather than `role="tab"`, `#prop-shoot-from` is a combobox rather than `<input>`, `aria-disabled="true"` blocks Playwright's default `.click()`, `c-linh` starts dynamically via `POST /api/conversations`, and contract uses `messages[].proposal`, `{"answer":"agree"}`, and `/result` rather than `proposals`/`choice`/`/mock`).
 Rejected: leaving the temporary `/tmp/verify-g4-g6-po` harness or running concurrent mock servers on shared ports; cleaned up via `manage_task` kills, `browser_close`, and `rm -rf`.
 By hand: none.
+
+### 2026-11-23 — contract 05/06: recover deposit-paid unheld booking via free-slot reschedule
+
+Commit: the commit that adds this entry with `docs/api/05-bookings.md` and `docs/api/06-payments.md`, after `ce27fc5`. The mock and tests follow.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm test`.
+Asked for: PR #6 review fix 1 (contract first): when an Admin moves a *Chờ cọc 30%* booking whose 30% deposit is already `paid` (after losing the concurrent slot race in `06-payments.md` rule 3) to a free slot via `PATCH /api/bookings/:id`, transition it to *Đã đặt lịch* and commit its `busy` blocks.
+Kept: awaiting An's review. Updated Rule 1 and `PATCH /api/bookings/:id` in `docs/api/05-bookings.md` plus Rule 3 in `docs/api/06-payments.md` as a team assumption (flagged as a follow-up question for the product owners), documented an illustrative `GS-1025` JSON request/response example in `05-bookings.md` without consuming sequential `pay-3` needed by `09-gallery.md` (`contract-check`), and added dated `## Changes` lines in both files. Checks: `npm run format:check`, `npm run lint`, and `npm test` (`9/9` passing, keeping `148/148` contract-check examples green because the new example is illustrative pending mock/test updates) pass.
+Changed: `contract-check.mjs` does not test the new behavior yet because running a live concurrent deposit (`POST /api/payments`) inline in `05`/`06` would consume `pay-3` before `09-gallery.md`; verified on its own fresh mock process in `test/mock.test.mjs` next.
+Rejected: shifting downstream `09-gallery.md` `pay-3` expectations or modifying An's `docs/api/09-gallery.md` to make room for an inline payment example.
+By hand: none.
