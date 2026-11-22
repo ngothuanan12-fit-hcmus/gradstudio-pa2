@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router';
 import RequireRole from './auth/RequireRole.jsx';
 import ComingSoon from './pages/ComingSoon.jsx';
+import CongViec from './pages/CongViec.jsx';
 import Conversation from './pages/Conversation.jsx';
 import Conversations from './pages/Conversations.jsx';
 import Gallery from './pages/Gallery.jsx';
@@ -101,12 +102,11 @@ export default function App() {
           </RequireRole>
         }
       />
-      {/* The staff's home, until step G8 builds it. */}
       <Route
         path="/cong-viec"
         element={
           <RequireRole roles={['staff']}>
-            <ComingSoon title="Việc của tôi" step="G8" />
+            <CongViec />
           </RequireRole>
         }
       />
