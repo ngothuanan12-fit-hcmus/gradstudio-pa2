@@ -2079,3 +2079,12 @@ Changed: with the contract alone, contract-check fails as expected: the mock sti
 Rejected: keeping the costumes on the proposal: the proposal object and its examples would change for something the booking already carries.
 By hand: none.
 
+### 2026-11-22 — mock 03: the proposal calls `checkSchedule`
+Commit: the commit that adds this entry with `mock/routes/conversations.mjs` and `HARNESS.md`, after `0a0c98b`.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check), format and lint.
+Asked for: the mock side of `0a0c98b` (same request).
+Kept: awaiting An's review. The proposal handler validates with `validateScheduleInput` and checks with `checkSchedule` from `mock/routes/schedule.mjs`; its own `checkSlot` and `clashes` are removed, so one function holds the rules. `HARNESS.md`: incident 12, found by Khánh's review.
+Changed: lint failed once on `isStaff`, left unused after `checkSlot` went; removed (the rule was not touched). Checks: `npm test` 7/7, every example of the ten files answers as written, including the eight that failed on `0a0c98b`; format pass.
+Rejected: nothing.
+By hand: none.
+

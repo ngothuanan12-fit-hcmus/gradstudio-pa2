@@ -1,5 +1,6 @@
 // docs/api/03-conversations.md: conversations, messages, booking requests, proposed times and the customer's answer.
 import { currentUser, fail, forbidden, invalid, notFound, ok, unauthenticated } from '../lib.mjs';
+import { checkSchedule, validateScheduleInput } from './schedule.mjs';
 
 const STATUSES = ['Chưa trả lời', 'Đang tư vấn', 'Đã chốt lịch', 'Hoàn thành'];
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -20,7 +21,6 @@ const isDate = (v) => typeof v === 'string' && DATE.test(v) && !Number.isNaN(Dat
 const isTime = (v) => typeof v === 'string' && TIME.test(v);
 const vnDate = (d) => d.split('-').reverse().join('/');
 const name = (db, userId) => db.users.find((u) => u.id === userId)?.name;
-const isStaff = (db, id) => db.users.some((u) => u.id === id && u.role === 'staff');
 
 // --- shapes of docs/api/03-conversations.md
 
@@ -178,32 +178,6 @@ function reply({ req, db, params, body }) {
   return ok(full(db, c), 201);
 }
 
-function checkSlot(db, slot, key, fields, needRoom) {
-  const s = slot && typeof slot === 'object' ? slot : {};
-  if (!isTime(s.from)) fields[`${key}.from`] = 'Giờ theo dạng HH:MM.';
-  if (!isTime(s.to)) fields[`${key}.to`] = 'Giờ theo dạng HH:MM.';
-  else if (isTime(s.from) && s.to <= s.from) fields[`${key}.to`] = 'Giờ kết thúc phải sau giờ bắt đầu.';
-  if (!isStaff(db, s.staffId)) fields[`${key}.staffId`] = 'Không có nhân viên này.';
-  if (needRoom && !db.rooms.some((r) => r.id === s.roomId)) fields[`${key}.roomId`] = 'Không có phòng này.';
-  return s;
-}
-
-// R1: a person or the room is busy if a booking that holds a slot (Đã đặt lịch) covers part of the time.
-function clashes(db, date, part, slot, label) {
-  const found = [];
-  const overlaps = (b) => b.date === date && b.from < slot.to && slot.from < b.to;
-  for (const b of db.busy.filter(overlaps)) {
-    if (b.staffId === slot.staffId) {
-      found.push({ who: name(db, b.staffId), kind: 'staff', date, from: b.from, to: b.to, part: label });
-    }
-    if (part === 'shoot' && b.roomId && b.roomId === slot.roomId) {
-      const room = db.rooms.find((r) => r.id === b.roomId).name;
-      found.push({ who: room, kind: 'room', date, from: b.from, to: b.to, part: null });
-    }
-  }
-  return found;
-}
-
 function propose({ req, db, params, body }) {
   const { user, error } = caller(req, db, ['admin']);
   if (error) return error;
@@ -215,32 +189,23 @@ function propose({ req, db, params, body }) {
       details: { bookingId: c.bookingId },
     });
   }
+  // The clash check of 04-schedule.md, so a proposal and POST /api/schedule/check follow the same rules: people and
+  // room, opening hours, the costumes the Admin entered, and a free time offered only when it is really free.
   const b = body && typeof body === 'object' ? body : {};
-  const fields = {};
-  if (!isDate(b.date)) fields.date = 'Ngày theo dạng YYYY-MM-DD.';
-  const makeup = b.makeup == null ? null : checkSlot(db, b.makeup, 'makeup', fields, false);
-  const shoot = checkSlot(db, b.shoot, 'shoot', fields, true);
+  const { fields, parsed } = validateScheduleInput(db, {
+    date: b.date,
+    makeup: b.makeup,
+    shoot: b.shoot,
+    costumes: b.costumes,
+  });
   if (Object.keys(fields).length) return invalid(fields);
-
-  const conflicts = [
-    ...(makeup ? clashes(db, b.date, 'makeup', makeup, 'makeup') : []),
-    ...clashes(db, b.date, 'shoot', shoot, 'chụp'),
-  ];
-  if (conflicts.length) {
-    const freeTime = db.freeTimes[b.date] || null;
-    const why = conflicts
-      .map((x) => `${x.who}${x.part ? ` (${x.part})` : ''} bận ${x.from}–${x.to} ngày ${vnDate(x.date)}`)
-      .join('; ');
-    const offer = freeTime
-      ? ` Giờ trống: makeup ${freeTime.makeup.from}–${freeTime.makeup.to}, chụp ${freeTime.shoot.from}–${freeTime.shoot.to}.`
-      : '';
-    return fail(409, 'CONFLICT', `${why}.${offer}`, {
-      details: {
-        conflicts: conflicts.map(({ who, kind, date, from, to }) => ({ who, kind, date, from, to })),
-        freeTime,
-      },
+  const check = checkSchedule(db, parsed);
+  if (!check.available) {
+    return fail(409, 'CONFLICT', check.message, {
+      details: { conflicts: check.conflicts, freeTime: check.freeTime },
     });
   }
+  const { makeup, shoot } = parsed;
 
   for (const p of db.proposals) if (p.conversationId === c.id && p.status === 'open') p.status = 'replaced';
   const room = db.rooms.find((r) => r.id === shoot.roomId);
