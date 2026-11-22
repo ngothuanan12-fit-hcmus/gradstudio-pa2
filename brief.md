@@ -374,3 +374,26 @@ Carried over from `feature/pa3-ui` (`4cf690d`) and synced with `main` (`5038348`
 
 > Khi hội thoại có bookingId thì ẩn form đề xuất, hiện link tới `/quan-ly/booking/:id`; bỏ tồn kho trang phục và bỏ giả định giá dịch vụ thêm theo quyết định PO.
 > Tiếp tục (nhưng vừa rồi có vấn đề tràn ram nên đã crash chương trình) lần này làm kĩ lại
+
+### 2.22 Single-spawn mock guard, PR #6 submission, and PR #6 review fixes (Khánh, 2026-11-22 – 2026-11-23)
+
+Appended verbatim prompts after resolving the earlier inline-spawn OOM crash through opening PR #6 and addressing Lead An's review feedback (`74e9fba`–`7d5965b`):
+
+> Nguyên nhân 2 lần crash trước KHÔNG phải do `npm test`, mà do lỗi fork bomb trong đoạn `node -e` bạn tự viết:
+> - `out += d` giữ nguyên chuỗi `"GradStudio mock on"` mãi mãi, trong khi `mock/server.mjs` log mỗi HTTP request ra `stdout`.
+> - Vì không có biến cờ `started`, mỗi chunk `stdout` sau đó đều làm `out.includes("GradStudio mock on")` đúng lại, spawn thêm hàng trăm tiến trình `tools/contract-check.mjs` chạy song song gây tràn RAM (13 GB) và bị OOM kill.
+>
+> Quy tắc bắt buộc từ giờ khi chạy `contract-check.mjs` với `mock/server.mjs`:
+> 1. TUYỆT ĐỐI không gọi `spawn(...)` trực tiếp trong `stdout.on("data")` mà không có guard một lần (`if (started) return; started = true;`).
+> 2. Dùng pattern an toàn (chỉ spawn đúng 1 lần, không tích lũy `out` sau khi đã start):
+>    - Đặt `let started = false;`, khi `!started && out.includes("GradStudio mock on")` thì set `started = true; out = "";` rồi mới spawn `contract-check.mjs` một lần duy nhất (hoặc bọc bước chờ start trong `new Promise` giống `startMock` ở `test/mock.test.mjs`, rồi `await` xong mới `spawn`).
+>
+> Bây giờ hãy tiếp tục từ thay đổi đang dở ở `docs/api/06-payments.md`, dùng pattern an toàn ở trên nếu cần chạy `--strict-values`, rồi hoàn tất các bước tiếp theo.
+
+> Push lên github + tạo pull request tới An và comment những gì đã làm được.
+
+> Còn những trang UI nào cần phải làm
+
+> Đã có comment phải hồi lại pull request, pull về và fix theo chỉ dẫn
+
+> Hãy cập nhật vào brief.md, rồi push lên lại

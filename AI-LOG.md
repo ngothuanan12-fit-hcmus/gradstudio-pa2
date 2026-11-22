@@ -2350,3 +2350,13 @@ Kept: awaiting An's re-review. Pushed `feature/pa3-ui` (`4cf690d`) to `origin` s
 Changed: initial Playwright run on the new port `4334` timed out looking for `getByLabel(/Email/i)` because `SignIn.jsx` uses label `"E-mail"` (`#sign-in-email`); switched the test locator to `#sign-in-email`.
 Rejected: hiding `.admin-convs` with `display: none` at `360px` on `/quan-ly/hoi-thoai/:id`, which would remove the screen's sole `<h1>` from view.
 By hand: none.
+
+### 2026-11-23 — brief.md sync: append session prompts chronologically
+
+Commit: the commit that adds this entry with `brief.md`, after `7d5965b`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm test`.
+Asked for: append the remaining verbatim prompts from this session (the single-spawn mock guard instruction, PR #6 push/create/comment, UI-remaining check, PR #6 review fixes, and `brief.md` update prompt) chronologically to `brief.md` without editing existing sections, then push to GitHub.
+Kept: awaiting An's review. Extracted exact prompt text from the session log (`transcript.jsonl`) and appended section `2.22` in `brief.md` while keeping all earlier entries untouched. Checks: `npm run format:check`, `npm run lint`, and `npm test` (`10/10` passing) pass before pushing.
+Changed: nothing.
+Rejected: paraphrasing past prompts from memory instead of reading exact stored text from `transcript.jsonl`.
+By hand: none.
