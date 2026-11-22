@@ -74,7 +74,7 @@ function computePricing(db, booking) {
     const included = pack.includes.includes(x.extraId);
     const model = def?.models.find((m) => m.id === x.modelId);
     const label = model ? `${def.name}: ${model.name} (${x.size})` : def.name;
-    const amount = included ? 0 : def.price === null ? null : def.price * (x.quantity || 1);
+    const amount = included ? 0 : typeof def.price !== 'number' ? null : def.price * (x.quantity || 1);
     items.push({ label, amount, included });
   }
   const computedTotal = items.reduce((sum, it) => sum + (typeof it.amount === 'number' ? it.amount : 0), 0);

@@ -2151,3 +2151,12 @@ Changed: with the contract alone, contract-check fails on `GET /api/extras` (lin
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — mock 02: extras without prices
+Commit: the commit that adds this entry with `mock/data/extras.json`, `mock/data/README.md` and one line of `mock/routes/bookings.mjs`, after `45fc382`.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check), format and lint.
+Asked for: the mock side of `45fc382`.
+Kept: awaiting An's review. The extras seed loses `price` and `priceUnit` and gets the new notes; the seed README cites the decision for extras, costumes and Premium including make-up. In Khánh's `bookings.mjs`, the price of an extra is read as "none" when the field is missing (`typeof def.price !== 'number'` instead of `def.price === null`), so `pricing` answers exactly as before; Khánh rewrites that pricing with the decision anyway (message of this step).
+Changed: before that one-line change, a missing `price` would have made `def.price * quantity` give `NaN` and broken every booking's `pricing` in 05 and 06; seen by reading the only reader of `extras.price` in the mock before changing the seed, not by a failed run. Checks: `npm test` 7/7 (all examples, including 05 and 06), format and lint pass.
+Rejected: waiting for Khánh's pricing rewrite before changing 02, which would leave the home page showing "Giá báo khi tư vấn." for extras against the decision.
+By hand: none.
+

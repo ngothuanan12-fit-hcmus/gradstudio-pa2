@@ -27,20 +27,20 @@ Accounts sign in with `<name>@gradstudio.test` and `<name>-demo` (`users.json`; 
 |---|---|---|
 | `r-b` | Phòng B | The brief's room: GS-1024 shoots here, 14:00–16:00 on 24/10 |
 | `r-a` | Phòng A (*sample*) | GS-1023 |
-| costumes | *assumption* | Costume rental is an extra. Until the product owners answer: each costume has a model and sizes, and stock is checked by model, size and date (see `FRONTEND.md`, section 5) |
+| costumes | product owners | Costume rental is an extra with a model and a size, recorded so the studio can prepare it; it has no price and its stock is not checked ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)) |
 
 ## Services and packages
 
-From the brief: Kỷ yếu lớp từ 350.000đ/người, Tốt nghiệp từ 1.800.000đ, Chân dung/CV từ 690.000đ; Gói Tốt nghiệp Premium, 2 hours, 30 edited photos, 1.800.000đ. Until the product owners answer (*assumption*, `FRONTEND.md` section 5): each package lists what it already includes (make-up, costume); an included item costs 0đ in the booking, an item outside the package is added to the total; make-up is priced per person and per artist slot. Gói Tốt nghiệp Premium includes make-up, which is why Linh's make-up adds nothing to 1.800.000đ. The prices of extras outside a package are *waiting*.
+From the brief: Kỷ yếu lớp từ 350.000đ/người, Tốt nghiệp từ 1.800.000đ, Chân dung/CV từ 690.000đ; Gói Tốt nghiệp Premium, 2 hours, 30 edited photos, 1.800.000đ. The product owners decided ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)): extras have no price of their own and a booking costs its package's price; GS-1024 is 1.800.000đ with make-up included. A package's `includes` is part of its description on the price list.
 
 ## Catalogue (`02-catalogue.md`)
 
 | Item | Values | Source |
 |---|---|---|
 | Services | Kỷ yếu lớp (from 350.000đ per person), Tốt nghiệp (from 1.800.000đ), Chân dung/CV (from 690.000đ) | brief |
-| Packages | Gói Kỷ yếu lớp 350.000đ/người; Gói Tốt nghiệp Premium 1.800.000đ, 120 minutes, 30 edited photos, includes make-up; Gói Chân dung/CV 690.000đ | brief; Premium including make-up is the team's *assumption*; the other packages' length and photo counts are `null` (*waiting*) |
+| Packages | Gói Kỷ yếu lớp 350.000đ/người; Gói Tốt nghiệp Premium 1.800.000đ, 120 minutes, 30 edited photos, includes make-up; Gói Chân dung/CV 690.000đ | brief; Premium including make-up confirmed by the product owners; the other packages' length and photo counts are `null` (*waiting*) |
 | One-line summaries | "Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau." (An's wording); "Chụp ảnh tốt nghiệp cho riêng bạn hoặc nhóm bạn thân, để nhớ mãi ngày ra trường."; "Đặt lịch chụp chân dung chỉn chu cho CV và hồ sơ xin việc của bạn." | our wording; "khoảnh khắc" once on the home page (PA#2 writing rule 7) |
-| Extras | Makeup (per person and per artist slot), Thuê trang phục (by model and size) | brief names them; how they are charged is the team's *assumption*; prices `null` (*waiting*) |
+| Extras | Makeup, Thuê trang phục (by model and size), no price of their own | brief names them; no price, product owners' decision |
 | Costume models | Áo cử nhân (S–XL), Áo dài trắng (S–L) | *sample* |
 | Photos | One per service, the licensed photos of PA#2 with their authors and licences (`docs/IMAGE_SOURCES.md`) | PA#2 |
 | Reviews | Three, the newest by Lê Gia Bảo (GS-1021) | *sample* text |

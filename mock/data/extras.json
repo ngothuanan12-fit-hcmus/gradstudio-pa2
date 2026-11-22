@@ -3,18 +3,14 @@
     "id": "makeup",
     "name": "Makeup",
     "kind": "makeup",
-    "price": null,
-    "priceUnit": "người",
-    "note": "Tính theo người và theo suất của thợ makeup. Đã gồm trong Gói Tốt nghiệp Premium.",
+    "note": "Ghi vào yêu cầu để studio xếp thợ makeup. Không tính thêm tiền: giá booking là giá gói.",
     "models": []
   },
   {
     "id": "trang-phuc",
     "name": "Thuê trang phục",
     "kind": "costume",
-    "price": null,
-    "priceUnit": "bộ",
-    "note": "Chọn mẫu và size; studio kiểm tra còn trang phục vào ngày chụp.",
+    "note": "Chọn mẫu và size để studio chuẩn bị trang phục. Không tính thêm tiền: giá booking là giá gói.",
     "models": [
       { "id": "ao-cu-nhan", "name": "Áo cử nhân", "sizes": ["S", "M", "L", "XL"] },
       { "id": "ao-dai-trang", "name": "Áo dài trắng", "sizes": ["S", "M", "L"] }
