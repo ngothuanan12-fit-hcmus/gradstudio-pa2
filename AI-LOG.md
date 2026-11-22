@@ -2360,3 +2360,12 @@ Kept: awaiting An's review. Extracted exact prompt text from the session log (`t
 Changed: nothing.
 Rejected: paraphrasing past prompts from memory instead of reading exact stored text from `transcript.jsonl`.
 By hand: none.
+
+### 2026-11-23 — review of PR #6 (PO sync of 04, 05, 06, 08 and G4–G6 Admin screens)
+Commit: the commit that adds this entry (log only); the review is on PR #6, *Changes requested*, on `ce27fc5`.
+Tool: Claude Code (Claude Opus 5.5); the gates on a `git archive` copy of `ce27fc5`; Playwright on that copy with its own mock (preview 4192–4195, mock 3103, 3104, 3108; NEVER 15); scripts `quan-ly-rieng/checks/check_conv.py`, `check_gallery.py`, `check_admin.py` and the new `check_pr6.py`.
+Asked for: check the repository's pull requests, then post the review on PR #6.
+Kept: the review as posted. Passing: `npm test` 9/9, lint, build; the Admin screens at 360, 768 and 1280 px (one `h1`, no sideways scroll, inputs labelled, nothing under 44 px, no console error, a customer turned away, no proposal form on GS-1022, package price only with no edit); G3/G6 customer, G9 and G11 unchanged after the shared `.check-field` and `Button.jsx` changes; 04, 05, 06, 08 match the product owners' decisions and no file of An's changed. To fix before merging: (1) a booking whose deposit lost the race (`depositStatus: "paid"`, *Chờ cọc 30%*) can only be cancelled, since a reschedule keeps the status, a new deposit and the remainder both answer `409`, and no slot is held; suggested team assumption: moving it to a free time makes it *Đã đặt lịch*; (2) `fb357b6` carries about 6,800 lines in one commit from `feature/pa3-ui`, which is not on GitHub. Minor: at 360 px the conversation list stays above the open chat.
+Changed: finding (1) comes from reading `mock/routes/bookings.mjs`, `mock/routes/payments.mjs` and rule 1 of `05-bookings.md`; it was not run on the mock, and the review says which lines it rests on. The first G9 run on the copy stopped on a Windows console encoding error in the script (no screen fault); rerun with UTF-8 output.
+Rejected: asking Khánh to rewrite the old AI-LOG entries to match a split history; a new entry records the change instead.
+By hand: none.
