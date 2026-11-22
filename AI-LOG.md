@@ -2232,3 +2232,12 @@ Changed: the screenshots showed the three steps filling the first screen, so at 
 Rejected: hiding the empty status line with `display: none`, which some screen readers then miss when it fills.
 By hand: none.
 
+### 2026-11-22 — contract 04: drop costume stock checking and pick first free candidate window
+Commit: the commit that adds this entry with `docs/api/04-schedule.md` and `brief.md`. The mock follows.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm test` (`contract-check`).
+Asked for: sync `04-schedule` with the product owners' answers ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)) and An's feedback on `freeTimes.json`.
+Kept: awaiting An's review. Removed costume stock checking (`Costume stock` object, `schedule.costumes`, `POST /api/schedule/check` `costumes` field, `costume` conflict kind, and the stock-clash example); `04-schedule.md` now checks staff, rooms, and studio opening hours only (`openingHours` kept by team rule). Documented that `freeTime` selects the first candidate window for a date that does not clash with currently held `busy` blocks and stays inside opening hours. Added the dated line in `## Changes` and logged the prompts in `brief.md` section `2.20`.
+Changed: with the contract changed ahead of the mock, `npm test` fails `contract-check` on the two `GET /api/schedule` examples (`04-schedule.md:190` and `04-schedule.md:204`: `$.costumes: in the answer, not in the example`, 146/148 passing, 6/7 suites passing); fixed in the mock commit next.
+Rejected: keeping `costumes` on `GET /api/schedule`, which contradicts the product owners' decision that costume stock is not checked.
+By hand: none.
+

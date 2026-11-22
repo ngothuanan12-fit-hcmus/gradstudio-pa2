@@ -344,3 +344,13 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 > giờ mình thiết lại những gì theo các thay đổi thì làm trước, cái nào cần chờ thì làm sau
 
 > tiếp tục
+
+### 2.20 PO decisions sync and review fixes on contracts & mocks 04, 05, 06, 08 (Khánh, 2026-11-22)
+
+Applied Lead An's review fixes and the 2026-11-22 product owners' answers onto a fresh branch from `origin/main` (`5038348`), one commit per contract then mock:
+
+> + pull main rồi làm trên nhánh mới. Mỗi file: contract trước, mock sau, mỗi thay đổi thêm một dòng có ngày vào ## Changes
+> - 04-schedule.md + schedule.mjs + freeTimes.json: bỏ kiểm tra tồn kho trang phục (`costumes`, `costumeAvailability`, `kind: "costume"`); mỗi ngày trong `freeTimes.json` có vài khung giờ và `checkSchedule` chọn khung đầu tiên còn trống thật.
+> - 05-bookings.md + bookings.mjs: dịch vụ thêm không tính tiền và Admin không sửa/giảm tổng tiền (`total` bỏ khỏi `PATCH /api/bookings/:id`, giá booking luôn là giá gói tính từ `people`), *Đã hủy* và không hoàn tiền trong hệ thống theo quyết định của khách hàng (kèm link), và thông báo `"Chọn thông tin cần thay đổi."` khi body rỗng của `PATCH` là lỗi chung cả form (`fields: {}`), không gắn vào `date`.
+> - 06-payments.md + payments.mjs: thông báo thanh toán thất bại đúng mẫu `"Thanh toán không thành công, booking vẫn chờ cọc"` (và giữ chờ 70%); khi hai người đặt trùng giờ đều tới bước thanh toán và người sau trả tiền thành công thì ghi nhận đã nhận tiền (`succeeded`), booking vẫn giữ `Chờ cọc 30%` kèm lý do, không cho trả cọc lại (`409`), không hoàn tiền tự động.
+> - 08-jobs.md + jobs.mjs + jobs.json: đổi `*Đang thực hiện*` thành `Đang làm`, làm rõ trạng thái việc không đổi trạng thái booking, và sửa câu `GET /api/previews/:id` đòi token nên client tải ảnh bằng token rồi đưa object URL vào `<img>`.
