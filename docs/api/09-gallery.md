@@ -16,7 +16,7 @@ What the customer does after the shoot (step G9): look at the preview photos, ch
 | Field | Type | Notes |
 |---|---|---|
 | `bookingId` | string | e.g. `GS-1022` |
-| `limit` | integer | The package's `editedPhotos`: how many photos may be chosen |
+| `limit` | integer or `null` | The package's `editedPhotos`: how many photos may be chosen; `null` while the package gives no number (Kỷ yếu lớp, Chân dung/CV: *waiting*), and then no choice can be saved |
 | `locked` | boolean | `true` once the remaining 70% is paid: the choice can no longer change |
 | `selected` | list of strings | The chosen previews' ids, in the order sent; empty before a choice |
 | `savedAt` | string or `null` | When the choice was last saved, ISO 8601 with offset |
@@ -105,7 +105,7 @@ Errors:
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not a customer | — |
 | `404` | `NOT_FOUND` | unknown booking, or another customer's | — |
-| `409` | `CONFLICT` | the booking is not in *Đã đặt lịch* ("Chỉ chọn ảnh khi booking đã đặt lịch."), or the remaining 70% is paid ("Đã thanh toán 70%, ảnh đã chọn không đổi được nữa.") | — |
+| `409` | `CONFLICT` | the booking is not in *Đã đặt lịch* ("Chỉ chọn ảnh khi booking đã đặt lịch."), the remaining 70% is paid ("Đã thanh toán 70%, ảnh đã chọn không đổi được nữa."), or the package gives no number of photos yet ("Gói này chưa có số ảnh chỉnh, studio sẽ báo lại.") | — |
 
 31 photos on a package of 30:
 
@@ -333,3 +333,4 @@ Content-Type: application/json
 ## Changes
 
 - 2026-11-22 — First version. No client code calls these endpoints yet.
+- 2026-11-22 — `limit` may be `null` (a package with no number of edited photos yet), and a choice is then refused with `409`. Found while writing the mock, before it. No client code calls these endpoints yet.

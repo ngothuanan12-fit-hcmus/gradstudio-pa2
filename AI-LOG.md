@@ -2196,3 +2196,12 @@ Changed: with the contract alone, contract-check fails the 16 examples of 09 tha
 Rejected: a separate `GET` for the choice: the gallery answer carries it, so G9 loads one thing.
 By hand: none.
 
+### 2026-11-22 — contract 09: a package without a number of edited photos
+Commit: the commit that adds this entry with `docs/api/09-gallery.md`, after `bd82f86`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: the same step as `bd82f86`.
+Kept: awaiting An's review. `limit` is `integer or null`; with `null` (Kỷ yếu lớp and Chân dung/CV have `editedPhotos: null`, *waiting*), a choice is refused with `409` "Gói này chưa có số ảnh chỉnh, studio sẽ báo lại." A dated line in `## Changes`.
+Changed: the first version of `bd82f86` assumed every package has a number; found while writing the mock, by reading `services.json`, before any mock code.
+Rejected: treating `null` as "no limit", which would invent a policy (CLAUDE.md, NEVER 11).
+By hand: none.
+
