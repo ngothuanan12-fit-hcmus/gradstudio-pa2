@@ -2014,3 +2014,12 @@ Kept: awaiting An's review. Added `GET /api/previews/:id` to `docs/api/08-jobs.m
 Changed: PR #5 review (`5617bea`) and agreed item 6 caught that `08-jobs.md` previously implied embedding base64 data URLs up to 5 MB inside JSON responses; also noted explicitly in prose rather than a fenced `200` block because `tools/contract-check.mjs` flags non-JSON or empty bodies with `--strict-values`.
 Rejected: fencing a binary `200` example block in `08-jobs.md`, because `contract-check.mjs` compares JSON only and `--strict-values` rejects empty-body notes against binary payloads.
 By hand: nothing.
+
+### 2026-11-22 — mock 04-schedule: match costumes by extra kind instead of hardcoded id
+Commit: the commit that adds this entry with `mock/routes/schedule.mjs`, after `a28213a`. Mock fixes for `bookings`, `payments`, and `jobs` follow next.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm run build`, `tools/contract-check.mjs --only 04-schedule.md --strict-values`.
+Asked for: fix PR #5 minor item matching costumes by `extras[].kind === "costume"` instead of hardcoded `'trang-phuc'` across `schedule`, `bookings`, and `payments`.
+Kept: awaiting An's review. Updated `mock/routes/schedule.mjs` (`costumeModels`, `costumeAvailability`, and new exported helper `costumeListFromExtras(db, extras)`) to resolve costume extras from `db.extras` by `kind === 'costume'`, so `bookings.mjs` and `payments.mjs` share one helper cleanly without duplicating `costumeList`. Checks: `npm run format:check`, `npm run lint`, `npm run build`, and `contract-check.mjs --only 04-schedule.md --strict-values` (`17/17`, `0` fails) all pass.
+Changed: PR #5 minor review caught that `schedule.mjs` (`costumeAvailability`) matched costume extras by `x.extraId === 'trang-phuc'` rather than `kind === 'costume'`.
+Rejected: nothing.
+By hand: nothing.

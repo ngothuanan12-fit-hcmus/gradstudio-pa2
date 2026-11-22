@@ -26,11 +26,19 @@ function caller(req, db, roles) {
 }
 
 function costumeModels(db) {
-  return db.extras.find((e) => e.kind === 'costume')?.models || [];
+  return db.extras.filter((e) => e.kind === 'costume').flatMap((e) => e.models || []);
+}
+
+export function costumeListFromExtras(db, extras) {
+  const costumeIds = new Set(db.extras.filter((e) => e.kind === 'costume').map((e) => e.id));
+  return (extras || [])
+    .filter((x) => costumeIds.has(x.extraId) && x.modelId && x.size)
+    .map((x) => ({ modelId: x.modelId, size: x.size, quantity: x.quantity || 1 }));
 }
 
 function costumeAvailability(db, date, excludeBookingId = null) {
   const models = costumeModels(db);
+  const costumeIds = new Set(db.extras.filter((e) => e.kind === 'costume').map((e) => e.id));
   const heldBookings = (db.bookings || []).filter(
     (b) => b.status === 'Đã đặt lịch' && b.date === date && b.id !== excludeBookingId,
   );
@@ -38,7 +46,7 @@ function costumeAvailability(db, date, excludeBookingId = null) {
     const model = models.find((m) => m.id === stock.modelId);
     const used = heldBookings.reduce((sum, b) => {
       const match = (b.extras || [])
-        .filter((x) => x.extraId === 'trang-phuc' && x.modelId === stock.modelId && x.size === stock.size)
+        .filter((x) => costumeIds.has(x.extraId) && x.modelId === stock.modelId && x.size === stock.size)
         .reduce((acc, x) => acc + (x.quantity || 1), 0);
       return sum + match;
     }, 0);
