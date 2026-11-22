@@ -1,6 +1,6 @@
 # Staff jobs and preview uploads
 
-What assigned staff see and update (step G8): their assigned jobs (`when`, `where`, `what`), updating a job's status, and uploading preview photos to the booking (`multipart/form-data`). Reading and selecting previews is in `09-gallery.md`.
+What assigned staff see and update (step G8): their assigned jobs (`when`, `where`, `what`), updating a job's status, uploading preview photos to the booking (`multipart/form-data`), and serving each preview image file through `GET /api/previews/:id` so browsers load previews via `<img>` without embedding large base64 data URLs in JSON. Reading the list and selecting previews is in `09-gallery.md`.
 
 Jobs exist for bookings in *Đã đặt lịch* (created from the booking's make-up, shoot, or editing assignments once the 30% deposit succeeds; e.g. `Mai` and `Tuấn` on `GS-1024`, `Hoàng Gia Huy` on `GS-1022`).
 
@@ -43,7 +43,7 @@ Jobs exist for bookings in *Đã đặt lịch* (created from the booking's make
 | `filename` | string | Uploaded file name |
 | `mimeType` | string | `image/jpeg`, `image/png`, or `image/webp` |
 | `size` | integer | File size in bytes |
-| `url` | string | URL to display the preview image |
+| `url` | string | Path to load the image file via `GET /api/previews/:id` (e.g. `"/api/previews/prv-1"`) |
 | `uploadedBy` | object | `{ "id", "name" }` |
 | `uploadedAt` | string | ISO 8601 with offset |
 
@@ -231,7 +231,7 @@ curl -X POST /api/bookings/GS-1024/previews \
 HTTP/1.1 201 Created
 Content-Type: application/json
 
-{"id": "prv-1", "bookingId": "GS-1024", "filename": "gs-1024-1.png", "mimeType": "image/png", "size": 102400, "url": …, "uploadedBy": {"id": "u-tuan", "name": "Tuấn"}, "uploadedAt": …}
+{"id": "prv-1", "bookingId": "GS-1024", "filename": "gs-1024-1.png", "mimeType": "image/png", "size": 102400, "url": "/api/previews/prv-1", "uploadedBy": {"id": "u-tuan", "name": "Tuấn"}, "uploadedAt": …}
 ```
 
 `staff3` (not assigned to GS-1024) cannot upload a preview to GS-1024:
@@ -279,6 +279,70 @@ Content-Type: application/json
 {"error": {"code": "PAYLOAD_TOO_LARGE", "message": "Ảnh xem trước tối đa 5 MB."}}
 ```
 
+## GET /api/previews/:id
+
+Who: the booking's `customer`, a `staff` member assigned to this booking, or `admin`. Returns the image file bytes directly so `<img>` loads previews without embedding up to 5 MB base64 data URLs in JSON. Seed previews serve existing sample photos from `client/public/photos/`.
+
+Success: `200` with the binary image body and `Content-Type` matching the preview's `mimeType` (`image/jpeg`, `image/png`, or `image/webp`). Because `contract-check` parses JSON responses only, the `200` binary response is verified in `test/mock.test.mjs`, while the JSON error responses are tested below.
+
+Errors: `401` without a token; `403` for unassigned staff or Superadmin; `404` for an unknown preview id or another customer's booking preview.
+
+No token (`401`):
+
+```http
+GET /api/previews/prv-1
+```
+
+```http
+HTTP/1.1 401 Unauthorized
+Content-Type: application/json
+
+{"error": {"code": "UNAUTHENTICATED", "message": "Bạn cần đăng nhập."}}
+```
+
+Unknown preview id (`404`):
+
+```http
+GET /api/previews/prv-999
+Authorization: Bearer {{token:thao}}
+```
+
+```http
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{"error": {"code": "NOT_FOUND", "message": "Không tìm thấy."}}
+```
+
+Another customer cannot read GS-1024's preview (`customer2` vs `linh`, `404`):
+
+```http
+GET /api/previews/prv-1
+Authorization: Bearer {{token:customer2}}
+```
+
+```http
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{"error": {"code": "NOT_FOUND", "message": "Không tìm thấy."}}
+```
+
+Unassigned staff cannot read GS-1024's preview (`staff3`, `403`):
+
+```http
+GET /api/previews/prv-1
+Authorization: Bearer {{token:staff3}}
+```
+
+```http
+HTTP/1.1 403 Forbidden
+Content-Type: application/json
+
+{"error": {"code": "FORBIDDEN", "message": "Bạn không có quyền làm việc này."}}
+```
+
 ## Changes
 
 - 2026-11-21 — First version. No client code calls these endpoints yet.
+- 2026-11-22 — Replace base64 preview `url` values with `GET /api/previews/:id` serving the binary image file directly (JSON `401`/`403`/`404` examples here, `200` binary verified in `test/mock.test.mjs`; seed previews may use sample photos in `client/public/photos/`). No client code calls these endpoints yet.

@@ -109,6 +109,7 @@ Every endpoint the client calls **and that has an example** in its file. contrac
 | `GET` | `/api/jobs` | staff (own), admin | `08-jobs.md` |
 | `PATCH` | `/api/jobs/:id` | staff (assigned), admin | `08-jobs.md` |
 | `POST` | `/api/bookings/:id/previews` | staff (assigned), admin | `08-jobs.md` |
+| `GET` | `/api/previews/:id` | customer (own), staff (assigned), admin | `08-jobs.md` |
 | `GET` | `/api/admins` | superadmin | `10-admin.md` |
 | `POST` | `/api/admins` | superadmin | `10-admin.md` |
 | `GET` | `/api/settings` | superadmin | `10-admin.md` |
@@ -138,3 +139,4 @@ Once client code calls an endpoint, every change to it gets a line here or in it
 - 2026-11-21 — Add the endpoint of `07-reminders.md` to the table. No client code calls it yet.
 - 2026-11-21 — Add the three endpoints of `08-jobs.md` to the table. No client code calls them yet.
 - 2026-11-22 — Update the booking status convention (*Đã hủy* as a team assumption) and the *Planned* note after `04`–`08` moved into the endpoint table (PR #5 review fix). No client code calls these endpoints yet.
+- 2026-11-22 — Add `GET /api/previews/:id` to the endpoint table (`08-jobs.md`, agreed item 6). No client code calls it yet.
