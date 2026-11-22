@@ -2277,3 +2277,12 @@ Changed: with the contract changed ahead of the mock, `npm test` fails `contract
 Rejected: keeping `included` / `amount: null` extra lines in `pricing.items` when extras have no price of their own.
 By hand: none.
 
+### 2026-11-22 — mock 05: compute package-only pricing, drop total override and costume check, fix empty PATCH error
+Commit: the commit that adds this entry with `mock/lib.mjs`, `mock/routes/bookings.mjs`, `mock/data/bookings.json`, and `test/mock.test.mjs`, after `ad02bb9`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm test`.
+Asked for: the mock side of `05-bookings.md` (`ad02bb9`).
+Kept: awaiting An's review. Rewrote `computePricing` in `mock/routes/bookings.mjs` to calculate booking total strictly from `pack.price` (multiplied by `people` for per-person packages) with one package line in `pricing.items`, removed `total` / `totalOverride` from `bookings.mjs` and `mock/data/bookings.json`, dropped `costumeListFromExtras` from `POST` and `PATCH` checks, added an optional custom `message` parameter on `invalid(fields, message)` in `mock/lib.mjs` so empty-body `PATCH /api/bookings/:id` answers `{"code": "VALIDATION_ERROR", "message": "Chọn thông tin cần thay đổi.", "fields": {}}`, and updated `test/mock.test.mjs` to test paid-deposit locking via `people` and empty-body `PATCH`. Checks: `npm run format:check`, `npm run lint`, all `7` non-contract unit tests in `npm test`, and every example in `05-bookings.md` (`146/148` in `contract-check`) pass.
+Changed: `contract-check` still fails on `06-payments.md:206` and `06-payments.md:272` (`$.booking.pricing.items[0].included: in the example, missing from the answer`) because `06-payments.md` is updated in its own contract commit next.
+Rejected: editing `docs/api/06-payments.md` inside this mock commit, which would mix files across parts.
+By hand: none.
+

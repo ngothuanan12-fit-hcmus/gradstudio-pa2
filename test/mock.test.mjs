@@ -161,23 +161,33 @@ test('PATCH /api/bookings/:id locks deposit once depositStatus is paid', async (
   const mock = await startMock('normal', 3206);
   try {
     const headers = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
-    const updated = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+    const updated = await fetch(`${mock.base}/api/bookings/GS-1023`, {
       method: 'PATCH',
       headers,
-      body: JSON.stringify({ total: 2000000 }),
+      body: JSON.stringify({ people: 22 }),
     });
     assert.equal(updated.status, 200);
     const body = await updated.json();
-    assert.equal(body.pricing.total, 2000000);
-    assert.equal(body.pricing.deposit, 540000);
-    assert.equal(body.pricing.remainder, 1460000);
+    assert.equal(body.pricing.total, 7700000);
+    assert.equal(body.pricing.deposit, 2100000);
+    assert.equal(body.pricing.remainder, 5600000);
 
-    const tooLow = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+    const tooLow = await fetch(`${mock.base}/api/bookings/GS-1023`, {
       method: 'PATCH',
       headers,
-      body: JSON.stringify({ total: 500000 }),
+      body: JSON.stringify({ people: 5 }),
     });
     assert.equal(tooLow.status, 409);
+
+    const empty = await fetch(`${mock.base}/api/bookings/GS-1023`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({}),
+    });
+    assert.equal(empty.status, 400);
+    const emptyBody = await empty.json();
+    assert.equal(emptyBody.error.message, 'Chọn thông tin cần thay đổi.');
+    assert.deepEqual(emptyBody.error.fields, {});
   } finally {
     await mock.stop();
   }

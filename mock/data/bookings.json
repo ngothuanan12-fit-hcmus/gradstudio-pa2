@@ -13,7 +13,6 @@
     "makeup": { "from": "13:00", "to": "14:00", "staffId": "u-mai" },
     "shoot": { "from": "14:00", "to": "16:00", "staffId": "u-tuan", "roomId": "r-b" },
     "status": "Đã đặt lịch",
-    "totalOverride": null,
     "payment": {
       "depositStatus": "paid",
       "depositPaidAt": "2026-10-10T10:00:00+07:00",
@@ -36,7 +35,6 @@
     "makeup": { "from": "09:00", "to": "10:00", "staffId": "u-mai" },
     "shoot": { "from": "10:00", "to": "12:00", "staffId": "u-tuan", "roomId": "r-b" },
     "status": "Hoàn thành",
-    "totalOverride": null,
     "payment": {
       "depositStatus": "paid",
       "depositPaidAt": "2026-10-05T10:00:00+07:00",
@@ -59,7 +57,6 @@
     "makeup": { "from": "13:00", "to": "14:00", "staffId": "u-mai" },
     "shoot": { "from": "14:00", "to": "16:00", "staffId": "u-tuan", "roomId": "r-b" },
     "status": "Đã đặt lịch",
-    "totalOverride": null,
     "payment": {
       "depositStatus": "paid",
       "depositPaidAt": "2026-10-12T16:00:00+07:00",
@@ -82,7 +79,6 @@
     "makeup": { "from": "08:00", "to": "12:00", "staffId": "u-mai" },
     "shoot": { "from": "08:00", "to": "12:00", "staffId": "u-mai", "roomId": "r-a" },
     "status": "Đã đặt lịch",
-    "totalOverride": 7000000,
     "payment": {
       "depositStatus": "paid",
       "depositPaidAt": "2026-10-14T09:00:00+07:00",
