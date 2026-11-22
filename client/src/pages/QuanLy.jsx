@@ -1,162 +1,175 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useParams } from 'react-router';
+import AdminChatWindow from '../components/admin/AdminChatWindow.jsx';
+import AdminConversationList from '../components/admin/AdminConversationList.jsx';
+import AdminInspector from '../components/admin/AdminInspector.jsx';
+import ScheduleSheet from '../components/admin/ScheduleSheet.jsx';
+import useApi from '../hooks/useApi.js';
 import AdminLayout from '../layouts/AdminLayout.jsx';
-import Button from '../components/Button.jsx';
-import Icon from '../components/Icon.jsx';
-import { STATUS_ICON } from '../utils/status.js';
-import BookingForm from '../components/BookingForm.jsx';
-import ChatPanel from '../components/ChatPanel.jsx';
-import ConversationList from '../components/ConversationList.jsx';
-import ResourceSchedule from '../components/ResourceSchedule.jsx';
-import { booking, conversations, freeSlots, messages, services, scheduleRows } from '../data.js';
 import '../styles/admin.css';
 
-const FILTERS = [
-  { id: 'all', label: 'Tất cả' },
-  { id: 'new', label: 'Chưa trả lời' },
-  { id: 'advising', label: 'Đang tư vấn' },
-  { id: 'agreed', label: 'Đã chốt lịch' },
-  { id: 'done', label: 'Hoàn thành' },
-];
-
-// The page opens in the state the brief asks for: Linh has agreed to 14:00.
-// Links within this long page; each opens a section that is really on it.
-const SECTIONS = [
-  { href: '#hoi-thoai', label: 'Hội thoại' },
-  { href: '#booking-moi', label: 'Booking mới' },
-  { href: '#lich-tai-nguyen', label: 'Lịch tài nguyên' },
-];
-
+// Steps G4–G6 (Admin side): 3-column studio workspace on /quan-ly and /quan-ly/hoi-thoai/:id.
 export default function QuanLy() {
-  const [activeId, setActiveId] = useState('linh');
-  const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState('all');
-  const [start, setStart] = useState(booking.agreed);
-  const [cardOpen, setCardOpen] = useState(true);
+  const { id: routeConvId } = useParams();
 
-  const conflict = start !== booking.agreed;
-  const picked = conflict ? null : freeSlots[0].id;
-  const active = conversations.find((item) => item.id === activeId) || conversations[0];
-  const status = conflict
-    ? '09:00 trùng lịch: Mai (makeup) bận 08:00–12:00. Chọn 14:00 để tạo booking.'
-    : `GS-1024: Linh đã chốt ${booking.agreed} ngày ${booking.date}. Tạo booking để mở lịch chụp của khách.`;
+  const conversationsQuery = useApi('/conversations');
+  const servicesQuery = useApi('/services');
+  const extrasQuery = useApi('/extras');
+  const staffQuery = useApi('/staff');
+  const roomsQuery = useApi('/rooms');
 
-  const visibleConversations = conversations.filter((item) => {
-    const matchesFilter = filter === 'all' || item.status === filter;
-    const keyword = query.trim().toLowerCase();
-    const matchesQuery =
-      !keyword || item.name.toLowerCase().includes(keyword) || item.last.toLowerCase().includes(keyword);
-    return matchesFilter && matchesQuery;
-  });
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [panelOpen, setPanelOpen] = useState(true);
+  const [createdBookings, setCreatedBookings] = useState({});
+
+  const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [scheduleContext, setScheduleContext] = useState({ date: null, draftSlot: null });
+  const [schedulePick, setSchedulePick] = useState(null);
+
+  const headerSchedTriggerRef = useRef(null);
+  const activeModalTriggerRef = useRef(null);
+
+  const activeId = routeConvId || conversationsQuery.data?.[0]?.id || null;
+  const convQuery = useApi(activeId ? `/conversations/${activeId}` : null);
+  const activeConv = activeId && convQuery.data?.id === activeId ? convQuery.data : null;
+
+  const bookingId = activeConv?.bookingId || null;
+  const cachedBooking = bookingId ? createdBookings[bookingId] : null;
+  const fetchedBookingQuery = useApi(bookingId && !cachedBooking ? `/bookings/${bookingId}` : null);
+  const matchedFetchedBooking =
+    bookingId && fetchedBookingQuery.data && fetchedBookingQuery.data.id !== bookingId
+      ? { ...fetchedBookingQuery, data: null }
+      : fetchedBookingQuery;
+  const bookingQuery = cachedBooking
+    ? { status: 'ready', data: cachedBooking, error: null, retry: () => {} }
+    : matchedFetchedBooking;
+  const activeBooking = bookingId && bookingQuery.data?.id === bookingId ? bookingQuery.data : null;
+
+  const hasConversations = Boolean(conversationsQuery.data && conversationsQuery.data.length > 0);
+
+  function handleConversationUpdated(updatedConv) {
+    if (!updatedConv) return;
+    convQuery.setData(updatedConv);
+    conversationsQuery.setData((prev) => {
+      if (!prev) return prev;
+      const summary = {
+        id: updatedConv.id,
+        customer: updatedConv.customer,
+        status: updatedConv.status,
+        lastMessage: updatedConv.lastMessage,
+        updatedAt: updatedConv.updatedAt,
+        bookingId: updatedConv.bookingId,
+      };
+      const exists = prev.some((c) => c.id === updatedConv.id);
+      const next = exists ? prev.map((c) => (c.id === updatedConv.id ? summary : c)) : [summary, ...prev];
+      return [...next].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    });
+  }
+
+  function handleBookingCreated(booking) {
+    if (!booking) return;
+    setCreatedBookings((prev) => ({ ...prev, [booking.id]: booking }));
+    convQuery.setData((prev) => (prev ? { ...prev, bookingId: booking.id } : prev));
+    conversationsQuery.setData((prev) =>
+      prev ? prev.map((c) => (c.id === booking.conversationId ? { ...c, bookingId: booking.id } : c)) : prev,
+    );
+  }
+
+  function resolveActiveConvDate() {
+    if (activeBooking?.date) return activeBooking.date;
+    const msgs = activeConv?.messages || [];
+    const prop = [...msgs].reverse().find((m) => m.proposal)?.proposal;
+    if (prop?.date) return prop.date;
+    const req = [...msgs].reverse().find((m) => m.kind === 'request' && m.request)?.request;
+    if (req?.date) return req.date;
+    return '2026-10-24';
+  }
+
+  function resolveActiveDraftSlot() {
+    if (!activeConv || activeConv.bookingId) return null;
+    const msgs = activeConv.messages || [];
+    const prop = [...msgs].reverse().find((m) => m.proposal)?.proposal;
+    if (!prop) return null;
+    return {
+      date: prop.date,
+      makeup: prop.makeup,
+      shoot: prop.shoot,
+    };
+  }
+
+  function openSchedule(date = null, draftSlot = null, triggerRef = null) {
+    activeModalTriggerRef.current = triggerRef?.current || headerSchedTriggerRef.current;
+    setScheduleContext({
+      date: date || resolveActiveConvDate(),
+      draftSlot: draftSlot || resolveActiveDraftSlot(),
+    });
+    setScheduleOpen(true);
+  }
+
+  function handleScheduleSlotPick(slot) {
+    setSchedulePick({ ...slot, token: Date.now() });
+  }
 
   return (
-    <AdminLayout sections={SECTIONS}>
-      {/* A short page top: the heading and the pinned status of GS-1024 side by side on wide screens. */}
-      <div className="admin-top">
-        <h1 className="page-title">Quản lý booking</h1>
-        <p className="status-line" role="status">
-          {status}
-        </p>
-      </div>
+    <AdminLayout
+      title="Quản lý hội thoại: GradStudio"
+      variant="workspace"
+      scheduleOpen={scheduleOpen}
+      scheduleTriggerRef={headerSchedTriggerRef}
+      onOpenSchedule={() => openSchedule(null, null, headerSchedTriggerRef)}
+    >
+      <div className="admin-workspace" data-panel-open={panelOpen ? 'true' : 'false'}>
+        <AdminConversationList
+          conversationsQuery={conversationsQuery}
+          activeId={activeId}
+          search={search}
+          onSearchChange={setSearch}
+          statusFilter={statusFilter}
+          onFilterChange={setStatusFilter}
+        />
 
-      <div className="admin-grid">
-        <section className="panel admin-convs" id="hoi-thoai" aria-labelledby="convs-title">
-          <h2 id="convs-title">Hội thoại</h2>
-          <div className="toolbar">
-            <p className="field">
-              <label className="field-label" htmlFor="conv-search">
-                Tìm hội thoại
-              </label>
-              <input
-                className="input"
-                id="conv-search"
-                type="search"
-                value={query}
-                placeholder="Tên hoặc tin nhắn"
-                onChange={(event) => setQuery(event.target.value)}
-              />
-            </p>
-            <div className="field">
-              <p className="field-label" id="conv-filter-label">
-                Lọc theo trạng thái
-              </p>
-              <div className="filter-chips" role="group" aria-labelledby="conv-filter-label">
-                {FILTERS.map((item) => {
-                  const count =
-                    item.id === 'all' ? conversations.length : conversations.filter((c) => c.status === item.id).length;
-                  return (
-                    <Button
-                      key={item.id}
-                      variant="secondary"
-                      aria-pressed={filter === item.id}
-                      onClick={() => setFilter(item.id)}
-                    >
-                      {item.id !== 'all' && (
-                        <span className={`conv-status st-${item.id}`}>
-                          <Icon name={STATUS_ICON[item.id]} />
-                        </span>
-                      )}
-                      {item.label} ({count})
-                    </Button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-          <ConversationList items={visibleConversations} activeId={activeId} onSelect={setActiveId} />
-        </section>
+        <AdminChatWindow
+          activeId={activeId}
+          convQuery={convQuery}
+          conversationsStatus={conversationsQuery.status}
+          hasConversations={hasConversations}
+          bookingDate={activeBooking?.date || null}
+          panelOpen={panelOpen}
+          onTogglePanel={() => setPanelOpen((v) => !v)}
+          services={servicesQuery.data || []}
+          onConversationUpdated={handleConversationUpdated}
+          onOpenSchedule={openSchedule}
+        />
 
-        {/* The chat looks like the landing page's chat window, seen from the studio's side. */}
-        <div className="admin-chat">
-          <div className="chat-window-bar">
-            <span className="conv-avatar" aria-hidden="true">
-              {active.name.charAt(0)}
-              <span className={`conv-status st-${active.status}`}>
-                <Icon name={STATUS_ICON[active.status]} />
-              </span>
-            </span>
-            <div className="chat-window-who">
-              <p className="chat-window-name">{active.name}</p>
-              <p className="chat-window-status">{active.statusLabel}</p>
-            </div>
-          </div>
-          <ChatPanel
-            id="admin-chat"
-            title={`Chat với ${active.name}`}
-            label="Tin nhắn"
-            placeholder="Nhập tin nhắn"
-            messages={activeId === 'linh' ? messages : []}
-            disabled
-            note="Chưa gửi được tin nhắn trong bản mẫu."
-            afterMessages={
-              activeId === 'linh' ? (
-                <BookingForm
-                  booking={booking}
-                  services={services}
-                  conflict={conflict}
-                  start={start}
-                  onStartChange={setStart}
-                  open={cardOpen}
-                  onToggle={() => setCardOpen(!cardOpen)}
-                />
-              ) : null
-            }
-          />
-        </div>
-
-        <ResourceSchedule
-          title="Lịch thợ và phòng"
-          date="Thứ Bảy, 24/10/2026"
-          rows={scheduleRows}
-          start={start}
-          slots={freeSlots}
-          picked={picked}
-          conflict={conflict}
-          onPick={(slot) => {
-            setStart(slot.time);
-            setCardOpen(true);
-          }}
+        <AdminInspector
+          activeId={activeId}
+          convQuery={convQuery}
+          conversationsStatus={conversationsQuery.status}
+          hasConversations={hasConversations}
+          bookingQuery={bookingQuery}
+          servicesQuery={servicesQuery}
+          extrasQuery={extrasQuery}
+          staffQuery={staffQuery}
+          roomsQuery={roomsQuery}
+          panelOpen={panelOpen}
+          onConversationUpdated={handleConversationUpdated}
+          onBookingCreated={handleBookingCreated}
+          onOpenSchedule={openSchedule}
+          schedulePick={schedulePick}
         />
       </div>
+
+      <ScheduleSheet
+        open={scheduleOpen}
+        onClose={() => setScheduleOpen(false)}
+        triggerRef={activeModalTriggerRef}
+        initialDate={scheduleContext.date}
+        draftSlot={scheduleContext.draftSlot}
+        staffQuery={staffQuery}
+        roomsQuery={roomsQuery}
+        onSelectSlot={handleScheduleSlotPick}
+      />
     </AdminLayout>
   );
 }

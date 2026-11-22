@@ -315,3 +315,21 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 > kiểm tra lại việc Khánh mới pr
 
 > Đồng ý
+
+
+### 2.20 G4–G6 Admin conversations, clash check, and booking UI (Khánh, 2026-11-22)
+
+Carried the PA#3 UI rules and route list from `main` (`aecac6f`), created branch `feature/pa3-ui`, implemented the G4–G6 screens on `/quan-ly` and `/quan-ly/hoi-thoai/:id` through a two-worker implementation + Playwright verification loop, and recorded `FRONTEND.md`, `AI-LOG.md`, and `brief.md`.
+
+> Tạo nhánh mới để chuẩn bị làm UI
+
+> ## 0. Nguyên tắc bắt buộc (đọc trước khi làm)
+> Trước khi viết bất kỳ dòng code nào, bắt buộc đọc: `CLAUDE.md`, `AGENTS.md`, `FRONTEND.md`, `brief.md`, `docs/api/{README,02-catalogue,03-conversations,04-schedule,05-bookings,06-payments}.md`, `client/src/{App.jsx,layouts/AdminLayout.jsx,styles/{tokens,base,ui}.css,api/client.js,hooks/useApi.js,forms/{useForm,useAction}.js}`. Không sửa `docs/api/`, `mock/`, `tools/contract-check.mjs`; giữ `<AccountBar />`, `<RequireRole roles={['admin']}>`, toàn bộ danh sách `NEVER`, 3 trạng thái dữ liệu (Loading, Error + Retry, Empty), và an toàn tiến trình/cổng test.
+>
+> ## 1. Đặc tả giao diện (theo ảnh mẫu) & toàn bộ chức năng ẩn
+> Dựng giao diện `/quan-ly` và `/quan-ly/hoi-thoai/:id` với theme `studio`, bố cục 3 cột responsive `<768px` / `768–1279px` / `>=1280px`, thu/mở panel phải `[|]`, cột trái `Hội thoại` (`#conv-search`, 5 pill lọc trạng thái cuộn ngang nội bộ, `.conv-status-dot`), cột giữa chat Messenger gom nhóm `<4 phút`, mốc thời gian, `RequestCard`/`ProposalCard`/thẻ `Báo giá`, chip thao tác nhanh theo trạng thái, form nhập tin nhắn có validation; cột phải 4 màn hình theo trạng thái (`Tư vấn nhanh`, `Tư vấn & Báo giá` trượt ngang sang Form đề xuất giờ có kiểm tra trùng live & khóa `Tạo booking`, `BookingForm` với Custom `DatePicker` & Custom `Select` bàn phím + tạo `GS-1024` không reload, `InvoicePanel` xem & gửi hóa đơn); modal `ScheduleSheet` & `ResourceSchedule` 3 chế độ `Ngày`/`Tuần`/`Tháng`, 5 loại block, `EventPopover`, bẫy focus và trả focus khi nhấn `Escape`.
+>
+> ## 2. Điều phối 2 Worker & Vòng lặp đồng thuận (Consensus Loop)
+> Worker 1 (Implementer & Gate Tester) + Worker 2 (Visual & E2E Verifier bằng Playwright + `web_tools` ở `1280×800`, `768×1024`, `360×800`, 4 `MOCK_MODE`, luồng Linh -> `GS-1024`, đối chiếu 4 ảnh mẫu); chỉ kết thúc khi cả 2 worker `ĐỒNG THUẬN KẾT THÚC`.
+
+> Khi xong 1 câu hỏi và hoàn thành task dù tốt hay không vẫn phải commit hết + ghi AI-LOG.md và brief.md

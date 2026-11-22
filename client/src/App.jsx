@@ -49,6 +49,14 @@ export default function App() {
           </RequireRole>
         }
       />
+      <Route
+        path="/quan-ly/hoi-thoai/:id"
+        element={
+          <RequireRole roles={['admin']}>
+            <QuanLy />
+          </RequireRole>
+        }
+      />
       {/* The staff's home, until step G8 builds it. */}
       <Route
         path="/cong-viec"
