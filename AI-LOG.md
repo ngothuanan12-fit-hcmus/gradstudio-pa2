@@ -2142,3 +2142,12 @@ Changed: nothing beyond the request. Checks: `npm test` 7/7, format and lint pas
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — contract 02: extras without prices (product owners' decision)
+Commit: the commit that adds this entry with `docs/api/02-catalogue.md`. The mock and the home page follow.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check).
+Asked for: step 1 of the plan after the product owners' answers.
+Kept: awaiting An's review. The opening paragraph gives the decision with its link in place of the team's pricing assumption; the extra object loses `price` and `priceUnit`, its `note` says what the extra is for ("Không tính thêm tiền: giá booking là giá gói."); `includes` is described as part of the package's description. A dated line in `## Changes` names the client screen that reads extras.
+Changed: with the contract alone, contract-check fails on `GET /api/extras` (line 95) as expected: the mock still sends `price` and `priceUnit`. CI is red on this commit until the mock commit.
+Rejected: nothing.
+By hand: none.
+

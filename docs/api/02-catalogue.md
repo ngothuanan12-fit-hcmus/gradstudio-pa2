@@ -2,7 +2,7 @@
 
 What a visitor sees before signing in (step G1): the services with their packages and prices, the extras, sample photos and reviews. All four endpoints are open to visitors and only read.
 
-Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghiệp from 1.800.000đ, Chân dung/CV from 690.000đ; Gói Tốt nghiệp Premium is 1.800.000đ for 2 hours and 30 edited photos. Until the product owners answer (`FRONTEND.md`, section 5), the team assumes: each package lists the extras it already includes, which then cost 0đ in a booking; an extra outside the package is added to the total; make-up is priced per person and per artist slot; costumes have models and sizes, and their stock is checked by model, size and date. A value nobody has given yet is `null`.
+Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghiệp from 1.800.000đ, Chân dung/CV from 690.000đ; Gói Tốt nghiệp Premium is 1.800.000đ for 2 hours and 30 edited photos. The product owners decided ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)): an extra has no price of its own, a booking costs its package's price (GS-1024: 1.800.000đ, make-up included), and extras are recorded only so the Admin can plan people and costumes; costume stock is not checked. A package's `includes` is part of its description on the price list. A value nobody has given yet is `null`.
 
 **Sample data.** The costume models and sizes (Áo cử nhân S–XL, Áo dài trắng S–L) and the reviews (names, ratings, texts, dates) in the examples below are sample data written by the team to fill the story, not facts from the brief; `mock/data/README.md` marks each value's source.
 
@@ -29,7 +29,7 @@ Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghi�
 | `priceUnit` | string or `null` | As in the service |
 | `durationMinutes` | integer or `null` | `120` for Premium; `null` where the brief gives none |
 | `editedPhotos` | integer or `null` | How many photos the customer may choose to have edited: `30` for Premium |
-| `includes` | list of strings | Ids of the extras already in the package (cost 0đ in a booking) |
+| `includes` | list of strings | Ids of the extras the package's description includes (shown on the price list; no extra changes a price) |
 
 **Extra**
 
@@ -38,9 +38,7 @@ Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghi�
 | `id` | string | `makeup`, `trang-phuc` |
 | `name` | string | Shown on screen |
 | `kind` | string | `makeup` or `costume` |
-| `price` | integer or `null` | In đồng, when the extra is not included; `null` while the price waits for the product owners |
-| `priceUnit` | string | `"người"` for make-up, `"bộ"` for a costume |
-| `note` | string | How it is charged, in Vietnamese |
+| `note` | string | What the extra is for, in Vietnamese |
 | `models` | list | For a costume: `{ "id", "name", "sizes" }` with `sizes` a list of strings; empty for make-up. The models in the examples are *sample* |
 
 **Photo**
@@ -102,7 +100,7 @@ GET /api/extras
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "makeup", "name": "Makeup", "kind": "makeup", "price": null, "priceUnit": "người", "note": "Tính theo người và theo suất của thợ makeup. Đã gồm trong Gói Tốt nghiệp Premium.", "models": []}, {"id": "trang-phuc", "name": "Thuê trang phục", "kind": "costume", "price": null, "priceUnit": "bộ", "note": "Chọn mẫu và size; studio kiểm tra còn trang phục vào ngày chụp.", "models": [{"id": "ao-cu-nhan", "name": "Áo cử nhân", "sizes": ["S", "M", "L", "XL"]}, {"id": "ao-dai-trang", "name": "Áo dài trắng", "sizes": ["S", "M", "L"]}]}]
+[{"id": "makeup", "name": "Makeup", "kind": "makeup", "note": "Ghi vào yêu cầu để studio xếp thợ makeup. Không tính thêm tiền: giá booking là giá gói.", "models": []}, {"id": "trang-phuc", "name": "Thuê trang phục", "kind": "costume", "note": "Chọn mẫu và size để studio chuẩn bị trang phục. Không tính thêm tiền: giá booking là giá gói.", "models": [{"id": "ao-cu-nhan", "name": "Áo cử nhân", "sizes": ["S", "M", "L", "XL"]}, {"id": "ao-dai-trang", "name": "Áo dài trắng", "sizes": ["S", "M", "L"]}]}]
 ```
 
 ## GET /api/photos
@@ -186,3 +184,4 @@ Content-Type: application/json
 - 2026-11-20 — First version. No client code calls these endpoints yet.
 - 2026-11-20 — Sample values marked as such (costume models and sizes, reviews); the one-line summaries rewritten as invitations. No client code calls these endpoints yet.
 - 2026-11-21 — Photos gain `smallWidth`, the width of the small file, so the client can give the browser both files in `srcset`. No client code calls these endpoints yet.
+- 2026-11-22 — Extras lose `price` and `priceUnit`, and their `note` says what they are for, not how they are charged; `includes` is described as part of the package's description. The product owners decided an extra has no price of its own and a booking costs its package's price ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)). Client: the home page's *Dịch vụ thêm* section (step G1), changed after the mock.
