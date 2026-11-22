@@ -325,3 +325,9 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 > push từng commit
 
 > Có
+
+### 2.14 The product-owner questions again, and a message to Khánh (2026-11-22)
+
+> gửi lại cho mình 7 câu hỏi
+> soạn đoạn tin nhắn cho Khánh
+

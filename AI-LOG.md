@@ -2106,3 +2106,12 @@ Changed: nothing beyond the request.
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — the seven product-owner questions as a post, and a message to Khánh
+Commit: the commit that adds this entry (log and brief only).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: the seven questions of `FRONTEND.md` section 5 again, ready to post, and a message to Khánh with what is left after PR #5.
+Kept: drafts only, sent by An outside the repository. The questions follow `FRONTEND.md` section 5, each with the brief's example where it helps (Linh, GS-1024). The message lists Khánh's follow-ups: the `<img>` sentence of `08-jobs.md` (from the assistant's own earlier reply), the empty-body `PATCH` message, several free times per day in `freeTimes.json`, and for the G5 screen the new `costumes` field, the `bookingId` refusal and the wider conflict kinds; then the screens due 29/11 on the routes of `FRONTEND.md` section 4.
+Changed: nothing.
+Rejected: nothing.
+By hand: none.
+
