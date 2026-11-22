@@ -339,3 +339,6 @@ Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the
 > đồng ý, làm bước 1 và soạn tin nhắn cho Khánh
 > link bài trả lời https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798
 
+> push
+
+> giờ mình thiết lại những gì theo các thay đổi thì làm trước, cái nào cần chờ thì làm sau

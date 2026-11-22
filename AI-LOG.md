@@ -2169,3 +2169,12 @@ Changed: nothing beyond the request.
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — home page and 3D story: the price note follows the product owners
+Commit: the commit that adds this entry with `client/src/pages/Home.jsx`, `client/src/components/StoryStage.jsx` and `brief.md`.
+Tool: Claude Code (Claude Opus 5.5); client lint; a search of `client/src` for wording about prices and stock.
+Asked for: redo now what the product owners' answers change, leave for later what waits on Khánh.
+Kept: awaiting An's review. The price list and the last scene of the 3D story said "Giá tham khảo. Giá chốt được ghi trên booking sau khi tư vấn.", which reads as a price agreed in the chat; they now say "Giá booking là giá gói, kỷ yếu lớp tính theo số người. Dịch vụ thêm không tính tiền." The head-count hint of the request form ("nhập số ước lượng, studio xác nhận lại") stays: the yearbook head count is still an open question.
+Changed: the note was the assistant's wording of 2026-11-21 (G1), written before the answers; found by the search, not by a check.
+Rejected: nothing.
+By hand: none.
+

@@ -114,7 +114,7 @@ export default function Home() {
             </>
           )}
         </DataState>
-        <p className="home-note">Giá tham khảo. Giá chốt được ghi trên booking sau khi tư vấn.</p>
+        <p className="home-note">Giá booking là giá gói, kỷ yếu lớp tính theo số người. Dịch vụ thêm không tính tiền.</p>
       </section>
 
       <section className="home-section" id="dich-vu-them" aria-labelledby="dich-vu-them-title">
