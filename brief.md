@@ -354,3 +354,23 @@ Applied Lead An's review fixes and the 2026-11-22 product owners' answers onto a
 > - 05-bookings.md + bookings.mjs: dịch vụ thêm không tính tiền và Admin không sửa/giảm tổng tiền (`total` bỏ khỏi `PATCH /api/bookings/:id`, giá booking luôn là giá gói tính từ `people`), *Đã hủy* và không hoàn tiền trong hệ thống theo quyết định của khách hàng (kèm link), và thông báo `"Chọn thông tin cần thay đổi."` khi body rỗng của `PATCH` là lỗi chung cả form (`fields: {}`), không gắn vào `date`.
 > - 06-payments.md + payments.mjs: thông báo thanh toán thất bại đúng mẫu `"Thanh toán không thành công, booking vẫn chờ cọc"` (và giữ chờ 70%); khi hai người đặt trùng giờ đều tới bước thanh toán và người sau trả tiền thành công thì ghi nhận đã nhận tiền (`succeeded`), booking vẫn giữ `Chờ cọc 30%` kèm lý do, không cho trả cọc lại (`409`), không hoàn tiền tự động.
 > - 08-jobs.md + jobs.mjs + jobs.json: đổi `*Đang thực hiện*` thành `Đang làm`, làm rõ trạng thái việc không đổi trạng thái booking, và sửa câu `GET /api/previews/:id` đòi token nên client tải ảnh bằng token rồi đưa object URL vào `<img>`.
+
+### 2.21 G4–G6 Admin conversations, clash check, and booking UI (Khánh, 2026-11-22)
+
+Carried over from `feature/pa3-ui` (`4cf690d`) and synced with `main` (`5038348`) plus the PO-updated contracts (`04`, `05`, `06`, `08`).
+
+> Tạo nhánh mới để chuẩn bị làm UI
+
+> ## 0. Nguyên tắc bắt buộc (đọc trước khi làm)
+> Trước khi viết bất kỳ dòng code nào, bắt buộc đọc: `CLAUDE.md`, `AGENTS.md`, `FRONTEND.md`, `brief.md`, `docs/api/{README,02-catalogue,03-conversations,04-schedule,05-bookings,06-payments}.md`, `client/src/{App.jsx,layouts/AdminLayout.jsx,styles/{tokens,base,ui}.css,api/client.js,hooks/useApi.js,forms/{useForm,useAction}.js}`. Không sửa `docs/api/`, `mock/`, `tools/contract-check.mjs`; giữ `<AccountBar />`, `<RequireRole roles={['admin']}>`, toàn bộ danh sách `NEVER`, 3 trạng thái dữ liệu (Loading, Error + Retry, Empty), và an toàn tiến trình/cổng test.
+>
+> ## 1. Đặc tả giao diện (theo ảnh mẫu) & toàn bộ chức năng ẩn
+> Dựng giao diện `/quan-ly` và `/quan-ly/hoi-thoai/:id` với theme `studio`, bố cục 3 cột responsive `<768px` / `768–1279px` / `>=1280px`, thu/mở panel phải `[|]`, cột trái `Hội thoại` (`#conv-search`, 5 pill lọc trạng thái cuộn ngang nội bộ, `.conv-status-dot`), cột giữa chat Messenger gom nhóm `<4 phút`, mốc thời gian, `RequestCard`/`ProposalCard`/thẻ `Báo giá`, chip thao tác nhanh theo trạng thái, form nhập tin nhắn có validation; cột phải 4 màn hình theo trạng thái (`Tư vấn nhanh`, `Tư vấn & Báo giá` trượt ngang sang Form đề xuất giờ có kiểm tra trùng live & khóa `Tạo booking`, `BookingForm` với Custom `DatePicker` & Custom `Select` bàn phím + tạo `GS-1024` không reload, `InvoicePanel` xem & gửi hóa đơn); modal `ScheduleSheet` & `ResourceSchedule` 3 chế độ `Ngày`/`Tuần`/`Tháng`, 5 loại block, `EventPopover`, bẫy focus và trả focus khi nhấn `Escape`.
+>
+> ## 2. Điều phối 2 Worker & Vòng lặp đồng thuận (Consensus Loop)
+> Worker 1 (Implementer & Gate Tester) + Worker 2 (Visual & E2E Verifier bằng Playwright + `web_tools` ở `1280×800`, `768×1024`, `360×800`, 4 `MOCK_MODE`, luồng Linh -> `GS-1024`, đối chiếu 4 ảnh mẫu); chỉ kết thúc khi cả 2 worker `ĐỒNG THUẬN KẾT THÚC`.
+
+> Khi xong 1 câu hỏi và hoàn thành task dù tốt hay không vẫn phải commit hết + ghi AI-LOG.md và brief.md
+
+> Khi hội thoại có bookingId thì ẩn form đề xuất, hiện link tới `/quan-ly/booking/:id`; bỏ tồn kho trang phục và bỏ giả định giá dịch vụ thêm theo quyết định PO.
+> Tiếp tục (nhưng vừa rồi có vấn đề tràn ram nên đã crash chương trình) lần này làm kĩ lại

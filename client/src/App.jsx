@@ -67,6 +67,31 @@ export default function App() {
           </RequireRole>
         }
       />
+      <Route
+        path="/quan-ly/hoi-thoai/:id"
+        element={
+          <RequireRole roles={['admin']}>
+            <QuanLy />
+          </RequireRole>
+        }
+      />
+      {/* Booking management screens, until step G10 builds them; links from G5/G6 lead here. */}
+      <Route
+        path="/quan-ly/booking"
+        element={
+          <RequireRole roles={['admin']}>
+            <ComingSoon title="Quản lý booking" step="G10" />
+          </RequireRole>
+        }
+      />
+      <Route
+        path="/quan-ly/booking/:id"
+        element={
+          <RequireRole roles={['admin']}>
+            <ComingSoon title="Chi tiết booking" step="G10" />
+          </RequireRole>
+        }
+      />
       {/* The staff's home, until step G8 builds it. */}
       <Route
         path="/cong-viec"
