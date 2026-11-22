@@ -190,14 +190,10 @@ function propose({ req, db, params, body }) {
     });
   }
   // The clash check of 04-schedule.md, so a proposal and POST /api/schedule/check follow the same rules: people and
-  // room, opening hours, the costumes the Admin entered, and a free time offered only when it is really free.
+  // room, opening hours, and a free time offered only when it is really free. No costumes: the product owners decided
+  // costume stock is not checked.
   const b = body && typeof body === 'object' ? body : {};
-  const { fields, parsed } = validateScheduleInput(db, {
-    date: b.date,
-    makeup: b.makeup,
-    shoot: b.shoot,
-    costumes: b.costumes,
-  });
+  const { fields, parsed } = validateScheduleInput(db, { date: b.date, makeup: b.makeup, shoot: b.shoot });
   if (Object.keys(fields).length) return invalid(fields);
   const check = checkSchedule(db, parsed);
   if (!check.available) {

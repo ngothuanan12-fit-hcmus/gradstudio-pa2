@@ -2133,3 +2133,12 @@ Changed: nothing beyond the request. Contract-check still passes with the contra
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — mock 03: the proposal no longer passes costumes to the clash check
+Commit: the commit that adds this entry with `mock/routes/conversations.mjs`, after `3f7a54e`.
+Tool: Claude Code (Claude Opus 5.5); `npm test`, format and lint.
+Asked for: the mock side of `3f7a54e`.
+Kept: awaiting An's review. The proposal handler gives `validateScheduleInput` only the date, make-up and shoot, so a `costumes` field is ignored and stock never refuses a proposal. `checkSchedule` in Khánh's `schedule.mjs` still has its costume code; removing it is in the message to Khánh.
+Changed: nothing beyond the request. Checks: `npm test` 7/7, format and lint pass.
+Rejected: nothing.
+By hand: none.
+
