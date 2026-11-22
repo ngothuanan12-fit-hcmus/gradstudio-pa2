@@ -304,7 +304,12 @@ Content-Type: application/json
 
 ## PATCH /api/bookings/:id
 
-Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, head count (`people`), confirmed `total` (for class yearbook adjustment), `sessionType`, or `extras`. Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks and costumes) before applying any time, staff, room, or costume change. If the booking is in *Đã đặt lịch*, its held blocks in `busy` are updated too. Refused with `409` when the booking is *Hoàn thành* or *Đã hủy*, or when the new time clashes.
+Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, head count (`people`), confirmed `total` (for class yearbook adjustment), `sessionType`, or `extras`. Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks and costumes) before applying any time, staff, room, or costume change. If the booking is in *Đã đặt lịch*, its held blocks in `busy` are updated too.
+
+**Deposit and remainder after price changes:**
+- Before the 30% deposit is paid (`payment.depositStatus` = `unpaid`), `pricing.deposit` is `Math.round(total * 0.3)` and `pricing.remainder` is `total - deposit`.
+- Once the deposit is already `paid`, **`pricing.deposit` stays locked at the deposit amount already paid** (it is never recomputed when `total`, `people`, or `extras` change), and `pricing.remainder` becomes `pricing.total - pricing.deposit`.
+- Setting `total` below the already-paid deposit is refused with `409` (any refund rule waits for the product owners). Changing `total`, `people`, or `extras` after `payment.remainderStatus` is `paid` is also refused with `409`.
 
 Body (all fields optional; at least one field must be sent):
 
@@ -320,7 +325,15 @@ Body (all fields optional; at least one field must be sent):
 
 Success: `200` with the updated booking object.
 
-Errors: `400` (`VALIDATION_ERROR`), `401` (`UNAUTHENTICATED`), `403` (`FORBIDDEN`), `404` (`NOT_FOUND`), `409` (`CONFLICT` — with `details.conflicts` and `details.freeTime` on a clash).
+Errors:
+
+| Status | `code` | When | `fields` or `details` |
+|---|---|---|---|
+| `400` | `VALIDATION_ERROR` | empty body (none of the fields sent), or any sent field is invalid | empty body: `date`: `"Chọn thông tin cần thay đổi."`; `date`: `"Ngày theo dạng YYYY-MM-DD."`; `makeup.from` / `shoot.from`: `"Giờ theo dạng HH:MM."`; `makeup.to` / `shoot.to`: `"Giờ theo dạng HH:MM."` or `"Giờ kết thúc phải sau giờ bắt đầu."`; `makeup.staffId` / `shoot.staffId`: `"Không có nhân viên này."`; `shoot.roomId`: `"Không có phòng này."`; `people`: `"Số người từ 1 đến 200."`; `total`: `"Tổng tiền phải là số nguyên không âm."`; `sessionType`: `"Loại buổi chụp từ 1 đến 100 ký tự."`; `extras`: `"Dịch vụ thêm không hợp lệ."` |
+| `401` | `UNAUTHENTICATED` | no token | — |
+| `403` | `FORBIDDEN` | not the Admin | — |
+| `404` | `NOT_FOUND` | unknown booking | — |
+| `409` | `CONFLICT` | booking is *Hoàn thành* or *Đã hủy*, requested slot/costume clashes with held bookings, `total` is below already-paid deposit, or price edited after remainder is `paid` | `details` (`conflicts`, `freeTime`) on a clash |
 
 Refused when trying to move GS-1024 to 09:00 (Mai busy 08:00–12:00):
 
@@ -388,6 +401,91 @@ HTTP/1.1 409 Conflict
 Content-Type: application/json
 
 {"error": {"code": "CONFLICT", "message": "Booking đã hoàn thành hoặc đã hủy, không thể thay đổi."}}
+```
+
+Confirming class yearbook head count after the 30% deposit is already `paid` (`GS-1023`: `deposit` stays `2100000`, `remainder` updates to `5600000`):
+
+```http
+PATCH /api/bookings/GS-1023
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"people": 22}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"id": "GS-1023", "conversationId": null, "customer": {"id": "u-khoa", "name": "Võ Đăng Khoa"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "ky-yeu", "serviceName": "Kỷ yếu lớp", "packageId": "ky-yeu-lop", "packageName": "Gói Kỷ yếu lớp", "durationMinutes": null, "editedPhotos": null, "sessionType": "Kỷ yếu lớp", "people": 22, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Kỷ yếu lớp (22 người)", "amount": 7700000, "included": false}, {"label": "Makeup", "amount": null, "included": false}], "total": 7700000, "deposit": 2100000, "remainder": 5600000}, "payment": {"depositStatus": "paid", "depositPaidAt": "2026-10-14T09:00:00+07:00", "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+```
+
+Restoring GS-1023 to its seed head count (`20` people, `total` `7000000`, `deposit` `2100000`, `remainder` `4900000`):
+
+```http
+PATCH /api/bookings/GS-1023
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"people": 20}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"id": "GS-1023", "conversationId": null, "customer": {"id": "u-khoa", "name": "Võ Đăng Khoa"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "ky-yeu", "serviceName": "Kỷ yếu lớp", "packageId": "ky-yeu-lop", "packageName": "Gói Kỷ yếu lớp", "durationMinutes": null, "editedPhotos": null, "sessionType": "Kỷ yếu lớp", "people": 20, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Kỷ yếu lớp (20 người)", "amount": 7000000, "included": false}, {"label": "Makeup", "amount": null, "included": false}], "total": 7000000, "deposit": 2100000, "remainder": 4900000}, "payment": {"depositStatus": "paid", "depositPaidAt": "2026-10-14T09:00:00+07:00", "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+```
+
+Refused when setting `total` below the already-paid deposit (`GS-1023` paid `2100000`):
+
+```http
+PATCH /api/bookings/GS-1023
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"total": 2000000}
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{"error": {"code": "CONFLICT", "message": "Tổng tiền không được nhỏ hơn tiền cọc đã thanh toán."}}
+```
+
+Empty body on `PATCH`:
+
+```http
+PATCH /api/bookings/GS-1024
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{}
+```
+
+```http
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"date": "Chọn thông tin cần thay đổi."}}}
+```
+
+Invalid fields on `PATCH`:
+
+```http
+PATCH /api/bookings/GS-1024
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"people": 0, "total": -1, "sessionType": ""}
+```
+
+```http
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"people": "Số người từ 1 đến 200.", "total": "Tổng tiền phải là số nguyên không âm.", "sessionType": "Loại buổi chụp từ 1 đến 100 ký tự."}}}
 ```
 
 A customer cannot edit a booking directly:
@@ -482,7 +580,7 @@ Success: `200` with the cancelled booking object (`status: "Đã hủy"`).
 
 Errors: `400` (`reason`: `"Lý do hủy tối đa 500 ký tự."`), `401`, `403`, `404`, `409`.
 
-Note: `GS-1020`–`GS-1024` are kept active for `06-payments.md`–`09-gallery.md`, so the examples below check the error guards; the `200` cancellation path is verified separately in the mock tests.
+Note: `GS-1020`–`GS-1024` stay active for `06-payments.md`–`09-gallery.md`, so the examples below check the guard paths; `test/mock.test.mjs` verifies the `200` cancellation path and held-slot release on its own fresh mock process (added in the matching mock commit).
 
 Refused when trying to cancel a completed booking (`GS-1021`):
 
@@ -538,3 +636,4 @@ Content-Type: application/json
 ## Changes
 
 - 2026-11-21 — First version. No client code calls these endpoints yet.
+- 2026-11-22 — Lock `pricing.deposit` once the deposit is `paid` when `total`, `people`, or `extras` change (refuse `total` below paid deposit or price changes after remainder is `paid`), document full per-field `400` validation errors with examples on `PATCH /api/bookings/:id`, and replace the untrue mock-test claim on `POST /api/bookings/:id/cancel` with an accurate reference to `test/mock.test.mjs` (PR #5 review fixes). No client code calls these endpoints yet.

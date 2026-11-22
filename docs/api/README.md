@@ -54,7 +54,7 @@ Every error, from every endpoint, has this body:
 - Ids are strings: users `u-linh`, conversations `c-…`, bookings `GS-1024`, others with a short prefix named in their file.
 - Dates are `YYYY-MM-DD`; times `HH:MM`; both in the studio's time (Asia/Ho_Chi_Minh). A moment (a message sent, a reminder due) is ISO 8601 with its offset: `2026-10-23T13:00:00+07:00`.
 - Money is an integer number of đồng (`1800000`), computed by the API; the client formats it.
-- Status values are the brief's Vietnamese names, exactly: conversations `Chưa trả lời`, `Đang tư vấn`, `Đã chốt lịch`, `Hoàn thành`; bookings `Chờ cọc 30%`, `Đã đặt lịch`, `Hoàn thành`. The name of a cancelled booking waits for the product owners (see `05-bookings.md`).
+- Status values are the brief's Vietnamese names, exactly: conversations `Chưa trả lời`, `Đang tư vấn`, `Đã chốt lịch`, `Hoàn thành`; bookings `Chờ cọc 30%`, `Đã đặt lịch`, `Hoàn thành`, `Đã hủy` (`Đã hủy` is a team assumption until the product owners answer; see `05-bookings.md`).
 
 ## Files
 
@@ -116,7 +116,7 @@ Every endpoint the client calls **and that has an example** in its file. contrac
 
 ### Planned
 
-Endpoints designed but not yet written up with examples, by file. Not a table, so contract-check does not read them yet. Khánh adds the endpoints of `04`–`08` here, or straight to the table with their examples.
+Endpoints designed but not yet written up with examples, by file. Not a table, so contract-check does not read them yet. Only `09-gallery.md` remains planned; `01`–`08` and `10` are in the table above.
 
 - GET /api/bookings/:id/previews · customer (own), staff (assigned), admin · `09-gallery.md`
 - PUT /api/bookings/:id/selection · customer (own) · `09-gallery.md`
@@ -137,3 +137,4 @@ Once client code calls an endpoint, every change to it gets a line here or in it
 - 2026-11-21 — Add the four endpoints of `06-payments.md` to the table. No client code calls them yet.
 - 2026-11-21 — Add the endpoint of `07-reminders.md` to the table. No client code calls it yet.
 - 2026-11-21 — Add the three endpoints of `08-jobs.md` to the table. No client code calls them yet.
+- 2026-11-22 — Update the booking status convention (*Đã hủy* as a team assumption) and the *Planned* note after `04`–`08` moved into the endpoint table (PR #5 review fix). No client code calls these endpoints yet.
