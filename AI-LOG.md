@@ -2378,3 +2378,43 @@ Kept: both findings of the first review are fixed. (1) Contracts 05 and 06 add t
 Changed: the fix for the minor 360 px point (`aadf87d`) moves the chat above the list with CSS `order` but keeps the DOM order. At 360 px Tab goes from the header to the list at y≈1700, ten stops there, then back up to the chat's back link at y=239; the `h1` sits at y=1654 (WCAG 2.4.3, 1.3.2). 768 px is fine. Found by the Tab sequence in the script, not visible in the screenshots. An merges now and has it fixed afterwards.
 Rejected: holding the merge for this one fault (An's choice). Minor, not raised: the GS-1025 example in 05 is a `json` block that contract-check does not run, kept that way so the ids of 09 do not shift, and it writes `"..."` where the other examples write `…`.
 By hand: none.
+
+### 2026-11-23 — PR #6 follow-up: `05-bookings.md` ellipsis and 360px DOM/Tab/heading order on open chat
+
+Commit: `956857d` (`docs/api/05-bookings.md`) and `33efc6b` (`client/src/pages/QuanLy.jsx`, `client/src/components/admin/AdminConversationList.jsx`, `client/src/components/admin/AdminChatWindow.jsx`, `client/src/styles/admin.css`), on `feature/pa3-g7-g8-g10` after `afbb30e`.
+Tool: Antigravity (Gemini 4 Hydrogen) dual-worker loop (`pa3-worker1-implementer` & `pa3-worker2-verifier`); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`, `contract-check.mjs --strict-values`, Playwright MCP (`360×800`, `768×1024`, `1280×800`, 4 `MOCK_MODE`s).
+Asked for: fix the two open items from Lead An's PR #6 re-review (`AI-LOG.md:2378–2379`): (1) `"..."` → `…` in `docs/api/05-bookings.md`'s illustrative `GS-1025` JSON block, and (2) replace CSS `order` on `/quan-ly/hoi-thoai/:id` at `<= 767px` with real DOM ordering (`AdminChatWindow` → `AdminInspector` → `AdminConversationList`) and dynamic primary `<h1>` placement so Tab order matches visual order (WCAG 2.4.3 / 1.3.2) with no `<h2>` before `<h1>`.
+Kept: awaiting An's review. Fixed `"depositPaidAt": "…"` in `docs/api/05-bookings.md` without altering any other contract line. In `QuanLy.jsx`, `useMediaQuery('(max-width: 767px)')` switches DOM order to `chatWindow -> inspector -> convList` when `routeConvId` is open on mobile, promoted `.chat-window-name` in `AdminChatWindow.jsx` to `<h1>` (demoting `AdminConversationList`'s `Hội thoại` to `<h2>`), ensured loading and error fallback bars also render `.chat-back-link` + `<h1>`, and removed the `@media (max-width: 767px)` CSS `order` rules from `admin.css`. Checks: 29-step real Tab sweep at `360×800` moves monotonically top-to-bottom (`y: 4 -> 152` header, `239` back link/toggle, `313 -> 748` chat, `1066 -> 1542` inspector, `1698 -> 2069` conversation list); exact `1` `<h1>` before `<h2>` across `360/768/1280` and `normal/slow/error` modes.
+Changed: nothing.
+Rejected: hiding `.admin-convs` with `display: none` or keeping `<h2>` ahead of `<h1>` in `AdminChatWindow`.
+By hand: none.
+
+### 2026-11-23 — step G7: `/lich-chup` on API, `/thanh-toan/:paymentId`, and `/thanh-toan/:paymentId/ket-qua`
+
+Commit: `285bad8` (`LichChup.jsx`, `BookingSummary.jsx`, `DepositCard.jsx`, `WeekCalendar.jsx`, `ReminderList.jsx`, `PaymentGateway.jsx`, `PaymentResult.jsx`, `schedule.css`, `ui.css`, G7 route wiring in `App.jsx`), after `33efc6b`.
+Tool: Antigravity (Gemini 4 Hydrogen) dual-worker loop (`pa3-worker1-implementer` & `pa3-worker2-verifier`); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`, Playwright MCP (`1280×800`, `768×1024`, `360×800`, 4 `MOCK_MODE`s, E2E G3→G5→G6→G7 & G9 remainder).
+Asked for: replace static PA#2 `data.js` in `/lich-chup`, connect customer bookings/payments/reminders to `/api/*`, and build `/thanh-toan/:paymentId` + `/thanh-toan/:paymentId/ket-qua` shared between G7 (30% deposit) and G9 (70% remainder).
+Kept: awaiting An's review. `LichChup.jsx` loads `/bookings`, `/reminders`, and `/payments` in parallel with React-state multi-booking switcher (`>= 44px`), renders `.schedule-main` (`WeekCalendar` + `ReminderList`) before `.schedule-side` (`BookingSummary` + `DepositCard`) in DOM so Tab order matches visual order at 360/768/1280, and handles fail -> F5 reload -> retry -> `Đã đặt lịch` -> G9 gallery navigation as well as concurrent lost-race deposit warnings (`Chờ cọc 30% · Trùng lịch`). `PaymentGateway` and `PaymentResult` run standalone on reload for both deposit and remainder flows.
+Changed: initial `BookingSummary.jsx` draft rendered raw `Chờ cọc 30%` instead of `Đã thống nhất lịch · Chờ cọc 30%` for unpaid bookings; caught during coordinator code review against the prompt checklist before Worker 2 Round 1 and fixed prior to verification. Also extracted the verbatim session prompt script initially hit a Python escaped-quote syntax error before running cleanly to update `brief.md`.
+Rejected: keeping `data.js` imports or putting `.schedule-side` ahead of `.schedule-main` in DOM while visually swapped by CSS grid at 1280px.
+By hand: none.
+
+### 2026-11-23 — step G8: `/cong-viec` staff jobs, status updates, and preview uploads
+
+Commit: `6d4c05e` (`CongViec.jsx`, `status.js`, `admin-pages.css`, G8 route wiring in `App.jsx`), after `285bad8`.
+Tool: Antigravity (Gemini 4 Hydrogen) dual-worker loop (`pa3-worker1-implementer` & `pa3-worker2-verifier`); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`, Playwright MCP (`mai`, `tuan`, `staff3`, `linh` role check, 4 `MOCK_MODE`s).
+Asked for: implement staff home `/cong-viec` with job filtering, status updates, Bearer-authenticated preview display, and `multipart/form-data` uploads without calling `GET /api/bookings` or `GET /api/bookings/:id`.
+Kept: awaiting An's review. Built `CongViec.jsx` fetching `/api/jobs` once and one `BookingPreviewsCard` per unique `bookingId` (`GET /api/bookings/:bookingId/previews`), per-card `PATCH /api/jobs/:id` preserving keyboard focus, `<PreviewImage>` object-URL loading (`naturalWidth > 0`, `0` `401`s), and client-side empty/MIME (`JPEG`/`PNG`/`WebP`)/`5 MB` validation before `POST /api/bookings/:id/previews`. Network logs across `188` staff requests confirmed `0` calls to `/api/bookings` or `/api/bookings/:id` and `0` `403`/`401` errors.
+Changed: nothing.
+Rejected: fetching booking details from staff screens or passing raw `<img src="/api/previews/...">` URLs without Bearer auth.
+By hand: none.
+
+### 2026-11-23 — step G10: `/quan-ly/booking`, `/quan-ly/booking/:id`, Admin nav fix, and `FRONTEND.md` sync
+
+Commit: `1c60f85` (`AdminLayout.jsx`, `QuanLyBookings.jsx`, `QuanLyBookingDetail.jsx`, `App.jsx`, `FRONTEND.md`) plus this log/prompt commit (`brief.md`, `AI-LOG.md`), after `6d4c05e`.
+Tool: Antigravity (Gemini 4 Hydrogen) dual-worker loop (`pa3-worker1-implementer` & `pa3-worker2-verifier`); `npm run format:check`, `npm run lint`, `npm test` (`10/10`), `npm run build` (`189` modules), `contract-check.mjs --strict-values` (`148/148`, `38/38`), Playwright MCP across `1280/768/360` and all 4 `MOCK_MODE`s.
+Asked for: fix `AdminLayout` active state and add `Booking` nav link for admins only, implement `/quan-ly/booking` list/filters and `/quan-ly/booking/:id` reschedule/clash-check (`excludeBookingId` + concurrent deposit-paid recovery)/file-link/2-step cancel, and update `FRONTEND.md` §4 & §7.
+Kept: awaiting An's review. `AdminLayout` keeps `Hội thoại` and `Booking` links strictly scoped to `admin` with exact `aria-current="page"`; `QuanLyBookingDetail` handles `POST /api/schedule/check` (`excludeBookingId`), empty-diff `"Chọn thông tin cần thay đổi."`, recovery transition from `Chờ cọc 30%` (`depositStatus: "paid"`) to `Đã đặt lịch`, `PUT /file-link`, 2-step `POST /cancel`, locked controls on `Hoàn thành`/`Đã hủy`, and E2E `GS-1022` `Nhận ảnh` completion; `FRONTEND.md` moves G7, G8, G10 into §4 and clears §7. All root gates (`format:check`, `lint`, `test` `10/10`, `build` `189` modules) and single-shot `contract-check.mjs --strict-values` (`148/148`, `38/38`) pass cleanly on the final tree; temporary verification folders and processes removed cleanly.
+Changed: `client/src/App.jsx` was stepped temporarily during commit splitting so `285bad8` and `6d4c05e` each built cleanly before restoring final G10 routes in `1c60f85`.
+Rejected: keeping `pathname.startsWith('/quan-ly')` for active tab state or leaving `ComingSoon` placeholders in `App.jsx` / `FRONTEND.md`.
+By hand: none.
