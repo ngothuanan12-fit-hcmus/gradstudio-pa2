@@ -103,3 +103,81 @@ test('the token survives a restart of the mock', async () => {
     await mock.stop();
   }
 });
+
+test('POST /api/bookings/:id/cancel cancels a booking and releases its held slot', async () => {
+  const mock = await startMock('normal', 3205);
+  try {
+    const headers = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const before = await fetch(`${mock.base}/api/schedule/check`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        date: '2026-10-24',
+        makeup: { from: '08:00', to: '09:00', staffId: 'u-mai' },
+        shoot: { from: '09:00', to: '11:00', staffId: 'u-tuan', roomId: 'r-a' },
+      }),
+    });
+    assert.equal(before.status, 200);
+    assert.equal((await before.json()).available, false);
+
+    const cancelled = await fetch(`${mock.base}/api/bookings/GS-1023/cancel`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ reason: 'Hủy theo yêu cầu' }),
+    });
+    assert.equal(cancelled.status, 200);
+    assert.equal((await cancelled.json()).status, 'Đã hủy');
+
+    const after = await fetch(`${mock.base}/api/schedule/check`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        date: '2026-10-24',
+        makeup: { from: '08:00', to: '09:00', staffId: 'u-mai' },
+        shoot: { from: '09:00', to: '11:00', staffId: 'u-tuan', roomId: 'r-a' },
+      }),
+    });
+    assert.equal(after.status, 200);
+    assert.equal((await after.json()).available, true);
+
+    const reminders = await fetch(`${mock.base}/api/reminders?bookingId=GS-1023`, { headers });
+    assert.deepEqual(await reminders.json(), []);
+    const jobs = await fetch(`${mock.base}/api/jobs?bookingId=GS-1023`, { headers });
+    assert.deepEqual(await jobs.json(), []);
+
+    const again = await fetch(`${mock.base}/api/bookings/GS-1023/cancel`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({}),
+    });
+    assert.equal(again.status, 409);
+  } finally {
+    await mock.stop();
+  }
+});
+
+test('PATCH /api/bookings/:id locks deposit once depositStatus is paid', async () => {
+  const mock = await startMock('normal', 3206);
+  try {
+    const headers = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const updated = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ total: 2000000 }),
+    });
+    assert.equal(updated.status, 200);
+    const body = await updated.json();
+    assert.equal(body.pricing.total, 2000000);
+    assert.equal(body.pricing.deposit, 540000);
+    assert.equal(body.pricing.remainder, 1460000);
+
+    const tooLow = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ total: 500000 }),
+    });
+    assert.equal(tooLow.status, 409);
+  } finally {
+    await mock.stop();
+  }
+});

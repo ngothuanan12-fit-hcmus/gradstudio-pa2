@@ -2023,3 +2023,12 @@ Kept: awaiting An's review. Updated `mock/routes/schedule.mjs` (`costumeModels`,
 Changed: PR #5 minor review caught that `schedule.mjs` (`costumeAvailability`) matched costume extras by `x.extraId === 'trang-phuc'` rather than `kind === 'costume'`.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-22 — mock 05-bookings: lock paid deposit, add cancel & deposit tests, share costume helper
+Commit: the commit that adds this entry with `mock/routes/bookings.mjs` and `test/mock.test.mjs`, after `84a12db`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm run build`, `node --test test/mock.test.mjs` (filtered), `tools/contract-check.mjs --strict-values`.
+Asked for: implement PR #5 contract fixes and minor fixes in `mock/routes/bookings.mjs` and add real `test/mock.test.mjs` verification for `200` cancel and post-deposit pricing updates.
+Kept: awaiting An's review. Updated `mock/routes/bookings.mjs` to lock `pricing.deposit` to the paid deposit amount when `payment.depositStatus` is `paid` (so changing `total`, `people`, or `extras` updates `remainder = total - deposit`), refuse `total < deposit` and price edits once `remainderStatus === 'paid'` with `409` before mutating booking fields, and replace the local `costumeList` helper with shared `costumeListFromExtras(db, extras)` from `schedule.mjs`. Added two isolated mock tests in `test/mock.test.mjs` verifying `POST /api/bookings/GS-1023/cancel` (`200` *Đã hủy*, freeing `busy` blocks, reminders, and jobs, and refusing repeat cancel with `409`) and `PATCH /api/bookings/GS-1022` `{"total": 2000000}` (`deposit` stays `540000`, `remainder` `1460000`, and `500000` refused with `409`). Checks: `npm run format:check`, `npm run lint`, `npm run build`, and all 5 isolated `node --test` suites pass; `contract-check.mjs --strict-values` passes `124/130` with 0 failures in `05-bookings.md` (remaining 6 failures are only `06-payments.md` and `08-jobs.md` mock updates not committed yet).
+Changed: initial edit to `mock/routes/bookings.mjs` failed `npm run format:check` on a line over Prettier's width; formatted with `prettier --write` and re-verified cleanly. Earlier PR #5 review (`5617bea`) also caught the recomputed `deposit` bug on `GS-1022` and missing cancel test evidence.
+Rejected: nothing.
+By hand: nothing.

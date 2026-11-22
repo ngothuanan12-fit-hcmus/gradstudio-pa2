@@ -2,7 +2,7 @@
 import { currentUser, fail, forbidden, invalid, notFound, ok, unauthenticated } from '../lib.mjs';
 import { syncJobsForBooking } from './jobs.mjs';
 import { syncReminderForBooking } from './reminders.mjs';
-import { checkSchedule, roomName, userName, validateScheduleInput } from './schedule.mjs';
+import { checkSchedule, costumeListFromExtras, roomName, userName, validateScheduleInput } from './schedule.mjs';
 
 const BOOKING_STATUSES = ['Chờ cọc 30%', 'Đã đặt lịch', 'Hoàn thành', 'Đã hủy'];
 
@@ -58,6 +58,12 @@ function extrasOut(db, extras) {
   });
 }
 
+function paidDepositAmount(db, booking) {
+  if (typeof booking.paidDeposit === 'number') return booking.paidDeposit;
+  return db.payments?.find((p) => p.bookingId === booking.id && p.kind === 'deposit' && p.status === 'succeeded')
+    ?.amount;
+}
+
 function computePricing(db, booking) {
   const { pack } = findServiceAndPackage(db, booking.serviceId, booking.packageId);
   const baseLabel = pack.priceUnit === 'người' ? `${pack.name} (${booking.people} người)` : pack.name;
@@ -73,7 +79,8 @@ function computePricing(db, booking) {
   }
   const computedTotal = items.reduce((sum, it) => sum + (typeof it.amount === 'number' ? it.amount : 0), 0);
   const total = typeof booking.totalOverride === 'number' ? booking.totalOverride : computedTotal;
-  const deposit = Math.round(total * 0.3);
+  const lockedDeposit = booking.payment.depositStatus === 'paid' ? paidDepositAmount(db, booking) : undefined;
+  const deposit = typeof lockedDeposit === 'number' ? lockedDeposit : Math.round(total * 0.3);
   const remainder = total - deposit;
   return { items, total, deposit, remainder };
 }
@@ -141,12 +148,6 @@ export function syncBookingBusy(db, booking) {
   });
 }
 
-function costumeList(extras) {
-  return extras
-    .filter((x) => x.extraId === 'trang-phuc' && x.modelId && x.size)
-    .map((x) => ({ modelId: x.modelId, size: x.size, quantity: x.quantity || 1 }));
-}
-
 function nextBookingId(db) {
   const max = db.bookings.reduce((m, b) => Math.max(m, Number(b.id.split('-')[1]) || 0), 1019);
   return `GS-${max + 1}`;
@@ -209,7 +210,7 @@ function create({ req, db, body }) {
       staffId: proposal.shoot.staffId,
       roomId: proposal.shoot.roomId,
     },
-    costumes: costumeList(extras),
+    costumes: costumeListFromExtras(db, extras),
   });
   if (!check.available) {
     return fail(409, 'CONFLICT', check.message, {
@@ -308,13 +309,30 @@ function update({ req, db, params, body }) {
   Object.assign(fields, schedFields);
   if (Object.keys(fields).length) return invalid(fields);
 
+  const touchesPrice = b.total !== undefined || b.people !== undefined || b.extras !== undefined;
+  if (touchesPrice && booking.payment.remainderStatus === 'paid') {
+    return fail(409, 'CONFLICT', 'Booking đã thanh toán đủ, không thể đổi giá.');
+  }
+  if (touchesPrice && booking.payment.depositStatus === 'paid') {
+    const candidate = {
+      ...booking,
+      people: b.people !== undefined ? b.people : booking.people,
+      totalOverride: b.total !== undefined ? b.total : b.people !== undefined ? null : booking.totalOverride,
+      extras: b.extras !== undefined ? nextExtras : booking.extras,
+    };
+    const nextPricing = computePricing(db, candidate);
+    if (nextPricing.total < nextPricing.deposit) {
+      return fail(409, 'CONFLICT', 'Tổng tiền không được nhỏ hơn tiền cọc đã thanh toán.');
+    }
+  }
+
   const touchesSlot = b.date !== undefined || b.makeup !== undefined || b.shoot !== undefined || b.extras !== undefined;
   if (touchesSlot) {
     const check = checkSchedule(db, {
       date: parsed.date,
       makeup: parsed.makeup,
       shoot: parsed.shoot,
-      costumes: costumeList(nextExtras),
+      costumes: costumeListFromExtras(db, nextExtras),
       excludeBookingId: booking.id,
     });
     if (!check.available) {
