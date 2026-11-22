@@ -2259,3 +2259,12 @@ Changed: with the contract changed ahead of the mock, `npm test` fails `contract
 Rejected: leaving the earlier "via `<img>`" phrasing unchanged, which misleads implementers into hitting `401` on protected image URLs.
 By hand: none.
 
+### 2026-11-22 — mock 08: rename job status to Đang làm
+Commit: the commit that adds this entry with `mock/routes/jobs.mjs` and `mock/data/jobs.json`, after `93ecccd`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm test`.
+Asked for: the mock side of `08-jobs.md` (`93ecccd`).
+Kept: awaiting An's review. Updated `JOB_STATUSES` in `mock/routes/jobs.mjs` and seed job `job-gs-1022-edit` in `mock/data/jobs.json` from `Đang thực hiện` to `Đang làm`. Checks: `npm run format:check`, `npm run lint`, and `npm test` (`8/8` passing, all `148` contract examples) pass.
+Changed: nothing.
+Rejected: nothing.
+By hand: none.
+

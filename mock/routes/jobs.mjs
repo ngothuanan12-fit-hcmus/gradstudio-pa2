@@ -7,7 +7,7 @@ import { bookingOut } from './bookings.mjs';
 import { roomName, userName } from './schedule.mjs';
 
 const PHOTOS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../client/public/photos');
-const JOB_STATUSES = ['Chưa bắt đầu', 'Đang thực hiện', 'Hoàn thành'];
+const JOB_STATUSES = ['Chưa bắt đầu', 'Đang làm', 'Hoàn thành'];
 const ALLOWED_MIME = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 const ROLE_LABEL = { makeup: 'Makeup', shoot: 'Chụp', edit: 'Chỉnh ảnh' };
