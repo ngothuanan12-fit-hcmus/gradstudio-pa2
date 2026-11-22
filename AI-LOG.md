@@ -2124,3 +2124,12 @@ Changed: the answers overturn three things the assistant had built or recommende
 Rejected: nothing.
 By hand: none.
 
+### 2026-11-22 — contract 03: no costumes on a proposal (product owners' decision)
+Commit: the commit that adds this entry with `docs/api/03-conversations.md`. The mock follows.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check).
+Asked for: step 1 of the plan after the product owners' answers.
+Kept: awaiting An's review. The proposal section drops the `costumes` field, its `400` message, the `costume` conflict kind and the example of 6 *Áo dài trắng*; it says costume stock is not checked, citing the answer, and that the opening-hours check is the team's rule. A dated line in `## Changes` takes back the costume part of `0a0c98b`.
+Changed: nothing beyond the request. Contract-check still passes with the contract alone (7/7), since no example sends `costumes`; the mock still accepts the field until the next commit.
+Rejected: nothing.
+By hand: none.
+
