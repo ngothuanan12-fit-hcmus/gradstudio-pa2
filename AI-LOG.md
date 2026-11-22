@@ -2369,3 +2369,12 @@ Kept: the review as posted. Passing: `npm test` 9/9, lint, build; the Admin scre
 Changed: finding (1) comes from reading `mock/routes/bookings.mjs`, `mock/routes/payments.mjs` and rule 1 of `05-bookings.md`; it was not run on the mock, and the review says which lines it rests on. The first G9 run on the copy stopped on a Windows console encoding error in the script (no screen fault); rerun with UTF-8 output.
 Rejected: asking Khánh to rewrite the old AI-LOG entries to match a split history; a new entry records the change instead.
 By hand: none.
+
+### 2026-11-23 — re-review of PR #6 on `7aa7484`; merged with the 360 px tab order left open
+Commit: the commit that adds this entry (log only); no review was posted, An merges PR #6 on GitHub.
+Tool: Claude Code (Claude Opus 5.5); the gates and `contract-check --strict-values` on a `git archive` copy of `7aa7484` (its own mock on 3106); Playwright on that copy (preview 4196, mock 3108; NEVER 15); new script `quan-ly-rieng/checks/check_pr6_360.py`.
+Asked for: check the PR again after Khánh's fixes.
+Kept: both findings of the first review are fixed. (1) Contracts 05 and 06 add the team assumption that moving a deposit-paid booking still in *Chờ cọc 30%* to a free time makes it *Đã đặt lịch* (also a follow-up question for the product owners); the mock does so, and a new test covers a clash `409`, an unpaid booking staying *Chờ cọc 30%*, and the paid one getting its blocks, reminder, job and the photo-choice guard on the 70%. `npm test` 10/10, strict contract-check 148/148 examples, 38/38 endpoints, lint and build pass. (2) `feature/pa3-ui` is now on GitHub and is itself one commit (`4cf690d`); Khánh says so in the PR instead of splitting it afterwards, and the old AI-LOG entries stay as written.
+Changed: the fix for the minor 360 px point (`aadf87d`) moves the chat above the list with CSS `order` but keeps the DOM order. At 360 px Tab goes from the header to the list at y≈1700, ten stops there, then back up to the chat's back link at y=239; the `h1` sits at y=1654 (WCAG 2.4.3, 1.3.2). 768 px is fine. Found by the Tab sequence in the script, not visible in the screenshots. An merges now and has it fixed afterwards.
+Rejected: holding the merge for this one fault (An's choice). Minor, not raised: the GS-1025 example in 05 is a `json` block that contract-check does not run, kept that way so the ids of 09 do not shift, and it writes `"..."` where the other examples write `…`.
+By hand: none.
