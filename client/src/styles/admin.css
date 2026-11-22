@@ -441,14 +441,7 @@ body.modal-open {
 
 @media (max-width: 767px) {
   .admin-workspace[data-route-conv='true'] .admin-chat {
-    order: 1;
     max-height: 75dvh;
-  }
-  .admin-workspace[data-route-conv='true'] .admin-inspector {
-    order: 2;
-  }
-  .admin-workspace[data-route-conv='true'] .admin-convs {
-    order: 3;
   }
 }
 

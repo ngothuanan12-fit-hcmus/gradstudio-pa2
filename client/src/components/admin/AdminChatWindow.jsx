@@ -78,12 +78,14 @@ export default function AdminChatWindow({
   services,
   onConversationUpdated,
   onOpenSchedule,
+  isPrimaryHeading = false,
 }) {
   const scrollRef = useRef(null);
   const schedChipRef = useRef(null);
   const quickAction = useAction();
   const [usedChipsByConv, setUsedChipsByConv] = useState({});
 
+  const HeadingTag = isPrimaryHeading ? 'h1' : 'h2';
   const conv = activeId && convQuery.data?.id === activeId ? convQuery.data : null;
   const messages = conv?.messages || [];
 
@@ -96,10 +98,41 @@ export default function AdminChatWindow({
     return () => cancelAnimationFrame(frameId);
   }, [conv?.id, messages.length]);
 
+  function renderFallbackBar(headingText) {
+    return (
+      <div className="chat-window-bar">
+        <div className="chat-window-who">
+          <Link className="chat-back-link" to="/quan-ly" aria-label="Danh sách hội thoại">
+            <Icon name="arrow-left" />
+          </Link>
+          <div className="chat-window-meta">
+            <HeadingTag id="chat-customer-heading" className="chat-window-name">
+              {headingText}
+            </HeadingTag>
+          </div>
+        </div>
+        <button
+          type="button"
+          className="panel-toggle"
+          aria-expanded={panelOpen}
+          aria-controls="booking-panel"
+          aria-label={panelOpen ? 'Ẩn booking' : 'Mở booking'}
+          onClick={onTogglePanel}
+        >
+          <Icon name="sidebar" />
+          <span className="panel-tooltip" aria-hidden="true">
+            {panelOpen ? 'Ẩn booking' : 'Mở booking'}
+          </span>
+        </button>
+      </div>
+    );
+  }
+
   if (!activeId) {
     if (conversationsStatus === 'loading' || conversationsStatus === 'idle') {
       return (
         <section className="admin-card admin-chat" aria-label="Cửa sổ hội thoại">
+          {isPrimaryHeading ? renderFallbackBar('Đang tải hội thoại') : null}
           <div className="chat-empty-center">
             <LoadingState label="Đang tải hội thoại…" />
           </div>
@@ -109,6 +142,7 @@ export default function AdminChatWindow({
     if (conversationsStatus === 'error') {
       return (
         <section className="admin-card admin-chat" aria-label="Cửa sổ hội thoại">
+          {isPrimaryHeading ? renderFallbackBar('Hội thoại') : null}
           <div className="chat-empty-center">
             <p className="state state-empty">Chưa tải được danh sách hội thoại. Hãy nhấn Thử lại ở cột bên trái.</p>
           </div>
@@ -118,6 +152,7 @@ export default function AdminChatWindow({
     if (!hasConversations) {
       return (
         <section className="admin-card admin-chat" aria-label="Cửa sổ hội thoại">
+          {isPrimaryHeading ? renderFallbackBar('Hội thoại') : null}
           <div className="chat-empty-center">
             <EmptyState>Chưa có hội thoại để hiển thị.</EmptyState>
           </div>
@@ -128,7 +163,8 @@ export default function AdminChatWindow({
 
   if (convQuery.status === 'error') {
     return (
-      <section className="admin-card admin-chat" aria-label="Cửa sổ hội thoại">
+      <section className="admin-card admin-chat" aria-labelledby="chat-customer-heading">
+        {renderFallbackBar('Không tải được hội thoại')}
         <div className="chat-empty-center">
           <ErrorState error={convQuery.error} onRetry={convQuery.retry} />
           <Link className="btn btn-secondary" to="/quan-ly">
@@ -141,7 +177,8 @@ export default function AdminChatWindow({
 
   if (!conv) {
     return (
-      <section className="admin-card admin-chat" aria-label="Cửa sổ hội thoại">
+      <section className="admin-card admin-chat" aria-labelledby="chat-customer-heading">
+        {renderFallbackBar('Đang tải hội thoại')}
         <div className="chat-empty-center">
           <LoadingState label="Đang tải nội dung hội thoại…" />
         </div>
@@ -254,9 +291,9 @@ export default function AdminChatWindow({
             </span>
           </span>
           <div className="chat-window-meta">
-            <h2 id="chat-customer-heading" className="chat-window-name">
+            <HeadingTag id="chat-customer-heading" className="chat-window-name">
               {conv.customer.name}
-            </h2>
+            </HeadingTag>
             {refLine ? <p className="chat-window-ref">{refLine}</p> : null}
           </div>
         </div>
