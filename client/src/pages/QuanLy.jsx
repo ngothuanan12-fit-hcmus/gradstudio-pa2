@@ -119,7 +119,11 @@ export default function QuanLy() {
       scheduleTriggerRef={headerSchedTriggerRef}
       onOpenSchedule={() => openSchedule(null, null, headerSchedTriggerRef)}
     >
-      <div className="admin-workspace" data-panel-open={panelOpen ? 'true' : 'false'}>
+      <div
+        className="admin-workspace"
+        data-panel-open={panelOpen ? 'true' : 'false'}
+        data-route-conv={routeConvId ? 'true' : 'false'}
+      >
         <AdminConversationList
           conversationsQuery={conversationsQuery}
           activeId={activeId}

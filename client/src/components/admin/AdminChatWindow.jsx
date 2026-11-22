@@ -243,6 +243,9 @@ export default function AdminChatWindow({
     <section className="admin-card admin-chat" aria-labelledby="chat-customer-heading">
       <div className="chat-window-bar">
         <div className="chat-window-who">
+          <Link className="chat-back-link" to="/quan-ly" aria-label="Danh sách hội thoại">
+            <Icon name="arrow-left" />
+          </Link>
           <span className="conv-avatar">
             <span aria-hidden="true">{conv.customer.name.charAt(0)}</span>
             <span className={`conv-status-dot ${dot.cls}`}>
