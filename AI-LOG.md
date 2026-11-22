@@ -1933,3 +1933,57 @@ Kept: awaiting An's review. Merged `origin/main` (`6d14e93`, carrying `0e5bfbc` 
 Changed: nothing.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-21 — review of PR #5 (Khánh's contracts and mocks 04–08)
+Commit: the commit that adds this entry (log only); the review is on PR #5, *Changes requested*, on `215796c`.
+Tool: Claude Code (Claude Opus 5.5); the gates on a `git archive` copy of `215796c`; a short script against that copy's mock on port 3105.
+Asked for: check the repository's pull requests, then post the review on PR #5.
+Kept: the review as posted. To fix before merging: the cancel endpoint has no success example and `05-bookings.md` claims a mock test that does not exist; changing `total` after a paid deposit recomputes the deposit (GS-1022: 540.000đ paid, `total` 2.000.000đ gives deposit 600.000đ and remainder 1.400.000đ, run on the mock); `PATCH /api/bookings/:id` has no per-field messages and no `400` example; two stale lines in `docs/api/README.md`. To agree before `09-gallery.md`: when the remaining 70% may be paid, previews returned as whole base64 files, the route names of the payment screens. Minor: the costume found by id instead of `kind`, English words in screen messages, the gateway result posted by the customer. The AI-LOG entries of 05 to mock 08 record no check of the assistant's output.
+Changed: of Khánh's three notes on `mock/routes/conversations.mjs`, two are real and stay for An to fix on `main` after the merge (the free time of a refused proposal is not checked against held slots, and that check ignores opening hours and costume stock; a new proposal is not refused once the conversation has a booking); the third (`text: ""` with a request answers `400`) follows `03-conversations.md` and stays. The deposit finding was confirmed by running the mock before it went into the review, not left as a reading of the code.
+Rejected: merging with the findings as follow-ups: the false test claim and the deposit rule are in the contract other files build on.
+By hand: none.
+
+### 2026-11-22 — plan for the two proposal fixes Khánh found; costume check by option (b)
+Commit: the commit that adds this entry (log and brief only; no code or contract changed yet).
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: how to handle Khánh's two findings on `POST /api/conversations/:id/proposals` (the clash check differs from `checkSchedule`; a new proposal is accepted after a booking exists), whether the booking code in the refusal can lead to the booking, and a comparison of two ways to check costume stock.
+Kept: awaiting the work. (1) A proposal on a conversation that has a booking will be refused with `409` and `details.bookingId`, so the Admin screen can link to that booking without reading the code out of the message; the screen should also hide the proposal form when the conversation's `bookingId` is set, the `409` staying as the server's guard. Done on `main` now: contract `03` first, then the mock, a dated line in `## Changes`. (2) After PR #5 is merged, the proposal check will call `checkSchedule`, so one set of rules covers staff, rooms, opening hours and costume stock, and free time is offered only when it is really free; conflict kinds widen to `staff`, `room`, `hours`, `costume`. Costume stock by option (b): the proposal body gains optional `costumes` (model, size, quantity), entered by the Admin as in `/api/schedule/check`.
+Changed: the assistant's first plan put the booking code only in the message text; An asked whether it could be clicked, which led to `details.bookingId` and to hiding the form instead of only reporting the refusal. Both findings come from Khánh's cross-review of `mock/routes/conversations.mjs`; checked against the code before they were accepted, the third note (`text: ""` with a request answers `400`) follows the contract and stays.
+Rejected: the assistant's recommendation (a), taking the costume from the customer's request automatically. An chose (b): correct behaviour over speed, and a customer who changes model or size in the chat is handled by the Admin directly, without a new request. The weakness of (b), an Admin who forgets the costume, is covered by pre-filling the fields from the request (to ask of Khánh) and by the check again at booking creation and deposit.
+By hand: none.
+
+### 2026-11-22 — answers to Khánh's three questions (remainder timing, preview URL, routes)
+Commit: the commit that adds this entry with `FRONTEND.md`.
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: check Khánh's three questions (items 5–7 of the PR #5 review), then draft the reply once An agreed.
+Kept: awaiting Khánh's changes. (5) The remaining 70% is paid only after the customer saves the photo choice, the order of G9 in the brief (choose, pay, *Nhận ảnh*), marked in `06-payments.md` as the team's reading of the brief; 06 drops its successful remainder on GS-1022 for a refusal before the choice, and `09-gallery.md` walks GS-1022 through choice, remainder and *Nhận ảnh*; the mock of 06 reads the choice from `db.selections`, which the mock of 09 will create. (6) A preview's `url` points to an endpoint of `08-jobs.md` that answers the image file itself; its examples are the JSON errors (`401`, `404`) and the `200` is described in words, since contract-check reads JSON answers only and a binary `200` would fail with `--strict-values`; seed previews may use the sample photos in `client/public/photos`. (7) The routes of G4–G10 are listed in `FRONTEND.md` section 4 as agreed, not yet built.
+Changed: none of the three changes a file of Khánh's here; the reply asks for them. The `--strict-values` point was read from `tools/contract-check.mjs` (an answer block without a body becomes a note, and notes fail in strict mode) before it went into the answer.
+Rejected: a binary `200` example for the image endpoint, for the reason above.
+By hand: none.
+
+### 2026-11-22 — contract 03: no new proposal once the conversation has a booking
+Commit: the commit that adds this entry with `docs/api/03-conversations.md` and `brief.md`. The mock follows in the next commit.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check).
+Asked for: refuse a proposal once the conversation has a booking, contract 03 first.
+Kept: awaiting An's review. `POST /api/conversations/:id/proposals` on a conversation with a booking answers `409` with `details.bookingId`; the section says the booking's time is changed in the booking (`PATCH /api/bookings/:id`, step G10). One example (`c-customer2`, which has GS-1022 in the seed) and a row in the error table; a dated line in `## Changes`. The message ends with what to do: "Hội thoại này đã có booking GS-1022. Đổi giờ trong booking."
+Changed: with the contract alone, contract-check fails as expected: the new example gets `201` from the mock instead of `409`, and the accepted proposal shifts Anh's later proposal from `pr-2` to `pr-3`, so the answer example at line 439 gets `404`. Both are the mock's change still to come; CI is red on this commit until it lands.
+Rejected: nothing.
+By hand: none.
+
+### 2026-11-22 — mock 03: the proposal refusal once a booking exists
+Commit: the commit that adds this entry with `mock/routes/conversations.mjs` and `HARNESS.md`, after `1b8b199`.
+Tool: Claude Code (Claude Opus 5.5); `npm test` (contract-check), format and lint.
+Asked for: the mock side of the refusal (same request as `1b8b199`).
+Kept: awaiting An's review. The proposal handler answers `409` with `details.bookingId` as soon as the conversation has a booking, before the body is checked (a refused conversation needs no valid time). `HARNESS.md`: incident 11, found by Khánh's review.
+Changed: nothing beyond the request. Checks: `npm test` 4/4, all 45 examples answer as written, including the two that failed on `1b8b199`; format and lint pass.
+Rejected: nothing.
+By hand: none.
+
+### 2026-11-22 — merge origin/main (1be6474) and clarify earlier PR #5 findings before fixes
+Commit: the merge commit combining `origin/main` (`1be6474`) with `feature/pa3-khanh` (`215796c`), plus resolved `brief.md` (with prompt `2.19`) and `AI-LOG.md`.
+Tool: Antigravity (Gemini 4 Hydrogen); `git diff --check`, `npm test`, `npm run format:check`, `npm run lint`, `npm run build`.
+Asked for: apply the agreed answers (questions 5–7), merge `origin/main`, fix the four review items and minor items from PR #5, re-verify, and push for review.
+Kept: merged `origin/main` (`1be6474`, bringing `FRONTEND.md` section 4 agreed routes, `03-conversations.md` booking-proposal refusal, and `HARNESS.md` incident 11) cleanly into `feature/pa3-khanh` without rewriting earlier `AI-LOG.md` or `brief.md` entries, and appended prompt `2.19` to `brief.md`. Clarified in this new entry without altering past commits `e07fc21`–`215796c` (`CLAUDE.md` rule 4): PR #5 review caught mistakes that were missed under `Changed: nothing` in those earlier entries, which will now be fixed commit-by-commit in contracts `README`, `05`, `06`, `08` and mocks `04`–`08` (`Changed` details logged in each fix commit and below).
+Changed: earlier `2026-11-21` entries (`05`–mock `08`) recorded `Changed: nothing` without auditing assistant output line-by-line; An's PR #5 review (`5617bea`) caught an untrue mock-test sentence and missing `200` cancel evidence in `05-bookings.md`, deposit recalculation when `total` changes after deposit paid, missing `400` field details on `PATCH /api/bookings/:id`, two stale lines in `docs/api/README.md`, remainder timing vs G9, base64 preview payload size, route name mismatch in `06-payments.md`, hardcoded `trang-phuc` id, and mixed-English validation strings.
+Rejected: nothing.
+By hand: Khánh and An's agreed resolutions on questions 5–7 (`db.selections`, preview image endpoint + `client/public/photos` seeds, `/thanh-toan/:paymentId` routes).

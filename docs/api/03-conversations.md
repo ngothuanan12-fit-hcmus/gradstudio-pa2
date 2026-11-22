@@ -308,7 +308,7 @@ Content-Type: application/json
 
 ## POST /api/conversations/:id/proposals
 
-Who: the Admin. Proposes a time in the chat (step G5). The API checks the people and the room at that time against bookings that hold a slot (*Đã đặt lịch*; a booking in *Chờ cọc 30%* does not, brief section 3). A clash is refused with `409`, saying who is busy and when, and which time is free instead. An accepted proposal becomes a message of kind `proposal`; an earlier open proposal on the same conversation becomes `replaced`; a *Chưa trả lời* conversation becomes *Đang tư vấn*.
+Who: the Admin. Proposes a time in the chat (step G5). The API checks the people and the room at that time against bookings that hold a slot (*Đã đặt lịch*; a booking in *Chờ cọc 30%* does not, brief section 3). A clash is refused with `409`, saying who is busy and when, and which time is free instead. An accepted proposal becomes a message of kind `proposal`; an earlier open proposal on the same conversation becomes `replaced`; a *Chưa trả lời* conversation becomes *Đang tư vấn*. A conversation that already has a booking takes no new proposal: that booking's time is changed in the booking itself (`PATCH /api/bookings/:id`, `05-bookings.md`, step G10), and the refusal names the booking in `details.bookingId`, so the screen can link to it.
 
 Body:
 
@@ -329,6 +329,7 @@ Errors:
 | `403` | `FORBIDDEN` | not the Admin | — |
 | `404` | `NOT_FOUND` | unknown conversation | — |
 | `409` | `CONFLICT` | a person or the room is busy then | `details.conflicts`: a list of `{ "who", "kind" (`staff` or `room`), "date", "from", "to" }`; `details.freeTime`: `{ "makeup": { "from", "to" }, "shoot": { "from", "to" } }`, or `null` when the API has none to offer |
+| `409` | `CONFLICT` | the conversation already has a booking | `details.bookingId`: that booking's id |
 
 09:00, the time Linh asked for, clashes: Mai is busy 08:00–12:00:
 
@@ -379,6 +380,23 @@ HTTP/1.1 403 Forbidden
 Content-Type: application/json
 
 {"error": {"code": "FORBIDDEN", "message": "Bạn không có quyền làm việc này."}}
+```
+
+Minh Anh's graduation conversation already has its booking, GS-1022, so it takes no new proposal:
+
+```http
+POST /api/conversations/c-customer2/proposals
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"date": "2026-10-27", "makeup": null, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "roomId": "r-b"}}
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{"error": {"code": "CONFLICT", "message": "Hội thoại này đã có booking GS-1022. Đổi giờ trong booking.", "details": {"bookingId": "GS-1022"}}}
 ```
 
 A proposal for Anh's portrait, without make-up (answered below):
@@ -505,3 +523,4 @@ Content-Type: application/json
 
 - 2026-11-20 — First version. No client code calls these endpoints yet.
 - 2026-11-21 — A request's extras gain `modelName`, the costume model's name, so a screen can show "Áo cử nhân" without loading the catalogue again. No client code calls these endpoints yet.
+- 2026-11-22 — `POST /api/conversations/:id/proposals` refuses a conversation that already has a booking (`409`, with `details.bookingId`); until now a new proposal could be agreed again after the booking was made. Found in Khánh's review of PR #5. No client code calls this endpoint yet.

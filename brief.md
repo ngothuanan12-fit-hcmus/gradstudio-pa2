@@ -260,3 +260,50 @@ In the question dialog An chose: fix the three remaining issues of the G2 review
 ### 2.18 Merge main and PR for contracts 04–08 and mocks (Khánh, 2026-11-21)
 
 > Tạo pull request vào main, và viết comment những gì đã thực hiện được sau đó request cho lead An review
+
+### 2.9 Review of Khánh's PR #5, contracts and mocks 04–08 (2026-11-21)
+
+> kiểm tra pr của repo
+
+> đăng review lên PR #5
+
+### 2.10 The two fixes to the proposal endpoint, found by Khánh (2026-11-22)
+
+> hai vấn đề
+> Đề xuất bị trùng lịch phải dùng chung checkSchedule của Khánh, để giờ trống được kiểm tra thật, và để tính cả giờ mở cửa lẫn tồn kho trang phục.
+> Chặn tạo đề xuất mới khi hội thoại đã có booking. Việc này cần thêm một dòng có ngày vào ## Changes của 03-conversations.md.
+> nên xử lý thế nào
+
+> nếu ghi hội thoại này đã có booking  kèm mã thì có bấm vào thông báo hiện lên được không để dẫn tới nơi xảy ra xung đột
+> việc 1 mình chưa hình dung được a và b cái nào trực quan và tiện lợi hơn, bạn nếu giống như vậy mình không nhớ rõ để review
+
+> mình muốn cách b để đảm bảo chức năng chỉ không phải nhanh hay khi gặp trường hợp ngoại lệ lại xử lý phức tạp, ghi AI LOG cho phiên này có thay đổi
+> kiểm tra các câu hỏi dưới đây do Khánh hỏi
+
+Followed by Khánh's three questions, items 5 to 7 of the PR #5 review (when the remaining 70% may be paid; preview `url` as a base64 data URL; the route names of G4–G10).
+
+> đồng ý cả ba, soạn tin nhắn trả lời Khánh
+
+### 2.11 Refuse a proposal once the conversation has a booking (2026-11-22)
+
+> làm việc chặn đề xuất khi đã có booking
+> mình có sửa luôn 03-conversations không
+
+### 2.19 Review fixes for PR #5 and agreed items (Khánh, 2026-11-22)
+
+> Chốt mục 2 như sau:
+> Câu 5: Trả 70% còn lại
+> Chỉ được trả sau khi khách đã lưu lựa chọn ảnh, đúng thứ tự G9 của đề: chọn ảnh → trả 70% → Nhận ảnh.
+> Trong 06-payments.md:
+> Thêm luật này kèm lỗi 409, ghi rõ là cách nhóm đọc G9.
+> Bỏ ví dụ trả 70% thành công cho GS-1022, thay bằng ví dụ bị từ chối vì chưa chọn ảnh.
+> Mock 06 đọc lựa chọn ảnh từ db.selections (mock 09 của mình sẽ tạo). Chưa có thì coi như chưa chọn.
+> Ví dụ gắn link file cho GS-1022 ở 05 giữ nguyên. Chuỗi chọn ảnh → trả 70% → Nhận ảnh của GS-1022 làm ở 09-gallery.md.
+> Câu 6: Ảnh xem trước
+> url không trả base64 nữa, mà trỏ tới một endpoint trong 08 trả về chính file ảnh, để trình duyệt tải qua `<img>`.
+> Contract-check chỉ đọc được câu trả lời JSON, nên ví dụ của endpoint này chỉ viết các ca lỗi JSON (401, 404). Ca 200 thì mô tả bằng lời.
+> Ảnh xem trước trong seed có thể dùng ảnh mẫu có sẵn trong client/public/photos.
+> Câu 7: Route
+> đã ghi danh sách route vào FRONTEND.md mục 4 (bảng "Agreed for the screens not built yet"). em xem có chỗ nào cần đổi thì nhắn mình trước khi dựng màn. Mã booking và mã thanh toán để trong đường dẫn, không để trong query.
+> Sửa lại 06-payments.md cho khớp tên route /thanh-toan/:paymentId và /thanh-toan/:paymentId/ket-qua.
+> Rồi tiến hành luôn các bước 1. 2. 3.
