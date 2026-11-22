@@ -580,7 +580,7 @@ Success: `200` with the cancelled booking object (`status: "Đã hủy"`).
 
 Errors: `400` (`reason`: `"Lý do hủy tối đa 500 ký tự."`), `401`, `403`, `404`, `409`.
 
-Note: `GS-1020`–`GS-1024` stay active for `06-payments.md`–`09-gallery.md`, so the examples below check the guard paths; `test/mock.test.mjs` verifies the `200` cancellation path and held-slot release on its own fresh mock process (added in the matching mock commit).
+Note: `GS-1020`–`GS-1024` stay active for `06-payments.md`–`09-gallery.md`, so the examples below check the guard paths; `test/mock.test.mjs` verifies the `200` cancellation path and held-slot release on its own fresh mock process.
 
 Refused when trying to cancel a completed booking (`GS-1021`):
 

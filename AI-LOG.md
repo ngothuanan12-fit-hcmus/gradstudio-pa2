@@ -2050,3 +2050,12 @@ Kept: awaiting An's review. Updated `mock/server.mjs` to support raw binary resp
 Changed: initial edit to `test/mock.test.mjs` forgot `import fs from 'node:fs'` before the test helper read `client/public/photos/`; spotted during self-review before running tests and added immediately. Earlier PR #5 review (`5617bea`) caught storing up to `5 MB` base64 inside preview JSON URLs.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-22 — clean-context review polish: sync GS-1022 seed row and harden payment guards
+Commit: the commit that adds this entry with `mock/data/README.md`, `mock/routes/payments.mjs`, and `docs/api/05-bookings.md`, after `a19cd82`.
+Tool: Antigravity (Gemini 4 Hydrogen) + isolated Clean-Context Code Reviewer (`research` subagent); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`, `tools/contract-check.mjs --strict-values`.
+Asked for: verify all PR #5 review fixes cleanly before pushing back to PR #5 and requesting re-review from An.
+Kept: awaiting An's review. Checked `FRONTEND.md` section 4 (*Agreed for the screens not built yet*) and confirmed all nine G4–G10 routes keep ids in path parameters and align cleanly with `04`–`08`. Based on the isolated code review findings: synced `GS-1022`'s seed row in `mock/data/README.md` (`no photos chosen yet`, `06-payments.md` refuses remainder before selection, `09-gallery.md` walks selection -> 70% -> *Nhận ảnh*), tightened `hasChosenItems` in `mock/routes/payments.mjs` to inspect any array value instead of hardcoding keys and falling back to `true`, guarded `applyResult` against completing payments on already *Đã hủy* / *Hoàn thành* bookings, and cleaned the phrasing nit in `docs/api/05-bookings.md`. Checks: `git diff --check`, `npm run format:check`, `npm run lint`, `npm test` (`7/7`), `npm run build`, and `contract-check.mjs --strict-values` (`130/130`, `35/35` endpoints, `0` failures) all pass.
+Changed: isolated clean-context review caught three subtle issues: `mock/data/README.md` line 66 still claimed `GS-1022` had 30 photos chosen and `06-payments.md` paid its remainder (contradicting line 81 and `06-payments.md`), `hasChosenItems` fell back to `true` on empty/unrecognized selection objects, and `applyResult` lacked a `Đã hủy`/`Hoàn thành` status check when applying `success`.
+Rejected: nothing.
+By hand: nothing.

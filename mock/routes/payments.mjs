@@ -36,10 +36,7 @@ function hasChosenItems(entry) {
   if (!entry) return false;
   if (Array.isArray(entry)) return entry.length > 0;
   if (typeof entry === 'object') {
-    for (const key of ['previewIds', 'photoIds', 'photos', 'items', 'selected']) {
-      if (Array.isArray(entry[key])) return entry[key].length > 0;
-    }
-    return true;
+    return Object.values(entry).some((v) => Array.isArray(v) && v.length > 0);
   }
   return Boolean(entry);
 }
@@ -163,6 +160,10 @@ function applyResult({ req, db, params, body }) {
         ? 'Thanh toán cọc chưa thành công. Bạn có thể thử lại.'
         : 'Thanh toán phần còn lại chưa thành công. Bạn có thể thử lại.';
     return ok({ payment, booking: bookingOut(db, booking) });
+  }
+
+  if (booking.status === 'Đã hủy' || booking.status === 'Hoàn thành') {
+    return fail(409, 'CONFLICT', 'Booking không ở trạng thái thanh toán.');
   }
 
   if (payment.kind === 'deposit') {
