@@ -1,17 +1,17 @@
 # Staff jobs and preview uploads
 
-What assigned staff see and update (step G8): their assigned jobs (`when`, `where`, `what`), updating a job's status, uploading preview photos to the booking (`multipart/form-data`), and serving each preview image file through `GET /api/previews/:id` so browsers load previews via `<img>` without embedding large base64 data URLs in JSON. Reading the list and selecting previews is in `09-gallery.md`.
+What assigned staff see and update (step G8): their assigned jobs (`when`, `where`, `what`), updating a job's status, uploading preview photos to the booking (`multipart/form-data`), and serving each preview image file through `GET /api/previews/:id` so JSON stays lightweight without embedding large base64 data URLs. Because `GET /api/previews/:id` requires `Authorization: Bearer <token>`, a bare `<img src="/api/previews/...">` does not carry the header and receives `401`; the client fetches each preview image with the token and renders it in `<img>` using an object URL. Reading the list and selecting previews is in `09-gallery.md`.
 
 Jobs exist for bookings in *Đã đặt lịch* (created from the booking's make-up, shoot, or editing assignments once the 30% deposit succeeds; e.g. `Mai` and `Tuấn` on `GS-1024`, `Hoàng Gia Huy` on `GS-1022`).
 
-**Team assumption and sample data.** The brief describes viewing assigned work, updating a job's status, and adding preview photos without fixing exact Vietnamese status names or file size limits. Until changed, job statuses are *Chưa bắt đầu*, *Đang thực hiện*, and *Hoàn thành*; preview uploads accept `image/jpeg`, `image/png`, and `image/webp` up to `5 MB` per file.
+**Product owner decision, assumption, and sample data.** Per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)), job statuses are *Chưa bắt đầu*, *Đang làm*, and *Hoàn thành*, and changing a job's status never alters the booking's status. Preview upload rules (accepting `image/jpeg`, `image/png`, and `image/webp` up to `5 MB` per file) stay a team assumption.
 
 ## Statuses
 
 | Status | Meaning |
 |---|---|
 | `Chưa bắt đầu` | Assigned job has not started yet |
-| `Đang thực hiện` | Staff member is performing the work |
+| `Đang làm` | Staff member is performing the work |
 | `Hoàn thành` | Assigned job is finished |
 
 ## Objects
@@ -43,7 +43,7 @@ Jobs exist for bookings in *Đã đặt lịch* (created from the booking's make
 | `filename` | string | Uploaded file name |
 | `mimeType` | string | `image/jpeg`, `image/png`, or `image/webp` |
 | `size` | integer | File size in bytes |
-| `url` | string | Path to load the image file via `GET /api/previews/:id` (e.g. `"/api/previews/prv-1"`) |
+| `url` | string | Path to fetch the image bytes with the Bearer token via `GET /api/previews/:id` (e.g. `"/api/previews/prv-1"`) |
 | `uploadedBy` | object | `{ "id", "name" }` |
 | `uploadedAt` | string | ISO 8601 with offset |
 
@@ -101,7 +101,7 @@ Authorization: Bearer {{token:staff3}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "job-gs-1022-edit", "bookingId": "GS-1022", "staffId": "u-staff3", "staffName": "Hoàng Gia Huy", "role": "edit", "title": "Chỉnh ảnh · Gói Tốt nghiệp Premium", "customerName": "Trần Minh Anh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-18", "from": "16:00", "to": "18:00", "roomName": null, "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "status": "Đang thực hiện"}]
+[{"id": "job-gs-1022-edit", "bookingId": "GS-1022", "staffId": "u-staff3", "staffName": "Hoàng Gia Huy", "role": "edit", "title": "Chỉnh ảnh · Gói Tốt nghiệp Premium", "customerName": "Trần Minh Anh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-18", "from": "16:00", "to": "18:00", "roomName": null, "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "status": "Đang làm"}]
 ```
 
 A customer cannot read staff jobs:
@@ -133,33 +133,33 @@ Content-Type: application/json
 
 ## PATCH /api/jobs/:id
 
-Who: the assigned `staff` member (or `admin`). Updates the job's status. Another staff member not assigned to this job answers `403`.
+Who: the assigned `staff` member (or `admin`). Updates the job's status without changing the booking's status. Another staff member not assigned to this job answers `403`.
 
 Body:
 
 | Field | Type | Required | Limits |
 |---|---|---|---|
-| `status` | string | yes | `Chưa bắt đầu`, `Đang thực hiện`, or `Hoàn thành` |
+| `status` | string | yes | `Chưa bắt đầu`, `Đang làm`, or `Hoàn thành` |
 
 Success: `200` with the updated job object.
 
 Errors: `400` (`status`: `"Trạng thái công việc không hợp lệ."`), `401`, `403` (wrong role or unassigned staff), `404` (unknown job id).
 
-Tuấn updates his GS-1024 shoot job to *Đang thực hiện*:
+Tuấn updates his GS-1024 shoot job to *Đang làm*:
 
 ```http
 PATCH /api/jobs/job-gs-1024-shoot
 Authorization: Bearer {{token:tuan}}
 Content-Type: application/json
 
-{"status": "Đang thực hiện"}
+{"status": "Đang làm"}
 ```
 
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "job-gs-1024-shoot", "bookingId": "GS-1024", "staffId": "u-tuan", "staffName": "Tuấn", "role": "shoot", "title": "Chụp · Gói Tốt nghiệp Premium", "customerName": "Nguyễn Thùy Linh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "from": "14:00", "to": "16:00", "roomName": "Phòng B", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "status": "Đang thực hiện"}
+{"id": "job-gs-1024-shoot", "bookingId": "GS-1024", "staffId": "u-tuan", "staffName": "Tuấn", "role": "shoot", "title": "Chụp · Gói Tốt nghiệp Premium", "customerName": "Nguyễn Thùy Linh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "from": "14:00", "to": "16:00", "roomName": "Phòng B", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "status": "Đang làm"}
 ```
 
 `staff3` (not assigned to GS-1024) cannot update Tuấn's job:
@@ -281,7 +281,7 @@ Content-Type: application/json
 
 ## GET /api/previews/:id
 
-Who: the booking's `customer`, a `staff` member assigned to this booking, or `admin`. Returns the image file bytes directly so `<img>` loads previews without embedding up to 5 MB base64 data URLs in JSON. Seed previews serve existing sample photos from `client/public/photos/`.
+Who: the booking's `customer`, a `staff` member assigned to this booking, or `admin`. Returns the image file bytes directly so JSON responses do not embed up to 5 MB base64 data URLs. Because this endpoint requires `Authorization: Bearer <token>`, a bare `<img src>` omits the header and gets `401`; the client fetches the bytes with the token and renders an object URL in `<img>`. Seed previews serve existing sample photos from `client/public/photos/`.
 
 Success: `200` with the binary image body and `Content-Type` matching the preview's `mimeType` (`image/jpeg`, `image/png`, or `image/webp`). Because `contract-check` parses JSON responses only, the `200` binary response is verified in `test/mock.test.mjs`, while the JSON error responses are tested below.
 
@@ -346,3 +346,4 @@ Content-Type: application/json
 
 - 2026-11-21 — First version. No client code calls these endpoints yet.
 - 2026-11-22 — Replace base64 preview `url` values with `GET /api/previews/:id` serving the binary image file directly (JSON `401`/`403`/`404` examples here, `200` binary verified in `test/mock.test.mjs`; seed previews may use sample photos in `client/public/photos/`). No client code calls these endpoints yet.
+- 2026-11-22 — Rename job status *Đang thực hiện* to *Đang làm* and state that job status never alters booking status per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)); fix the preview-loading explanation (`GET /api/previews/:id` requires a Bearer token, so browsers fetch it with the header into an object URL for `<img>` instead of `<img src>`). Client: `PreviewImage` (`client/src/components/PreviewImage.jsx`, step G9) already fetches previews with the token.

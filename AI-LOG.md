@@ -2250,3 +2250,12 @@ Changed: the first draft of the new `test/mock.test.mjs` test used `c-linh` dire
 Rejected: removing `costumeListFromExtras` before updating `bookings.mjs` and `payments.mjs`, which would break ESM imports before those separate commits.
 By hand: none.
 
+### 2026-11-22 — contract 08: rename job status to Đang làm and clarify token image loading
+Commit: the commit that adds this entry with `docs/api/08-jobs.md`, after `d21517a`. The mock follows.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm test` (`contract-check`).
+Asked for: sync `08-jobs.md` with the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)) and An's review fix on `GET /api/previews/:id`.
+Kept: awaiting An's review. Renamed `*Đang thực hiện*` to `Đang làm` across statuses, `GET /api/jobs` example, and `PATCH /api/jobs/:id`; stated explicitly that updating a job's status never alters the booking's status. Updated the `GET /api/previews/:id` wording to note that because the endpoint requires `Authorization: Bearer <token>`, a bare `<img src="/api/previews/...">` omits the token and gets `401`, so clients fetch the bytes with the token and render an object URL in `<img>` (as `PreviewImage` already does for step G9). Added the dated line in `## Changes`.
+Changed: with the contract changed ahead of the mock, `npm test` fails `contract-check` on `08-jobs.md:150` (`PATCH /api/jobs/job-gs-1024-shoot` returned `400` because the mock still validates `Đang thực hiện`, `147/148` examples passing; `08-jobs.md:95` also noted `"Đang làm"` vs `"Đang thực hiện"`); resolved in the mock commit next.
+Rejected: leaving the earlier "via `<img>`" phrasing unchanged, which misleads implementers into hitting `401` on protected image URLs.
+By hand: none.
+
