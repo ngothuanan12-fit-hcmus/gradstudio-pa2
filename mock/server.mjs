@@ -112,11 +112,21 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  if (MODE === 'empty' && answer.status < 400) answer = { ...answer, body: emptyLists(answer.body) };
+  if (MODE === 'empty' && answer.status < 400 && !answer.raw) {
+    answer = { ...answer, body: emptyLists(answer.body) };
+  }
 
   setTimeout(() => {
-    res.writeHead(answer.status, { 'Content-Type': 'application/json; charset=utf-8' });
-    res.end(JSON.stringify(answer.body));
+    if (answer.raw) {
+      res.writeHead(answer.status, {
+        'Content-Type': answer.contentType || 'application/octet-stream',
+        'Content-Length': String(answer.raw.length),
+      });
+      res.end(answer.raw);
+    } else {
+      res.writeHead(answer.status, { 'Content-Type': 'application/json; charset=utf-8' });
+      res.end(JSON.stringify(answer.body));
+    }
     console.log(`${req.method} ${url.pathname}${url.search} ${answer.status}`);
   }, DELAY[MODE]);
 });

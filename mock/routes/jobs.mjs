@@ -1,15 +1,40 @@
-// docs/api/08-jobs.md: staff jobs, job status updates, and multipart/form-data preview uploads.
+// docs/api/08-jobs.md: staff jobs, job status updates, multipart preview uploads, and preview file serving.
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { currentUser, fail, forbidden, invalid, notFound, ok, unauthenticated } from '../lib.mjs';
 import { bookingOut } from './bookings.mjs';
 import { roomName, userName } from './schedule.mjs';
 
+const PHOTOS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../client/public/photos');
 const JOB_STATUSES = ['Chưa bắt đầu', 'Đang thực hiện', 'Hoàn thành'];
 const ALLOWED_MIME = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 const ROLE_LABEL = { makeup: 'Makeup', shoot: 'Chụp', edit: 'Chỉnh ảnh' };
 
+const previewBytes = new Map();
 let nextPreview = 1;
 let minutes = 0;
+
+function previewOut(preview) {
+  return {
+    id: preview.id,
+    bookingId: preview.bookingId,
+    filename: preview.filename,
+    mimeType: preview.mimeType,
+    size: preview.size,
+    url: preview.url,
+    uploadedBy: preview.uploadedBy,
+    uploadedAt: preview.uploadedAt,
+  };
+}
+
+function readSeedPhoto(seedFile) {
+  if (!seedFile) return null;
+  const fullPath = path.resolve(PHOTOS_DIR, path.basename(seedFile));
+  if (!fullPath.startsWith(PHOTOS_DIR + path.sep) || !fs.existsSync(fullPath)) return null;
+  return fs.readFileSync(fullPath);
+}
 
 function now() {
   const t = 11 * 60 + minutes++;
@@ -207,22 +232,41 @@ async function uploadPreview({ req, db, params }) {
     return invalid({ file: 'Chỉ chấp nhận ảnh JPEG, PNG hoặc WebP.' });
   }
 
+  const id = `prv-${nextPreview++}`;
+  previewBytes.set(id, parsed.file.data);
   const preview = {
-    id: `prv-${nextPreview++}`,
+    id,
     bookingId: booking.id,
     filename: parsed.file.filename,
     mimeType: parsed.file.mimeType,
     size: parsed.file.data.length,
-    url: `data:${parsed.file.mimeType};base64,${parsed.file.data.toString('base64')}`,
+    url: `/api/previews/${id}`,
     uploadedBy: { id: user.id, name: user.name },
     uploadedAt: now(),
   };
   db.previews.push(preview);
-  return ok(preview, 201);
+  return ok(previewOut(preview), 201);
+}
+
+function readPreview({ req, db, params }) {
+  const { user, error } = caller(req, db, ['customer', 'staff', 'admin']);
+  if (error) return error;
+  const preview = db.previews.find((p) => p.id === params.id);
+  if (!preview) return notFound();
+  const booking = db.bookings.find((b) => b.id === preview.bookingId);
+  if (!booking) return notFound();
+  if (user.role === 'customer' && booking.customerId !== user.id) return notFound();
+  if (user.role === 'staff' && !db.jobs.some((j) => j.bookingId === booking.id && j.staffId === user.id)) {
+    return forbidden();
+  }
+  const raw = previewBytes.get(preview.id) || readSeedPhoto(preview.seedFile);
+  if (!raw) return notFound();
+  return { status: 200, contentType: preview.mimeType, raw };
 }
 
 export default [
   { method: 'GET', path: '/api/jobs', handler: list },
   { method: 'PATCH', path: '/api/jobs/:id', handler: updateStatus },
   { method: 'POST', path: '/api/bookings/:id/previews', handler: uploadPreview },
+  { method: 'GET', path: '/api/previews/:id', handler: readPreview },
 ];

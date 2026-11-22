@@ -2041,3 +2041,12 @@ Kept: awaiting An's review. Updated `mock/routes/payments.mjs` to replace the lo
 Changed: PR #5 minor review (`5617bea`) caught hardcoded `'trang-phuc'` in `costumeList` and mixed-English validation strings (`deposit`/`remainder`, `success`/`fail`) in `payments.mjs`.
 Rejected: nothing.
 By hand: nothing.
+
+### 2026-11-22 — mock 08-jobs & server: serve preview image files and seed sample photos
+Commit: the commit that adds this entry with `mock/routes/jobs.mjs`, `mock/server.mjs`, `mock/data/previews.json`, `mock/data/README.md`, and `test/mock.test.mjs`, after `f34b2a6`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`, `tools/contract-check.mjs --strict-values`.
+Asked for: implement agreed item 6 across `mock/routes/jobs.mjs`, `mock/server.mjs`, `mock/data/previews.json`, and `test/mock.test.mjs` (`GET /api/previews/:id` returning binary image bytes instead of base64 in JSON, seed previews backed by `client/public/photos/*.webp`).
+Kept: awaiting An's review. Updated `mock/server.mjs` to support raw binary responses (`answer.raw` + `answer.contentType`) without running `emptyLists` on binary payloads while keeping `error` and `slow` modes active. Populated `mock/data/previews.json` with two sample seed previews (`prv-gs-1020-1`, `prv-gs-1022-1`) using existing `client/public/photos/tot-nghiep-480.webp` and `tot-nghiep-900.webp` so uploaded previews start at `prv-1`. Updated `mock/routes/jobs.mjs` to store uploaded bytes in memory (`previewBytes`), strip internal `seedFile` in `previewOut`, return `"/api/previews/<id>"` as `url`, and handle `GET /api/previews/:id` (`200` image bytes for owning customer / assigned staff / admin, `401` unauthenticated, `404` unknown id or another customer, `403` unassigned staff or Superadmin). Added a `GET /api/previews/:id` test in `test/mock.test.mjs` checking seed WebP bytes, unassigned `403`, and uploaded PNG binary round-trip. Checks: `npm run format:check`, `npm run lint`, `npm test` (`7/7` tests pass), `npm run build`, and `contract-check.mjs --strict-values` (`130/130` examples, `35/35` endpoints, `0` failures) all pass.
+Changed: initial edit to `test/mock.test.mjs` forgot `import fs from 'node:fs'` before the test helper read `client/public/photos/`; spotted during self-review before running tests and added immediately. Earlier PR #5 review (`5617bea`) caught storing up to `5 MB` base64 inside preview JSON URLs.
+Rejected: nothing.
+By hand: nothing.

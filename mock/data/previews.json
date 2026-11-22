@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "id": "prv-gs-1020-1",
+    "bookingId": "GS-1020",
+    "filename": "tot-nghiep-480.webp",
+    "mimeType": "image/webp",
+    "size": 19768,
+    "url": "/api/previews/prv-gs-1020-1",
+    "uploadedBy": { "id": "u-tuan", "name": "Tuấn" },
+    "uploadedAt": "2026-10-18T10:00:00+07:00",
+    "seedFile": "tot-nghiep-480.webp"
+  },
+  {
+    "id": "prv-gs-1022-1",
+    "bookingId": "GS-1022",
+    "filename": "tot-nghiep-900.webp",
+    "mimeType": "image/webp",
+    "size": 46776,
+    "url": "/api/previews/prv-gs-1022-1",
+    "uploadedBy": { "id": "u-tuan", "name": "Tuấn" },
+    "uploadedAt": "2026-10-19T10:00:00+07:00",
+    "seedFile": "tot-nghiep-900.webp"
+  }
+]

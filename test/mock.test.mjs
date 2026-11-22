@@ -2,6 +2,7 @@
 // then stops that child only. Run with `npm test` (node --test), locally and in CI.
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
+import fs from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -177,6 +178,45 @@ test('PATCH /api/bookings/:id locks deposit once depositStatus is paid', async (
       body: JSON.stringify({ total: 500000 }),
     });
     assert.equal(tooLow.status, 409);
+  } finally {
+    await mock.stop();
+  }
+});
+
+test('GET /api/previews/:id serves seed and uploaded image files', async () => {
+  const mock = await startMock('normal', 3207);
+  try {
+    const expectedSeed = fs.readFileSync(path.join(ROOT, 'client/public/photos/tot-nghiep-900.webp'));
+    const seedRes = await fetch(`${mock.base}/api/previews/prv-gs-1022-1`, {
+      headers: { Authorization: 'Bearer token-u-customer2' },
+    });
+    assert.equal(seedRes.status, 200);
+    assert.equal(seedRes.headers.get('content-type'), 'image/webp');
+    assert.ok(Buffer.from(await seedRes.arrayBuffer()).equals(expectedSeed));
+
+    const unassigned = await fetch(`${mock.base}/api/previews/prv-gs-1020-1`, {
+      headers: { Authorization: 'Bearer token-u-staff3' },
+    });
+    assert.equal(unassigned.status, 403);
+
+    const pngBytes = Buffer.from('\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR', 'latin1');
+    const form = new FormData();
+    form.append('file', new Blob([pngBytes], { type: 'image/png' }), 'test-preview.png');
+    const up = await fetch(`${mock.base}/api/bookings/GS-1022/previews`, {
+      method: 'POST',
+      headers: { Authorization: 'Bearer token-u-tuan' },
+      body: form,
+    });
+    assert.equal(up.status, 201);
+    const created = await up.json();
+    assert.ok(created.url.startsWith('/api/previews/'));
+
+    const got = await fetch(`${mock.base}${created.url}`, {
+      headers: { Authorization: 'Bearer token-u-customer2' },
+    });
+    assert.equal(got.status, 200);
+    assert.equal(got.headers.get('content-type'), 'image/png');
+    assert.ok(Buffer.from(await got.arrayBuffer()).equals(pngBytes));
   } finally {
     await mock.stop();
   }
