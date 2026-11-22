@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router';
 import RequireRole from './auth/RequireRole.jsx';
-import ComingSoon from './pages/ComingSoon.jsx';
 import CongViec from './pages/CongViec.jsx';
 import Conversation from './pages/Conversation.jsx';
 import Conversations from './pages/Conversations.jsx';
@@ -11,6 +10,8 @@ import NotFound from './pages/NotFound.jsx';
 import PaymentGateway from './pages/PaymentGateway.jsx';
 import PaymentResult from './pages/PaymentResult.jsx';
 import QuanLy from './pages/QuanLy.jsx';
+import QuanLyBookingDetail from './pages/QuanLyBookingDetail.jsx';
+import QuanLyBookings from './pages/QuanLyBookings.jsx';
 import QuanTri from './pages/QuanTri.jsx';
 import SignIn from './pages/SignIn.jsx';
 
@@ -85,12 +86,11 @@ export default function App() {
           </RequireRole>
         }
       />
-      {/* Booking management screens, until step G10 builds them; links from G5/G6 lead here. */}
       <Route
         path="/quan-ly/booking"
         element={
           <RequireRole roles={['admin']}>
-            <ComingSoon title="Quản lý booking" step="G10" />
+            <QuanLyBookings />
           </RequireRole>
         }
       />
@@ -98,7 +98,7 @@ export default function App() {
         path="/quan-ly/booking/:id"
         element={
           <RequireRole roles={['admin']}>
-            <ComingSoon title="Chi tiết booking" step="G10" />
+            <QuanLyBookingDetail />
           </RequireRole>
         }
       />
