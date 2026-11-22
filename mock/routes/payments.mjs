@@ -3,7 +3,7 @@ import { currentUser, fail, forbidden, invalid, notFound, ok, unauthenticated } 
 import { bookingOut, syncBookingBusy } from './bookings.mjs';
 import { syncJobsForBooking } from './jobs.mjs';
 import { syncReminderForBooking } from './reminders.mjs';
-import { checkSchedule, costumeListFromExtras } from './schedule.mjs';
+import { checkSchedule } from './schedule.mjs';
 
 let nextPayment = 1;
 let minutes = 0;
@@ -27,7 +27,6 @@ function checkBookingResources(db, booking) {
     date: booking.date,
     makeup: booking.makeup,
     shoot: booking.shoot,
-    costumes: costumeListFromExtras(db, booking.extras),
     excludeBookingId: booking.id,
   });
 }
@@ -98,6 +97,9 @@ function start({ req, db, body }) {
     if (booking.payment.depositStatus !== 'paid') {
       return fail(409, 'CONFLICT', 'Cần thanh toán cọc 30% trước khi thanh toán phần còn lại.');
     }
+    if (booking.status !== 'Đã đặt lịch') {
+      return fail(409, 'CONFLICT', 'Booking chưa giữ lịch thành công, không thể thanh toán phần còn lại.');
+    }
     if (!hasPhotoSelection(db, booking.id)) {
       return fail(409, 'CONFLICT', 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
     }
@@ -157,8 +159,8 @@ function applyResult({ req, db, params, body }) {
     payment.completedAt = at;
     payment.message =
       payment.kind === 'deposit'
-        ? 'Thanh toán cọc chưa thành công. Bạn có thể thử lại.'
-        : 'Thanh toán phần còn lại chưa thành công. Bạn có thể thử lại.';
+        ? 'Thanh toán không thành công, booking vẫn chờ cọc.'
+        : 'Thanh toán không thành công, booking vẫn chờ thanh toán 70% còn lại.';
     return ok({ payment, booking: bookingOut(db, booking) });
   }
 
@@ -172,12 +174,14 @@ function applyResult({ req, db, params, body }) {
     }
     const check = checkBookingResources(db, booking);
     if (!check.available) {
-      payment.status = 'failed';
+      // Product owners (2026-11-22): record second concurrent customer's deposit as received while keeping booking Chờ cọc 30%.
+      booking.paidDeposit = payment.amount;
+      booking.payment.depositStatus = 'paid';
+      booking.payment.depositPaidAt = at;
+      payment.status = 'succeeded';
       payment.completedAt = at;
-      payment.message = check.message;
-      return fail(409, 'CONFLICT', check.message, {
-        details: { conflicts: check.conflicts, freeTime: check.freeTime },
-      });
+      payment.message = `Đã nhận tiền cọc 30%, nhưng ${check.message} Booking vẫn ở trạng thái Chờ cọc 30%; studio sẽ hoàn tiền ngoài hệ thống hoặc hỗ trợ đổi lịch/hủy.`;
+      return ok({ payment, booking: bookingOut(db, booking) });
     }
     booking.status = 'Đã đặt lịch';
     booking.paidDeposit = payment.amount;
@@ -195,6 +199,9 @@ function applyResult({ req, db, params, body }) {
 
   if (booking.payment.depositStatus !== 'paid') {
     return fail(409, 'CONFLICT', 'Cần thanh toán cọc 30% trước khi thanh toán phần còn lại.');
+  }
+  if (booking.status !== 'Đã đặt lịch') {
+    return fail(409, 'CONFLICT', 'Booking chưa giữ lịch thành công, không thể thanh toán phần còn lại.');
   }
   if (!hasPhotoSelection(db, booking.id)) {
     return fail(409, 'CONFLICT', 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');

@@ -25,9 +25,6 @@ function caller(req, db, roles) {
   return { user };
 }
 
-// Temporary no-op export until Mock 05 and Mock 06 drop their imports.
-export const costumeListFromExtras = () => [];
-
 function freeTimeFor(db, date, excludeBookingId = null) {
   const dayBusy = db.busy.filter((b) => b.date === date && b.bookingId !== excludeBookingId);
   if (!dayBusy.length) return null;

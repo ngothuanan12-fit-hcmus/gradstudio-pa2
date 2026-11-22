@@ -2295,3 +2295,12 @@ Changed: `contract-check --strict-values` still fails `2` lines (`06-payments.md
 Rejected: marking a concurrent clashing deposit as `failed` or returning `409` after money arrives, against the product owners' decision.
 By hand: none.
 
+### 2026-11-22 — mock 06: record concurrent clashed deposits as succeeded with reason and update fail messages
+Commit: the commit that adds this entry with `mock/routes/payments.mjs`, `mock/routes/schedule.mjs`, and `test/mock.test.mjs`, after `539f61f`.
+Tool: Antigravity (Gemini 4 Hydrogen); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`, and `contract-check.mjs --strict-values`.
+Asked for: the mock side of `06-payments.md` (`539f61f`).
+Kept: awaiting An's review. Removed `costumeListFromExtras` from `mock/routes/payments.mjs` and dropped the temporary no-op export stub from `mock/routes/schedule.mjs`. Updated failure messages in `applyResult` to `"Thanh toán không thành công, booking vẫn chờ cọc."` (deposit) and `"Thanh toán không thành công, booking vẫn chờ thanh toán 70% còn lại."` (remainder). Handled concurrent second-customer deposit clashes in `POST /api/payments/:id/result` (`result: "success"`): records `payment.status = "succeeded"`, sets `booking.payment.depositStatus = "paid"` (and `depositPaidAt`), keeps `booking.status = "Chờ cọc 30%"` without adding `busy`/reminders/jobs, and puts the conflict reason in `payment.message`; remainder requests also require `booking.status === "Đã đặt lịch"`. Added an end-to-end test in `test/mock.test.mjs` covering failure/retry wording, two concurrent bookings paying deposit, duplicate-payment `409`, remainder refusal, and Admin cancellation retaining `depositStatus: "paid"`. Checks: `npm run format:check`, `npm run lint`, `npm run build`, `npm test` (`9/9` passing), and `contract-check.mjs --strict-values` (`148/148` examples, `0 FAIL`, `38/38` endpoints) all pass.
+Changed: nothing.
+Rejected: nothing.
+By hand: none.
+
