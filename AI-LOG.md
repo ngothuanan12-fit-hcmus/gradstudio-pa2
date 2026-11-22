@@ -2160,3 +2160,12 @@ Changed: before that one-line change, a missing `price` would have made `def.pri
 Rejected: waiting for Khánh's pricing rewrite before changing 02, which would leave the home page showing "Giá báo khi tư vấn." for extras against the decision.
 By hand: none.
 
+### 2026-11-22 — home page (G1): extras without prices
+Commit: the commit that adds this entry with `client/src/pages/Home.jsx`, after `89d6467`.
+Tool: Claude Code (Claude Opus 5.5); client lint; the G1 check on a `git archive` copy follows.
+Asked for: the client side of `45fc382`.
+Kept: awaiting An's review. *Dịch vụ thêm* no longer prints a price line ("Giá báo khi tư vấn."); its lead says extras are chosen so the studio can prepare and cost nothing: "Dịch vụ thêm không tính tiền: giá booking là giá gói." Each extra shows its name, its note and, for a costume, its models and sizes.
+Changed: nothing beyond the request.
+Rejected: nothing.
+By hand: none.
+

@@ -121,7 +121,7 @@ export default function Home() {
         <h2 className="section-heading" id="dich-vu-them-title">
           Dịch vụ thêm
         </h2>
-        <p>Thêm khi gửi yêu cầu đặt lịch. Món đã gồm trong gói thì không tính thêm tiền.</p>
+        <p>Chọn khi gửi yêu cầu đặt lịch để studio chuẩn bị. Dịch vụ thêm không tính tiền: giá booking là giá gói.</p>
         <DataState query={extras} emptyText="Hiện chưa có dịch vụ thêm." loadingLabel="Đang tải dịch vụ thêm…">
           {(list) => (
             <ul className="extra-list">
@@ -129,9 +129,6 @@ export default function Home() {
                 <li key={extra.id}>
                   <h3 className="price-service">{extra.name}</h3>
                   <p>{extra.note}</p>
-                  <p className="price-detail">
-                    {extra.price === null ? 'Giá báo khi tư vấn.' : `${formatVND(extra.price)}/${extra.priceUnit}`}
-                  </p>
                   {extra.models.length ? (
                     <ul className="model-list">
                       {extra.models.map((model) => (
