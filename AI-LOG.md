@@ -2447,3 +2447,12 @@ Kept: 13 routes (`/`, `/dang-nhap`, `/tu-van`, `/tu-van/c-anh`, `/lich-chup`, `/
 Changed: the first run raised three flags that the follow-up script showed to be the check's own doing: requests counted twice on `/quan-ly`, `/quan-ly/hoi-thoai/c-anh` and `/quan-tri` were the sign-in's redirect to that same home still in flight (parked on a blank page first, each request is sent once); two *Thử lại* left on `/` were the other two sections' own buttons (pressing each loads everything); the one "fake control" on `/` is the package carousel with `tabindex="0"` for the arrow keys. None is an app fault.
 Rejected: sending the rendered pages to the online validator (An chose offline).
 By hand: none. Separately, An's `user.name` for this repository is now "Ngô Thuận An" (`git config --local`), from this commit on.
+
+### 2026-11-23 — self-assessment for PA#3, first draft
+Commit: the commit that adds this entry with `SELF_ASSESSMENT_REPORT.md` (the PA#2 report stays in the history, tag `pa2-submitted`).
+Tool: Claude Code (Claude Opus 5.5); `git log` for the order of contracts and screens; the results of `check_all_routes.py`, the PR #6 and PR #7 reviews and the contract-check runs already logged.
+Asked for: item 2 of the list, a draft of the PA#3 self-assessment with evidence per criterion.
+Kept: awaiting An's review. One row per criterion of the PA#3 rubric with the marks claimed and evidence pointing at a route, a file, a contract or a commit: 23 + 9 + 9 + 8 + 14 + 4 + 9 + 8 + 3 = 87 of 100. Marked as a draft at the top: the marks are confirmed after PR #7 is merged and the checks are run again on `client/dist/`. *What we did not manage* lists the Admin screens' history, the open product-owner points, seed GS-1023, the 12-hour time fields of G10, and e-mail and payment left to PA#4.
+Changed: every commit hash and name in the draft was checked against the repository before committing (20 hashes, `useAuth`, `RequireRole`); "the catalogue on the API" was made precise as `f7618b3`. The lower marks follow CLAUDE.md (when unsure, score a little lower): forms 8 because G5, G6, G10 were not walked field by field; contract 14 because a full walk's requests were not yet compared with the README table; responsive 4 until the PR #7 screens are measured on the merged build; history 3 because the rubric scores a history split after the work at the mixed level.
+Rejected: claiming 5 for the history on the strength of An's contract → mock → screen commits alone; the rubric reads the whole history.
+By hand: none.
