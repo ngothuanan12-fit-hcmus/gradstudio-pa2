@@ -625,3 +625,33 @@ Captured full-page verification screenshots for steps G7, G8, and G10 from an is
 > Sử dụng web_tools + playwright để mở web và screenshots các trang UI của G7, G8, G10 bỏ vào 1 folder cho tôi
 
 > Đã có comment trong pull request trên, fix theo chỉ dẫn rồi comment lên
+
+### 2.25 Reviews of PR #6 and PR #7, then the whole app checked the way the rubric runs it (2026-11-22 – 2026-11-23)
+
+Numbered 2.25 because Khánh's PR #7 adds 2.23 and 2.24.
+
+> check pr cho minfh
+
+> đăng review lên PR #6
+
+> trong review có nhắc việc push nhánh và nên có nhiều commit nhỏ chưa
+
+> kiểm tra lại pr
+
+> nhớ nhắc mình sửa sau, mình sẽ merge luôn
+
+> đã merge PR #6, pull về rồi push
+
+> kiểm tra việc trên repo mới nhất và việc cần làm hôm nay
+
+> check pr #7 cho mình
+
+> đăng review lên PR #7
+
+> nếu chưa hỏi thì làm còn gì khác để làm trước không
+
+> đồng ý, làm việc 1 trước, W3C dùng ngoại tuyến
+
+> đổi user.name
+
+> tiếp tục
