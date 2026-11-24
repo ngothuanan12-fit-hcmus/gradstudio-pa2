@@ -40,7 +40,8 @@ export default function PaymentResult() {
                 payment.status === 'succeeded' && payment.kind === 'deposit' && booking.status === 'Chờ cọc 30%';
               const isHeldSuccess = payment.status === 'succeeded' && !isRaceClash;
 
-              function handleRetryPayment() {
+              function handleRetryPayment(event) {
+                event.preventDefault();
                 if (retryAction.busy) return;
                 retryAction.run(async () => {
                   const newPay = await api('/payments', {
@@ -98,13 +99,8 @@ export default function PaymentResult() {
                           {retryAction.error}
                         </p>
                       ) : null}
-                      <div className="payment-actions">
-                        <Button
-                          variant="primary"
-                          type="button"
-                          aria-disabled={retryAction.busy ? 'true' : undefined}
-                          onClick={handleRetryPayment}
-                        >
+                      <form className="payment-actions" noValidate onSubmit={handleRetryPayment}>
+                        <Button variant="primary" type="submit" aria-disabled={retryAction.busy ? 'true' : undefined}>
                           {retryAction.busy ? 'Đang tạo giao dịch mới…' : 'Thử thanh toán lại'}
                         </Button>
                         <Button variant="secondary" to="/lich-chup">
@@ -115,7 +111,7 @@ export default function PaymentResult() {
                             Quay lại trang chọn ảnh
                           </Button>
                         ) : null}
-                      </div>
+                      </form>
                     </>
                   ) : null}
 

@@ -26,8 +26,11 @@ export default function PaymentGateway() {
   const bookingQuery = useApi(bookingId ? `/bookings/${bookingId}` : null);
   const submitAction = useAction();
 
-  function chooseResult(result) {
+  function chooseResult(event) {
+    event.preventDefault();
     if (submitAction.busy) return;
+    const result = event.nativeEvent?.submitter?.value;
+    if (result !== 'success' && result !== 'fail') return;
     submitAction.run(async () => {
       await api(`/payments/${paymentId}/result`, {
         method: 'POST',
@@ -105,7 +108,7 @@ export default function PaymentGateway() {
                 </DataState>
 
                 {payment.status === 'pending' ? (
-                  <div className="gateway-action-box">
+                  <form className="gateway-action-box" noValidate onSubmit={chooseResult}>
                     <p className="meta-line">
                       Chọn kết quả mô phỏng để hệ thống ghi nhận và chuyển về trang kết quả thanh toán.
                     </p>
@@ -117,22 +120,24 @@ export default function PaymentGateway() {
                     <div className="payment-actions">
                       <Button
                         variant="primary"
-                        type="button"
+                        type="submit"
+                        name="result"
+                        value="success"
                         aria-disabled={submitAction.busy ? 'true' : undefined}
-                        onClick={() => chooseResult('success')}
                       >
                         {submitAction.busy ? 'Đang ghi nhận…' : 'Thanh toán thành công'}
                       </Button>
                       <Button
                         variant="secondary"
-                        type="button"
+                        type="submit"
+                        name="result"
+                        value="fail"
                         aria-disabled={submitAction.busy ? 'true' : undefined}
-                        onClick={() => chooseResult('fail')}
                       >
                         {submitAction.busy ? 'Đang ghi nhận…' : 'Mô phỏng thanh toán thất bại'}
                       </Button>
                     </div>
-                  </div>
+                  </form>
                 ) : (
                   <div className="gateway-action-box">
                     <div className="schedule-alert is-neutral" role="status">
