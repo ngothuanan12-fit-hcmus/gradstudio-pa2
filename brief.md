@@ -616,3 +616,12 @@ Merged PR #6 on `main` (`afbb30e`), branched `feature/pa3-g7-g8-g10`, compacted 
 > - Kết quả đối chiếu Playwright + `web_tools` (Tab order 360px, visual G7 khớp ảnh, E2E G7/G8/G10, recovery case, và 4 `MOCK_MODE`).
 
 > Làm theo đúng flow bạn đề xuất
+
+
+### 2.24 PR #7 screenshots and review fixes on `feature/pa3-g7-g8-g10` (Khánh, 2026-11-23 – 2026-11-24)
+
+Captured full-page verification screenshots for steps G7, G8, and G10 from an isolated `git archive` copy of `5d362b0`, then addressed Lead An's `CHANGES_REQUESTED` review on PR #7 (`3b3005f`, `24895a2`):
+
+> Sử dụng web_tools + playwright để mở web và screenshots các trang UI của G7, G8, G10 bỏ vào 1 folder cho tôi
+
+> Đã có comment trong pull request trên, fix theo chỉ dẫn rồi comment lên
