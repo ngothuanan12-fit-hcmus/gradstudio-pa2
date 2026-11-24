@@ -254,3 +254,10 @@
   border-radius: var(--radius-md);
   background: var(--surface-raised);
 }
+
+.cancel-confirm-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 600;
+}

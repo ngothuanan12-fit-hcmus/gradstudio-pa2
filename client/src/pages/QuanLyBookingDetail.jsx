@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { api } from '../api/client.js';
 import Button from '../components/Button.jsx';
@@ -121,6 +121,13 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
   const [cancelDone, setCancelDone] = useState('');
   const cancelAction = useAction();
 
+  const cancelStartButtonRef = useRef(null);
+  const cancelConfirmHeadingRef = useRef(null);
+  const cancelReasonInputRef = useRef(null);
+  const cancelDoneRef = useRef(null);
+  // Tracks which cancel-panel transition initiated a DOM swap so focus moves only on user steps, never on initial load.
+  const cancelFocusTargetRef = useRef(null);
+
   function syncFromBooking(next) {
     const ex = initExtrasState(next);
     setDate(next.date);
@@ -181,6 +188,25 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
   const isRaceClash = booking.status === 'Chờ cọc 30%' && booking.payment?.depositStatus === 'paid';
   const canSetFileLink = booking.status === 'Đã đặt lịch';
   const canCancel = booking.status === 'Chờ cọc 30%' || booking.status === 'Đã đặt lịch';
+
+  useEffect(() => {
+    const target = cancelFocusTargetRef.current;
+    if (!target) return;
+    const node =
+      target === 'confirm' && confirmCancel && canCancel
+        ? cancelConfirmHeadingRef.current
+        : target === 'start' && !confirmCancel && canCancel
+          ? cancelStartButtonRef.current
+          : target === 'done' && !confirmCancel && !canCancel && cancelDone
+            ? cancelDoneRef.current
+            : target === 'reason' && confirmCancel && canCancel && cancelReasonError
+              ? cancelReasonInputRef.current
+              : null;
+    if (node) {
+      cancelFocusTargetRef.current = null;
+      node.focus();
+    }
+  }, [confirmCancel, canCancel, cancelDone, cancelReasonError]);
 
   function buildScheduleCheckBody() {
     const errs = {};
@@ -428,6 +454,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
     setCancelReasonError(null);
     setCancelDone('');
     if (cancelReason.length > 500) {
+      cancelFocusTargetRef.current = 'reason';
       setCancelReasonError('Lý do hủy tối đa 500 ký tự.');
       return;
     }
@@ -438,6 +465,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
           method: 'POST',
           body,
         });
+        cancelFocusTargetRef.current = 'done';
         onBookingUpdated(updated);
         syncFromBooking(updated);
         setConfirmCancel(false);
@@ -445,6 +473,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
         setCancelDone('Đã hủy booking và giải phóng nhân sự, phòng chụp.');
       } catch (err) {
         if (err.fields?.reason) {
+          cancelFocusTargetRef.current = 'reason';
           setCancelReasonError(err.fields.reason);
           return;
         }
@@ -959,7 +988,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
 
         <section className="panel" aria-labelledby="bd-cancel-heading">
           <h2 id="bd-cancel-heading">Hủy booking</h2>
-          <p className="form-done" role="status">
+          <p className="form-done" role="status" ref={cancelDoneRef} tabIndex={-1}>
             {cancelDone}
           </p>
           {!canCancel ? (
@@ -979,17 +1008,42 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                 Hủy booking sẽ chuyển sang trạng thái Đã hủy, giải phóng thợ và phòng chụp, đồng thời xóa nhắc lịch.
               </p>
               <div>
-                <Button variant="secondary" type="button" onClick={() => setConfirmCancel(true)}>
+                <Button
+                  ref={cancelStartButtonRef}
+                  variant="secondary"
+                  type="button"
+                  onClick={() => {
+                    cancelFocusTargetRef.current = 'confirm';
+                    setConfirmCancel(true);
+                  }}
+                >
                   Hủy booking
                 </Button>
               </div>
             </div>
           ) : (
-            <form className="cancel-confirm-box" noValidate onSubmit={handleConfirmCancel}>
-              <p>
-                <strong>Xác nhận hủy booking {booking.id}?</strong> Nhân sự, phòng chụp và nhắc lịch gắn với booking này
-                sẽ được gỡ bỏ.
-              </p>
+            <form
+              className="cancel-confirm-box"
+              aria-labelledby="bd-cancel-confirm-heading"
+              noValidate
+              onSubmit={handleConfirmCancel}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape' && !e.nativeEvent?.isComposing && !e.isComposing && !cancelAction.busy) {
+                  cancelFocusTargetRef.current = 'start';
+                  setConfirmCancel(false);
+                  setCancelReasonError(null);
+                }
+              }}
+            >
+              <h3
+                id="bd-cancel-confirm-heading"
+                ref={cancelConfirmHeadingRef}
+                tabIndex={-1}
+                className="cancel-confirm-title"
+              >
+                Xác nhận hủy booking {booking.id}?
+              </h3>
+              <p>Nhân sự, phòng chụp và nhắc lịch gắn với booking này sẽ được gỡ bỏ.</p>
               {booking.payment?.depositStatus === 'paid' ? (
                 <div className="avail-banner is-conflict" role="note">
                   <p>
@@ -1002,6 +1056,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                 </div>
               ) : null}
               <TextField
+                ref={cancelReasonInputRef}
                 id="bd-cancel-reason"
                 name="reason"
                 as="textarea"
@@ -1027,7 +1082,10 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                 <Button
                   variant="secondary"
                   type="button"
+                  aria-disabled={cancelAction.busy ? 'true' : undefined}
                   onClick={() => {
+                    if (cancelAction.busy) return;
+                    cancelFocusTargetRef.current = 'start';
                     setConfirmCancel(false);
                     setCancelReasonError(null);
                   }}
