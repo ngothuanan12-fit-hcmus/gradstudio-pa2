@@ -38,7 +38,7 @@ From the brief: Kỷ yếu lớp từ 350.000đ/người, Tốt nghiệp từ 1.
 | Item | Values | Source |
 |---|---|---|
 | Services | Kỷ yếu lớp (from 350.000đ per person), Tốt nghiệp (from 1.800.000đ), Chân dung/CV (from 690.000đ) | brief |
-| Packages | Gói Kỷ yếu lớp 350.000đ/người; Gói Tốt nghiệp Premium 1.800.000đ, 120 minutes, 30 edited photos, includes make-up; Gói Chân dung/CV 690.000đ | brief; Premium including make-up confirmed by the product owners; the other packages' length and photo counts are `null` (*waiting*) |
+| Packages | Gói Kỷ yếu lớp 350.000đ/người, 240 minutes, 60 edited photos; Gói Tốt nghiệp Premium 1.800.000đ, 120 minutes, 30 edited photos, includes make-up; Gói Chân dung/CV 690.000đ, 60 minutes, 10 edited photos | brief for Premium and service prices; Premium including make-up ([2026-11-22 answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)); team numbers for Kỷ yếu lớp and Chân dung/CV per the product owners ([2026-11-27 answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)) |
 | One-line summaries | "Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau." (An's wording); "Chụp ảnh tốt nghiệp cho riêng bạn hoặc nhóm bạn thân, để nhớ mãi ngày ra trường."; "Đặt lịch chụp chân dung chỉn chu cho CV và hồ sơ xin việc của bạn." | our wording; "khoảnh khắc" once on the home page (PA#2 writing rule 7) |
 | Extras | Makeup, Thuê trang phục (by model and size), no price of their own | brief names them; no price, product owners' decision |
 | Costume models | Áo cử nhân (S–XL), Áo dài trắng (S–L) | *sample* |
@@ -114,3 +114,4 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 - 2026-11-20 — `settings.json` for `10-admin.md`.
 - 2026-11-22 — Update `06-payments.md` outcome: `GS-1022` remainder payment waits for `db.selections` from `09-gallery.md` before succeeding.
 - 2026-11-22 — Remove `costumes.json` (costume stock is not checked, per product owners' decision) and store multiple candidate windows per day in `freeTimes.json`.
+- 2026-11-27 — `services.json` sets `durationMinutes` and `editedPhotos` for `ky-yeu-lop` (`240`, `60`) and `chan-dung-cv` (`60`, `10`), matching `02-catalogue.md` ([product owners](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)).

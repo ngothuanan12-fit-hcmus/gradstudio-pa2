@@ -11,8 +11,8 @@
         "name": "Gói Kỷ yếu lớp",
         "price": 350000,
         "priceUnit": "người",
-        "durationMinutes": null,
-        "editedPhotos": null,
+        "durationMinutes": 240,
+        "editedPhotos": 60,
         "includes": []
       }
     ]
@@ -47,8 +47,8 @@
         "name": "Gói Chân dung/CV",
         "price": 690000,
         "priceUnit": null,
-        "durationMinutes": null,
-        "editedPhotos": null,
+        "durationMinutes": 60,
+        "editedPhotos": 10,
         "includes": []
       }
     ]
