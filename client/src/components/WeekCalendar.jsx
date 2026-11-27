@@ -1,63 +1,103 @@
 import Icon from './Icon.jsx';
-import { toPct } from '../utils/time.js';
+import { vnPeriodTitle, vnShortDate, vnWeekday, weekDates } from '../utils/date.js';
+import { toMinutes, toPct } from '../utils/time.js';
 
-const DAY_FROM = 8 * 60,
-  DAY_TO = 18 * 60;
-const HOURS = [8, 10, 12, 14, 16, 18];
-const hour = (t) => `${String(Number.parseInt(t, 10) + 1).padStart(2, '0')}:00`;
+// Builds the week strip and day timeline dynamically from the booking's date and assigned slots.
+export default function WeekCalendar({ booking }) {
+  const isCancelled = booking.status === 'Đã hủy';
+  const days = weekDates(booking.date);
+  const weekTitle = vnPeriodTitle(booking.date, 'week');
 
-// The week of the shoot as a strip of seven days, the shoot day marked with a word and an icon, then the day
-// itself: a bar from 08:00 to 18:00 for the overview (it repeats the list, so screen readers skip it) and the list,
-// which is the readable record. The 09:00 first asked for is struck through, the time itself included, and keeps
-// its reason in words; hatching is only an extra cue.
-export default function WeekCalendar({ days = [], shootDay }) {
-  const day = days.find((item) => item.id === shootDay) || { events: [] };
+  const events = [];
+  if (booking.makeup) {
+    events.push({
+      id: `${booking.id}-makeup`,
+      from: booking.makeup.from,
+      to: booking.makeup.to,
+      title: `Makeup với ${booking.makeup.staffName}`,
+      where: booking.id,
+    });
+  }
+  if (booking.shoot) {
+    events.push({
+      id: `${booking.id}-shoot`,
+      from: booking.shoot.from,
+      to: booking.shoot.to,
+      title: `Chụp với ${booking.shoot.staffName}`,
+      where: `${booking.shoot.roomName} · ${booking.id}`,
+    });
+  }
+
+  const minFrom = events.length ? Math.min(...events.map((e) => toMinutes(e.from))) : 8 * 60;
+  const maxTo = events.length ? Math.max(...events.map((e) => toMinutes(e.to))) : 18 * 60;
+  const dayFrom = Math.min(8 * 60, Math.floor(minFrom / 60) * 60);
+  const dayTo = Math.max(18 * 60, Math.ceil(maxTo / 60) * 60);
+  const startH = Math.floor(dayFrom / 60);
+  const spanH = Math.max(2, Math.ceil(dayTo / 60) - startH);
+  const axisHours = [0, 0.2, 0.4, 0.6, 0.8, 1].map((f) => Math.round(startH + spanH * f));
+
   return (
     <section className="panel week" aria-labelledby="week-title">
       <div className="panel-head">
-        <h2 id="week-title">Tuần 19–25/10/2026</h2>
+        <h2 id="week-title">{weekTitle}</h2>
       </div>
 
       <ol className="week-strip">
-        {days.map((item) => (
-          <li className={item.id === shootDay ? 'week-cell is-shoot' : 'week-cell'} key={item.id}>
-            <time dateTime={item.id}>
-              <span className="week-dow">{item.dow}</span>
-              <span className="week-num">{item.num}</span>
-            </time>
-            {item.id === shootDay ? (
-              <span className="week-mark">
-                <Icon name="diamond" />
-                <span className="sr-only"> ngày chụp</span>
-              </span>
-            ) : null}
-          </li>
-        ))}
+        {days.map((item) => {
+          const isShootDay = item.date === booking.date;
+          const cellClass = isShootDay
+            ? isCancelled
+              ? 'week-cell is-shoot is-off'
+              : 'week-cell is-shoot'
+            : 'week-cell';
+          return (
+            <li className={cellClass} key={item.date}>
+              <time dateTime={item.date}>
+                <span className="week-dow">{item.dow}</span>
+                <span className="week-num">{item.dayNum}</span>
+              </time>
+              {isShootDay ? (
+                <span className="week-mark">
+                  <Icon name={isCancelled ? 'alert' : 'diamond'} />
+                  <span className="sr-only">{isCancelled ? ' buổi chụp đã hủy' : ' ngày chụp'}</span>
+                </span>
+              ) : null}
+            </li>
+          );
+        })}
       </ol>
-      <p className="week-shoot-line">
-        <Icon name="diamond" /> Thứ Bảy 24/10 · Ngày chụp GS-1024
+      <p className={isCancelled ? 'week-shoot-line is-off' : 'week-shoot-line'}>
+        <Icon name={isCancelled ? 'alert' : 'diamond'} />{' '}
+        {isCancelled ? (
+          <s>
+            {vnWeekday(booking.date)} {vnShortDate(booking.date)} · Ngày chụp {booking.id}
+          </s>
+        ) : (
+          `${vnWeekday(booking.date)} ${vnShortDate(booking.date)} · Ngày chụp ${booking.id}`
+        )}
+        {isCancelled ? ' (Đã hủy)' : ''}
       </p>
 
-      <h3 className="day-title">Lịch trình ngày 24/10</h3>
+      <h3 className="day-title">Lịch trình ngày {vnShortDate(booking.date)}</h3>
       <div className="day-bar" aria-hidden="true">
         <div className="day-axis">
-          {HOURS.map((h) => (
-            <span key={h} style={{ '--at': ((h * 60 - DAY_FROM) / (DAY_TO - DAY_FROM)) * 100 }}>
+          {axisHours.map((h) => (
+            <span key={h} style={{ '--at': ((h * 60 - dayFrom) / (dayTo - dayFrom)) * 100 }}>
               {String(h).padStart(2, '0')}:00
             </span>
           ))}
         </div>
         <div className="day-track">
-          {day.events.map((event) => {
-            const to = event.to || hour(event.from);
+          {events.map((event) => {
+            const rawAt = toPct(event.from, dayFrom, dayTo);
+            const rawEnd = toPct(event.to, dayFrom, dayTo);
+            const at = Math.max(0, Math.min(100, rawAt));
+            const len = Math.max(2, Math.min(100 - at, rawEnd - at));
             return (
               <span
                 key={event.id}
-                className={event.struck ? 'day-block is-off' : 'day-block'}
-                style={{
-                  '--at': toPct(event.from, DAY_FROM, DAY_TO),
-                  '--len': toPct(to, DAY_FROM, DAY_TO) - toPct(event.from, DAY_FROM, DAY_TO),
-                }}
+                className={isCancelled ? 'day-block is-off' : 'day-block'}
+                style={{ '--at': at, '--len': len }}
               />
             );
           })}
@@ -65,15 +105,23 @@ export default function WeekCalendar({ days = [], shootDay }) {
       </div>
 
       <ol className="day-agenda">
-        {day.events.map((event) => (
-          <li className={event.struck ? 'day-item is-off' : 'day-item'} key={event.id}>
-            <p className="day-time">{event.struck ? <s>{event.from}</s> : `${event.from}–${event.to}`}</p>
+        {events.map((event) => (
+          <li className={isCancelled ? 'day-item is-off' : 'day-item'} key={event.id}>
+            <p className="day-time">
+              {isCancelled ? (
+                <s>
+                  {event.from}–{event.to}
+                </s>
+              ) : (
+                `${event.from}–${event.to}`
+              )}
+            </p>
             <div className="day-body">
-              <p className="day-what">{event.title}</p>
+              <p className="day-what">{isCancelled ? <s>{event.title}</s> : event.title}</p>
               <p className="day-where">
-                {event.struck ? (
+                {isCancelled ? (
                   <>
-                    <Icon name="alert" /> {event.where}
+                    <Icon name="alert" /> Đã hủy · {event.where}
                   </>
                 ) : (
                   event.where

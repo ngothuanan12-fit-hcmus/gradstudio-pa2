@@ -406,7 +406,7 @@ Illustrative recovery after a concurrent deposit clash (`06-payments.md` rule 3 
       "makeup": null,
       "shoot": { "from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B" },
       "status": "Đã đặt lịch",
-      "payment": { "depositStatus": "paid", "depositPaidAt": "...", "remainderStatus": "unpaid", "remainderPaidAt": null }
+      "payment": { "depositStatus": "paid", "depositPaidAt": "…", "remainderStatus": "unpaid", "remainderPaidAt": null }
     }
   }
 }

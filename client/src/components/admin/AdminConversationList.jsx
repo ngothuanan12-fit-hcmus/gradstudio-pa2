@@ -14,7 +14,7 @@ const FILTERS = [
   { id: 'Hoàn thành', label: 'Hoàn thành' },
 ];
 
-// Left column of the Admin workspace: single screen <h1>, instant search, status filter pills, and router-linked rows.
+// Left column of the Admin workspace: instant search, status filter pills, and router-linked rows.
 export default function AdminConversationList({
   conversationsQuery,
   activeId,
@@ -22,13 +22,15 @@ export default function AdminConversationList({
   onSearchChange,
   statusFilter,
   onFilterChange,
+  isPrimaryHeading = true,
 }) {
+  const HeadingTag = isPrimaryHeading ? 'h1' : 'h2';
   return (
     <section className="admin-card admin-convs" aria-labelledby="admin-convs-title">
       <div className="convs-head">
-        <h1 id="admin-convs-title" className="heading">
+        <HeadingTag id="admin-convs-title" className="heading">
           Hội thoại
-        </h1>
+        </HeadingTag>
         <div className="conv-search-wrap">
           <label className="sr-only" htmlFor="conv-search">
             Tìm hội thoại

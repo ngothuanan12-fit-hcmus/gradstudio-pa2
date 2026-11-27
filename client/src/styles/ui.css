@@ -28,6 +28,19 @@
   color: var(--ink-muted);
 }
 
+.gs-tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.back-link {
+  margin: 0;
+}
+.back-link a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height-sm);
+}
+
 .status-line {
   padding: var(--space-12) var(--space-16);
   border: 1px solid var(--line);

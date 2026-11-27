@@ -397,3 +397,231 @@ Appended verbatim prompts after resolving the earlier inline-spawn OOM crash thr
 > Đã có comment phải hồi lại pull request, pull về và fix theo chỉ dẫn
 
 > Hãy cập nhật vào brief.md, rồi push lên lại
+
+### 2.23 PR #6 follow-ups and steps G7, G8, G10 on `feature/pa3-g7-g8-g10` (Khánh, 2026-11-23)
+
+Merged PR #6 on `main` (`afbb30e`), branched `feature/pa3-g7-g8-g10`, compacted context before building the remaining PA#3 screens, and ran the dual-worker consensus loop across PR #6 follow-ups (`956857d`, `33efc6b`), step G7 (`285bad8`), step G8 (`6d4c05e`), and step G10 + `FRONTEND.md` (`1c60f85`):
+
+> Đã merged vào main, quay lại main và pull hết code về
+
+> Tạo 1 nhánh mới đề làm các màn hình còn lại
+
+> Compact session này lại để chuẩn bị làm các màn hình kia và đặt biệt phải ghi lại các rule quan trọng
+
+> /compact
+
+> ## 0. Quy tắc chung & Những điểm kỹ thuật phải kiểm tra trước
+> Trước khi sửa code, đọc kỹ:
+> - `CLAUDE.md`, `FRONTEND.md`, `brief.md`, `AI-LOG.md` (dòng `2323–2380`)
+> - `docs/api/04-schedule.md`, `05-bookings.md`, `06-payments.md`, `07-reminders.md`, `08-jobs.md`, `09-gallery.md`
+> - `client/src/App.jsx`, `client/src/api/client.js`, `client/src/hooks/useApi.js`, `client/src/forms/useForm.js`, `client/src/forms/useAction.js`
+> - `client/src/components/DataState.jsx`, `PreviewImage.jsx`, `StatusBadge.jsx`, `useMediaQuery.js`, `client/src/components/ui/*`, `client/src/utils/*`.
+>
+> Ràng buộc bắt buộc:
+> 1. **Không chỉnh sửa `mock/` hay `tools/contract-check.mjs`**, và **chỉ sửa `docs/api/05-bookings.md` đúng điểm follow-up `"..."` -> `…` ở mục 1B**.
+> 2. **Không hardcode dữ liệu vào component**, chỉ gọi `/api/...` qua `client/src/api/client.js` (`api`, `apiBlob`). Không lưu bookingId/paymentId vào URL query hay `localStorage`/`sessionStorage`.
+> 3. **Tái sử dụng helper/component sẵn có** (`DataState`, `LoadingState`, `ErrorState`, `EmptyState`, `PreviewImage`, `StatusBadge`, `DatePicker`, `Select`, `PriceSummary`, `useApi`, `useForm`, `useAction`, `useMediaQuery`, `utils/date.js`, `utils/moment.js`, `utils/money.js`, `utils/status.js`, `utils/schedule.js`, `utils/pricing.js`).
+> 4. **Danh sách `NEVER` của `CLAUDE.md`**:
+>    - Không `dangerouslySetInnerHTML`, không index làm `key`, không `location.href` hay `onClick` điều hướng (dùng `<Link>` / `<NavLink>` hoặc `navigate()` trong submit/action), không link `#`.
+>    - Không `overflow-x: hidden`, không `!important`, không `style=""` cho phần nhìn (chỉ dùng CSS custom properties mang dữ liệu tọa độ như `--at`, `--len` trong `.day-bar`/timeline).
+>    - Mọi trang chỉ có đúng `1` `<h1>`, thứ tự heading không nhảy cóc (`h1 -> h2 -> h3`) và **thứ tự DOM phải khớp thứ tự nhìn thấy / Tab order (WCAG 2.4.3 / 1.3.2)**.
+>    - Mọi input có `<label>` hiển thị (hoặc `.sr-only` đúng chỗ như ô search), nút/link ở `360px` cao `>= 44px`, dùng `aria-disabled="true"` (kèm giải thích lý do rõ trên màn hình) cho nút submit đang chờ hoặc bị khóa theo flow để không làm rớt focus bàn phím.
+>    - Không `eslint-disable`, không thêm thư viện mới.
+> 5. **An toàn tiến trình (NEVER 14 & 15)**: tự quản lý PID mock/preview/dev do mình mở trên port riêng, tuyệt đối không `pkill` tiến trình của người khác. Kiểm tra trên bản build preview (`npm run build` + `npx vite preview`) hoặc bản `git archive` / working tree sạch với mock riêng, dừng sạch tiến trình sau khi kiểm xong.
+>
+> ---
+>
+> ## 1. Chi tiết 4 phần việc cần thực hiện (theo đúng thứ tự nhỏ, tách từng phần)
+>
+> ### Việc 1 — Follow-up từ re-review PR #6 (`AI-LOG.md:2373-2380`)
+> 1. **Sửa thứ tự DOM/Tab ở `360px` trên `/quan-ly/hoi-thoai/:id`**:
+>    - Vấn đề hiện tại: commit `aadf87d` dùng CSS `order: 1 / 2 / 3` ở `@media (max-width: 767px)` để đẩy `.admin-chat` và `.admin-inspector` lên trên `.admin-convs`, nhưng thứ tự DOM vẫn là `AdminConversationList` -> `AdminChatWindow` -> `AdminInspector`. Khi nhấn Tab ở `360px`, focus nhảy từ header xuống tận `y≈1700` (danh sách), đi hết 10 điểm dừng rồi mới vòng ngược lên `chat-back-link` ở `y=239` (vi phạm WCAG 2.4.3 / 1.3.2).
+>    - Cách sửa chuẩn:
+>      - Trong `client/src/pages/QuanLy.jsx`, dùng `useMediaQuery('(max-width: 767px)')`. Khi đang ở mobile (`<= 767px`) **và** có `routeConvId` (`/quan-ly/hoi-thoai/:id`), render các cột theo **đúng thứ tự DOM thật**: `<AdminChatWindow>` → `<AdminInspector>` → `<AdminConversationList>`. Khi ở `/quan-ly` hoặc `>= 768px`, giữ nguyên DOM: `<AdminConversationList>` → `<AdminChatWindow>` → `<AdminInspector>`.
+>      - Bỏ CSS `order: 1 / 2 / 3` trong `client/src/styles/admin.css` (giữ `max-height: 75dvh` cho `.admin-chat` khi cần và giữ `.chat-back-link` chỉ hiện `< 768px`).
+>      - **Chú ý cực kỳ quan trọng về Heading**: Hiện tại `<h1>` (`Hội thoại`) nằm trong `AdminConversationList.jsx` còn `<h2>` nằm trong `AdminChatWindow.jsx`. Nếu đổi thứ tự DOM đưa `AdminChatWindow` lên trước mà vẫn giữ `<h2>` trước `<h1>` sẽ bị lỗi thứ tự heading (`<h2>` trước `<h1>`)! Do đó hãy truyền prop (ví dụ `isPrimaryHeading`) để khi `chatFirst` ở `360px`, tiêu đề đầu trang trong khối đầu tiên là `<h1>` duy nhất (ví dụ tên khách hàng ở `.chat-window-name` là `<h1>` và tiêu đề `Hội thoại` trong `AdminConversationList` chuyển thành `<h2>`), đảm bảo vừa đúng `1` `<h1>`, vừa không bao giờ có `<h2>` đứng trước `<h1>` ở mọi kích thước!
+> 2. **Sửa ký hiệu `"..."` → `…` trong ví dụ `GS-1025` ở `docs/api/05-bookings.md`**:
+>    - Tại dòng ~409 trong khối `json` minh họa `GS-1025` (`"depositPaidAt": "..."`), đổi `"..."` thành `…` (hoặc giữ nhất quán với quy ước của các file `docs/api/*.md`, kiểm tra `npm test` + `node tools/contract-check.mjs --strict-values` vẫn đạt `148/148`, `38/38`).
+>
+> ---
+>
+> ### Việc 2 — Bước G7 (Customer): `/lich-chup`, `/thanh-toan/:paymentId`, `/thanh-toan/:paymentId/ket-qua`
+> Khớp ảnh chụp giao diện mẫu (theme tối `cinema` trong `CustomerLayout`) và nối toàn bộ lên API (`05-bookings.md`, `06-payments.md`, `07-reminders.md`):
+>
+> 1. **`/lich-chup` (`client/src/pages/LichChup.jsx`, bỏ hẳn `data.js`)**:
+>    - Load song song 3 API (`1` request mỗi tài nguyên): `GET /api/bookings`, `GET /api/reminders`, `GET /api/payments`. Hỗ trợ đầy đủ Loading, Error + *Thử lại* không reload trang, và Empty state (khi khách chưa có booking nào như `linh` lúc đầu → hiện `EmptyState` + `<Link to="/tu-van">Hội thoại với studio</Link>`).
+>    - **Chọn booking khi khách có nhiều booking** (ví dụ `customer2` có `GS-1022` và `GS-1020`): hiển thị bộ chọn booking (dùng `<button type="button" aria-pressed>` cao `>= 44px`, lưu lựa chọn trong React state, mặc định chọn booking đầu tiên/mới nhất `bookings[0]`). Không đưa `bookingId` lên URL query hay `localStorage`.
+>    - **Bố cục 2 cột `.schedule-layout` như ảnh**:
+>      - Cột trái `.schedule-main`:
+>        - `WeekCalendar` tính **động hoàn toàn** từ `booking.date` (dùng `weekDates`, `vnPeriodTitle`, `vnWeekday`, `vnShortDate` từ `utils/date.js` — không hardcode `24/10` hay `GS-1024`): hiển thị tiêu đề tuần (`Tuần 19–25/10/2026`), dải 7 ngày `T2–CN` với ô ngày chụp highlight viền `--accent` + icon kim cương, dòng `Thứ ... DD/MM · Ngày chụp <id>`, thanh `.day-bar` (`08:00–18:00`) vẽ block makeup (nếu có) và shoot, cùng danh sách `.day-agenda` dễ đọc. (Nếu booking ở trạng thái `Đã hủy`, đánh dấu rõ bằng nhãn/icon, không dựa vào màu đơn thuần).
+>        - **Khu vực Nhắc lịch (`ReminderList`)** ngay dưới lịch tuần từ `GET /api/reminders` (lọc theo `booking.id` đang xem): hiển thị thời điểm nhắc (`dueAt` qua `formatMoment`), mốc (`Trước <hoursBefore> giờ`), kênh (`Trong tài khoản`, `E-mail`), trạng thái e-mail (`Chờ gửi` / `Đã gửi` kèm `emailSentAt` nếu có), và nội dung `message`. Nếu booking chưa có nhắc lịch (vd `Chờ cọc 30%`, `Đã hủy`, `MOCK_MODE=empty`), hiển thị ghi chú rõ ràng.
+>      - Cột phải `.schedule-side`:
+>        - `BookingSummary`: tiêu đề `Buổi chụp <booking.id>`, `StatusBadge` phản ánh đúng 4 trạng thái (`Chờ cọc 30%` → `Đã thống nhất lịch · Chờ cọc 30%`, `Đã đặt lịch`, `Hoàn thành`, `Đã hủy`), đủ các dòng `Mã booking`, `Buổi chụp` (+ số người nếu cần), `Gói` (kèm thời lượng/số ảnh chỉnh nếu API trả non-null), `Dịch vụ thêm` (nếu có), `Ngày`, `Makeup` (ẩn/ghi rõ nếu `null`), `Chụp`, `Tổng gói`.
+>        - `DepositCard` / Thẻ thanh toán: hiển thị `Cọc 30%` (chữ lớn `--font-display` `--accent`), `Còn lại sau cọc`, `Tổng gói` từ `booking.pricing`, lịch sử giao dịch của booking (từ `GET /api/payments`), và hành động tương ứng từng trạng thái:
+>          - **`Chờ cọc 30%` + `depositStatus === 'unpaid'`**: nếu lần cọc trước bị `failed`, hiển thị nguyên nhân (`payment.message`); nếu có giao dịch `pending`, hiện link tiếp tục tới `/thanh-toan/:paymentId`; nút chính `Thanh toán cọc 30%` (hoặc `Thử thanh toán lại cọc 30%`) gọi `POST /api/payments` `{ bookingId: booking.id, kind: 'deposit' }` qua `useAction` rồi `navigate(\`/thanh-toan/${payment.id}\`)` (hiển thị lỗi inline nếu API trả `409`).
+>          - **`Chờ cọc 30%` + `depositStatus === 'paid'`** (trường hợp 2 khách đặt trùng lịch đồng thời theo `06-payments.md` rule 3): khóa thanh toán lại, hiện cảnh báo rõ ràng lý do từ payment `succeeded` + link `<Link to="/tu-van">Nhắn với studio</Link>` để studio đổi lịch hoặc hoàn tiền ngoài hệ thống.
+>          - **`Đã đặt lịch`**: hiện xác nhận đã cọc + thời điểm; nút/link chính sang **G9** `<Link className="btn btn-primary" to={/lich-chup/${booking.id}/anh}>` (`Chọn ảnh & thanh toán 70%` hoặc `Nhận ảnh buổi chụp` nếu đã trả 70%).
+>          - **`Hoàn thành`**: xác nhận hoàn tất + link mở `booking.fileLink` (nếu có) + link xem lại `/lich-chup/${booking.id}/anh`.
+>          - **`Đã hủy`**: thông báo đã hủy và giải phóng lịch.
+>
+> 2. **`/thanh-toan/:paymentId` (`PaymentGateway.jsx`) & `/thanh-toan/:paymentId/ket-qua` (`PaymentResult.jsx`)**:
+>    - Gắn cả 2 route vào `client/src/App.jsx` bên trong `<RequireRole roles={['customer']}>` + `<CustomerLayout>` (thay `ComingSoon` ở `/thanh-toan/:paymentId`). Dùng chung cho **cả cọc 30% (G7) lẫn thanh toán 70% còn lại (G9 từ `Gallery.jsx`)**.
+>    - `/thanh-toan/:paymentId`: load `GET /api/payments/${paymentId}` (và `GET /api/bookings/${payment.bookingId}`). Gắn nhãn thật rõ **"Cổng thanh toán thử nghiệm"** (không trừ tiền thật). Hiển thị mã giao dịch, booking, loại (`Cọc 30%` / `70% còn lại`), số tiền (`formatVND`).
+>      - Nếu `payment.status === 'pending'`: có 2 nút dùng `useAction` (`aria-disabled` khi bận): **`Thanh toán thành công`** (`POST /api/payments/${paymentId}/result` `{ result: 'success' }`) và **`Mô phỏng thanh toán thất bại`** (`{ result: 'fail' }`) → chuyển hướng sang `/thanh-toan/${paymentId}/ket-qua`.
+>      - Nếu `payment.status !== 'pending'` (mở lại link đã xử lý): không cho bấm gây `409`, dẫn sang `/thanh-toan/${paymentId}/ket-qua` và `/lich-chup`.
+>    - `/thanh-toan/:paymentId/ket-qua`: **hoạt động độc lập khi mở trực tiếp hoặc F5 reload** (luôn fetch `GET /api/payments/${paymentId}` + `GET /api/bookings/${payment.bookingId}`):
+>      - Thành công và giữ lịch (`succeeded` + `Đã đặt lịch` hoặc `remainder`): hộp thành công (`--free`), hiển thị `payment.message`, badge booking, link `<Link to="/lich-chup">Về Lịch chụp của tôi</Link>` (và nếu là `remainder`, nút chính `<Link to={/lich-chup/${payment.bookingId}/anh}>Quay lại để Nhận ảnh</Link>`).
+>      - Thành công tiền cọc nhưng trùng lịch (`succeeded` + `deposit` + `booking.status === 'Chờ cọc 30%'`): hộp cảnh báo giữ trạng thái `Chờ cọc 30%`, in rõ `payment.message`, link về `/lich-chup` và `/tu-van`.
+>      - Thất bại (`failed`): hộp lỗi (`--danger`), in `payment.message` (`"Thanh toán không thành công, booking vẫn chờ cọc."` hoặc 70%), xác nhận booking giữ nguyên trạng thái, nút **`Thử thanh toán lại`** gọi `POST /api/payments` `{ bookingId: payment.bookingId, kind: payment.kind }` → sang `/thanh-toan/${newPay.id}`, kèm link quay lại `/lich-chup` (hoặc `/lich-chup/${payment.bookingId}/anh` cho `remainder`).
+>
+> ---
+>
+> ### Việc 3 — Bước G8 (Staff): `/cong-viec` (`CongViec.jsx`)
+> Thay `<ComingSoon title="Việc của tôi" step="G8" />` trong `client/src/App.jsx` bằng màn hình thật cho role `staff`, dùng `<AdminLayout>` (theme sáng `studio`, lưu ý **không** hiển thị link điều hướng của Admin như `/quan-ly` hoặc `/quan-ly/booking` cho role `staff`).
+>
+> 1. **Danh sách công việc (`GET /api/jobs`)**:
+>    - Lưu ý hợp đồng `05-bookings.md` & `08-jobs.md`: **Staff KHÔNG có quyền gọi `GET /api/bookings/:id` (sẽ bị `403`)**! Mọi thông tin công việc lấy từ `GET /api/jobs`, còn ảnh xem trước của booking lấy từ `GET /api/bookings/:bookingId/previews` (endpoint này cho phép staff được gán).
+>    - Hiển thị Loading / Error + Retry / Empty state (`"Bạn chưa có công việc nào được phân công."`).
+>    - Hỗ trợ lọc nhanh theo trạng thái (`Tất cả`, `Chưa bắt đầu`, `Đang làm`, `Hoàn thành`) tính trực tiếp từ danh sách (không lưu danh sách lọc vào `useState`).
+>    - Mỗi công việc hiển thị đủ **Khi nào / Ở đâu / Làm gì**:
+>      - Ngày (`vnWeekdayAndDate(job.date)`), giờ (`job.from–job.to`, `tabular-nums`)
+>      - Địa điểm (`job.roomName || 'Tại studio (không dùng phòng chụp)'`)
+>      - Vai trò & gói (`job.title`, mã `job.bookingId`, khách hàng `job.customerName`, số người `job.people`, dịch vụ thêm `job.extras` kèm mẫu & size trang phục nếu có)
+>      - `StatusBadge` trạng thái công việc (`Chưa bắt đầu`, `Đang làm`, `Hoàn thành`).
+>
+> 2. **Cập nhật trạng thái công việc (`PATCH /api/jobs/:id`)**:
+>    - Cho phép chuyển giữa 3 trạng thái chính xác: `Chưa bắt đầu`, `Đang làm`, `Hoàn thành` (chỉ có 1 yêu cầu gửi tại một thời điểm trên mỗi job hoặc hành động, giữ focus bàn phím, cập nhật ngay từ response `200`, hiển thị thông báo `role="status"` và nêu rõ theo quyết định PO rằng đổi trạng thái công việc không tự đổi trạng thái booking).
+>
+> 3. **Xem trước & Tải ảnh xem trước lên booking (`GET /api/bookings/:id/previews`, `POST /api/bookings/:id/previews`, `GET /api/previews/:id`)**:
+>    - Nhóm hoặc cung cấp khu vực "Ảnh xem trước" theo từng `bookingId` duy nhất mà nhân viên được phân công (tránh gọi trùng `GET /api/bookings/:id/previews` nhiều lần nếu nhân viên có > 1 job cùng booking).
+>    - **Tải ảnh hiển thị bằng Bearer token**: tái sử dụng **`client/src/components/PreviewImage.jsx`** (đã dùng `apiBlob` + `URL.createObjectURL` + cleanup `revokeObjectURL` tránh `401` khi dùng `<img src>` trần).
+>    - **Form upload ảnh (`multipart/form-data`, field name `file`)**:
+>      - `<input type="file" accept="image/jpeg,image/png,image/webp">` có `<label>` rõ ràng.
+>      - **Kiểm tra trước khi gửi (client-side validation)**:
+>        - Chưa chọn file hoặc file rỗng (`size === 0`) → `"Chọn ảnh xem trước."`
+>        - Sai MIME type (không thuộc `image/jpeg`, `image/png`, `image/webp`) → `"Chỉ chấp nhận ảnh JPEG, PNG hoặc WebP."`
+>        - Quá `5 MB` (`> 5 * 1024 * 1024` bytes) → `"Ảnh xem trước tối đa 5 MB."`
+>      - Khi hợp lệ: gửi `FormData` (`formData.append('file', file)`) qua `api(\`/bookings/${bookingId}/previews\`, { method: 'POST', body: formData })`.
+>      - Thành công (`201`): chèn ngay preview mới trả về vào danh sách đang hiển thị (không reload trang), reset input file, thông báo `role="status"`.
+>      - Xử lý lỗi `400`, `403`, `409` (`Chỉ tải ảnh xem trước cho booking đã đặt lịch.`), `413` từ API hiển thị rõ dưới form.
+>
+> ---
+>
+> ### Việc 4 — Bước G10 (Admin): `/quan-ly/booking` và `/quan-ly/booking/:id`
+> Thay 2 route `ComingSoon` ở `client/src/App.jsx` bằng 2 màn hình hoàn chỉnh cho role `admin`.
+>
+> 1. **Cập nhật thanh điều hướng Admin (`AdminLayout.jsx`)**:
+>    - Sửa bug `isConvRoute = pathname.startsWith('/quan-ly')` (đang tô active nhầm mục `Hội thoại` khi vào `/quan-ly/booking*`): đổi thành chỉ active `Hội thoại` ở `/quan-ly` và `/quan-ly/hoi-thoai/*`.
+>    - Thêm liên kết **`Booking`** (`/quan-ly/booking`) vào header của Admin (chỉ hiển thị cho role `admin`, không hiện trên `/cong-viec` của staff hay `/quan-tri` của superadmin) để chuyển qua lại mượt giữa `Hội thoại` (`/quan-ly`) và `Booking` (`/quan-ly/booking`), đồng thời ăn khớp với các `<Link to={/quan-ly/booking/${booking.id}}>` đã có sẵn trong `AdminBookingForm.jsx` và `InvoicePanel.jsx`!
+>
+> 2. **Màn hình danh sách `/quan-ly/booking` (`QuanLyBookings.jsx`)**:
+>    - Gọi `GET /api/bookings`. Loading / Error + Retry / Empty state đầy đủ.
+>    - Bộ lọc kết hợp (tính từ state/data, không lưu list lọc trong `useState`):
+>      - Theo **trạng thái booking**: `Tất cả`, `Chờ cọc 30%`, `Đã đặt lịch`, `Hoàn thành`, `Đã hủy`.
+>      - Theo **trạng thái thanh toán**: `Tất cả`, `Chưa cọc`, `Đã cọc · Chờ 70%`, `Đã thanh toán đủ`, `Cọc trùng lịch chờ xử lý` (`status === 'Chờ cọc 30%' && payment.depositStatus === 'paid'`).
+>      - Ô tìm kiếm nhanh theo mã booking (`GS-...`) hoặc tên khách (có `<label>`).
+>    - Mỗi booking hiển thị: mã `GS-...`, tên khách, dịch vụ & gói, ngày & giờ makeup/chụp + phòng, `StatusBadge` trạng thái booking, tóm tắt thanh toán (`formatVND(total)` / cọc 30% / 70% còn lại + badge trạng thái thanh toán), trạng thái `fileLink` (đã gắn / chưa gắn), và link `<Link to={/quan-ly/booking/${b.id}}>Chi tiết & quản lý</Link>`.
+>
+> 3. **Màn hình chi tiết `/quan-ly/booking/:id` (`QuanLyBookingDetail.jsx`)**:
+>    - Load `GET /api/bookings/${id}`, `GET /api/staff`, `GET /api/rooms`, `GET /api/extras`, và `GET /api/payments?bookingId=${id}` (kèm link quay lại `<Link to="/quan-ly/booking">‹ Tất cả booking</Link>` và nếu `booking.conversationId` có giá trị thì thêm `<Link to={/quan-ly/hoi-thoai/${booking.conversationId}}>Mở hội thoại</Link>`).
+>    - Hiển thị đầy đủ thông tin booking, bảng chi phí `PriceSummary`, và lịch sử thanh toán (kèm `payment.message` nếu có).
+>    - **Banner đặc biệt cho case Recovery (`booking.status === 'Chờ cọc 30%' && booking.payment.depositStatus === 'paid'`)**:
+>      - Giải thích rõ: khách đã thanh toán cọc 30%, nhưng slot cũ vừa bị giữ trước nên booking chưa giữ lịch; khi Admin đổi sang khung giờ trống mới và lưu (`PATCH /api/bookings/:id`), hệ thống sẽ tự chuyển booking sang **`Đã đặt lịch`**, giữ tài nguyên và tạo nhắc lịch + công việc nhân viên.
+>    - **Form đổi lịch & cập nhật thông tin (`PATCH /api/bookings/:id` + `POST /api/schedule/check` với `excludeBookingId: booking.id`)**:
+>      - Cho phép chỉnh: `date` (`DatePicker`), `makeup` (bật/tắt + `from`/`to`/`staffId`), `shoot` (`from`/`to`/`staffId`/`roomId`), `people` (`1–200`, gợi ý rõ với gói tính theo người như `Kỷ yếu lớp`), `sessionType` (`1–100` ký tự), `extras` (kèm mẫu & size nếu thuê trang phục).
+>      - Nút **`Kiểm tra lịch trống`** gọi `POST /api/schedule/check` **có gửi `excludeBookingId: booking.id`** (để không tự đụng chính block của booking mình!), hiển thị banner xanh/đỏ + nút chọn nhanh giờ trống `freeTime` nếu API trả về.
+>      - Nút **`Lưu thay đổi`** gọi `PATCH /api/bookings/:id`:
+>        - Nếu không thay đổi gì hoặc gửi rỗng → hiển thị thông báo rõ (từ validate hoặc API `"Chọn thông tin cần thay đổi."`).
+>        - Hiển thị đầy đủ lỗi `400` theo từng trường (`fields`) và lỗi `409` (trùng lịch kèm `freeTime`, `total < deposit`, hoặc đã thanh toán đủ 70% không thể đổi `people`).
+>        - Cập nhật toàn bộ UI ngay từ response `200` (thấy ngay chuyển từ `Chờ cọc 30%` → `Đã đặt lịch` trong case recovery!).
+>      - Khi booking là `Hoàn thành` hoặc `Đã hủy`: khóa form đổi lịch/cập nhật với thông báo giải thích rõ.
+>    - **Form gắn link ảnh cuối (`PUT /api/bookings/:id/file-link`)**:
+>      - Input URL có `<label>` rõ ràng, validate `http://` / `https://` (`1–500` ký tự, khớp thông báo `"Nhập đường dẫn file hợp lệ (http:// hoặc https://)."`).
+>      - Chỉ hoạt động khi `booking.status === 'Đã đặt lịch'`; ở các trạng thái khác sử dụng `aria-disabled="true"` kèm ghi chú rõ `"Chỉ gắn link file ảnh cho booking đã đặt lịch."`.
+>      - Lưu thành công (`200`) cập nhật `booking.fileLink` tại chỗ và báo `role="status"`.
+>    - **Hủy booking (`POST /api/bookings/:id/cancel`)**:
+>      - Chỉ khả dụng khi `booking.status === 'Chờ cọc 30%'` hoặc `'Đã đặt lịch'` (khóa bằng `aria-disabled` + ghi chú khi `Hoàn thành` hoặc `Đã hủy`).
+>      - Có bước xác nhận 2 lần (mở hộp xác nhận nội tuyến, không hủy nhầm 1 click), ô nhập lý do hủy tùy chọn (`0–500` ký tự), và nếu `depositStatus === 'paid'` thì nhắc rõ tiền cọc đã thu vẫn được giữ lại trên hồ sơ để studio hoàn ngoài hệ thống.
+>      - Lưu thành công (`200`) cập nhật trạng thái sang `Đã hủy` ngay tại chỗ.
+>
+> 5. **Cập nhật `FRONTEND.md`**:
+>    - Chuyển toàn bộ các route G7 (`/lich-chup`, `/thanh-toan/:paymentId`, `/thanh-toan/:paymentId/ket-qua`), G8 (`/cong-viec`), G10 (`/quan-ly/booking`, `/quan-ly/booking/:id`) lên bảng route đã dựng ở mục 4 kèm đúng danh sách endpoints gọi thực tế, và cập nhật mục 7 (*Not done* — mọi bước G1–G11 đã hoàn thiện trên API).
+>
+> ---
+>
+> ## 2. Điều phối 2 Worker & Vòng lặp đồng thuận (Consensus Loop)
+>
+> Thực hiện theo đúng mô hình 2 worker độc lập phối hợp vòng lặp:
+>
+> ### Worker 1 — Implementer & Gate Tester
+> 1. Làm lần lượt theo 4 phần việc (Việc 1 → Việc 2 → Việc 3 → Việc 4), chia component gọn gàng theo chuẩn codebase (`client/src/pages/`, `client/src/components/`, `client/src/styles/`).
+> 2. Tự rà soát toàn bộ `CLAUDE.md` NEVER list, kiểm tra không có `staff` gọi `GET /api/bookings/:id`, không thiếu cleanup `useEffect`/objectURL, không inline style sai quy định.
+> 3. Chạy đầy đủ 4 gates từ thư mục gốc `/gradstudio-pa2`:
+>    - `npm run format:check`
+>    - `npm run lint`
+>    - `npm test`
+>    - `npm run build`
+>    - `node tools/contract-check.mjs --strict-values` (trên mock test riêng nếu cần)
+> 4. Chỉ bàn giao cho Worker 2 khi tất cả gates trên đều PASS 100%, 0 warning.
+>
+> ### Worker 2 — Visual & E2E Verifier (bằng `web_tools` + Playwright)
+> Khởi động mock + `npx vite preview` trên port riêng (quản lý PID chặt chẽ, tắt đúng PID tự mở khi xong). Chạy Playwright + `web_tools` kiểm tra ở cả **`1280×800`**, **`768×1024`**, **`360×800`** trên các checklist bắt buộc sau:
+>
+> 1. **Kiểm tra Việc 1 (Follow-up PR #6)**:
+>    - Đăng nhập `thao`, mở `/quan-ly/hoi-thoai/c-uyen` ở **`360×800`**:
+>      - Kiểm tra visual `.admin-chat` nằm trên `.admin-convs`.
+>      - **Bắt buộc test chuỗi phím `Tab` thực tế**: xác nhận thứ tự tọa độ `y` của các phần tử nhận focus từ Header → `.chat-back-link` / vùng Chat → Inspector → danh sách Hội thoại **tăng dần tự nhiên theo thứ tự hiển thị, KHÔNG nhảy xuống `y≈1700` rồi quay ngược lên `y≈239`!**
+>      - Kiểm tra `h1` có đúng 1 thẻ và không có `h2` nào xuất hiện trước `h1` trong DOM ở cả `360px`, `768px`, `1280px`.
+>    - Kiểm tra `docs/api/05-bookings.md` chỗ `GS-1025` đã đổi `"..."` → `…`.
+>
+> 2. **Kiểm tra Việc 2 (G7 + đối chiếu ảnh mẫu + G9)**:
+>    - `linh` khi chưa có booking: `/lich-chup` hiện `EmptyState`.
+>    - Tạo `GS-1024` qua flow G3→G5→G6 (`linh` hỏi 24/10 `09:00` → `thao` đề xuất `14:00` → `linh` đồng ý → `thao` tạo booking).
+>    - `linh` mở `/lich-chup`: **chụp screenshot ở 1280px, 768px, 360px và đối chiếu trực tiếp với ảnh mẫu đính kèm** (theme tối cinema, bố cục 2 cột desktop / 1 cột mobile, `Tuần 19–25/10/2026`, T7 `24` highlight + kim cương, thanh bar + agenda `13:00–14:00` & `14:00–16:00`, `Buổi chụp GS-1024`, `540.000đ` nổi bật, `1.260.000đ`, `1.800.000đ`, nút `Thanh toán cọc 30%` hoạt động).
+>    - Bấm `Thanh toán cọc 30%` → `/thanh-toan/:paymentId` → test **Thất bại** → `/thanh-toan/:paymentId/ket-qua` → F5 reload giữ nguyên lỗi `"Thanh toán không thành công, booking vẫn chờ cọc."` → quay lại `/lich-chup` vẫn `Chờ cọc 30%` + hiện lịch sử thất bại.
+>    - Bấm **Thử thanh toán lại** → test **Thành công** → `/ket-qua` báo giữ lịch thành công → quay lại `/lich-chup` xác nhận `GS-1024` chuyển `Đã đặt lịch`, có link sang `/lich-chup/GS-1024/anh`, và mục **Nhắc lịch** hiện `rem-gs-1024` (`13:00, 23/10/2026`, `Trong tài khoản` + `E-mail`, `Chờ gửi`, nội dung đầy đủ).
+>    - `customer2` mở `/lich-chup`: đổi giữa `GS-1022` và `GS-1020`, xác nhận lịch tuần & thông tin đổi tương ứng; đi tiếp sang `/lich-chup/GS-1022/anh` chọn ảnh → bấm `Thanh toán 70%` → đi qua `/thanh-toan/:paymentId` (`1.260.000đ`) & `/ket-qua` → quay lại `/lich-chup/GS-1022/anh` (luồng G9 nối G7).
+>
+> 3. **Kiểm tra Việc 3 (G8 — `/cong-viec`)**:
+>    - Đăng nhập `mai` (`mai-demo`), `tuan` (`tuan-demo`), `staff3` (`staff3-demo`) kiểm tra `/cong-viec`:
+>      - `mai` thấy job `GS-1024` makeup (`13:00–14:00`) & `GS-1023`; `tuan` thấy `GS-1024` chụp (`14:00–16:00`, `Phòng B`) & `GS-1022`; `staff3` thấy `GS-1022` edit (`Đang làm`). Xác nhận không có request nào gọi `GET /api/bookings/:id` bị `403`.
+>      - Cập nhật trạng thái job (`Chưa bắt đầu` → `Đang làm` → `Hoàn thành`), F5 reload kiểm tra dữ liệu lưu từ mock.
+>      - Test upload preview trên `GS-1024` / `GS-1022`: thử file `.txt` (chặn client báo `"Chỉ chấp nhận ảnh JPEG, PNG hoặc WebP."`), thử file `> 5 MB` (chặn client báo `"Ảnh xem trước tối đa 5 MB."`), thử ảnh PNG/WebP hợp lệ → upload `201`, ảnh hiển thị ngay qua `<PreviewImage>` (tải `/api/previews/:id` với Bearer token -> `blob:` URL, `naturalWidth > 0`, 0 lỗi `401`).
+>    - Đăng nhập `linh` kiểm tra `/cong-viec` bị chặn quyền đúng chuẩn.
+>
+> 4. **Kiểm tra Việc 4 (G10 — `/quan-ly/booking` & `/quan-ly/booking/:id`)**:
+>    - Đăng nhập `thao`: điều hướng từ header `Hội thoại` ↔ `Booking` kiểm tra `aria-current="page"` sáng đúng từng trang.
+>    - Tại `/quan-ly/booking`: lọc theo trạng thái booking (`Chờ cọc 30%`, `Đã đặt lịch`, `Hoàn thành`, `Đã hủy`), lọc theo thanh toán, tìm theo mã/tên.
+>    - Tại `/quan-ly/booking/GS-1024`:
+>      - Thử đổi giờ sang `08:00–12:00` ngày `2026-10-24` với `Mai` → `Kiểm tra lịch trống` (có `excludeBookingId: "GS-1024"`) báo trùng `GS-1023`, gợi ý `freeTime`; thử đổi sang khung trống khác (vd `2026-10-25` hoặc giờ trống) → `PATCH` thành công `200`, UI cập nhật ngay.
+>      - Thử `PUT /file-link` URL sai `"khong-phai-link"` → báo lỗi validation; nhập `https://drive.gradstudio.test/gs-1024-final` → lưu thành công `200`.
+>      - Kiểm tra **recovery booking `Chờ cọc 30%` + `depositStatus: "paid"`** (tạo 2 booking trùng nhau hoặc test qua kịch bản concurrent deposit của `06-payments.md`): mở chi tiết booking thua race, xác nhận hiện banner recovery, đổi sang giờ trống và lưu → booking tự chuyển sang **`Đã đặt lịch`**!
+>      - Kiểm tra `POST /cancel` trên một booking có thể hủy (có hộp xác nhận 2 bước, nhập lý do) → chuyển sang **`Đã hủy`**, các form chỉnh sửa & gắn link bị khóa với lý do rõ ràng.
+>      - Kiểm tra `GS-1021` (`Hoàn thành`) khóa sửa/hủy/gắn link đúng contract.
+>    - Kiểm tra cả **G9 end-to-end sau G10**: với `GS-1022` (đã chọn ảnh + trả 70% + đã gắn `fileLink` ở G10), khách bấm `Nhận ảnh` → booking & hội thoại đều chuyển `Hoàn thành`.
+>
+> 5. **Kiểm tra 4 `MOCK_MODE` & Accessibility tổng thể**:
+>    - Chạy `normal`, `slow`, `error`, `empty` trên `/lich-chup`, `/thanh-toan/:paymentId`, `/thanh-toan/:paymentId/ket-qua`, `/cong-viec`, `/quan-ly/booking`, `/quan-ly/booking/:id` (xác nhận Loading, Error + Retry không reload, Empty state).
+>    - Ở cả 3 viewport `1280`, `768`, `360`: `scrollWidth <= clientWidth`, `0` console/page errors, `0` failed requests ở mode `normal`, tap target `>= 44px`, đúng `1` `<h1>`, nhãn đầy đủ, `:focus-visible` rõ ràng.
+>
+> 6. Trả về báo cáo `PASS / FAIL` chi tiết (kèm screenshot đối chiếu, vị trí DOM/Tab, lỗi console/API nếu có) cho Worker 1.
+>
+> ### Điều kiện kết thúc vòng lặp (Đồng thuận cả 2 Worker)
+> - Mọi mục `FAIL` mà Worker 2 phát hiện (từ Thứ tự Tab 360px, đối chiếu ảnh G7, upload/Bearer preview G8, recovery & guard G10, cho tới slow/error/empty hay responsive 360px) phải được Worker 1 sửa dứt điểm, chạy lại đủ 4 gates (`format:check`, `lint`, `test`, `build`), và chuyển Worker 2 kiểm tra lại (bao gồm regression).
+> - Vòng lặp **chỉ kết thúc khi CẢ Worker 1 VÀ Worker 2 cùng tuyên bố `ĐỒNG THUẬN KẾT THÚC`** với 0 lỗi tồn đọng.
+>
+> Khi đã đồng thuận kết thúc, tắt sạch các tiến trình mock/preview tự mở, **không tự ý `git commit`/`push` hay sửa `AI-LOG.md`/`brief.md`** nếu người dùng chưa yêu cầu, và xuất báo cáo cuối gồm:
+> - Danh sách file thay đổi chia rõ theo từng bước (1. Follow-up PR #6, 2. G7, 3. G8, 4. G10, `FRONTEND.md`) để tiện tách từng commit nhỏ
+> - Kết quả thực tế của `npm run format:check`, `npm run lint`, `npm test`, `npm run build` và `contract-check.mjs --strict-values`
+> - Kết quả đối chiếu Playwright + `web_tools` (Tab order 360px, visual G7 khớp ảnh, E2E G7/G8/G10, recovery case, và 4 `MOCK_MODE`).
+
+> Làm theo đúng flow bạn đề xuất
+
+
+### 2.24 PR #7 screenshots and review fixes on `feature/pa3-g7-g8-g10` (Khánh, 2026-11-23 – 2026-11-24)
+
+Captured full-page verification screenshots for steps G7, G8, and G10 from an isolated `git archive` copy of `5d362b0`, then addressed Lead An's `CHANGES_REQUESTED` review on PR #7 (`3b3005f`, `24895a2`):
+
+> Sử dụng web_tools + playwright để mở web và screenshots các trang UI của G7, G8, G10 bỏ vào 1 folder cho tôi
+
+> Đã có comment trong pull request trên, fix theo chỉ dẫn rồi comment lên

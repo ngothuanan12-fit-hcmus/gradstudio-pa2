@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router';
+import useMediaQuery from '../components/useMediaQuery.js';
 import AdminChatWindow from '../components/admin/AdminChatWindow.jsx';
 import AdminConversationList from '../components/admin/AdminConversationList.jsx';
 import AdminInspector from '../components/admin/AdminInspector.jsx';
@@ -111,6 +112,59 @@ export default function QuanLy() {
     setSchedulePick({ ...slot, token: Date.now() });
   }
 
+  const isMobile = useMediaQuery('(max-width: 767px)');
+  const chatFirst = Boolean(isMobile && routeConvId);
+
+  const convList = (
+    <AdminConversationList
+      key="convs"
+      conversationsQuery={conversationsQuery}
+      activeId={activeId}
+      search={search}
+      onSearchChange={setSearch}
+      statusFilter={statusFilter}
+      onFilterChange={setStatusFilter}
+      isPrimaryHeading={!chatFirst}
+    />
+  );
+
+  const chatWindow = (
+    <AdminChatWindow
+      key="chat"
+      activeId={activeId}
+      convQuery={convQuery}
+      conversationsStatus={conversationsQuery.status}
+      hasConversations={hasConversations}
+      bookingDate={activeBooking?.date || null}
+      panelOpen={panelOpen}
+      onTogglePanel={() => setPanelOpen((v) => !v)}
+      services={servicesQuery.data || []}
+      onConversationUpdated={handleConversationUpdated}
+      onOpenSchedule={openSchedule}
+      isPrimaryHeading={chatFirst}
+    />
+  );
+
+  const inspector = (
+    <AdminInspector
+      key="inspector"
+      activeId={activeId}
+      convQuery={convQuery}
+      conversationsStatus={conversationsQuery.status}
+      hasConversations={hasConversations}
+      bookingQuery={bookingQuery}
+      servicesQuery={servicesQuery}
+      extrasQuery={extrasQuery}
+      staffQuery={staffQuery}
+      roomsQuery={roomsQuery}
+      panelOpen={panelOpen}
+      onConversationUpdated={handleConversationUpdated}
+      onBookingCreated={handleBookingCreated}
+      onOpenSchedule={openSchedule}
+      schedulePick={schedulePick}
+    />
+  );
+
   return (
     <AdminLayout
       title="Quản lý hội thoại: GradStudio"
@@ -124,44 +178,7 @@ export default function QuanLy() {
         data-panel-open={panelOpen ? 'true' : 'false'}
         data-route-conv={routeConvId ? 'true' : 'false'}
       >
-        <AdminConversationList
-          conversationsQuery={conversationsQuery}
-          activeId={activeId}
-          search={search}
-          onSearchChange={setSearch}
-          statusFilter={statusFilter}
-          onFilterChange={setStatusFilter}
-        />
-
-        <AdminChatWindow
-          activeId={activeId}
-          convQuery={convQuery}
-          conversationsStatus={conversationsQuery.status}
-          hasConversations={hasConversations}
-          bookingDate={activeBooking?.date || null}
-          panelOpen={panelOpen}
-          onTogglePanel={() => setPanelOpen((v) => !v)}
-          services={servicesQuery.data || []}
-          onConversationUpdated={handleConversationUpdated}
-          onOpenSchedule={openSchedule}
-        />
-
-        <AdminInspector
-          activeId={activeId}
-          convQuery={convQuery}
-          conversationsStatus={conversationsQuery.status}
-          hasConversations={hasConversations}
-          bookingQuery={bookingQuery}
-          servicesQuery={servicesQuery}
-          extrasQuery={extrasQuery}
-          staffQuery={staffQuery}
-          roomsQuery={roomsQuery}
-          panelOpen={panelOpen}
-          onConversationUpdated={handleConversationUpdated}
-          onBookingCreated={handleBookingCreated}
-          onOpenSchedule={openSchedule}
-          schedulePick={schedulePick}
-        />
+        {chatFirst ? [chatWindow, inspector, convList] : [convList, chatWindow, inspector]}
       </div>
 
       <ScheduleSheet

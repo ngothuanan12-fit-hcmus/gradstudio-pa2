@@ -24,3 +24,10 @@ export const BOOKING_TONE = {
   'Hoàn thành': 'done',
   'Đã hủy': 'neutral',
 };
+
+// The StatusBadge tone for each staff job status (docs/api/08-jobs.md).
+export const JOB_TONE = {
+  'Chưa bắt đầu': 'neutral',
+  'Đang làm': 'pending',
+  'Hoàn thành': 'confirmed',
+};
