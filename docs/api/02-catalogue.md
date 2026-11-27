@@ -2,7 +2,7 @@
 
 What a visitor sees before signing in (step G1): the services with their packages and prices, the extras, sample photos and reviews. All four endpoints are open to visitors and only read.
 
-Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghiệp from 1.800.000đ, Chân dung/CV from 690.000đ; Gói Tốt nghiệp Premium is 1.800.000đ for 2 hours and 30 edited photos. The product owners decided ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)): an extra has no price of its own, a booking costs its package's price (GS-1024: 1.800.000đ, make-up included), and extras are recorded only so the Admin can plan people and costumes; costume stock is not checked. A package's `includes` is part of its description on the price list. A value nobody has given yet is `null`.
+Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghiệp from 1.800.000đ, Chân dung/CV from 690.000đ; Gói Tốt nghiệp Premium is 1.800.000đ for 2 hours and 30 edited photos. Per the product owners ([2026-11-27 answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)), the brief fixes only Gói Tốt nghiệp Premium and the team sets the other packages so long as every service has at least one package with a name, duration, edited-photo count and price, and a service's "từ …đ" price (`priceFrom`) is the lowest price among its packages: the team sets Gói Kỷ yếu lớp (`ky-yeu-lop`) to 240 minutes, 60 edited photos and 350.000đ per person (booking price = per-person price × people, computed with the 30% deposit by the server, R3), and Gói Chân dung/CV (`chan-dung-cv`) to 60 minutes, 10 edited photos and 690.000đ. The product owners also decided ([2026-11-22 answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)): an extra has no price of its own, a booking costs its package's price (GS-1024: 1.800.000đ, make-up included), and extras are recorded only so the Admin can plan people and costumes; costume stock is not checked. A package's `includes` is part of its description on the price list.
 
 **Sample data.** The costume models and sizes (Áo cử nhân S–XL, Áo dài trắng S–L) and the reviews (names, ratings, texts, dates) in the examples below are sample data written by the team to fill the story, not facts from the brief; `mock/data/README.md` marks each value's source.
 
@@ -15,7 +15,7 @@ Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghi�
 | `id` | string | `ky-yeu`, `tot-nghiep`, `chan-dung` |
 | `name` | string | Shown on screen |
 | `summary` | string | One line inviting the reader, saying who the service is for |
-| `priceFrom` | integer | The lowest package price, in đồng |
+| `priceFrom` | integer | The lowest price among this service's packages, in đồng |
 | `priceUnit` | string or `null` | `"người"` when the price is per person, otherwise `null` |
 | `packages` | list of packages | At least one |
 
@@ -27,8 +27,8 @@ Prices follow the brief: Kỷ yếu lớp from 350.000đ per person, Tốt nghi�
 | `name` | string | e.g. "Gói Tốt nghiệp Premium" |
 | `price` | integer | In đồng |
 | `priceUnit` | string or `null` | As in the service |
-| `durationMinutes` | integer or `null` | `120` for Premium; `null` where the brief gives none |
-| `editedPhotos` | integer or `null` | How many photos the customer may choose to have edited: `30` for Premium |
+| `durationMinutes` | integer | Shoot duration in minutes (`240` for `ky-yeu-lop`, `120` for `tot-nghiep-premium`, `60` for `chan-dung-cv`) |
+| `editedPhotos` | integer | How many photos the customer may choose to have edited (R5: `60` for `ky-yeu-lop`, `30` for `tot-nghiep-premium`, `10` for `chan-dung-cv`) |
 | `includes` | list of strings | Ids of the extras the package's description includes (shown on the price list; no extra changes a price) |
 
 **Extra**
@@ -81,7 +81,7 @@ GET /api/services
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "ky-yeu", "name": "Kỷ yếu lớp", "summary": "Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau.", "priceFrom": 350000, "priceUnit": "người", "packages": [{"id": "ky-yeu-lop", "name": "Gói Kỷ yếu lớp", "price": 350000, "priceUnit": "người", "durationMinutes": null, "editedPhotos": null, "includes": []}]}, {"id": "tot-nghiep", "name": "Tốt nghiệp", "summary": "Chụp ảnh tốt nghiệp cho riêng bạn hoặc nhóm bạn thân, để nhớ mãi ngày ra trường.", "priceFrom": 1800000, "priceUnit": null, "packages": [{"id": "tot-nghiep-premium", "name": "Gói Tốt nghiệp Premium", "price": 1800000, "priceUnit": null, "durationMinutes": 120, "editedPhotos": 30, "includes": ["makeup"]}]}, {"id": "chan-dung", "name": "Chân dung/CV", "summary": "Đặt lịch chụp chân dung chỉn chu cho CV và hồ sơ xin việc của bạn.", "priceFrom": 690000, "priceUnit": null, "packages": [{"id": "chan-dung-cv", "name": "Gói Chân dung/CV", "price": 690000, "priceUnit": null, "durationMinutes": null, "editedPhotos": null, "includes": []}]}]
+[{"id": "ky-yeu", "name": "Kỷ yếu lớp", "summary": "Đặt lịch cho cả lớp ngay để lưu lại những khoảnh khắc đáng nhớ cùng nhau.", "priceFrom": 350000, "priceUnit": "người", "packages": [{"id": "ky-yeu-lop", "name": "Gói Kỷ yếu lớp", "price": 350000, "priceUnit": "người", "durationMinutes": 240, "editedPhotos": 60, "includes": []}]}, {"id": "tot-nghiep", "name": "Tốt nghiệp", "summary": "Chụp ảnh tốt nghiệp cho riêng bạn hoặc nhóm bạn thân, để nhớ mãi ngày ra trường.", "priceFrom": 1800000, "priceUnit": null, "packages": [{"id": "tot-nghiep-premium", "name": "Gói Tốt nghiệp Premium", "price": 1800000, "priceUnit": null, "durationMinutes": 120, "editedPhotos": 30, "includes": ["makeup"]}]}, {"id": "chan-dung", "name": "Chân dung/CV", "summary": "Đặt lịch chụp chân dung chỉn chu cho CV và hồ sơ xin việc của bạn.", "priceFrom": 690000, "priceUnit": null, "packages": [{"id": "chan-dung-cv", "name": "Gói Chân dung/CV", "price": 690000, "priceUnit": null, "durationMinutes": 60, "editedPhotos": 10, "includes": []}]}]
 ```
 
 ## GET /api/extras
@@ -185,3 +185,4 @@ Content-Type: application/json
 - 2026-11-20 — Sample values marked as such (costume models and sizes, reviews); the one-line summaries rewritten as invitations. No client code calls these endpoints yet.
 - 2026-11-21 — Photos gain `smallWidth`, the width of the small file, so the client can give the browser both files in `srcset`. No client code calls these endpoints yet.
 - 2026-11-22 — Extras lose `price` and `priceUnit`, and their `note` says what they are for, not how they are charged; `includes` is described as part of the package's description. The product owners decided an extra has no price of its own and a booking costs its package's price ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)). Client: the home page's *Dịch vụ thêm* section (step G1), changed after the mock.
+- 2026-11-27 — Every package now has integer `durationMinutes` and `editedPhotos` (never `null`), and `Service.priceFrom` is stated as the lowest price among that service's packages: `ky-yeu-lop` gets `240` minutes and `60` edited photos (`350000` per person), `chan-dung-cv` gets `60` minutes and `10` edited photos (`690000`), and `tot-nghiep-premium` stays `120` minutes and `30` edited photos (`1800000`). The product owners confirmed ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)) that the brief fixes only Gói Tốt nghiệp Premium while teams set the remaining packages with name, duration, edited-photo count and price. Client: `Home.jsx` (`/` step G1) already reads `durationMinutes` and `editedPhotos` from `GET /api/services`.

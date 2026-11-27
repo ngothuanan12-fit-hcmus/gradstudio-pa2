@@ -673,3 +673,46 @@ Numbered 2.25 because Khánh's PR #7 adds 2.23 and 2.24.
 
 > cho mình prompt để agent khác với model khác làm, đảm bảo ghi đúng file và trả lời đúng nguyên tắc và rubric, quy định của đề, ghi đúng model commit đúng lượt, ...
 > mỗi việc 1 prompt, làm xong mình sẽ báo bạn kiểm tra
+
+### 2.27 Số liệu mọi gói chụp theo product owners (2026-11-27)
+
+Sent to Antigravity (Gemini 4 Carbon (High)).
+
+> Bạn làm việc trong repo nhóm GradStudio tại E:\S1Y4\Web\pj\PA2 (đồ án CSC13008, PA#3: React client trên contract docs/api/ và mock mock/server.mjs). Người giao việc là Ngô Thuận An (23120206), lead. Đây là việc 1 trong 3: số liệu cho mọi gói chụp, theo quyết định của product owners ngày 2026-11-27.
+>
+> Đọc trước khi làm (bắt buộc)
+> CLAUDE.md (luật nhóm, danh sách NEVER), AGENTS.md, brief.md Phần 1, docs/api/README.md, docs/api/02-catalogue.md, FRONTEND.md mục 5.
+> Rubric PA#3 chấm: contract commit trước code dùng nó; mock theo đúng contract; mọi thay đổi sau đó của docs/api/ hoặc mock/ có dòng ghi ngày trong ## Changes; AI-LOG.md ghi ngay trong bước, mỗi entry nêu tool và model, yêu cầu, và trong Changed/Rejected nêu lỗi của trợ lý cùng phép kiểm tra đã bắt được nó; lịch sử commit một commit cho mỗi phần, viết commit trước mỗi yêu cầu.
+> Quyết định của product owners cần làm theo
+> Nguồn (trích dẫn link này): https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622
+>
+> Brief chỉ cố định Gói Tốt nghiệp Premium (GS-1024: 2 giờ, 30 ảnh chỉnh, 1.800.000đ). Các gói còn lại nhóm tự đặt, miễn mỗi gói có tên, thời lượng, số ảnh chỉnh và giá, và mỗi dịch vụ có ít nhất một gói. Giá "từ …đ" là giá thấp nhất của dịch vụ. Với Kỷ yếu lớp (từ 350.000đ/người) … nhóm có thể tính giá booking bằng đơn giá mỗi người nhân số người … giá và cọc 30% phải do máy chủ tính (R3), và số ảnh khách được chọn là số ảnh chỉnh của gói (R5).
+>
+> Nhóm đã chọn (An duyệt): Gói Kỷ yếu lớp ky-yeu-lop: 240 phút, 60 ảnh chỉnh, 350.000đ/người, giá booking = đơn giá × số người (máy chủ đã tính như vậy). Gói Chân dung/CV chan-dung-cv: 60 phút, 10 ảnh chỉnh, 690.000đ. Gói Tốt nghiệp Premium giữ nguyên. Không bịa thêm gói, giá hay số liệu nào khác (NEVER 11).
+>
+> Việc cần làm, đúng thứ tự, mỗi phần một commit
+> Bắt đầu: git status phải sạch, đang ở main đã pull. Tạo nhánh feature/po-2711 từ main. Kiểm tra git config user.name in ra Ngô Thuận An; không đổi cấu hình git. Không push, không mở pull request, không amend, không rebase.
+>
+> Commit 1 — contract. docs/api/02-catalogue.md: đối tượng Package ghi rõ durationMinutes và editedPhotos là số nguyên (không còn null), priceFrom của dịch vụ là giá thấp nhất trong các gói của nó; sửa các ví dụ cho khớp 2 gói mới; thêm dòng - 2026-11-27 — … vào ## Changes (nêu cái gì đổi, vì sao, kèm link product owners). Việc này làm đổi đúng 2 giá trị của booking GS-1023 trong các ví dụ của docs/api/05-bookings.md (file của Khánh): chỉ được sửa "durationMinutes" và "editedPhotos" của GS-1023 trong các ví dụ đó, và thêm một dòng ## Changes ghi rõ là do thay đổi ở 02-catalogue.md. Nếu thấy cần sửa bất kỳ chỗ nào khác trong file của Khánh (docs/api/04–08, mock/routes/schedule|bookings|payments|reminders|jobs.mjs, các màn G4–G8, G10), dừng lại và báo, không tự sửa. Thêm vào FRONTEND.md mục 5 một dòng cho quyết định này kèm link. Cùng commit này: thêm vào cuối brief.md một mục ### 2.<số kế tiếp sau mục cuối cùng> Số liệu mọi gói chụp theo product owners (2026-11-27), một dòng ghi tool và model đã nhận prompt, rồi toàn bộ prompt này nguyên văn trong blockquote; và một entry AI-LOG.md (mẫu bên dưới).
+>
+> Commit 2 — mock. mock/data/services.json theo đúng contract. Kèm entry AI-LOG.md.
+>
+> Commit 3 — client (chỉ khi cần). Tìm mọi chỗ trong client/src đọc durationMinutes / editedPhotos (ví dụ trang chủ G1, cảnh 3D, G9). Màn G1 phải hiện thời lượng và số ảnh chỉnh của cả 3 gói, không hiện null, rỗng hay chữ kiểu "chưa có". Câu dự phòng của G9 khi gói không có số ảnh (limit === null) giữ nguyên. Nếu không cần sửa client thì không tạo commit rỗng; ghi rõ điều đó trong entry của commit 2.
+>
+> Kiểm tra (NEVER 14, NEVER 15)
+> Kiểm tra mỗi commit trên một bản git archive <commit> giải nén vào thư mục tạm riêng, không chạy trong thư mục làm việc chung. Trong bản copy: npm ci ở gốc và ở client/; npm run format:check, npm run lint, npm test, npm run build; mock riêng PORT=3110 node mock/server.mjs, rồi node tools/contract-check.mjs --repo . --base http://localhost:3110 --strict-values: phải 0 FAIL. Nếu cần xem giao diện: npx vite preview --port 4210 --strictPort với một file cấu hình chỉ cho bản copy, proxy /api sang 3110; mở / ở 360, 768 và 1280 px và ở 4 chế độ MOCK_MODE (normal, slow, error, empty). Chỉ dừng những tiến trình chính bạn đã khởi động (theo PID của bạn); không dùng pkill/taskkill theo tên. Không sửa tools/contract-check.mjs, không nới lỏng test hay gate, không thêm thư viện (NEVER 9, 10).
+>
+> Mẫu entry AI-LOG.md (thêm vào cuối file, không sửa entry cũ)
+> ### 2026-11-27 — <bước>: <việc gì>
+> Commit: the commit that adds this entry with <các file>.
+> Tool: <tên sản phẩm> (<tên model chính xác của bạn>); <các lệnh/kiểm tra đã chạy>.
+> Asked for: <yêu cầu, ngắn>.
+> Kept: awaiting An's review. <cái gì đã làm, con số kiểm tra: số ví dụ, độ rộng, chế độ mock>.
+> Changed: <lỗi của chính bạn và phép kiểm tra nào bắt được nó; nếu không có thì "nothing" kèm các kiểm tra đã chạy>.
+> Rejected: <điều đã cân nhắc và bỏ, vì sao>.
+> By hand: none.
+>
+> Ghi đúng tên tool và model của chính bạn; không ghi là model khác. Tài liệu trong repo viết tiếng Anh; chữ trên màn hình tiếng Việt. Commit message tiếng Anh, nói rõ đổi gì, không có dòng Co-Auth-By hay "Generated with" (NEVER 13).
+>
+> Khi xong
+> Dừng lại và báo An: danh sách commit (hash, message), file đã đổi, kết quả từng kiểm tra kèm con số, những gì bạn làm sai và đã sửa, và mọi chỗ bạn phải dừng hoặc còn thắc mắc. Không làm sang việc 2.
