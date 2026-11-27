@@ -712,7 +712,7 @@ Sent to Antigravity (Gemini 4 Carbon (High)).
 > Rejected: <điều đã cân nhắc và bỏ, vì sao>.
 > By hand: none.
 >
-> Ghi đúng tên tool và model của chính bạn; không ghi là model khác. Tài liệu trong repo viết tiếng Anh; chữ trên màn hình tiếng Việt. Commit message tiếng Anh, nói rõ đổi gì, không có dòng Co-Auth-By hay "Generated with" (NEVER 13).
+> Ghi đúng tên tool và model của chính bạn; không ghi là model khác. Tài liệu trong repo viết tiếng Anh; chữ trên màn hình tiếng Việt. Commit message tiếng Anh, nói rõ đổi gì, không có dòng Co-Authored-By hay "Generated with" (NEVER 13).
 >
 > Khi xong
 > Dừng lại và báo An: danh sách commit (hash, message), file đã đổi, kết quả từng kiểm tra kèm con số, những gì bạn làm sai và đã sửa, và mọi chỗ bạn phải dừng hoặc còn thắc mắc. Không làm sang việc 2.

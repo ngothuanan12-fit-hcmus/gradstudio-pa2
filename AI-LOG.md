@@ -2492,3 +2492,12 @@ Kept: awaiting An's review. `mock/data/services.json` sets `ky-yeu-lop` to `dura
 Changed: nothing; checks run: `npm run format:check`, `npm run lint`, `npm test` (10/10), `npm run build`, `contract-check --strict-values` (148/148, 38/38 endpoints, 0 FAIL), and Playwright on `/` at 360, 768 and 1280 px across `normal`, `slow`, `error` and `empty`.
 Rejected: creating an empty or cosmetic Commit 3 on `Home.jsx` (such as removing the fallback string when `durationMinutes` and `editedPhotos` are truthy), because the existing G1 code already renders all 3 packages' numbers from `/api/services` and the prompt forbids an unnecessary commit.
 By hand: none.
+
+### 2026-11-27 — review of task 1 (package numbers, `7ae2dc6` and `e8241d8`)
+Commit: the commit that adds this entry with `FRONTEND.md` and `brief.md`, on `feature/po-2711`.
+Tool: Claude Code (Claude Opus 5.5); the gates and `contract-check --strict-values` on `git archive` copies of `e8241d8` and `7ae2dc6` (mock 3106); `quan-ly-rieng/checks/check_g1_packages.py` on the copy of `e8241d8` (preview 4213, mock 3108; NEVER 15); a text comparison of `brief.md` section 2.27 with the prompt file.
+Asked for: check task 1, done by Antigravity (Gemini 4 Carbon (High)).
+Kept: the two commits as made. `e8241d8`: lint, build, 10/10 tests, 148/148 examples with 0 FAIL in strict mode; `7ae2dc6` alone gives 145/148 in strict mode, the 3 value differences its entry names (mock still `null` until the next commit; CI compares field names, so it stays green). G1 shows "240 phút · 60 ảnh chỉnh", "120 phút · 30 ảnh chỉnh · Đã gồm: Makeup" and "60 phút · 10 ảnh chỉnh" at 360, 768 and 1280 px, no `null`, no sideways scroll, no console error. Only GS-1023's two values and one `## Changes` line changed in Khánh's `05-bookings.md`.
+Changed: section 2.27 of `brief.md` was compared word for word with the prompt as written: the markdown marks were lost in the paste (what was given), and one word differed, "Co-Auth-By" for "Co-Authored-By"; restored here. Two rows of `FRONTEND.md` section 5 still said *Still open* although the same 2026-11-27 answers settle them (a declined proposal; who gives a class's head count); both now cite the answers, and *Not done* lists the two server rules waiting for Khánh's `05` and `06`.
+Rejected: asking the other assistant to redo task 1; the content is right and the two fixes are documentation only.
+By hand: none.
