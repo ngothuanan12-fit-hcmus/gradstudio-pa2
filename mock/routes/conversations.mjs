@@ -69,6 +69,21 @@ function addMessage(c, message) {
   return m;
 }
 
+// Latest conversation of a customer by its newest message (product owners' follow-up answer 2).
+function latestConversationOf(db, customerId) {
+  let best = null;
+  let bestAt = -Infinity;
+  for (const c of db.conversations) {
+    if (c.customerId !== customerId || !c.messages.length) continue;
+    const at = Date.parse(c.messages[c.messages.length - 1].at);
+    if (at >= bestAt) {
+      best = c;
+      bestAt = at;
+    }
+  }
+  return best;
+}
+
 // --- handlers
 
 function list({ req, db, query }) {
@@ -145,14 +160,23 @@ function start({ req, db, body }) {
   const request = hasRequest ? checkRequest(db, b.request, fields) : null;
   if (Object.keys(fields).length) return invalid(fields);
 
+  const latest = latestConversationOf(db, user.id);
+  const text = hasText
+    ? b.text
+    : `Yêu cầu đặt lịch: ${request.serviceName}, ${vnDate(request.date)} lúc ${request.time}, ${request.people} người.`;
+  const message = { from: 'customer', authorName: user.name, kind: request ? 'request' : 'text', text, request };
+
+  // Join the latest conversation unless it is Hoàn thành or already has a booking and this carries a request.
+  if (latest && latest.status !== 'Hoàn thành' && (latest.bookingId === null || !request)) {
+    addMessage(latest, message);
+    return ok(full(db, latest));
+  }
+
   const short = user.id.replace(/^u-/, '');
   let id = `c-${short}`;
   for (let n = 2; db.conversations.some((c) => c.id === id); n++) id = `c-${short}-${n}`;
   const c = { id, customerId: user.id, status: 'Chưa trả lời', bookingId: null, messages: [] };
-  const text = hasText
-    ? b.text
-    : `Yêu cầu đặt lịch: ${request.serviceName}, ${vnDate(request.date)} lúc ${request.time}, ${request.people} người.`;
-  addMessage(c, { from: 'customer', authorName: user.name, kind: request ? 'request' : 'text', text, request });
+  addMessage(c, message);
   db.conversations.push(c);
   return ok(full(db, c), 201);
 }
@@ -245,6 +269,7 @@ function answer({ req, db, params, body }) {
   if (choice !== 'agree' && choice !== 'decline') return invalid({ answer: 'Chọn agree hoặc decline.' });
   const p = db.proposals.find((x) => x.id === params.proposalId && x.conversationId === c.id);
   if (!p) return notFound();
+  if (p.status === 'replaced') return fail(409, 'CONFLICT', 'Đề xuất này đã được thay bằng đề xuất mới.');
   if (p.status !== 'open') return fail(409, 'CONFLICT', 'Đề xuất này đã được trả lời.');
   p.status = choice === 'agree' ? 'agreed' : 'declined';
   c.status = choice === 'agree' ? 'Đã chốt lịch' : 'Đang tư vấn';
