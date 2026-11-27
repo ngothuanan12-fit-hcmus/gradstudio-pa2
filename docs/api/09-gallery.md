@@ -330,7 +330,25 @@ Content-Type: application/json
 {"error": {"code": "CONFLICT", "message": "Booking này không nhận ảnh được nữa."}}
 ```
 
+Now that Minh Anh's latest conversation (`c-customer2`) is *Hoàn thành*, a new message sent via `POST /api/conversations` (`03-conversations.md`) opens a new conversation even without a booking request:
+
+```http
+POST /api/conversations
+Authorization: Bearer {{token:customer2}}
+Content-Type: application/json
+
+{"text": "Em cảm ơn studio, tháng sau nhóm bạn em muốn hỏi thêm gói tốt nghiệp ạ."}
+```
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{"id": "c-customer2-3", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Chưa trả lời", "lastMessage": {"from": "customer", "text": "Em cảm ơn studio, tháng sau nhóm bạn em muốn hỏi thêm gói tốt nghiệp ạ.", "at": "2026-10-20T09:53:00+07:00"}, "updatedAt": "2026-10-20T09:53:00+07:00", "bookingId": null, "messages": [{"id": "m-14", "from": "customer", "authorName": "Trần Minh Anh", "kind": "text", "text": "Em cảm ơn studio, tháng sau nhóm bạn em muốn hỏi thêm gói tốt nghiệp ạ.", "at": "2026-10-20T09:53:00+07:00", "request": null, "proposal": null}]}
+```
+
 ## Changes
 
 - 2026-11-22 — First version. No client code calls these endpoints yet.
 - 2026-11-22 — `limit` may be `null` (a package with no number of edited photos yet), and a choice is then refused with `409`. Found while writing the mock, before it. No client code calls these endpoints yet.
+- 2026-11-27 — Added the `POST /api/conversations` example after `GS-1022` / `c-customer2` moves to *Hoàn thành*, verifying that a customer's new message opens a new conversation (`201`) when their latest conversation by newest message is *Hoàn thành*, per the product owners' answers ([answer 5](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622), [follow-up answer 2](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28854602184238579)). Client G3 updated after mock.
