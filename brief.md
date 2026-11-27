@@ -655,3 +655,21 @@ Numbered 2.25 because Khánh's PR #7 adds 2.23 and 2.24.
 > đổi user.name
 
 > tiếp tục
+
+### 2.26 Product owners' second round, re-review and merge of PR #7, prompts for another assistant (2026-11-27)
+
+> (four links to the product owners' thread: comment 28852226657809465 and replies 28852825087749622, 28853607607671370, 28854602184238579)
+> bạn xem các thông tin trên
+
+> (the questions of team 24120248 - 24120274 - 24120280 and the product owners' two answers, pasted)
+
+> đồng ý, review lại PR #7 trước
+
+> đã merge PR #7, pull về rồi push
+
+> nên chọn cái nào (screenshot of GitHub's merge options)
+
+> đã merge PR #7, pull về rồi push
+
+> cho mình prompt để agent khác với model khác làm, đảm bảo ghi đúng file và trả lời đúng nguyên tắc và rubric, quy định của đề, ghi đúng model commit đúng lượt, ...
+> mỗi việc 1 prompt, làm xong mình sẽ báo bạn kiểm tra
