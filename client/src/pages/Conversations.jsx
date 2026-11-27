@@ -57,8 +57,27 @@ function bodyOf(v) {
   return body;
 }
 
-// Step G3, the customer's side: their conversations with the studio, and a new one, with a message, a booking request
-// (service, package, preferred date and time, how many people, make-up, a costume by model and size), or both.
+// Latest conversation by newest message (`updatedAt`), matching POST /api/conversations routing (03-conversations.md).
+function newestConversation(items) {
+  if (!Array.isArray(items) || !items.length) return null;
+  return items.reduce((best, cur) => (Date.parse(cur.updatedAt) > Date.parse(best.updatedAt) ? cur : best));
+}
+
+function destinationNote(latest, withRequest) {
+  if (!latest) return 'Bạn chưa có hội thoại nào — tin gửi đi sẽ mở hội thoại mới.';
+  if (latest.status === 'Hoàn thành') return 'Hội thoại gần nhất đã hoàn thành — tin gửi đi sẽ mở hội thoại mới.';
+  if (latest.bookingId === null) {
+    return `Tin nhắn và yêu cầu đặt lịch sẽ được thêm vào hội thoại gần nhất (${latest.status}, cập nhật ${formatMoment(latest.updatedAt)}).`;
+  }
+  if (!withRequest) {
+    return `Hội thoại gần nhất đã có booking ${latest.bookingId} — tin nhắn thường sẽ được thêm vào hội thoại đó; chọn "Gửi kèm yêu cầu đặt lịch" nếu muốn mở hội thoại mới.`;
+  }
+  return `Hội thoại gần nhất đã có booking ${latest.bookingId} — yêu cầu đặt lịch mới sẽ mở hội thoại mới.`;
+}
+
+// Step G3, the customer's side: their conversations with the studio, and sending a message, a booking request (service,
+// package, preferred date and time, how many people, make-up, a costume by model and size), or both. The server adds
+// the message to the latest conversation unless it is Hoàn thành or already has a booking with a new request (03-conversations.md).
 // A package chosen on the home page arrives in the router's state, never in the URL.
 export default function Conversations() {
   const location = useLocation();
@@ -91,6 +110,8 @@ export default function Conversations() {
 
   const v = form.values;
   const service = services.data?.find((s) => s.id === v['request.serviceId']);
+  const latest = newestConversation(list.data);
+  const willJoin = Boolean(latest && latest.status !== 'Hoàn thành' && (latest.bookingId === null || !v.withRequest));
 
   return (
     <CustomerLayout title="Hội thoại với studio: GradStudio">
@@ -125,8 +146,13 @@ export default function Conversations() {
 
       <section className="chat-block" aria-labelledby="new-conversation">
         <h2 className="section-heading" id="new-conversation">
-          Bắt đầu hội thoại mới
+          {willJoin ? 'Gửi vào hội thoại gần nhất' : 'Bắt đầu hội thoại mới'}
         </h2>
+        {list.status === 'ready' && Array.isArray(list.data) ? (
+          <p className="status-line" id="conv-destination">
+            {destinationNote(latest, v.withRequest)}
+          </p>
+        ) : null}
         <form className="chat-form" noValidate onSubmit={form.handleSubmit}>
           {form.formError ? (
             <p className="form-error" role="alert">
