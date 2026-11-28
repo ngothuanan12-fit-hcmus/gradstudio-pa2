@@ -874,3 +874,56 @@ test('PATCH /api/jobs/:id allows free status transitions subject to booking, rem
     await mock.stop();
   }
 });
+
+test('PATCH /api/bookings/:id blocks rescheduling once shoot job is Đang làm or Hoàn thành', async () => {
+  const mock = await startMock('normal', 3212);
+  try {
+    const admin = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const tuan = { Authorization: 'Bearer token-u-tuan', 'Content-Type': 'application/json' };
+
+    const blockedDone = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-19' }),
+    });
+    assert.equal(blockedDone.status, 409);
+    assert.equal((await blockedDone.json()).error.message, 'Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ.');
+
+    await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+
+    const blockedInProgress = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-19' }),
+    });
+    assert.equal(blockedInProgress.status, 409);
+
+    // Non-slot edits still work while shoot job is Đang làm.
+    const metaOk = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ sessionType: 'Tốt nghiệp nhóm' }),
+    });
+    assert.equal(metaOk.status, 200);
+
+    // Moving shoot job back to Chưa bắt đầu allows rescheduling.
+    await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Chưa bắt đầu' }),
+    });
+    const moved = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-19' }),
+    });
+    assert.equal(moved.status, 200);
+    assert.equal((await moved.json()).date, '2026-10-19');
+  } finally {
+    await mock.stop();
+  }
+});

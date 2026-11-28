@@ -81,7 +81,15 @@ function initExtrasState(booking) {
   return { picked, costumeModelId, costumeSize, costumeQty };
 }
 
-function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, paymentsQuery, onBookingUpdated }) {
+function BookingDetailBody({
+  booking,
+  staffQuery,
+  roomsQuery,
+  extrasQuery,
+  paymentsQuery,
+  jobsQuery,
+  onBookingUpdated,
+}) {
   const staffList = staffQuery.data || [];
   const roomsList = roomsQuery.data || [];
   const extrasCatalog = extrasQuery.data || [];
@@ -185,6 +193,9 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
   const selectedCostumeModel = costumeExtra?.models?.find((m) => m.id === costumeModelId) || null;
 
   const isClosed = booking.status === 'Hoàn thành' || booking.status === 'Đã hủy';
+  const shootJob = (jobsQuery.data || []).find((j) => j.role === 'shoot') || null;
+  const shootStartedOrDone = Boolean(shootJob && (shootJob.status === 'Đang làm' || shootJob.status === 'Hoàn thành'));
+  const slotLocked = isClosed || shootStartedOrDone;
   const peopleLocked = isClosed || booking.status !== 'Chờ cọc 30%' || booking.payment?.depositStatus === 'paid';
   const isRaceClash = booking.status === 'Chờ cọc 30%' && booking.payment?.depositStatus === 'paid';
   const canSetFileLink = booking.status === 'Đã đặt lịch';
@@ -231,7 +242,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
   }
 
   function handleCheckSchedule() {
-    if (isClosed || checkAction.busy) return;
+    if (slotLocked || checkAction.busy) return;
     setSaveDone('');
     const { errs } = buildScheduleCheckBody();
     if (Object.keys(errs).length) {
@@ -305,23 +316,25 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
     const nextExtrasPayload = buildExtrasPayload();
 
     const patchBody = {};
-    if (date !== booking.date) patchBody.date = date;
+    if (!slotLocked) {
+      if (date !== booking.date) patchBody.date = date;
 
-    const makeupChanged =
-      Boolean(booking.makeup) !== Boolean(nextMakeup) ||
-      (nextMakeup &&
-        booking.makeup &&
-        (nextMakeup.from !== booking.makeup.from ||
-          nextMakeup.to !== booking.makeup.to ||
-          nextMakeup.staffId !== booking.makeup.staffId));
-    if (makeupChanged) patchBody.makeup = nextMakeup;
+      const makeupChanged =
+        Boolean(booking.makeup) !== Boolean(nextMakeup) ||
+        (nextMakeup &&
+          booking.makeup &&
+          (nextMakeup.from !== booking.makeup.from ||
+            nextMakeup.to !== booking.makeup.to ||
+            nextMakeup.staffId !== booking.makeup.staffId));
+      if (makeupChanged) patchBody.makeup = nextMakeup;
 
-    const shootChanged =
-      nextShoot.from !== booking.shoot.from ||
-      nextShoot.to !== booking.shoot.to ||
-      nextShoot.staffId !== booking.shoot.staffId ||
-      nextShoot.roomId !== booking.shoot.roomId;
-    if (shootChanged) patchBody.shoot = nextShoot;
+      const shootChanged =
+        nextShoot.from !== booking.shoot.from ||
+        nextShoot.to !== booking.shoot.to ||
+        nextShoot.staffId !== booking.shoot.staffId ||
+        nextShoot.roomId !== booking.shoot.roomId;
+      if (shootChanged) patchBody.shoot = nextShoot;
+    }
 
     if (!peopleLocked && (parsedPeople !== booking.people || people.trim() === '')) patchBody.people = parsedPeople;
     if (trimmedSession !== booking.sessionType) patchBody.sessionType = trimmedSession;
@@ -631,6 +644,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
           <h2 id="bd-edit-heading">Đổi lịch &amp; cập nhật thông tin</h2>
           {isClosed ? <span className="meta-line">Đã khóa chỉnh sửa</span> : null}
         </div>
+        <p className="meta-line">Gói chụp và đơn giá đã khóa từ lúc tạo booking, không thể chỉnh sửa.</p>
 
         <form className="booking-edit-form" noValidate onSubmit={handleSaveChanges}>
           <div className="detail-form-grid">
@@ -639,7 +653,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
               label="Ngày chụp"
               value={date}
               suggestedDate={booking.date}
-              disabled={isClosed}
+              disabled={slotLocked}
               error={fieldErrors.date}
               onChange={(val) => {
                 setDate(val);
@@ -686,7 +700,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
               id="bd-has-makeup"
               label="Có makeup"
               checked={hasMakeup}
-              disabled={isClosed}
+              disabled={slotLocked}
               onChange={(e) => {
                 const checked = e.target.checked;
                 setHasMakeup(checked);
@@ -704,7 +718,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                   label="Thợ makeup"
                   value={makeupStaffId}
                   options={makeupOptions}
-                  disabled={isClosed}
+                  disabled={slotLocked}
                   error={fieldErrors['makeup.staffId']}
                   onChange={(val) => {
                     setMakeupStaffId(val);
@@ -718,7 +732,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                   type="time"
                   label="Makeup từ"
                   value={makeupFrom}
-                  disabled={isClosed}
+                  disabled={slotLocked}
                   error={fieldErrors['makeup.from']}
                   onChange={(e) => {
                     setMakeupFrom(e.target.value);
@@ -732,7 +746,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                   type="time"
                   label="Makeup đến"
                   value={makeupTo}
-                  disabled={isClosed}
+                  disabled={slotLocked}
                   error={fieldErrors['makeup.to']}
                   onChange={(e) => {
                     setMakeupTo(e.target.value);
@@ -753,7 +767,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                 type="time"
                 label="Chụp từ"
                 value={shootFrom}
-                disabled={isClosed}
+                disabled={slotLocked}
                 error={fieldErrors['shoot.from']}
                 onChange={(e) => {
                   setShootFrom(e.target.value);
@@ -767,7 +781,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                 type="time"
                 label="Chụp đến"
                 value={shootTo}
-                disabled={isClosed}
+                disabled={slotLocked}
                 error={fieldErrors['shoot.to']}
                 onChange={(e) => {
                   setShootTo(e.target.value);
@@ -780,7 +794,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                 label="Thợ chụp"
                 value={shootStaffId}
                 options={shootStaffOptions}
-                disabled={isClosed}
+                disabled={slotLocked}
                 error={fieldErrors['shoot.staffId']}
                 onChange={(val) => {
                   setShootStaffId(val);
@@ -793,7 +807,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
                 label="Phòng chụp"
                 value={roomId}
                 options={roomOptions}
-                disabled={isClosed}
+                disabled={slotLocked}
                 error={fieldErrors['shoot.roomId']}
                 onChange={(val) => {
                   setRoomId(val);
@@ -803,6 +817,11 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
               />
             </div>
           </fieldset>
+          {shootStartedOrDone && !isClosed ? (
+            <p id="bd-slot-locked-why" className="field-hint">
+              Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ.
+            </p>
+          ) : null}
 
           {extrasCatalog.length ? (
             <fieldset className="inspector-fieldset">
@@ -917,7 +936,8 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
             <Button
               variant="secondary"
               type="button"
-              aria-disabled={isClosed || checkAction.busy ? 'true' : undefined}
+              aria-disabled={slotLocked || checkAction.busy ? 'true' : undefined}
+              aria-describedby={shootStartedOrDone && !isClosed ? 'bd-slot-locked-why' : undefined}
               onClick={handleCheckSchedule}
             >
               {checkAction.busy ? 'Đang kiểm tra…' : 'Kiểm tra lịch trống'}
@@ -1108,6 +1128,7 @@ export default function QuanLyBookingDetail() {
   const roomsQuery = useApi('/rooms');
   const extrasQuery = useApi('/extras');
   const paymentsQuery = useApi(`/payments?bookingId=${id}`);
+  const jobsQuery = useApi(`/jobs?bookingId=${id}`);
 
   return (
     <AdminLayout title={`Chi tiết booking ${id}: GradStudio`}>
@@ -1130,6 +1151,7 @@ export default function QuanLyBookingDetail() {
             roomsQuery={roomsQuery}
             extrasQuery={extrasQuery}
             paymentsQuery={paymentsQuery}
+            jobsQuery={jobsQuery}
             onBookingUpdated={bookingQuery.setData}
           />
         )}

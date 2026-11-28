@@ -300,6 +300,10 @@ function update({ req, db, params, body }) {
 
   const touchesSlot = b.date !== undefined || b.makeup !== undefined || b.shoot !== undefined;
   if (touchesSlot) {
+    const shootJob = db.jobs?.find((j) => j.bookingId === booking.id && j.role === 'shoot');
+    if (shootJob && (shootJob.status === 'Đang làm' || shootJob.status === 'Hoàn thành')) {
+      return fail(409, 'CONFLICT', 'Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ.');
+    }
     const check = checkSchedule(db, {
       date: parsed.date,
       makeup: parsed.makeup,

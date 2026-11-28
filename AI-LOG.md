@@ -2640,3 +2640,13 @@ Kept: awaiting review. Updated `docs/api/08-jobs.md`, `mock/data/jobs.json`, `mo
 Changed: `npm run format:check` flagged formatting in `client/src/pages/CongViec.jsx`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`11/11` pass) passed.
 Rejected: calling `/api/bookings` from G8 because `staff` gets `403`; returning `bookingStatus`, `canUpdate`, and `lockReason` directly on `Job` keeps G8 strictly on `/api/jobs`.
 By hand: none.
+
+
+### 2026-11-28 — contract 05, mock & G10: lock package/price and block rescheduling once shoot starts (Mục 6)
+Commit: the commit that adds this entry with `docs/api/05-bookings.md`, `mock/routes/bookings.mjs`, `test/mock.test.mjs`, `client/src/pages/QuanLyBookingDetail.jsx`, and `FRONTEND.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: Mục 6 — document that `serviceId`, `packageId`, and unit price are locked from booking creation, refuse schedule edits (`date`, `makeup`, `shoot`) on `PATCH /api/bookings/:id` with `409 CONFLICT` once the `shoot` job is `Đang làm` or `Hoàn thành`, and update G10 `QuanLyBookingDetail.jsx` to fetch `GET /api/jobs?bookingId=${id}`, display the package/price lock note, and disable schedule controls + `Kiểm tra lịch trống` with a clear reason.
+Kept: awaiting review. Updated `docs/api/05-bookings.md` (rules, error table, `GS-1022` `409` example, `## Changes`), `mock/routes/bookings.mjs`, `test/mock.test.mjs`, `client/src/pages/QuanLyBookingDetail.jsx`, and `FRONTEND.md` (section 4).
+Changed: `npm run format:check` flagged formatting in `client/src/pages/QuanLyBookingDetail.jsx`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`12/12` pass) passed.
+Rejected: returning `409` on non-slot metadata edits when `shoot` is `Đang làm`/`Hoàn thành`, because `sessionType` and `extras` remain editable until the booking is `Hoàn thành` or `Đã hủy`.
+By hand: none.

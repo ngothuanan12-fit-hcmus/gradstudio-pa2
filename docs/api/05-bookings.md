@@ -304,7 +304,7 @@ Content-Type: application/json
 
 ## PATCH /api/bookings/:id
 
-Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, confirmed head count (`people`), `sessionType`, or `extras`. Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks) before applying any time, staff, or room change. The Admin cannot type or discount a total price; the server recomputes package pricing from `people`. Normally the booking's status stays unchanged (if *Đã đặt lịch*, held blocks in `busy`, pending reminders, and assigned jobs update); however, under the team assumption in rule 1, if the booking is in *Chờ cọc 30%* with `payment.depositStatus` already `"paid"` (concurrent deposit race in `06-payments.md` rule 3) and `PATCH` updates `date`, `makeup`, or `shoot` to a free slot, it transitions to *Đã đặt lịch* and commits its `busy` blocks, reminder, and assigned jobs.
+Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, confirmed head count (`people`), `sessionType`, or `extras`. The service (`serviceId`), package (`packageId`), and unit price are locked at booking creation and cannot be edited via `PATCH`. Changing schedule fields (`date`, `makeup`, `shoot`) is allowed only when the booking is *Chờ cọc 30%* or *Đã đặt lịch* **and** its `shoot` job (`role === "shoot"` in `08-jobs.md`) is neither *Đang làm* nor *Hoàn thành* (if a `shoot` job exists, it must be *Chưa bắt đầu*; otherwise `409 CONFLICT` `"Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ."`). Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks) before applying any time, staff, or room change. The Admin cannot type or discount a total price; the server recomputes package pricing from `people`. Normally the booking's status stays unchanged (if *Đã đặt lịch*, held blocks in `busy`, pending reminders, and assigned jobs update); however, under the team assumption in rule 1, if the booking is in *Chờ cọc 30%* with `payment.depositStatus` already `"paid"` (concurrent deposit race in `06-payments.md` rule 3) and `PATCH` updates `date`, `makeup`, or `shoot` to a free slot, it transitions to *Đã đặt lịch* and commits its `busy` blocks, reminder, and assigned jobs.
 
 **Head-count (`people`) lock after 30% deposit (product owners' 2026-11-27 decision, [answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28854602184238579)):**
 - `people` may be changed only while `booking.status === "Chờ cọc 30%"` **and** `booking.payment.depositStatus === "unpaid"`.
@@ -332,7 +332,7 @@ Errors:
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not the Admin | — |
 | `404` | `NOT_FOUND` | unknown booking | — |
-| `409` | `CONFLICT` | booking is *Hoàn thành* or *Đã hủy*, requested slot clashes with held bookings, or `people` changed when booking is not *Chờ cọc 30%* with `depositStatus` `unpaid` | `details` (`conflicts`, `freeTime`) on a clash |
+| `409` | `CONFLICT` | booking is *Hoàn thành* or *Đã hủy*, requested slot clashes with held bookings, schedule changed when the `shoot` job is *Đang làm* or *Hoàn thành*, or `people` changed when booking is not *Chờ cọc 30%* with `depositStatus` `unpaid` | `details` (`conflicts`, `freeTime`) on a clash |
 
 Refused when trying to move GS-1024 to 09:00 (Mai busy 08:00–12:00):
 
@@ -476,6 +476,23 @@ HTTP/1.1 409 Conflict
 Content-Type: application/json
 
 {"error": {"code": "CONFLICT", "message": "Chỉ sửa được số người khi booking còn Chờ cọc 30%."}}
+```
+
+Refused when trying to reschedule after the `shoot` job is already *Đang làm* or *Hoàn thành* (`GS-1022`'s `job-gs-1022-shoot` is *Hoàn thành*):
+
+```http
+PATCH /api/bookings/GS-1022
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"date": "2026-10-19"}
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{"error": {"code": "CONFLICT", "message": "Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ."}}
 ```
 
 Empty body on `PATCH` (form-level error, not tied to `date`):
@@ -666,3 +683,4 @@ Content-Type: application/json
 - 2026-11-27 — Update `GS-1023`'s `durationMinutes` (`240`) and `editedPhotos` (`60`) in the two `PATCH /api/bookings/GS-1023` examples because `02-catalogue.md` now sets integer package durations and edited-photo counts per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)).
 - 2026-11-28 — State explicitly in rule 1 and `POST /api/bookings/:id/cancel` that cancelling a booking keeps its linked conversation in *Đã chốt lịch* (never reverts to *Đang tư vấn* or moves to *Hoàn thành*), verified in `test/mock.test.mjs`.
 - 2026-11-28 — Lock `people` edits in `PATCH /api/bookings/:id` unless `status === "Chờ cọc 30%"` and `payment.depositStatus === "unpaid"` (`409 CONFLICT` `"Chỉ sửa được số người khi booking còn Chờ cọc 30%."`) per the product owners' 2026-11-27 decision; replace `GS-1023` `200` head-count examples with `GS-1024` (`Chờ cọc 30%`) and a `GS-1023` `409` refusal.
+- 2026-11-28 — State explicitly that `serviceId`, `packageId`, and unit price are locked from booking creation, and refuse schedule edits (`date`, `makeup`, `shoot`) on `PATCH /api/bookings/:id` with `409 CONFLICT` (`"Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ."`) once the booking's `shoot` job is *Đang làm* or *Hoàn thành*; add `GS-1022` `409` example.
