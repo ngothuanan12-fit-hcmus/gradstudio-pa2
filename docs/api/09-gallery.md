@@ -4,7 +4,7 @@ What the customer does after the shoot (step G9): look at the preview photos, ch
 
 **Rules.**
 1. The customer chooses from 1 to the package's `editedPhotos` (30 for Gói Tốt nghiệp Premium), on a booking in *Đã đặt lịch*. The choice may be changed until the remaining 70% is paid; after that it is locked and a change is refused with `409` (product owners, [answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)).
-2. The remaining 70% can be paid only once a choice is saved (`06-payments.md`; the team's reading of G9: choose, pay, *Nhận ảnh*).
+2. The remaining 70% can be paid only once the booking's `shoot` job (`08-jobs.md`) has status *Hoàn thành* (`shootDone: true`) and a photo selection is saved (`06-payments.md` checks the saved choice): per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)), "after the shoot" is determined by the shoot job's status, not the clock. Until `shootDone` is `true` and a choice is saved, screen G9 disables *Thanh toán 70%* with a visible reason; choosing and saving preview photos remains allowed before the shoot job finishes.
 3. *Nhận ảnh* needs the booking in *Đã đặt lịch*, the remaining 70% paid and the file link added. It moves the booking to *Hoàn thành*, and the conversation the booking came from to *Hoàn thành* too (product owners, [answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)).
 
 **Sample data.** The previews of GS-1020 (40) and GS-1022 (5) reuse the licensed sample photos of the home page (`client/public/photos/`): their count and files are *sample*, not photos of these shoots.
@@ -18,6 +18,7 @@ What the customer does after the shoot (step G9): look at the preview photos, ch
 | `bookingId` | string | e.g. `GS-1022` |
 | `limit` | integer or `null` | The package's `editedPhotos`: how many photos may be chosen; `null` while the package gives no number (Kỷ yếu lớp, Chân dung/CV: *waiting*), and then no choice can be saved |
 | `locked` | boolean | `true` once the remaining 70% is paid: the choice can no longer change |
+| `shootDone` | boolean | `true` when the booking's `shoot` job (`08-jobs.md`) has status *Hoàn thành*; `false` otherwise (including when the booking has no `shoot` job yet) |
 | `selected` | list of strings | The chosen previews' ids, in the order sent; empty before a choice |
 | `savedAt` | string or `null` | When the choice was last saved, ISO 8601 with offset |
 | `previews` | list | Preview objects (`08-jobs.md`), oldest first |
@@ -41,7 +42,21 @@ Authorization: Bearer {{token:customer2}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"bookingId": "GS-1020", "limit": 30, "locked": false, "selected": [], "savedAt": null, "previews": [{"id": "prv-gs-1020-1", "bookingId": "GS-1020", "filename": "tot-nghiep-480.webp", "mimeType": "image/webp", "size": 19768, "url": "/api/previews/prv-gs-1020-1", "uploadedBy": {"id": "u-tuan", "name": "Tuấn"}, "uploadedAt": "2026-10-18T10:00:00+07:00"}, …]}
+{"bookingId": "GS-1020", "limit": 30, "locked": false, "shootDone": true, "selected": [], "savedAt": null, "previews": [{"id": "prv-gs-1020-1", "bookingId": "GS-1020", "filename": "tot-nghiep-480.webp", "mimeType": "image/webp", "size": 19768, "url": "/api/previews/prv-gs-1020-1", "uploadedBy": {"id": "u-tuan", "name": "Tuấn"}, "uploadedAt": "2026-10-18T10:00:00+07:00"}, …]}
+```
+
+Linh opens the preview uploaded for GS-1024 while Tuấn's `shoot` job (`job-gs-1024-shoot`, `08-jobs.md`) is still *Đang làm* (`shootDone` is `false`, so G9 allows choosing photos but cannot pay 70% yet):
+
+```http
+GET /api/bookings/GS-1024/previews
+Authorization: Bearer {{token:linh}}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"bookingId": "GS-1024", "limit": 30, "locked": false, "shootDone": false, "selected": [], "savedAt": null, "previews": [{"id": "prv-1", "bookingId": "GS-1024", "filename": "gs-1024-1.png", "mimeType": "image/png", "size": 102400, "url": "/api/previews/prv-1", "uploadedBy": {"id": "u-tuan", "name": "Tuấn"}, "uploadedAt": …}]}
 ```
 
 `staff3` is not assigned to GS-1020:
@@ -138,7 +153,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"bookingId": "GS-1020", "limit": 30, "locked": false, "selected": ["prv-gs-1020-1", "prv-gs-1020-2", "prv-gs-1020-3", "prv-gs-1020-4", "prv-gs-1020-5", "prv-gs-1020-6", "prv-gs-1020-7", "prv-gs-1020-8", "prv-gs-1020-9", "prv-gs-1020-10", "prv-gs-1020-11", "prv-gs-1020-12", "prv-gs-1020-13", "prv-gs-1020-14", "prv-gs-1020-15", "prv-gs-1020-16", "prv-gs-1020-17", "prv-gs-1020-18", "prv-gs-1020-19", "prv-gs-1020-20", "prv-gs-1020-21", "prv-gs-1020-22", "prv-gs-1020-23", "prv-gs-1020-24", "prv-gs-1020-25", "prv-gs-1020-26", "prv-gs-1020-27", "prv-gs-1020-28", "prv-gs-1020-29", "prv-gs-1020-30"], "savedAt": …, "previews": […]}
+{"bookingId": "GS-1020", "limit": 30, "locked": false, "shootDone": true, "selected": ["prv-gs-1020-1", "prv-gs-1020-2", "prv-gs-1020-3", "prv-gs-1020-4", "prv-gs-1020-5", "prv-gs-1020-6", "prv-gs-1020-7", "prv-gs-1020-8", "prv-gs-1020-9", "prv-gs-1020-10", "prv-gs-1020-11", "prv-gs-1020-12", "prv-gs-1020-13", "prv-gs-1020-14", "prv-gs-1020-15", "prv-gs-1020-16", "prv-gs-1020-17", "prv-gs-1020-18", "prv-gs-1020-19", "prv-gs-1020-20", "prv-gs-1020-21", "prv-gs-1020-22", "prv-gs-1020-23", "prv-gs-1020-24", "prv-gs-1020-25", "prv-gs-1020-26", "prv-gs-1020-27", "prv-gs-1020-28", "prv-gs-1020-29", "prv-gs-1020-30"], "savedAt": …, "previews": […]}
 ```
 
 A photo of another booking:
@@ -189,7 +204,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"bookingId": "GS-1022", "limit": 30, "locked": false, "selected": ["prv-gs-1022-1", "prv-gs-1022-2", "prv-gs-1022-3"], "savedAt": …, "previews": [{"id": "prv-gs-1022-1", "bookingId": "GS-1022", "filename": "tot-nghiep-900.webp", "mimeType": "image/webp", "size": 46776, "url": "/api/previews/prv-gs-1022-1", "uploadedBy": {"id": "u-tuan", "name": "Tuấn"}, "uploadedAt": "2026-10-19T10:00:00+07:00"}, …]}
+{"bookingId": "GS-1022", "limit": 30, "locked": false, "shootDone": true, "selected": ["prv-gs-1022-1", "prv-gs-1022-2", "prv-gs-1022-3"], "savedAt": …, "previews": [{"id": "prv-gs-1022-1", "bookingId": "GS-1022", "filename": "tot-nghiep-900.webp", "mimeType": "image/webp", "size": 46776, "url": "/api/previews/prv-gs-1022-1", "uploadedBy": {"id": "u-tuan", "name": "Tuấn"}, "uploadedAt": "2026-10-19T10:00:00+07:00"}, …]}
 ```
 
 ```http
@@ -204,7 +219,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"bookingId": "GS-1022", "limit": 30, "locked": false, "selected": ["prv-gs-1022-1", "prv-gs-1022-2", "prv-gs-1022-4", "prv-gs-1022-5"], "savedAt": …, "previews": […]}
+{"bookingId": "GS-1022", "limit": 30, "locked": false, "shootDone": true, "selected": ["prv-gs-1022-1", "prv-gs-1022-2", "prv-gs-1022-4", "prv-gs-1022-5"], "savedAt": …, "previews": […]}
 ```
 
 ## POST /api/bookings/:id/receive
@@ -285,7 +300,7 @@ Authorization: Bearer {{token:customer2}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"bookingId": "GS-1022", "limit": 30, "locked": true, "selected": ["prv-gs-1022-1", "prv-gs-1022-2", "prv-gs-1022-4", "prv-gs-1022-5"], "savedAt": …, "previews": […]}
+{"bookingId": "GS-1022", "limit": 30, "locked": true, "shootDone": true, "selected": ["prv-gs-1022-1", "prv-gs-1022-2", "prv-gs-1022-4", "prv-gs-1022-5"], "savedAt": …, "previews": […]}
 ```
 
 The file link is there (added in `05-bookings.md`), so *Nhận ảnh* completes the booking:
@@ -352,3 +367,4 @@ Content-Type: application/json
 - 2026-11-22 — First version. No client code calls these endpoints yet.
 - 2026-11-22 — `limit` may be `null` (a package with no number of edited photos yet), and a choice is then refused with `409`. Found while writing the mock, before it. No client code calls these endpoints yet.
 - 2026-11-27 — Added the `POST /api/conversations` example after `GS-1022` / `c-customer2` moves to *Hoàn thành*, verifying that a customer's new message opens a new conversation (`201`) when their latest conversation by newest message is *Hoàn thành*, per the product owners' answers ([answer 5](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622), [follow-up answer 2](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28854602184238579)). Client G3 updated after mock.
+- 2026-11-27 — Gallery gains boolean `shootDone` (`true` when the booking's `shoot` job in `08-jobs.md` has status *Hoàn thành*, `false` otherwise), so screen G9 disables *Thanh toán 70%* with a visible reason until the shoot job is *Hoàn thành* and a photo choice is saved, per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)). Added `shootDone` to every Gallery response example and added a read-only `GS-1024` (`shootDone: false`) example. Client G9 updated after mock.

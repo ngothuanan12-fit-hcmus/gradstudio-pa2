@@ -777,3 +777,57 @@ Sent to Antigravity (Gemini 4 Carbon (High)).
 > ## Khi xong
 >
 > Dừng lại và báo An: danh sách commit (hash, message), file đã đổi, kết quả từng kiểm tra kèm con số, những gì bạn làm sai và đã sửa, mọi chỗ phải dừng hoặc còn thắc mắc. Không làm sang việc 3.
+
+### 2.29 Trả 70% chỉ sau khi việc chụp Hoàn thành (2026-11-27)
+
+Sent to Antigravity (Gemini 4 Neon (High)).
+
+> Bạn làm việc trong repo nhóm GradStudio tại `E:\S1Y4\Web\pj\PA2` (đồ án CSC13008, PA#3: React client trên contract `docs/api/` và mock `mock/server.mjs`). Người giao việc là Ngô Thuận An (23120206), lead. Đây là **việc 3 trong 3**: cho màn G9 biết buổi chụp đã xong chưa, để khóa nút trả 70% kèm lý do. Việc 1 và 2 đã nằm trên nhánh `feature/po-2711`; làm tiếp trên nhánh đó.
+>
+> ## Đọc trước khi làm (bắt buộc)
+>
+> 1. `CLAUDE.md` (luật nhóm, danh sách NEVER), `AGENTS.md`, `brief.md` Phần 1, `docs/api/README.md`, `docs/api/09-gallery.md`, `docs/api/08-jobs.md` (chỉ đọc), `docs/api/06-payments.md` (chỉ đọc), `mock/routes/gallery.mjs`, `client/src/pages/Gallery.jsx`, `FRONTEND.md` mục 5.
+> 2. Rubric PA#3 chấm: contract commit **trước** code dùng nó; mock theo đúng contract; mọi thay đổi sau đó của `docs/api/` hoặc `mock/` có dòng ghi ngày trong `## Changes`; nút bị khóa chỉ khi luồng tự khóa và có lý do trên màn hình; `AI-LOG.md` ghi ngay trong bước, nêu tool và model, và trong *Changed/Rejected* nêu lỗi của trợ lý cùng phép kiểm tra đã bắt được nó; một commit cho mỗi phần.
+>
+> ## Quyết định của product owners cần làm theo
+>
+> Nguồn (link A): https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622
+>
+> > Điều kiện "sau buổi chụp" xác định bằng trạng thái việc, không bằng đồng hồ. Khách chỉ trả 70% khi nhân viên đã cập nhật việc chụp ảnh của booking là Hoàn thành và khách đã lưu danh sách ảnh chọn. Khi chưa đủ điều kiện, nút trả 70% bị khóa và có chữ nói lý do.
+>
+> "Việc chụp ảnh" là job có `"role": "shoot"` của booking trong `mock/data/jobs.json` (`08-jobs.md`). Khách không đọc được danh sách việc, nên `09-gallery.md` phải cho G9 biết điều này.
+>
+> **Ngoài phạm vi việc này:** việc máy chủ từ chối `POST /api/payments` (`kind: "remainder"`) khi việc chụp chưa *Hoàn thành* thuộc `06-payments.md` và `mock/routes/payments.mjs` của Khánh, Khánh sẽ làm. Không sửa hai file đó, và không viết trong `09` rằng `06` đã làm điều đó.
+>
+> ## Việc cần làm, đúng thứ tự, mỗi phần một commit
+>
+> **Bắt đầu:** `git status` sạch, đang ở `feature/po-2711`. `git config user.name` phải in `Ngô Thuận An`; không đổi cấu hình. Không push, không mở pull request, không amend, không rebase.
+>
+> **Commit 1 — contract.** `docs/api/09-gallery.md`: đối tượng **Gallery** thêm trường boolean `shootDone` (`true` khi job `shoot` của booking có `status` *Hoàn thành*; booking chưa có job `shoot` thì `false`), nêu quy tắc của product owners kèm link A, và nói G9 khóa *Thanh toán 70%* với lý do cho tới khi `shootDone` là `true` và ảnh chọn đã được lưu. Mọi ví dụ trả về Gallery phải có `shootDone` (contract-check so tên trường theo cả hai chiều); thêm ít nhất một ví dụ có `shootDone: false` nếu có booking phù hợp trong dữ liệu mẫu mà không làm đổi ví dụ nào khác. Không đổi mã thanh toán (`pay-3`) hay luồng ví dụ hiện có của `09`; nếu bắt buộc phải đổi, **dừng lại và báo**. Dòng `- 2026-11-27 — …` trong `## Changes`. `FRONTEND.md` mục 5: quyết định này kèm link. Cùng commit này: mục mới cuối `brief.md` `### 2.<số kế tiếp> Trả 70% chỉ sau khi việc chụp Hoàn thành (2026-11-27)`, một dòng ghi tool và model, rồi **toàn bộ prompt này nguyên văn** trong blockquote; và entry `AI-LOG.md`.
+>
+> **Commit 2 — mock.** `mock/routes/gallery.mjs` tính `shootDone` từ `db.jobs`. Không sửa `jobs.json` hay route của file khác. Kèm entry `AI-LOG.md`.
+>
+> **Commit 3 — client G9.** `client/src/pages/Gallery.jsx`: thêm lý do khóa *Thanh toán 70%* khi `shootDone` là `false`, ví dụ "Studio chưa cập nhật buổi chụp hoàn thành.", theo đúng mẫu nút `aria-disabled` + lý do nối bằng `aria-describedby` đang có. Thứ tự lý do: booking không ở trạng thái thanh toán → đã trả 70% → buổi chụp chưa xong → chưa lưu ảnh → còn thay đổi chưa lưu. Việc chọn ảnh vẫn làm được trước khi buổi chụp xong. Kèm entry `AI-LOG.md`.
+>
+> ## Kiểm tra (NEVER 14, NEVER 15)
+>
+> Kiểm tra mỗi commit trên một bản `git archive <commit>` giải nén vào thư mục tạm riêng, không chạy trong thư mục làm việc chung. Trong bản copy: `npm ci` ở gốc và ở `client/`; `npm run format:check`, `npm run lint`, `npm test`, `npm run build`; mock riêng `PORT=3112 node mock/server.mjs`, rồi `node tools/contract-check.mjs --repo . --base http://localhost:3112 --strict-values`: phải **0 FAIL**. Giao diện: `npx vite preview --port 4212 --strictPort` với file cấu hình chỉ cho bản copy (proxy `/api` sang 3112); đăng nhập qua màn đăng nhập (tài khoản trong `FRONTEND.md` mục 3). Trên `/lich-chup/GS-1022/anh` bằng `customer2`: lúc đầu nút trả 70% khóa vì chưa lưu ảnh; sau khi `tuan` đặt job `job-gs-1022-shoot` về *Đang làm* (qua màn `/cong-viec` hoặc `PATCH /api/jobs/:id` với token của `tuan`), lý do phải là buổi chụp chưa xong; đặt lại *Hoàn thành* thì nút mở sau khi lưu ảnh. Mở G9 ở 360, 768, 1280 px và 4 chế độ `MOCK_MODE`. Chỉ dừng tiến trình chính bạn khởi động (theo PID); không `pkill`/`taskkill` theo tên. Không sửa `tools/contract-check.mjs`, không nới lỏng test hay gate, không thêm thư viện.
+>
+> ## Mẫu entry `AI-LOG.md` (thêm vào cuối, không sửa entry cũ)
+>
+> ```
+> ### 2026-11-27 — <bước>: <việc gì>
+> Commit: the commit that adds this entry with <các file>.
+> Tool: <tên sản phẩm> (<tên model chính xác của bạn>); <các lệnh/kiểm tra đã chạy>.
+> Asked for: <yêu cầu, ngắn>.
+> Kept: awaiting An's review. <cái gì đã làm, con số kiểm tra>.
+> Changed: <lỗi của chính bạn và phép kiểm tra nào bắt được nó; nếu không có thì "nothing" kèm các kiểm tra đã chạy>.
+> Rejected: <điều đã cân nhắc và bỏ, vì sao>.
+> By hand: none.
+> ```
+>
+> Ghi đúng tên tool và model của chính bạn. Tài liệu tiếng Anh; chữ trên màn hình tiếng Việt. Commit message tiếng Anh, nói rõ đổi gì, **không** có `Co-Authored-By` hay "Generated with" (NEVER 13).
+>
+> ## Khi xong
+>
+> Dừng lại và báo An: danh sách commit (hash, message), file đã đổi, kết quả từng kiểm tra kèm con số, những gì bạn làm sai và đã sửa, mọi chỗ phải dừng hoặc còn thắc mắc.
