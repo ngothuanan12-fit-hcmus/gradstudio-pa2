@@ -143,6 +143,16 @@ function nextBookingId(db) {
   return `GS-${max + 1}`;
 }
 
+function sameMakeup(a, b) {
+  if (!a && !b) return true;
+  if (!a || !b) return false;
+  return a.from === b.from && a.to === b.to && a.staffId === b.staffId;
+}
+
+function sameShoot(a, b) {
+  return a.from === b.from && a.to === b.to && a.staffId === b.staffId && a.roomId === b.roomId;
+}
+
 function isHttpUrl(value) {
   if (typeof value !== 'string') return false;
   const trimmed = value.trim();
@@ -294,20 +304,16 @@ function update({ req, db, params, body }) {
   Object.assign(fields, schedFields);
   if (Object.keys(fields).length) return invalid(fields);
 
-  const touchesPrice = b.people !== undefined;
-  if (touchesPrice && booking.payment.remainderStatus === 'paid') {
-    return fail(409, 'CONFLICT', 'Booking đã thanh toán đủ, không thể đổi giá.');
-  }
-  if (touchesPrice && booking.payment.depositStatus === 'paid') {
-    const candidate = { ...booking, people: b.people };
-    const nextPricing = computePricing(db, candidate);
-    if (nextPricing.total < nextPricing.deposit) {
-      return fail(409, 'CONFLICT', 'Tổng tiền không được nhỏ hơn tiền cọc đã thanh toán.');
-    }
+  if (b.people !== undefined && (booking.status !== 'Chờ cọc 30%' || booking.payment.depositStatus !== 'unpaid')) {
+    return fail(409, 'CONFLICT', 'Chỉ sửa được số người khi booking còn Chờ cọc 30%.');
   }
 
   const touchesSlot = b.date !== undefined || b.makeup !== undefined || b.shoot !== undefined;
   if (touchesSlot) {
+    const shootJob = db.jobs?.find((j) => j.bookingId === booking.id && j.role === 'shoot');
+    if (shootJob && (shootJob.status === 'Đang làm' || shootJob.status === 'Hoàn thành')) {
+      return fail(409, 'CONFLICT', 'Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ.');
+    }
     const check = checkSchedule(db, {
       date: parsed.date,
       makeup: parsed.makeup,
@@ -321,6 +327,12 @@ function update({ req, db, params, body }) {
     }
   }
 
+  const scheduleChanged =
+    parsed.date !== booking.date ||
+    !sameMakeup(parsed.makeup, booking.makeup) ||
+    !sameShoot(parsed.shoot, booking.shoot);
+  const wasStatus = booking.status;
+
   booking.date = parsed.date;
   booking.makeup = parsed.makeup;
   booking.shoot = parsed.shoot;
@@ -332,8 +344,11 @@ function update({ req, db, params, body }) {
     booking.status = 'Đã đặt lịch';
   }
 
+  const promotedToBooked = wasStatus !== 'Đã đặt lịch' && booking.status === 'Đã đặt lịch';
   syncBookingBusy(db, booking);
-  syncReminderForBooking(db, booking);
+  if (scheduleChanged || promotedToBooked) {
+    syncReminderForBooking(db, booking);
+  }
   syncJobsForBooking(db, booking);
   return ok(bookingOut(db, booking));
 }

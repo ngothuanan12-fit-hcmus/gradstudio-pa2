@@ -855,3 +855,156 @@ Sent to Antigravity (Gemini 4 Neon (High)).
 > (the questions of another team, 13 in four parts, and the product owners' answers in four replies, pasted, with the links: comment 28855460470819417, replies 28855464487485682, 28855467304152067, 28858446627187468, 28858450227187108, 28858454523853345; then a question on the payment time limit, comment 28865135763185221, and its answer, reply 28865342853164512)
 
 > đồng ý, lần này bạn sẽ thực hiện lần lượt các việc và soạn tin nhắn cho Khánh
+
+### 2.32 Nâng cấp luồng nghiệp vụ và UI (2026-11-28)
+
+Tool: Antigravity (Gemini 4 Hydrogen (High) / Gemini 4 Neon (Medium)).
+
+> Trước khi gửi prompt tôi nhắc lại 1 xíu về viết AI-LOG.md, brief.md. Đó là khi tôi gửi prompt và yêu cầu làm thì khi hết phiên và trả về ouput đúng hay không cũng phải commit và ghi vào AI-LOG.md, còn brief.md là ghi lại những câu prompt tôi đã gửi cho bạn.
+
+>     Đọc `CLAUDE.md`, `FRONTEND.md`, `brief.md` và các contract liên quan (`docs/api/05-bookings.md`, `06-payments.md`, `07-reminders.md`, `08-jobs.md`, `09-gallery.md`) trước khi sửa code.
+>
+>     Thực hiện nâng cấp luồng nghiệp vụ và UI theo 9 yêu cầu dưới đây. Tuân thủ nghiêm ngặt quy trình của repo:
+>     - **Contract first**: sửa `docs/api/*.md` (kèm `## Changes` ghi ngày và lý do) trước -> sửa `mock/` + `test/mock.test.mjs` -> sửa `client/` -> cập nhật `FRONTEND.md` & `AI-LOG.md` & `brief.md`.
+>     - **Không tự ý sửa `docs/api/09-gallery.md`** (file của An); tại bước 5 nếu đổi điều kiện `PUT /api/bookings/:id/file-link` làm ví dụ `GS-1022` ở `05-bookings.md` chạy trước `09-gallery.md` bị
+>     `409`, hãy báo rõ để tôi nhắn An dời bước trong `09-gallery.md` cho khớp (hoặc tách phần ví dụ `GS-1022` phối hợp với An).
+>     - Tách commit rõ ràng từng phần, chạy đầy đủ `npm run format:check`, `npm run lint`, `npm test`, `npm run build` (trên bản sao `git archive` theo đúng `CLAUDE.md` NEVER 15) trước khi báo hoàn thành.
+>
+>     ### PHẦN A — Làm trước và hoàn thiện dứt điểm (các mục 1, 2, 3, 4, 5, 6, 7, 9)
+>
+>     1. **Mục 9 (`05-bookings.md` — quyết định khi hủy booking):**
+>        - Ghi rõ quyết định trong `docs/api/05-bookings.md` (phần quy tắc đầu file và `POST /api/bookings/:id/cancel`): *"Khi hủy booking, hội thoại gắn với booking đó vẫn giữ trạng thái `Đã chốt lịch`"*
+>        (không lùi về `Đang tư vấn` và không thành `Hoàn thành`).
+>        - Đảm bảo `mock/routes/bookings.mjs` giữ nguyên hành vi này và có test xác nhận trong `test/mock.test.mjs`.
+>
+>     2. **Mục 1 (`06-payments.md`, `mock/routes/payments.mjs`, `FRONTEND.md` — điều kiện trả 70%):**
+>        - Trong `06-payments.md` và `mock/routes/payments.mjs`: `POST /api/payments` (khi `kind === 'remainder'`) và `POST /api/payments/:id/result` (khi `result === 'success'` cho `remainder`) chỉ cho
+>        phép thanh toán 70% khi:
+>          1) Booking ở trạng thái `Đã đặt lịch` và `depositStatus === 'paid'`
+>          2) Việc chụp (`role === 'shoot'`) của booking trong `db.jobs` có `status === 'Hoàn thành'`
+>          3) Khách đã lưu lựa chọn ảnh (`hasPhotoSelection`) và chưa `remainderStatus === 'paid'`.
+>        - Nếu việc chụp chưa `Hoàn thành`, trả về `409 CONFLICT` với thông báo tiếng Việt rõ ràng (ví dụ: `"Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại."`).
+>        - Cập nhật ví dụ và `## Changes` trong `06-payments.md`; xóa ghi chú chờ của mục này ở mục 7 (*Not done*) trong `FRONTEND.md`.
+>        - Kiểm tra `client/src/pages/Gallery.jsx` và `PaymentResult.jsx` đảm bảo hiển thị đúng lý do và lỗi `409` nếu có.
+>
+>     3. **Mục 2 (`05-bookings.md`, `mock/routes/bookings.mjs`, `QuanLyBookingDetail.jsx` G10 — khóa sửa `people`):**
+>        - Trong `05-bookings.md` và `mock/routes/bookings.mjs`: `PATCH /api/bookings/:id` chỉ cho phép thay đổi `people` khi `booking.status === 'Chờ cọc 30%'` **và** `booking.payment.depositStatus ===
+>        'unpaid'` (tức chưa thanh toán cọc). Nếu đã cọc hoặc ở trạng thái khác, từ chối với `409 CONFLICT` (ví dụ: `"Chỉ sửa được số người khi booking còn Chờ cọc 30%."`).
+>        - Cập nhật các ví dụ `GS-1023` trong `05-bookings.md` (vì `GS-1023` đã `Đã đặt lịch` / đã cọc) và cập nhật test tương ứng trong `test/mock.test.mjs` (test trường hợp sửa `people` hợp lệ lúc `Chờ
+>        cọc 30%` chưa cọc và trường hợp bị `409` sau khi cọc).
+>        - Xóa ghi chú chờ của mục này ở mục 7 (*Not done*) trong `FRONTEND.md`.
+>        - Trên màn hình G10 (`client/src/pages/QuanLyBookingDetail.jsx`): khóa ô `Số người` (`disabled`) khi `booking.status !== 'Chờ cọc 30%' || booking.payment?.depositStatus === 'paid'`, hiển thị
+>        `hint` giải thích rõ lý do trên giao diện, và không gửi `people` trong `PATCH` khi đang bị khóa.
+>
+>     4. **Mục 3 (`05-bookings.md`, `08-jobs.md`, `AdminBookingForm.jsx` G6 — chọn người cho cả 3 việc & tạo đủ 3 việc):**
+>        - Mở rộng `Booking` trong `05-bookings.md`, `mock/data/bookings.json`, `mock/routes/bookings.mjs`:
+>          - Khi Admin tạo booking (`POST /api/bookings`), cho phép/yêu cầu chọn nhân sự phụ trách cho cả 3 việc: `makeup` (`makeupStaffId`, nếu có makeup hoặc theo cấu hình slot), `shoot`
+>          (`shootStaffId`), và `edit` (`editStaffId` / `edit: { staffId, staffName }`). Validate `staffId` hợp lệ (`400 VALIDATION_ERROR` nếu không tồn tại), kiểm tra trùng lịch cho `makeup` và `shoot`
+>          theo đúng người vừa chọn (`edit` hậu kỳ không chiếm phòng và không bị chặn bởi `checkSchedule` của khung giờ chụp/makeup — nếu khác, nêu rõ trong contract).
+>          - Lưu thông tin 3 người trên `Booking` (thêm `edit: { staffId, staffName }`, và cập nhật seed `mock/data/bookings.json` + các ví dụ trong `05-bookings.md`).
+>        - Trong `08-jobs.md` và `mock/routes/jobs.mjs` (`syncJobsForBooking`):
+>          - Khi booking chuyển sang `Đã đặt lịch` (cọc 30% thành công hoặc đổi sang giờ trống sau race-clash), tự động tạo đủ cả 3 công việc cho booking đó: `makeup` (nếu booking có makeup, hoặc đủ 3
+>          việc `makeup`, `shoot`, `edit` với `booking` có đủ 3 người), `shoot`, và `edit` (dùng `edit.staffId`, `date` từ booking hoặc khung giờ mặc định sau shoot như seed `GS-1022`, `roomName: null`).
+>        - Trên màn hình G6 (`client/src/components/admin/AdminBookingForm.jsx`):
+>          - Cho phép Admin chọn nhân sự cho cả 3 việc (`Thợ makeup`, `Thợ chụp`, `Thợ chỉnh ảnh`) ngay tại form tạo booking và gửi đúng các `staffId` này lên `POST /api/bookings`.
+>          - Đảm bảo nếu Admin đổi thợ phụ trách ở G6 so với proposal hay chọn thợ chỉnh ảnh thì vẫn tạo booking bình thường (không bị kẹt vô lý bởi điều kiện phụ), đồng thời vẫn chạy clash check với
+>          người makeup/chụp mới chọn.
+>        - Cập nhật các test gọi `POST /api/bookings` trong `test/mock.test.mjs` nếu payload thay đổi.
+>
+>     5. **Mục 4 (`08-jobs.md`, `mock/routes/jobs.mjs`, `CongViec.jsx` G8 — chuyển trạng thái tự do kèm các khóa & booking đã hủy):**
+>        - Trong `08-jobs.md` và `mock/routes/jobs.mjs`:
+>          - Trên `PATCH /api/jobs/:id`: cho phép chuyển qua lại giữa `Chưa bắt đầu`, `Đang làm`, `Hoàn thành` theo **bất kỳ thứ tự nào** (kể cả chuyển ngược), nhưng kiểm tra các khóa sau (vi phạm trả
+>          `409 CONFLICT` với thông báo rõ lý do):
+>            1) **Booking bị hủy (`booking.status === 'Đã hủy'`):** không cập nhật được (`409`). Đặc biệt, trong `syncJobsForBooking`, khi booking bị hủy **KHÔNG được xóa** các job của booking đó khỏi
+>            `db.jobs`; giữ nguyên job để nhân viên vẫn nhìn thấy, gắn trạng thái/thông tin để biết `"Booking đã hủy"`, không tính là bận (`db.busy` đã bỏ khi hủy). Cập nhật lại test `POST
+>            /api/bookings/:id/cancel` trong `test/mock.test.mjs` cho đúng quy tắc mới này.
+>            2) **Việc `makeup` và `shoot`:** khóa khi khách đã thanh toán 70% (`booking.payment.remainderStatus === 'paid'`).
+>            3) **Việc `edit` (chỉnh ảnh):** chỉ được bắt đầu (tức không được chuyển sang `Đang làm` / `Hoàn thành`) khi khách chưa thanh toán 70% (`booking.payment.remainderStatus !== 'paid'`), và **khóa
+>            hoàn toàn** khi booking đã có link ảnh cuối (`Boolean(booking.fileLink)`). (Kiểm tra và sửa seed `job-gs-1022-edit` trong `mock/data/jobs.json` từ `"Đang làm"` thành `"Chưa bắt đầu"` cùng ví
+>            dụ tương ứng ở `08-jobs.md` vì `GS-1022` chưa trả 70%).
+>          - Bổ sung vào object `Job` trả về từ `GET /api/jobs` và `PATCH /api/jobs/:id` các trường cần thiết (ví dụ: `bookingStatus`, và `canUpdate` / `lockReason` hoặc `remainderPaid` + `hasFileLink`)
+>          để màn hình G8 (`CongViec.jsx`) biết trạng thái khóa mà **không** phải gọi `/api/bookings` (role `staff` bị `403`).
+>        - Trên màn hình G8 (`client/src/pages/CongViec.jsx`):
+>          - Nếu `job.bookingStatus === 'Đã hủy'`: vẫn hiển thị card công việc, hiển thị nhãn/badge `"Booking đã hủy"`, khóa mọi nút chuyển trạng thái (`aria-disabled="true"`) và khóa form tải ảnh xem
+>          trước của booking đó kèm lý do rõ ràng.
+>          - Nếu `makeup`/`shoot` bị khóa do đã trả 70%, hoặc `edit` bị khóa do chưa trả 70% / đã có link ảnh cuối: disable các nút trạng thái tương ứng (`aria-disabled="true"`) và hiển thị lý do khóa
+>          ngay trên card.
+>          - Khi không bị khóa: cho phép chọn tự do bất kỳ trạng thái nào (kể cả chuyển ngược).
+>
+>     6. **Mục 6 (`05-bookings.md`, `mock/routes/bookings.mjs`, `QuanLyBookingDetail.jsx` G10 — điều kiện đổi giờ & khóa gói/giá):**
+>        - Trong `05-bookings.md` và `mock/routes/bookings.mjs`:
+>          - Ghi rõ trong contract: **gói chụp (`serviceId`, `packageId`) và đơn giá được khóa ngay từ lúc tạo booking** (không thể chỉnh sửa qua `PATCH`).
+>          - Trong `PATCH /api/bookings/:id`: chỉ cho phép đổi ngày/giờ (`date`, `makeup`, `shoot`) khi booking ở trạng thái `Chờ cọc 30%` hoặc `Đã đặt lịch` **và** việc chụp (`role === 'shoot'`) chưa ở
+>          trạng thái `Đang làm` hay `Hoàn thành` (tức `shootJob.status === 'Chưa bắt đầu'` nếu đã có job). Nếu việc chụp đã `Đang làm` hoặc `Hoàn thành`, từ chối đổi giờ với `409 CONFLICT` (`"Buổi chụp
+>          đã bắt đầu hoặc hoàn thành, không thể đổi giờ."`).
+>        - Trên màn hình G10 (`client/src/pages/QuanLyBookingDetail.jsx`):
+>          - Fetch thêm `GET /api/jobs?bookingId=${id}` (Admin có quyền gọi theo `08-jobs.md`).
+>          - Hiển thị ghi chú rõ ràng: gói và giá đã khóa từ lúc tạo booking.
+>          - Khóa phần chỉnh ngày/giờ/slot và nút `Kiểm tra lịch trống` khi `isClosed` hoặc khi việc chụp đã `Đang làm` / `Hoàn thành`, hiển thị lý do rõ ràng bên dưới.
+>
+>     7. **Mục 5 (`05-bookings.md`, `mock/routes/bookings.mjs`, `QuanLyBookingDetail.jsx` G10 — gắn link ảnh cuối & phối hợp `09-gallery.md`):**
+>        - Trong `05-bookings.md` và `mock/routes/bookings.mjs` (`PUT /api/bookings/:id/file-link`):
+>          - Chỉ cho phép gắn link ảnh cuối khi:
+>            1) `booking.status === 'Đã đặt lịch'`
+>            2) Khách đã trả đủ 100% (`depositStatus === 'paid' && remainderStatus === 'paid'`)
+>            3) Việc chỉnh ảnh (`role === 'edit'`) có `status === 'Hoàn thành'`.
+>          - Nếu chưa thỏa mãn 2) hoặc 3), trả về `409 CONFLICT` với thông báo cụ thể (chưa thanh toán 70% / việc chỉnh ảnh chưa hoàn thành).
+>        - Trên màn hình G10 (`client/src/pages/QuanLyBookingDetail.jsx`):
+>          - Dựa vào `booking.payment` và `editJob` (từ `/api/jobs?bookingId=${id}`), chỉ mở form gắn link ảnh cuối khi đủ cả 3 điều kiện; nếu chưa đủ thì khóa input/nút và hiển thị chính xác lý do còn
+>          thiếu.
+>        - **Cảnh báo phối hợp:** Trước khi sửa ví dụ `PUT /api/bookings/GS-1022/file-link` trong `05-bookings.md` (hoặc ngay khi `contract-check` chạm ví dụ này vì `GS-1022` trả 70% ở `09-gallery.md`),
+>        **dừng lại báo cho tôi biết** để tôi nhắn An dời bước trong `09-gallery.md` cho khớp thứ tự: chọn ảnh -> trả 70% -> hoàn thành việc chỉnh ảnh -> gắn link ảnh cuối -> *Nhận ảnh*.
+>
+>     8. **Mục 7 (`07-reminders.md`, `mock/routes/reminders.mjs`, `ReminderList.jsx` G7 — nhắc lịch khi đổi giờ & trạng thái `"Gửi lỗi"`):**
+>        - Trong `07-reminders.md` và `mock/routes/reminders.mjs`:
+>          - Bổ sung trạng thái `emailStatus: "failed"` (`"Gửi lỗi"`) bên cạnh `"pending"` (`"Chờ gửi"`) và `"sent"` (`"Đã gửi"`).
+>          - Ghi rõ và cài đặt lại `syncReminderForBooking`:
+>            - Đổi `reminderHoursBefore` trong `10-admin.md` chỉ áp dụng cho nhắc **tạo mới sau đó**.
+>            - Khi đổi ngày/giờ/nhân sự/phòng chụp của booking `Đã đặt lịch` (chỉ khi thông tin lịch thực sự thay đổi, không chạy nhầm khi chỉ đổi `people`/`sessionType`):
+>              - Nếu booking đang có nhắc **chưa gửi** (`emailStatus === 'pending'`): **thay thế/cập nhật** `dueAt` và `message` của nhắc đó theo giờ mới (giữ nguyên `hoursBefore` của nhắc đó).
+>              - Nếu nhắc trước đó **đã gửi** (`emailStatus === 'sent'`): **giữ nguyên** bản ghi nhắc đã gửi trong lịch sử, và **tạo thêm một nhắc mới** (`emailStatus: 'pending'`, `emailSentAt: null`,
+>              `hoursBefore` lấy từ `db.settings.reminderHoursBefore` hiện tại) theo giờ mới.
+>            - (Nếu có nhắc `failed`, quy ước rõ trong `07-reminders.md` là giữ lịch sử lỗi hay thay thế khi đổi giờ, và viết test kiểm chứng).
+>        - Trên màn hình G7 (`client/src/components/ReminderList.jsx`):
+>          - Hiển thị badge và mô tả rõ 3 trạng thái: `sent` -> `"Đã gửi"`, `pending` -> `"Chờ gửi"`, `failed` -> `"Gửi lỗi"` (dùng tone phù hợp như `conflict` trong `StatusBadge`).
+>
+>     ---
+>
+>     ### PHẦN B — Làm SAU CÙNG sau khi Phần A đã chạy ổn và qua mọi gate (Mục 8: Thời hạn thanh toán 15 phút)
+>
+>     > Chỉ bắt đầu Phần B sau khi Phần A đã test đầy đủ và sạch sẽ. Nếu ước lượng không kịp trước hạn, dừng lại trước khi sửa Phần B và ghi rõ các hạng mục chưa làm của Phần B vào mục 7 (*Not done*) của
+>     `FRONTEND.md`.
+>
+>     9. **Mục 8 (`06-payments.md`, `05-bookings.md`, `G7`, `G10` — hạn thanh toán 15 phút & thanh toán tới sau khi hủy):**
+>        - **Thời hạn 15 phút (`06-payments.md`, `mock/routes/payments.mjs`):**
+>          - `Payment` có trường `expiresAt` = `createdAt + 15 phút` (ISO 8601 `+07:00`).
+>          - Thiết kế kiểm tra quá hạn nhất quán trong mock (kể cả với đồng hồ deterministic trong `contract-check` và test riêng trong `test/mock.test.mjs`). Khi quá `expiresAt`, khoản `pending` tự tính
+>          là `failed` với message hết hạn (ví dụ `"Giao dịch đã hết hạn thanh toán (15 phút)."`).
+>          - `POST /api/payments/:id/result` nếu nhận kết quả sau khi đã hết hạn (`now >= expiresAt`): đánh dấu payment đó là `failed` (hết hạn) và từ chối kết quả tới sau bằng `409 CONFLICT`.
+>          - Khi booking đang có khoản `pending` còn hạn (`expiresAt > now`), `POST /api/payments` không tạo thêm khoản trùng (hoặc báo rõ khoản đang chờ đến mấy giờ).
+>        - **Khóa hủy & đổi giờ khi có khoản chờ còn hạn (`05-bookings.md`, `mock/routes/bookings.mjs`, `G10`):**
+>          - `POST /api/bookings/:id/cancel` và `PATCH /api/bookings/:id` (khi đổi ngày/giờ/slot): nếu booking đang có payment `pending` còn hạn, từ chối với `409 CONFLICT` và trong `message` **phải báo
+>          rõ đang chờ đến mấy giờ** (theo `expiresAt`).
+>          - Trên G10 (`QuanLyBookingDetail.jsx`): kiểm tra `paymentsQuery`, nếu có payment `pending` còn hạn thì khóa nút Hủy và khóa đổi ngày/giờ, kèm thông báo rõ `"Đang có giao dịch chờ thanh toán đến
+>          HH:MM..."`.
+>        - **Thanh toán thành công tới sau khi booking đã hủy (`06-payments.md`, `mock/routes/payments.mjs`, `G7`, `G10`):**
+>          - Nếu `POST /api/payments/:id/result` nhận `result: "success"` (còn hiệu lực hoặc callback tới sau) khi `booking.status === 'Đã hủy'`: **không** trả `409` bỏ qua; ghi nhận `payment.status =
+>          'succeeded'`, cập nhật `depositStatus`/`remainderStatus` thành `'paid'` (cùng timestamp tương ứng) để ghi nhận đã thu, nhưng **giữ nguyên `booking.status = 'Đã hủy'`** (không giữ lịch, không
+>          tạo job/reminder) và ghi rõ trong `payment.message` để studio hoàn ngoài hệ thống.
+>          - Trên G7 (`DepositCard.jsx`, `PaymentGateway.jsx`, `PaymentResult.jsx`) và G10 (`QuanLyBookingDetail.jsx`): hiển thị rõ hạn thanh toán đến mấy giờ cho khoản `pending`, trạng thái hết hạn, và
+>          hiển thị khoản đã thu trên booking `Đã hủy`.
+
+
+### 2.33 PR #9 approval, push, and PR for Part A (2026-11-28)
+
+Tool: Antigravity (Gemini 4 Hydrogen (High)).
+
+> Push lên sau đó tạo pull request tới An + comment những gì đã làm
+
+> Đang có pull request #9 đang giữ nên approve nhánh đó trước
+
+### 2.34 Merge origin/main (PR #9) conflict resolution (2026-11-28)
+
+Tool: Antigravity (Gemini 4 Hydrogen (High)).
+
+> pr #9 đã được merge vào main nên hiện tại nhánh này đang bị conflict fix lại và push lên phiên bản đã resolve

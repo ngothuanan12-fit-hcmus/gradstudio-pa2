@@ -5,7 +5,7 @@ What the Admin and customer do with bookings: create a booking once the customer
 Only bookings in *Đã đặt lịch* hold staff and rooms (R1). Creating a booking starts it in *Chờ cọc 30%* and links it to the conversation (`bookingId`), without holding any slot yet; the slot is held only when the 30% deposit succeeds (`06-payments.md`).
 
 **Product owner decisions, team assumptions, and sample data.** Per the product owners' answers ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)):
-1. A cancelled booking's status is *Đã hủy* (seen by the Admin and customer). Only the Admin cancels, from *Chờ cọc 30%* or *Đã đặt lịch* (*Hoàn thành* answers `409`); cancelling frees staff and rooms and removes reminders. There is no refund tracking in the system: the booking keeps what was paid in `payment`, and the studio refunds outside the system. Rescheduling checks availability at the new time without the customer agreeing again; normally the status stays unchanged (unpaid *Chờ cọc 30%* stays *Chờ cọc 30%*; *Đã đặt lịch* stays *Đã đặt lịch*), while reminders and jobs update. **Team assumption (follow-up question for the product owners):** if a booking's 30% deposit is already `paid` but the booking stayed *Chờ cọc 30%* because another customer paid first for the same slot (`06-payments.md` rule 3), moving it to a free time via `PATCH /api/bookings/:id` transitions it to *Đã đặt lịch*, adds its blocks to `busy`, and creates its pending reminder and assigned jobs.
+1. A cancelled booking's status is *Đã hủy* (seen by the Admin and customer). Only the Admin cancels, from *Chờ cọc 30%* or *Đã đặt lịch* (*Hoàn thành* answers `409`); cancelling frees staff and rooms and removes reminders. When a booking is cancelled, the conversation linked to that booking keeps status *Đã chốt lịch* (it neither reverts to *Đang tư vấn* nor moves to *Hoàn thành*). There is no refund tracking in the system: the booking keeps what was paid in `payment`, and the studio refunds outside the system. Rescheduling checks availability at the new time without the customer agreeing again; normally the status stays unchanged (unpaid *Chờ cọc 30%* stays *Chờ cọc 30%*; *Đã đặt lịch* stays *Đã đặt lịch*), while reminders and jobs update. **Team assumption (follow-up question for the product owners):** if a booking's 30% deposit is already `paid` but the booking stayed *Chờ cọc 30%* because another customer paid first for the same slot (`06-payments.md` rule 3), moving it to a free time via `PATCH /api/bookings/:id` transitions it to *Đã đặt lịch*, adds its blocks to `busy`, and creates its pending reminder and assigned jobs.
 2. Extras have no price of their own: a booking costs its package's price (`pack.price * people` when `pack.priceUnit` is `"người"`, otherwise `pack.price`), computed by the server. The Admin cannot edit or discount a price. Extras are recorded only so the Admin can plan make-up staff and prepare costumes; costume stock is not checked. *Still open:* whether every package may record make-up or a costume (team assumption: yes).
 3. *Still open:* For a class yearbook (`Kỷ yếu lớp`, `350.000đ/người`), the team assumes the representative estimates head count, the Admin confirms `people`, and the server recomputes the price from `people` (no price typed by hand).
 
@@ -304,12 +304,12 @@ Content-Type: application/json
 
 ## PATCH /api/bookings/:id
 
-Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, confirmed head count (`people`), `sessionType`, or `extras`. Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks) before applying any time, staff, or room change. The Admin cannot type or discount a total price; the server recomputes package pricing from `people`. Normally the booking's status stays unchanged (if *Đã đặt lịch*, held blocks in `busy`, pending reminders, and assigned jobs update); however, under the team assumption in rule 1, if the booking is in *Chờ cọc 30%* with `payment.depositStatus` already `"paid"` (concurrent deposit race in `06-payments.md` rule 3) and `PATCH` updates `date`, `makeup`, or `shoot` to a free slot, it transitions to *Đã đặt lịch* and commits its `busy` blocks, reminder, and assigned jobs.
+Who: the Admin (step G10). Updates a booking's date, make-up/shoot slots, confirmed head count (`people`), `sessionType`, or `extras`. The service (`serviceId`), package (`packageId`), and unit price are locked at booking creation and cannot be edited via `PATCH`. Changing schedule fields (`date`, `makeup`, `shoot`) is allowed only when the booking is *Chờ cọc 30%* or *Đã đặt lịch* **and** its `shoot` job (`role === "shoot"` in `08-jobs.md`) is neither *Đang làm* nor *Hoàn thành* (if a `shoot` job exists, it must be *Chưa bắt đầu*; otherwise `409 CONFLICT` `"Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ."`). Runs the clash check (`04-schedule.md` rules, excluding this booking's own blocks) before applying any time, staff, or room change. The Admin cannot type or discount a total price; the server recomputes package pricing from `people`. Normally the booking's status stays unchanged (if *Đã đặt lịch*, held blocks in `busy`, pending reminders, and assigned jobs update); however, under the team assumption in rule 1, if the booking is in *Chờ cọc 30%* with `payment.depositStatus` already `"paid"` (concurrent deposit race in `06-payments.md` rule 3) and `PATCH` updates `date`, `makeup`, or `shoot` to a free slot, it transitions to *Đã đặt lịch* and commits its `busy` blocks, reminder, and assigned jobs.
 
-**Deposit and remainder after head-count changes:**
-- Before the 30% deposit is paid (`payment.depositStatus` = `unpaid`), `pricing.deposit` is `Math.round(total * 0.3)` and `pricing.remainder` is `total - deposit`.
-- Once the deposit is already `paid`, **`pricing.deposit` stays locked at the deposit amount already paid** (it is never recomputed when `people` changes), and `pricing.remainder` becomes `pricing.total - pricing.deposit`.
-- Lowering `people` so the recomputed `total` falls below the already-paid deposit is refused with `409` (no in-app refund tracking per the product owners). Changing `people` after `payment.remainderStatus` is `paid` is also refused with `409`.
+**Head-count (`people`) lock after 30% deposit (product owners' 2026-11-27 decision, [answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28854602184238579)):**
+- `people` may be changed only while `booking.status === "Chờ cọc 30%"` **and** `booking.payment.depositStatus === "unpaid"`.
+- In that state, changing `people` recomputes `pricing.total` (for per-person packages), `pricing.deposit` (`Math.round(total * 0.3)`), and `pricing.remainder` (`total - deposit`).
+- Once the 30% deposit is `paid` or the booking is in any other status, sending `people` in `PATCH /api/bookings/:id` is refused with `409 CONFLICT` (`"Chỉ sửa được số người khi booking còn Chờ cọc 30%."`).
 
 Body (all fields optional; at least one field must be sent):
 
@@ -332,7 +332,7 @@ Errors:
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not the Admin | — |
 | `404` | `NOT_FOUND` | unknown booking | — |
-| `409` | `CONFLICT` | booking is *Hoàn thành* or *Đã hủy*, requested slot clashes with held bookings, recomputed `total` falls below already-paid deposit, or `people` changed after remainder is `paid` | `details` (`conflicts`, `freeTime`) on a clash |
+| `409` | `CONFLICT` | booking is *Hoàn thành* or *Đã hủy*, requested slot clashes with held bookings, schedule changed when the `shoot` job is *Đang làm* or *Hoàn thành*, or `people` changed when booking is not *Chờ cọc 30%* with `depositStatus` `unpaid` | `details` (`conflicts`, `freeTime`) on a clash |
 
 Refused when trying to move GS-1024 to 09:00 (Mai busy 08:00–12:00):
 
@@ -429,7 +429,39 @@ Content-Type: application/json
 {"error": {"code": "CONFLICT", "message": "Booking đã hoàn thành hoặc đã hủy, không thể thay đổi."}}
 ```
 
-Confirming class yearbook head count after the 30% deposit is already `paid` (`GS-1023`: `deposit` stays `2100000`, `remainder` updates to `5600000`):
+Updating head count while GS-1024 is still *Chờ cọc 30%* with `depositStatus` `unpaid` (`people: 2`), then restoring `1`:
+
+```http
+PATCH /api/bookings/GS-1024
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"people": 2}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 2, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+```
+
+```http
+PATCH /api/bookings/GS-1024
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"people": 1}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"id": "GS-1024", "conversationId": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "tot-nghiep", "serviceName": "Tốt nghiệp", "packageId": "tot-nghiep-premium", "packageName": "Gói Tốt nghiệp Premium", "durationMinutes": 120, "editedPhotos": 30, "sessionType": "Tốt nghiệp cá nhân", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "13:00", "to": "14:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "14:00", "to": "16:00", "staffId": "u-tuan", "staffName": "Tuấn", "roomId": "r-b", "roomName": "Phòng B"}, "status": "Chờ cọc 30%", "pricing": {"items": [{"label": "Gói Tốt nghiệp Premium", "amount": 1800000}], "total": 1800000, "deposit": 540000, "remainder": 1260000}, "payment": {"depositStatus": "unpaid", "depositPaidAt": null, "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+```
+
+Refused when trying to change `people` after the 30% deposit is already `paid` (`GS-1023` is *Đã đặt lịch*):
 
 ```http
 PATCH /api/bookings/GS-1023
@@ -440,44 +472,27 @@ Content-Type: application/json
 ```
 
 ```http
-HTTP/1.1 200 OK
+HTTP/1.1 409 Conflict
 Content-Type: application/json
 
-{"id": "GS-1023", "conversationId": null, "customer": {"id": "u-khoa", "name": "Võ Đăng Khoa"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "ky-yeu", "serviceName": "Kỷ yếu lớp", "packageId": "ky-yeu-lop", "packageName": "Gói Kỷ yếu lớp", "durationMinutes": 240, "editedPhotos": 60, "sessionType": "Kỷ yếu lớp", "people": 22, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Kỷ yếu lớp (22 người)", "amount": 7700000}], "total": 7700000, "deposit": 2100000, "remainder": 5600000}, "payment": {"depositStatus": "paid", "depositPaidAt": "2026-10-14T09:00:00+07:00", "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
+{"error": {"code": "CONFLICT", "message": "Chỉ sửa được số người khi booking còn Chờ cọc 30%."}}
 ```
 
-Restoring GS-1023 to its seed head count (`20` people, `total` `7000000`, `deposit` `2100000`, `remainder` `4900000`):
+Refused when trying to reschedule after the `shoot` job is already *Đang làm* or *Hoàn thành* (`GS-1022`'s `job-gs-1022-shoot` is *Hoàn thành*):
 
 ```http
-PATCH /api/bookings/GS-1023
+PATCH /api/bookings/GS-1022
 Authorization: Bearer {{token:thao}}
 Content-Type: application/json
 
-{"people": 20}
-```
-
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{"id": "GS-1023", "conversationId": null, "customer": {"id": "u-khoa", "name": "Võ Đăng Khoa"}, "admin": {"id": "u-thao", "name": "Thảo"}, "serviceId": "ky-yeu", "serviceName": "Kỷ yếu lớp", "packageId": "ky-yeu-lop", "packageName": "Gói Kỷ yếu lớp", "durationMinutes": 240, "editedPhotos": 60, "sessionType": "Kỷ yếu lớp", "people": 20, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "date": "2026-10-24", "makeup": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai"}, "shoot": {"from": "08:00", "to": "12:00", "staffId": "u-mai", "staffName": "Mai", "roomId": "r-a", "roomName": "Phòng A"}, "status": "Đã đặt lịch", "pricing": {"items": [{"label": "Gói Kỷ yếu lớp (20 người)", "amount": 7000000}], "total": 7000000, "deposit": 2100000, "remainder": 4900000}, "payment": {"depositStatus": "paid", "depositPaidAt": "2026-10-14T09:00:00+07:00", "remainderStatus": "unpaid", "remainderPaidAt": null}, "fileLink": null}
-```
-
-Refused when lowering head count puts `total` below the already-paid deposit (`GS-1023` paid `2100000`, `5 * 350000 = 1750000`):
-
-```http
-PATCH /api/bookings/GS-1023
-Authorization: Bearer {{token:thao}}
-Content-Type: application/json
-
-{"people": 5}
+{"date": "2026-10-19"}
 ```
 
 ```http
 HTTP/1.1 409 Conflict
 Content-Type: application/json
 
-{"error": {"code": "CONFLICT", "message": "Tổng tiền không được nhỏ hơn tiền cọc đã thanh toán."}}
+{"error": {"code": "CONFLICT", "message": "Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ."}}
 ```
 
 Empty body on `PATCH` (form-level error, not tied to `date`):
@@ -598,7 +613,7 @@ Content-Type: application/json
 
 ## POST /api/bookings/:id/cancel
 
-Who: the Admin (product owners' decision, [answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)). Cancels a booking in *Chờ cọc 30%* or *Đã đặt lịch*, moves its status to *Đã hủy*, releases any held blocks in `busy`, and removes its reminders and pending jobs. Paid amounts stay recorded in `payment` (there is no refund management in the system; the studio refunds outside the system). Refused with `409` if already *Hoàn thành* or *Đã hủy*.
+Who: the Admin (product owners' decision, [answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)). Cancels a booking in *Chờ cọc 30%* or *Đã đặt lịch*, moves its status to *Đã hủy*, and releases any held blocks in `busy`. The conversation linked to the cancelled booking keeps status *Đã chốt lịch* (it neither reverts to *Đang tư vấn* nor becomes *Hoàn thành*). Paid amounts stay recorded in `payment` (there is no refund management in the system; the studio refunds outside the system). Refused with `409` if already *Hoàn thành* or *Đã hủy*.
 
 Body: optional `{ "reason" }` (string, 0 to 500 characters).
 
@@ -666,3 +681,6 @@ Content-Type: application/json
 - 2026-11-22 — Compute `pricing` from package price and `people` only (extras add no price; remove `total` from `PATCH /api/bookings/:id` and `included` from `pricing.items`), drop costume stock checks, move `*Đã hủy*` / Admin-only / outside-system refund rules to the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)), and make the empty-body `PATCH /api/bookings/:id` error a form-level `error.message` with empty `fields` `{}` instead of `fields.date`. No client code calls these endpoints yet.
 - 2026-11-23 — Add team assumption (follow-up question for product owners): moving a *Chờ cọc 30%* booking whose `depositStatus` is already `paid` (concurrent deposit race in `06-payments.md` rule 3) to a free slot via `PATCH /api/bookings/:id` transitions it to *Đã đặt lịch*, commits its `busy` blocks, and schedules its reminder and jobs, with an illustrative JSON example (PR #6 review follow-up). No client code calls `PATCH /api/bookings/:id` yet (`G10`).
 - 2026-11-27 — Update `GS-1023`'s `durationMinutes` (`240`) and `editedPhotos` (`60`) in the two `PATCH /api/bookings/GS-1023` examples because `02-catalogue.md` now sets integer package durations and edited-photo counts per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)).
+- 2026-11-28 — State explicitly in rule 1 and `POST /api/bookings/:id/cancel` that cancelling a booking keeps its linked conversation in *Đã chốt lịch* (never reverts to *Đang tư vấn* or moves to *Hoàn thành*), verified in `test/mock.test.mjs`.
+- 2026-11-28 — Lock `people` edits in `PATCH /api/bookings/:id` unless `status === "Chờ cọc 30%"` and `payment.depositStatus === "unpaid"` (`409 CONFLICT` `"Chỉ sửa được số người khi booking còn Chờ cọc 30%."`) per the product owners' 2026-11-27 decision; replace `GS-1023` `200` head-count examples with `GS-1024` (`Chờ cọc 30%`) and a `GS-1023` `409` refusal.
+- 2026-11-28 — State explicitly that `serviceId`, `packageId`, and unit price are locked from booking creation, and refuse schedule edits (`date`, `makeup`, `shoot`) on `PATCH /api/bookings/:id` with `409 CONFLICT` (`"Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ."`) once the booking's `shoot` job is *Đang làm* or *Hoàn thành*; add `GS-1022` `409` example.

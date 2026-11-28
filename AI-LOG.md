@@ -2663,3 +2663,75 @@ Kept: `format:check`, lint, build, 10/10 tests, 163/163 examples and 38/38 endpo
 Changed: the all-routes script raised flags that were its own doing again: "repeated" requests on the four roles' home pages and on `/quan-ly/hoi-thoai/c-anh` and `/quan-ly/booking/GS-1022` were the sign-in redirect's loads still in flight (parked on a blank page first, each request goes once on all six routes; on `/cong-viec`, the staff home, one of about 40 slow preview files was still loading from the redirect); "Thử lại left" on `/thanh-toan/pay-1` is the `404` for a payment that a fresh mock does not have; the three on `/` are the sections' own buttons and the carousel's `tabindex`. None is an app fault.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-28 — contract 05 & test: keep conversation status Đã chốt lịch on booking cancel (Mục 9)
+Commit: the commit that adds this entry with `docs/api/05-bookings.md`, `test/mock.test.mjs`, and `brief.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm test` (`test/mock.test.mjs`).
+Asked for: Mục 9 — document explicitly in `docs/api/05-bookings.md` (rule 1 and `POST /api/bookings/:id/cancel`) that cancelling a booking keeps its linked conversation in *Đã chốt lịch* (never reverts to *Đang tư vấn* or moves to *Hoàn thành*), verify `mock/routes/bookings.mjs` preserves it with a test in `test/mock.test.mjs`, and record the verbatim prompt in `brief.md` section 2.31.
+Kept: awaiting review. Updated `docs/api/05-bookings.md` rule 1, `POST /api/bookings/:id/cancel`, and `## Changes`; confirmed `mock/routes/bookings.mjs` `cancel()` leaves conversation status untouched; added a `GS-1022` cancel assertion in `test/mock.test.mjs` verifying `GET /api/conversations/c-customer2` remains `Đã chốt lịch`; appended `brief.md` section 2.31.
+Changed: nothing.
+Rejected: changing `mock/routes/bookings.mjs` because `cancel()` already leaves `db.conversations` untouched.
+By hand: none.
+
+### 2026-11-28 — contract 06 & mock: require completed shoot job before 70% remainder payment (Mục 1)
+Commit: the commit that adds this entry with `docs/api/06-payments.md`, `mock/routes/payments.mjs`, `test/mock.test.mjs`, and `FRONTEND.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm test`.
+Asked for: Mục 1 — require the booking's `shoot` job (`role === 'shoot'`) to have status `Hoàn thành` before allowing 70% remainder payment on `POST /api/payments` and `POST /api/payments/:id/result` (`409 CONFLICT` otherwise), add example and `## Changes` in `docs/api/06-payments.md`, remove the pending note in `FRONTEND.md` section 7, and verify `Gallery.jsx` and `PaymentResult.jsx`.
+Kept: awaiting review. Updated `docs/api/06-payments.md` (rule 5, error tables, `GS-1024` `409` example, `## Changes`), `mock/routes/payments.mjs` (`isShootDone` check in both `start` and `applyResult`), `test/mock.test.mjs` (both `POST /api/payments` and `POST /api/payments/:id/result` `409` checks), and `FRONTEND.md` (sections 5 and 7). Verified `Gallery.jsx` (`!g.shootDone` hint + `pay.error`) and `PaymentResult.jsx` (`retryAction.error`) already display the reason and `409` errors.
+Changed: `npm run format:check` flagged a long line in `test/mock.test.mjs`; ran `npx prettier --write test/mock.test.mjs`, after which `format:check` and `npm test` (`10/10` pass) passed.
+Rejected: changing `Gallery.jsx` or `PaymentResult.jsx` because they already handle `!g.shootDone` and `409` errors cleanly.
+By hand: none.
+
+### 2026-11-28 — contract 05, mock & G10: lock people edits after 30% deposit (Mục 2)
+Commit: the commit that adds this entry with `docs/api/05-bookings.md`, `mock/routes/bookings.mjs`, `test/mock.test.mjs`, `client/src/pages/QuanLyBookingDetail.jsx`, and `FRONTEND.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: Mục 2 — allow `people` changes on `PATCH /api/bookings/:id` only when `status === 'Chờ cọc 30%'` and `payment.depositStatus === 'unpaid'` (`409 CONFLICT` otherwise), update `GS-1023` examples in `05-bookings.md` and tests in `test/mock.test.mjs`, remove the pending note in `FRONTEND.md`, and disable `Số người` with a clear hint (omitting `people` from `PATCH`) on G10 `QuanLyBookingDetail.jsx`.
+Kept: awaiting review. Updated `docs/api/05-bookings.md` (`PATCH /api/bookings/:id` rules, error table, `GS-1024` `200`/`restore` + `GS-1023` `409` examples, `## Changes`), `mock/routes/bookings.mjs`, `test/mock.test.mjs`, `client/src/pages/QuanLyBookingDetail.jsx`, and `FRONTEND.md`.
+Changed: `npm run format:check` flagged formatting in `client/src/pages/QuanLyBookingDetail.jsx`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`10/10` pass) passed.
+Rejected: keeping `paidDepositAmount`-based recomputation for `people` changes after deposit because the product owners' rule locks `people` once the 30% deposit is paid.
+By hand: none.
+
+### 2026-11-28 — contract 08, mock & G8: free job transitions with locks and cancelled-booking retention (Mục 4)
+Commit: the commit that adds this entry with `docs/api/08-jobs.md`, `mock/data/jobs.json`, `mock/routes/jobs.mjs`, `test/mock.test.mjs`, and `client/src/pages/CongViec.jsx`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: Mục 4 — allow free status transitions in any order on `PATCH /api/jobs/:id` subject to locks (booking `Đã hủy`, `makeup`/`shoot` locked once 70% paid, `edit` locked before 70% paid and after `fileLink` is set), keep cancelled bookings' jobs in `db.jobs` with `bookingStatus`/`canUpdate`/`lockReason`, update `job-gs-1022-edit` seed status to `Chưa bắt đầu`, and update G8 `CongViec.jsx` to show the cancelled badge, lock status pills, and lock preview uploads with reasons.
+Kept: awaiting review. Updated `docs/api/08-jobs.md`, `mock/data/jobs.json`, `mock/routes/jobs.mjs`, `test/mock.test.mjs`, and `client/src/pages/CongViec.jsx`.
+Changed: `npm run format:check` flagged formatting in `client/src/pages/CongViec.jsx`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`11/11` pass) passed.
+Rejected: calling `/api/bookings` from G8 because `staff` gets `403`; returning `bookingStatus`, `canUpdate`, and `lockReason` directly on `Job` keeps G8 strictly on `/api/jobs`.
+By hand: none.
+
+### 2026-11-28 — contract 05, mock & G10: lock package/price and block rescheduling once shoot starts (Mục 6)
+Commit: the commit that adds this entry with `docs/api/05-bookings.md`, `mock/routes/bookings.mjs`, `test/mock.test.mjs`, `client/src/pages/QuanLyBookingDetail.jsx`, and `FRONTEND.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: Mục 6 — document that `serviceId`, `packageId`, and unit price are locked from booking creation, refuse schedule edits (`date`, `makeup`, `shoot`) on `PATCH /api/bookings/:id` with `409 CONFLICT` once the `shoot` job is `Đang làm` or `Hoàn thành`, and update G10 `QuanLyBookingDetail.jsx` to fetch `GET /api/jobs?bookingId=${id}`, display the package/price lock note, and disable schedule controls + `Kiểm tra lịch trống` with a clear reason.
+Kept: awaiting review. Updated `docs/api/05-bookings.md` (rules, error table, `GS-1022` `409` example, `## Changes`), `mock/routes/bookings.mjs`, `test/mock.test.mjs`, `client/src/pages/QuanLyBookingDetail.jsx`, and `FRONTEND.md` (section 4).
+Changed: `npm run format:check` flagged formatting in `client/src/pages/QuanLyBookingDetail.jsx`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`12/12` pass) passed.
+Rejected: returning `409` on non-slot metadata edits when `shoot` is `Đang làm`/`Hoàn thành`, because `sessionType` and `extras` remain editable until the booking is `Hoàn thành` or `Đã hủy`.
+By hand: none.
+
+### 2026-11-28 — contract 07, mock & G7: add failed reminder status and preserve sent reminder history on reschedule (Mục 7)
+Commit: the commit that adds this entry with `docs/api/07-reminders.md`, `mock/routes/reminders.mjs`, `mock/routes/bookings.mjs`, `test/mock.test.mjs`, and `client/src/components/ReminderList.jsx`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: Mục 7 — add `emailStatus: "failed"` (*Gửi lỗi*) to `07-reminders.md`, keep `reminderHoursBefore` affecting only newly created reminders, update `pending` reminders in place on reschedule (without firing on non-schedule `PATCH` edits), preserve `sent`/`failed` history while creating a new `pending` reminder on reschedule, add tests, and update `ReminderList.jsx` G7 to render all 3 statuses cleanly.
+Kept: awaiting review. Updated `docs/api/07-reminders.md`, `mock/routes/reminders.mjs`, `mock/routes/bookings.mjs`, `test/mock.test.mjs`, and `client/src/components/ReminderList.jsx`.
+Changed: `npm run format:check` flagged formatting in `mock/routes/reminders.mjs` and `test/mock.test.mjs`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`13/13` pass) passed.
+Rejected: replacing `sent` or `failed` reminder records on reschedule, because preserving audit history of past delivery attempts is required alongside the new pending reminder.
+By hand: none.
+
+### 2026-11-28 — PR #9 review/approval, branch push, and PR creation for Part A (Mục 9, 1, 2, 4, 6, 7)
+Commit: the commit that adds this entry with `brief.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Hydrogen (High)); `git archive origin/feature/po-2811` isolated verification (`npm run format:check`, `npm run lint`, `npm test`, `npm run build`, `contract-check --strict-values` on port `3114`), `gh pr review 9 --approve`, `git push`, `gh pr create`.
+Asked for: approve pending PR #9 (`feature/po-2811`) first, then push `feature/pa3-business-rules` and open a pull request to An summarizing what was done.
+Kept: verified PR #9 (`origin/feature/po-2811`) on a `git archive` copy (`10/10` tests, `163/163` examples, `38/38` endpoints, `0 FAIL`) and approved PR #9; committed `brief.md` section 2.32 and this log entry; pushed `feature/pa3-business-rules` and opened the PR to An noting the 6 completed items and the 3 `09-gallery.md` coordination blockers (plus rebase note after PR #9 merges).
+Changed: nothing.
+Rejected: merging PR #9 directly without being asked, or modifying `docs/api/09-gallery.md` before An's review.
+By hand: none.
+
+### 2026-11-28 — merge origin/main (PR #9) and resolve conflicts on feature/pa3-business-rules
+Commit: the merge commit that resolves `origin/main` (`b52bc4e`) into `feature/pa3-business-rules` (`AI-LOG.md`, `brief.md`, `test/mock.test.mjs`).
+Tool: Antigravity (Gemini 4 Hydrogen (High)); `git archive` isolated verification (`npm run format:check`, `npm run lint`, `npm test`, `npm run build`, `contract-check --strict-values` on port `3112`).
+Asked for: PR #9 was merged into `main`, resolve conflicts on `feature/pa3-business-rules` and push the resolved branch.
+Kept: merged `origin/main` (`b52bc4e`) preserving PR #9's `AI-LOG.md` entries and `brief.md` section `2.31` ahead of this branch's entries (`brief.md` sections renumbered `2.32`–`2.34`), kept `FRONTEND.md`'s auto-merged PO rows + removed `Not done` blockers, updated `PUT /api/settings` in `test/mock.test.mjs` to `openingHours.weekday` / `openingHours.weekend`, and pushed.
+Changed: `test/mock.test.mjs` reminder test used the pre-PR-#9 `{ open, close }` `openingHours` shape in `PUT /api/settings`; updated it to `{ weekday: { open: '08:00', close: '18:00' }, weekend: { open: '08:00', close: '18:00' } }`.
+Rejected: force-rebasing an already-open PR branch, so merged `origin/main` cleanly without rewriting pushed commits.
+By hand: none.

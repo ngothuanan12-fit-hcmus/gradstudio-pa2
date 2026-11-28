@@ -141,10 +141,19 @@ test('POST /api/bookings/:id/cancel cancels a booking and releases its held slot
     assert.equal(after.status, 200);
     assert.equal((await after.json()).available, true);
 
-    const reminders = await fetch(`${mock.base}/api/reminders?bookingId=GS-1023`, { headers });
-    assert.deepEqual(await reminders.json(), []);
-    const jobs = await fetch(`${mock.base}/api/jobs?bookingId=GS-1023`, { headers });
-    assert.deepEqual(await jobs.json(), []);
+    const reminders = await (await fetch(`${mock.base}/api/reminders?bookingId=GS-1023`, { headers })).json();
+    assert.deepEqual(reminders, []);
+    const jobs = await (await fetch(`${mock.base}/api/jobs?bookingId=GS-1023`, { headers })).json();
+    assert.equal(jobs.length, 1);
+    assert.equal(jobs[0].bookingStatus, 'Đã hủy');
+    assert.equal(jobs[0].canUpdate, false);
+
+    const patchCancelledJob = await fetch(`${mock.base}/api/jobs/${jobs[0].id}`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(patchCancelledJob.status, 409);
 
     const again = await fetch(`${mock.base}/api/bookings/GS-1023/cancel`, {
       method: 'POST',
@@ -152,32 +161,118 @@ test('POST /api/bookings/:id/cancel cancels a booking and releases its held slot
       body: JSON.stringify({}),
     });
     assert.equal(again.status, 409);
+
+    // Cancelling a booking linked to a conversation (GS-1022 -> c-customer2) keeps the conversation in Đã chốt lịch.
+    const cancelWithConv = await fetch(`${mock.base}/api/bookings/GS-1022/cancel`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ reason: 'Khách đổi kế hoạch' }),
+    });
+    assert.equal(cancelWithConv.status, 200);
+    const convRes = await fetch(`${mock.base}/api/conversations/c-customer2`, { headers });
+    assert.equal(convRes.status, 200);
+    assert.equal((await convRes.json()).status, 'Đã chốt lịch');
   } finally {
     await mock.stop();
   }
 });
 
-test('PATCH /api/bookings/:id locks deposit once depositStatus is paid', async () => {
+test('PATCH /api/bookings/:id allows people edits while Chờ cọc 30% unpaid and locks people once deposit is paid', async () => {
   const mock = await startMock('normal', 3206);
   try {
     const headers = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
-    const updated = await fetch(`${mock.base}/api/bookings/GS-1023`, {
+    const linhHeaders = { Authorization: 'Bearer token-u-linh', 'Content-Type': 'application/json' };
+
+    const conv = await (
+      await fetch(`${mock.base}/api/conversations`, {
+        method: 'POST',
+        headers: linhHeaders,
+        body: JSON.stringify({
+          text: 'Em hỏi kỷ yếu lớp 20 bạn',
+          request: {
+            serviceId: 'ky-yeu',
+            packageId: 'ky-yeu-lop',
+            date: '2026-10-28',
+            time: '09:00',
+            people: 20,
+          },
+        }),
+      })
+    ).json();
+    const proposed = await (
+      await fetch(`${mock.base}/api/conversations/${conv.id}/proposals`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          date: '2026-10-28',
+          makeup: null,
+          shoot: { from: '09:00', to: '13:00', staffId: 'u-tuan', roomId: 'r-b' },
+        }),
+      })
+    ).json();
+    const proposalId = proposed.messages[proposed.messages.length - 1].proposal.id;
+    await fetch(`${mock.base}/api/conversations/${conv.id}/proposals/${proposalId}/answer`, {
+      method: 'POST',
+      headers: linhHeaders,
+      body: JSON.stringify({ answer: 'agree' }),
+    });
+    const created = await (
+      await fetch(`${mock.base}/api/bookings`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          conversationId: conv.id,
+          serviceId: 'ky-yeu',
+          packageId: 'ky-yeu-lop',
+          people: 20,
+        }),
+      })
+    ).json();
+    assert.equal(created.status, 'Chờ cọc 30%');
+
+    // Unpaid Chờ cọc 30% allows updating people and recomputes total, deposit, remainder.
+    const updated = await fetch(`${mock.base}/api/bookings/${created.id}`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ people: 25 }),
+    });
+    assert.equal(updated.status, 200);
+    const body = await updated.json();
+    assert.equal(body.people, 25);
+    assert.equal(body.pricing.total, 8750000);
+    assert.equal(body.pricing.deposit, 2625000);
+    assert.equal(body.pricing.remainder, 6125000);
+
+    // Paying 30% deposit locks people edits.
+    const pay = await (
+      await fetch(`${mock.base}/api/payments`, {
+        method: 'POST',
+        headers: linhHeaders,
+        body: JSON.stringify({ bookingId: created.id, kind: 'deposit' }),
+      })
+    ).json();
+    const payOk = await fetch(`${mock.base}/api/payments/${pay.id}/result`, {
+      method: 'POST',
+      headers: linhHeaders,
+      body: JSON.stringify({ result: 'success' }),
+    });
+    assert.equal(payOk.status, 200);
+
+    const lockedCreated = await fetch(`${mock.base}/api/bookings/${created.id}`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ people: 30 }),
+    });
+    assert.equal(lockedCreated.status, 409);
+    assert.equal((await lockedCreated.json()).error.message, 'Chỉ sửa được số người khi booking còn Chờ cọc 30%.');
+
+    const lockedSeed = await fetch(`${mock.base}/api/bookings/GS-1023`, {
       method: 'PATCH',
       headers,
       body: JSON.stringify({ people: 22 }),
     });
-    assert.equal(updated.status, 200);
-    const body = await updated.json();
-    assert.equal(body.pricing.total, 7700000);
-    assert.equal(body.pricing.deposit, 2100000);
-    assert.equal(body.pricing.remainder, 5600000);
-
-    const tooLow = await fetch(`${mock.base}/api/bookings/GS-1023`, {
-      method: 'PATCH',
-      headers,
-      body: JSON.stringify({ people: 5 }),
-    });
-    assert.equal(tooLow.status, 409);
+    assert.equal(lockedSeed.status, 409);
+    assert.equal((await lockedSeed.json()).error.message, 'Chỉ sửa được số người khi booking còn Chờ cọc 30%.');
 
     const empty = await fetch(`${mock.base}/api/bookings/GS-1023`, {
       method: 'PATCH',
@@ -623,6 +718,24 @@ test('rescheduling a deposit-paid unheld booking to a free slot moves it to Đã
     assert.equal(jobs.length, 1);
     assert.equal(jobs[0].staffId, 'u-tuan');
 
+    const remainderShootGuard = await fetch(`${mock.base}/api/payments`, {
+      method: 'POST',
+      headers: minhAnh,
+      body: JSON.stringify({ bookingId: bookingB.id, kind: 'remainder' }),
+    });
+    assert.equal(remainderShootGuard.status, 409);
+    assert.equal(
+      (await remainderShootGuard.json()).error.message,
+      'Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại.',
+    );
+
+    const markShootDone = await fetch(`${mock.base}/api/jobs/${jobs[0].id}`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ status: 'Hoàn thành' }),
+    });
+    assert.equal(markShootDone.status, 200);
+
     const remainderGuard = await fetch(`${mock.base}/api/payments`, {
       method: 'POST',
       headers: minhAnh,
@@ -631,6 +744,264 @@ test('rescheduling a deposit-paid unheld booking to a free slot moves it to Đã
     assert.equal(remainderGuard.status, 409);
     const remainderBody = await remainderGuard.json();
     assert.equal(remainderBody.error.message, 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
+
+    // Also verify POST /api/payments/:id/result refuses remainder success if shoot job is no longer Hoàn thành.
+    const selRes = await fetch(`${mock.base}/api/bookings/GS-1020/selection`, {
+      method: 'PUT',
+      headers: minhAnh,
+      body: JSON.stringify({ previewIds: ['prv-gs-1020-1'] }),
+    });
+    assert.equal(selRes.status, 200);
+    const remStart = await fetch(`${mock.base}/api/payments`, {
+      method: 'POST',
+      headers: minhAnh,
+      body: JSON.stringify({ bookingId: 'GS-1020', kind: 'remainder' }),
+    });
+    assert.equal(remStart.status, 201);
+    const remPay = await remStart.json();
+    const revertShoot = await fetch(`${mock.base}/api/jobs/job-gs-1020-shoot`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(revertShoot.status, 200);
+    const remConfirm = await fetch(`${mock.base}/api/payments/${remPay.id}/result`, {
+      method: 'POST',
+      headers: minhAnh,
+      body: JSON.stringify({ result: 'success' }),
+    });
+    assert.equal(remConfirm.status, 409);
+    assert.equal(
+      (await remConfirm.json()).error.message,
+      'Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại.',
+    );
+  } finally {
+    await mock.stop();
+  }
+});
+
+test('PATCH /api/jobs/:id allows free status transitions subject to booking, remainder, and fileLink locks', async () => {
+  const mock = await startMock('normal', 3211);
+  try {
+    const admin = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const mai = { Authorization: 'Bearer token-u-mai', 'Content-Type': 'application/json' };
+    const tuan = { Authorization: 'Bearer token-u-tuan', 'Content-Type': 'application/json' };
+    const staff3 = { Authorization: 'Bearer token-u-staff3', 'Content-Type': 'application/json' };
+    const customer2 = { Authorization: 'Bearer token-u-customer2', 'Content-Type': 'application/json' };
+
+    // Free transitions including backwards on GS-1022 shoot while remainder is unpaid.
+    const back = await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(back.status, 200);
+    assert.equal((await back.json()).status, 'Đang làm');
+
+    const doneAgain = await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Hoàn thành' }),
+    });
+    assert.equal(doneAgain.status, 200);
+
+    // Edit job is locked before 70% remainder is paid.
+    const earlyEdit = await fetch(`${mock.base}/api/jobs/job-gs-1022-edit`, {
+      method: 'PATCH',
+      headers: staff3,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(earlyEdit.status, 409);
+
+    // Customer saves photo choice and pays 70% remainder for GS-1022.
+    await fetch(`${mock.base}/api/bookings/GS-1022/selection`, {
+      method: 'PUT',
+      headers: customer2,
+      body: JSON.stringify({ previewIds: ['prv-gs-1022-1'] }),
+    });
+    const pay = await (
+      await fetch(`${mock.base}/api/payments`, {
+        method: 'POST',
+        headers: customer2,
+        body: JSON.stringify({ bookingId: 'GS-1022', kind: 'remainder' }),
+      })
+    ).json();
+    const paid = await fetch(`${mock.base}/api/payments/${pay.id}/result`, {
+      method: 'POST',
+      headers: customer2,
+      body: JSON.stringify({ result: 'success' }),
+    });
+    assert.equal(paid.status, 200);
+
+    // Makeup and shoot are now locked; edit is unlocked.
+    const lockedMakeup = await fetch(`${mock.base}/api/jobs/job-gs-1022-makeup`, {
+      method: 'PATCH',
+      headers: mai,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(lockedMakeup.status, 409);
+
+    const lockedShoot = await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(lockedShoot.status, 409);
+
+    const editStart = await fetch(`${mock.base}/api/jobs/job-gs-1022-edit`, {
+      method: 'PATCH',
+      headers: staff3,
+      body: JSON.stringify({ status: 'Hoàn thành' }),
+    });
+    assert.equal(editStart.status, 200);
+    assert.equal((await editStart.json()).canUpdate, true);
+
+    // Setting final fileLink locks edit job completely.
+    const linkRes = await fetch(`${mock.base}/api/bookings/GS-1022/file-link`, {
+      method: 'PUT',
+      headers: admin,
+      body: JSON.stringify({ fileLink: 'https://drive.gradstudio.test/gs-1022-final' }),
+    });
+    assert.equal(linkRes.status, 200);
+
+    const lockedEdit = await fetch(`${mock.base}/api/jobs/job-gs-1022-edit`, {
+      method: 'PATCH',
+      headers: staff3,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(lockedEdit.status, 409);
+  } finally {
+    await mock.stop();
+  }
+});
+
+test('PATCH /api/bookings/:id blocks rescheduling once shoot job is Đang làm or Hoàn thành', async () => {
+  const mock = await startMock('normal', 3212);
+  try {
+    const admin = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const tuan = { Authorization: 'Bearer token-u-tuan', 'Content-Type': 'application/json' };
+
+    const blockedDone = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-19' }),
+    });
+    assert.equal(blockedDone.status, 409);
+    assert.equal((await blockedDone.json()).error.message, 'Buổi chụp đã bắt đầu hoặc hoàn thành, không thể đổi giờ.');
+
+    await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+
+    const blockedInProgress = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-19' }),
+    });
+    assert.equal(blockedInProgress.status, 409);
+
+    // Non-slot edits still work while shoot job is Đang làm.
+    const metaOk = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ sessionType: 'Tốt nghiệp nhóm' }),
+    });
+    assert.equal(metaOk.status, 200);
+
+    // Moving shoot job back to Chưa bắt đầu allows rescheduling.
+    await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Chưa bắt đầu' }),
+    });
+    const moved = await fetch(`${mock.base}/api/bookings/GS-1022`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-19' }),
+    });
+    assert.equal(moved.status, 200);
+    assert.equal((await moved.json()).date, '2026-10-19');
+  } finally {
+    await mock.stop();
+  }
+});
+
+test('reminders: pending updates in place keeping hoursBefore; sent stays in history when rescheduled', async () => {
+  const mock = await startMock('normal', 3213);
+  try {
+    const admin = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const superadmin = { Authorization: 'Bearer token-u-superadmin', 'Content-Type': 'application/json' };
+    const tuan = { Authorization: 'Bearer token-u-tuan', 'Content-Type': 'application/json' };
+
+    // Change reminderHoursBefore to 12; existing pending rem-gs-1023 must keep its original hoursBefore (24).
+    const setRes = await fetch(`${mock.base}/api/settings`, {
+      method: 'PUT',
+      headers: superadmin,
+      body: JSON.stringify({
+        openingHours: {
+          weekday: { open: '08:00', close: '18:00' },
+          weekend: { open: '08:00', close: '18:00' },
+        },
+        reminderHoursBefore: 12,
+      }),
+    });
+    assert.equal(setRes.status, 200);
+
+    const move1023 = await fetch(`${mock.base}/api/bookings/GS-1023`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-30' }),
+    });
+    assert.equal(move1023.status, 200);
+
+    const rem1023 = await (await fetch(`${mock.base}/api/reminders?bookingId=GS-1023`, { headers: admin })).json();
+    assert.equal(rem1023.length, 1);
+    assert.equal(rem1023[0].id, 'rem-gs-1023');
+    assert.equal(rem1023[0].hoursBefore, 24);
+    assert.equal(rem1023[0].emailStatus, 'pending');
+    assert.equal(rem1023[0].dueAt, '2026-10-29T08:00:00+07:00');
+    assert.match(rem1023[0].message, /30\/10\/2026/);
+
+    // Non-schedule edit on GS-1020 (which has a sent reminder) must NOT create a new reminder.
+    const meta1020 = await fetch(`${mock.base}/api/bookings/GS-1020`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ sessionType: 'Tốt nghiệp nhóm' }),
+    });
+    assert.equal(meta1020.status, 200);
+    const rem1020Before = await (
+      await fetch(`${mock.base}/api/reminders?bookingId=GS-1020`, { headers: admin })
+    ).json();
+    assert.equal(rem1020Before.length, 1);
+    assert.equal(rem1020Before[0].emailStatus, 'sent');
+
+    // Rescheduling GS-1020 (after resetting shoot job to Chưa bắt đầu) keeps sent history and adds a new pending reminder with hoursBefore=12.
+    await fetch(`${mock.base}/api/jobs/job-gs-1020-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Chưa bắt đầu' }),
+    });
+    const move1020 = await fetch(`${mock.base}/api/bookings/GS-1020`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-31' }),
+    });
+    assert.equal(move1020.status, 200);
+
+    const rem1020After = await (await fetch(`${mock.base}/api/reminders?bookingId=GS-1020`, { headers: admin })).json();
+    assert.equal(rem1020After.length, 2);
+    const sentRec = rem1020After.find((r) => r.emailStatus === 'sent');
+    const pendingRec = rem1020After.find((r) => r.emailStatus === 'pending');
+    assert.ok(sentRec);
+    assert.equal(sentRec.id, 'rem-gs-1020');
+    assert.equal(sentRec.hoursBefore, 24);
+    assert.ok(pendingRec);
+    assert.equal(pendingRec.hoursBefore, 12);
+    assert.equal(pendingRec.emailSentAt, null);
+    assert.equal(pendingRec.dueAt, '2026-10-31T01:00:00+07:00');
+    assert.match(pendingRec.message, /31\/10\/2026/);
   } finally {
     await mock.stop();
   }
