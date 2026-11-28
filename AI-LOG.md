@@ -2600,3 +2600,66 @@ Kept: lint, build, 10/10 tests, 158/158 examples and 38/38 endpoints with 0 FAIL
 Changed: nothing.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-28 — contract 03 and 09: the product owners' routing rule of part II answer 6, and proposals after agreement (answer 5)
+Commit: the commit that adds this entry with `docs/api/03-conversations.md`, `docs/api/09-gallery.md`, `FRONTEND.md` and `brief.md`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `contract-check --strict-values` on a temporary copy of `HEAD` with the edited contract and the edited (not yet committed) mock, mock 3116 and 3106.
+Asked for: read the third round of answers (13 questions and the 15-minute payment limit) against the repo, split the work between An and Khánh, then do An's tasks one by one and draft the message to Khánh. This is task 4: which conversation a message joins, and a proposal after the customer agreed.
+Kept: awaiting An's review. `POST /api/conversations`, sent without choosing a conversation, goes to the customer's conversation without a booking that is not *Hoàn thành*, even a booking request; only when there is none does a request open a new conversation and plain text join the newest conversation that is not *Hoàn thành*. A proposal sent after the customer agreed (no booking yet) replaces the agreed one and brings the conversation back to *Đang tư vấn*. Four new examples on `c-anh` (agree `pr-4`, propose `pr-5`, `pr-4` refused as replaced, `POST /api/bookings` refused with "Khách chưa đồng ý lịch đề xuất."); two routing examples now answer `c-anh` with `200`; the end of `09-gallery.md` shows Linh, whose only conversation has a booking: text joins `c-linh`, a request opens `c-linh-2`. With the mock change of the next commit: 163/163 examples, 0 FAIL in strict mode, no file of Khánh's touched (no example of `04`–`10` uses `c-anh`). `FRONTEND.md` section 5: the routing row cites the new answer, and a row for answer 5.
+Changed: the rule merged yesterday in PR #8 (latest conversation by newest message) gave the opposite answer to the product owners' own example (conversation A without a booking, booked conversation B with the newest message: they want A); it is replaced, with a dated `## Changes` line saying so. The message times after the four inserted examples moved by four minutes, so they are written as `…` rather than recomputed.
+Rejected: keeping yesterday's rule for plain text (the answer applies to "mọi tin, cả tin nhắn chat lẫn yêu cầu đặt lịch"); putting the "no conversation without a booking" examples on `customer2` (she always has `c-anh`), so they use Linh after `05` gives `c-linh` its booking.
+By hand: none.
+
+### 2026-11-28 — mock 03: routing by the conversation without a booking; agreed proposal replaced
+Commit: the commit that adds this entry with `mock/routes/conversations.mjs`, after `6cb8803`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `npm run lint` and `prettier --check` on the file; `contract-check --strict-values` on a temporary copy (163/163, 0 FAIL) before the contract commit.
+Asked for: task 4, mock side.
+Kept: awaiting An's review. `newestOf(db, customerId, keep)` replaces `latestConversationOf` and takes a filter; `POST /api/conversations` picks the conversation without a booking that is not *Hoàn thành*, then (plain text only) the newest that is not *Hoàn thành*, else opens a new one. `POST /api/conversations/:id/proposals` marks an `agreed` proposal `replaced` as well as an `open` one (a booked conversation is refused earlier, so this only happens without a booking) and sets *Đã chốt lịch* back to *Đang tư vấn*. The tie rule of 2026-11-28 is kept.
+Changed: nothing.
+Rejected: a separate flag for "voided" proposals; `replaced` already means "cannot be answered" on screen ("Đã có đề xuất mới") and in `409`.
+By hand: none.
+
+### 2026-11-28 — client G3: the note says which conversation receives a message, by the new rule
+Commit: the commit that adds this entry with `client/src/pages/Conversations.jsx`, after `79a5423`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `eslint`, `prettier --check`, `vite build`; new script `quan-ly-rieng/checks/check_task4.py` on a copy of `79a5423` with this file (preview 4216, mock 3108; NEVER 15).
+Asked for: task 4, client side.
+Kept: awaiting An's review. `destinationOf` picks what the mock picks (the conversation without a booking that is not *Hoàn thành*; if none, nothing for a request, the newest open conversation for plain text), and the note and heading follow it: "Tin nhắn và yêu cầu đặt lịch sẽ được thêm vào hội thoại chưa có booking của bạn (…)", "Tin nhắn sẽ được thêm vào hội thoại về booking GS-1024. Muốn đặt lịch mới, chọn "Gửi kèm yêu cầu đặt lịch": yêu cầu sẽ mở hội thoại mới.", "Yêu cầu đặt lịch sẽ mở một hội thoại mới với studio.". In the app: `customer2`, with her newest message in the booked `c-customer2`, sends text and a request and both land in `c-anh`; Linh, whose only conversation has GS-1024, sends text into `c-linh` and a request opens `c-linh-2`; on `c-anh` an agreed proposal replaced by a new one comes back *Đang tư vấn*, the old one answers `409`, `POST /api/bookings` answers `409` "Khách chưa đồng ý lịch đề xuất.", the customer sees "Đã có đề xuất mới"; slow, error (no note), empty ("Tin gửi đi sẽ mở một hội thoại mới với studio."); `/tu-van`, `/tu-van/c-anh` and `/quan-ly/hoi-thoai/c-anh` at 360, 768, 1280 px with one `h1`, no sideways scroll, labels, nothing under 44 px, no console error.
+Changed: the script first counted no *Tạo booking* button on the Admin screen after the re-proposal; the disabled button with its reason ("Khách chưa đồng ý lịch đề xuất — …") lives in Khánh's proposal form, shown at the proposal step, so G6 still meets the rubric; not changed here.
+Rejected: a link to the target conversation inside the note (inline links sit under 44 px at 360 px; the conversation list above already links each one).
+By hand: none.
+
+### 2026-11-28 — contract 10, 04 and 03: opening hours for weekdays and weekends (product owners, part II answer 4)
+Commit: the commit that adds this entry with `docs/api/10-admin.md`, `docs/api/04-schedule.md`, `docs/api/03-conversations.md` and `FRONTEND.md`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `contract-check --strict-values` and `npm test` on a temporary copy of `HEAD` with the edited contract and the edited (not yet committed) mock, mock 3106.
+Asked for: task 5, the opening hours by day of the week, with the opening-hours part of the clash check moved from Khánh to An (agreed with An; asked of Khánh in the message of the same day).
+Kept: awaiting An's review. Settings hold `openingHours.weekday` and `openingHours.weekend`, each `open` and `close`, all four checked by `PUT /api/settings`; a proposal, a new booking and a reschedule must sit inside the hours of their day, and the refusal names it ("Chủ nhật studio mở 08:00–18:00."); `GET /api/schedule` still gives `openingHours: { open, close }`, now for the requested date, so the Admin's resource schedule needs no change. `04` also states that past dates are allowed and there is no minimum notice. With the next commit's mock: 163/163 examples, 0 FAIL in strict mode, 10/10 tests. `FRONTEND.md` section 5 gains the row for answer 4.
+Changed: the plan was to use the product owners' example "Thứ Bảy studio mở 07:30–20:00" as the weekend hours; that would invent a time (NEVER 11), so the sample stays the team's `08:00`–`18:00` for both, and no example value in Khánh's `04` changes except the refusal's wording.
+Rejected: a different `openingHours` shape in `GET /api/schedule` (it would break Khánh's resource schedule for no gain); applying the hours to the customer's wished time (the answer says it is not blocked).
+By hand: none.
+
+### 2026-11-28 — mock: opening hours by day of the week
+Commit: the commit that adds this entry with `mock/data/settings.json`, `mock/data/README.md`, `mock/routes/admin.mjs` and `mock/routes/schedule.mjs`, after `19b0d47`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `eslint`, `prettier --check`; `contract-check --strict-values` (163/163) and `npm test` (10/10) on a temporary copy before the contract commit.
+Asked for: task 5, mock side.
+Kept: awaiting An's review. `hoursFor(db, date)` in `schedule.mjs` picks `weekend` for Saturday and Sunday and `weekday` otherwise, with the Vietnamese day name; `checkSchedule` and the free-time search use it, the `hours` refusal reads "<day> studio mở <open>–<close>", and `GET /api/schedule` returns that day's `{ open, close }`. `checkSchedule` takes `checkHours` (default `true`) so the re-check when a deposit succeeds can look at people and rooms only, as the product owners decided; `payments.mjs` (Khánh's) does not pass it yet, left to Khánh. `PUT /api/settings` checks the four times under `openingHours.weekday.*` and `openingHours.weekend.*`.
+Changed: the first run of the edit failed on a Windows path inside a bash heredoc (a Python syntax error before any file was written); the edit was moved into a script file and run again.
+Rejected: changing `payments.mjs` here (Khánh's file).
+By hand: none.
+
+### 2026-11-28 — client G11: weekday and weekend opening hours
+Commit: the commit that adds this entry with `client/src/pages/QuanTri.jsx`, after `3560b1f`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `eslint`, `prettier`, `vite build`; `quan-ly-rieng/checks/check_admin_v2.py` (the G11 script with the new field ids) on a copy of `3560b1f` with this file (preview 4193, mock 3104; NEVER 15).
+Asked for: task 5, client side.
+Kept: awaiting An's review. The settings form has two fieldsets, "Giờ mở cửa ngày thường (thứ Hai – thứ Sáu)" and "Giờ mở cửa cuối tuần (thứ Bảy, Chủ nhật)", each with *Mở cửa* and *Đóng cửa*, checked as `PUT /api/settings` checks them, field names the API's so a `400` lands on the same input. In the app: the form opens on `08:00`, `18:00`, `24`; weekend closing before opening and reminder `0` give "Giờ đóng cửa phải sau giờ mở cửa." and "Số giờ từ 1 đến 168." on their fields with the focus on the first; saving weekend `08:00`–`19:00` and `48` keeps them after a reload; a `400` from the API lands on its field; the Admin accounts part, the guards, slow, error, empty, one request per thing, and 360/768/1280 px unchanged.
+Changed: the first wording of the saved line repeated "Mở cửa" with a capital after a semicolon ("Mở cửa ngày thường …; Mở cửa cuối tuần …"), seen in the script's output; now "Mở cửa ngày thường 08:00–18:00, cuối tuần 08:00–19:00; nhắc lịch trước 48 giờ.".
+Rejected: one shared pair of fields with a weekday/weekend switch (two fieldsets show both sets of hours at once, as the settings hold them).
+By hand: none.
+
+### 2026-11-28 — checks of tasks 4 and 5 on `1b9b4bc`
+Commit: the commit that adds this entry (log only), on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); on a `git archive` copy of `1b9b4bc` (mocks 3104, 3106, 3108, 3117; NEVER 15): the gates, `contract-check --strict-values`, `check_task4.py`, `check_admin_v2.py`, `check_all_routes.py`, and `debug_routes_flags2.py` for its flags.
+Asked for: the last check before asking An to push and open the pull request.
+Kept: `format:check`, lint, build, 10/10 tests, 163/163 examples and 38/38 endpoints with 0 FAIL. Task 4 and task 5 behave as in their entries. Every route at 360, 768 and 1280 px, after a reload, behind the guards, and in the four modes, as on 2026-11-23, now with the PR #7 screens.
+Changed: the all-routes script raised flags that were its own doing again: "repeated" requests on the four roles' home pages and on `/quan-ly/hoi-thoai/c-anh` and `/quan-ly/booking/GS-1022` were the sign-in redirect's loads still in flight (parked on a blank page first, each request goes once on all six routes; on `/cong-viec`, the staff home, one of about 40 slow preview files was still loading from the redirect); "Thử lại left" on `/thanh-toan/pay-1` is the `404` for a payment that a fresh mock does not have; the three on `/` are the sections' own buttons and the carousel's `tabindex`. None is an app fault.
+Rejected: nothing.
+By hand: none.

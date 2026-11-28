@@ -22,14 +22,23 @@ function validateAdmin({ name, email, password }) {
   return errors;
 }
 
+// Weekday and weekend opening hours (10-admin.md; product owners, part II answer 4).
+const HOUR_PARTS = [
+  { id: 'weekday', legend: 'ngày thường (thứ Hai – thứ Sáu)', short: 'ngày thường' },
+  { id: 'weekend', legend: 'cuối tuần (thứ Bảy, Chủ nhật)', short: 'cuối tuần' },
+];
+
 // The checks of PUT /api/settings. Field names are the API's, so a 400 lands on the same fields.
 function validateSettings(v) {
   const errors = {};
-  const open = v['openingHours.open'];
-  const close = v['openingHours.close'];
-  if (!TIME.test(open)) errors['openingHours.open'] = 'Giờ theo dạng HH:MM.';
-  if (!TIME.test(close)) errors['openingHours.close'] = 'Giờ theo dạng HH:MM.';
-  else if (TIME.test(open) && close <= open) errors['openingHours.close'] = 'Giờ đóng cửa phải sau giờ mở cửa.';
+  for (const part of HOUR_PARTS) {
+    const key = `openingHours.${part.id}`;
+    const open = v[`${key}.open`];
+    const close = v[`${key}.close`];
+    if (!TIME.test(open)) errors[`${key}.open`] = 'Giờ theo dạng HH:MM.';
+    if (!TIME.test(close)) errors[`${key}.close`] = 'Giờ theo dạng HH:MM.';
+    else if (TIME.test(open) && close <= open) errors[`${key}.close`] = 'Giờ đóng cửa phải sau giờ mở cửa.';
+  }
   const hours = Number(v.reminderHoursBefore);
   if (v.reminderHoursBefore === '' || !Number.isInteger(hours) || hours < 1 || hours > 168) {
     errors.reminderHoursBefore = 'Số giờ từ 1 đến 168.';
@@ -106,13 +115,15 @@ function AdminAccounts() {
   );
 }
 
-// Opening hours and the reminder time. The form starts from the settings the API gave, and both fields go every time.
+// Opening hours and the reminder time. The form starts from the settings the API gave, and every field goes every time.
 function SettingsForm({ settings, onSaved }) {
   const [done, setDone] = useState('');
   const form = useForm({
     initial: {
-      'openingHours.open': settings.openingHours.open,
-      'openingHours.close': settings.openingHours.close,
+      'openingHours.weekday.open': settings.openingHours.weekday.open,
+      'openingHours.weekday.close': settings.openingHours.weekday.close,
+      'openingHours.weekend.open': settings.openingHours.weekend.open,
+      'openingHours.weekend.close': settings.openingHours.weekend.close,
       reminderHoursBefore: String(settings.reminderHoursBefore),
     },
     validate: validateSettings,
@@ -121,13 +132,18 @@ function SettingsForm({ settings, onSaved }) {
       const saved = await api('/settings', {
         method: 'PUT',
         body: {
-          openingHours: { open: v['openingHours.open'], close: v['openingHours.close'] },
+          openingHours: Object.fromEntries(
+            HOUR_PARTS.map((part) => [
+              part.id,
+              { open: v[`openingHours.${part.id}.open`], close: v[`openingHours.${part.id}.close`] },
+            ]),
+          ),
           reminderHoursBefore: Number(v.reminderHoursBefore),
         },
       });
       onSaved(saved);
       setDone(
-        `Đã lưu. Studio mở cửa ${saved.openingHours.open}–${saved.openingHours.close}, nhắc lịch trước ${saved.reminderHoursBefore} giờ.`,
+        `Đã lưu. Mở cửa ${HOUR_PARTS.map((part) => `${part.short} ${saved.openingHours[part.id].open}–${saved.openingHours[part.id].close}`).join(', ')}; nhắc lịch trước ${saved.reminderHoursBefore} giờ.`,
       );
     },
   });
@@ -143,13 +159,25 @@ function SettingsForm({ settings, onSaved }) {
             {form.formError}
           </p>
         ) : null}
-        <fieldset className="superadmin-fieldset">
-          <legend>Giờ mở cửa (mọi ngày)</legend>
-          <div className="field-row">
-            <TextField id="settings-open" type="time" label="Mở cửa" {...form.field('openingHours.open')} />
-            <TextField id="settings-close" type="time" label="Đóng cửa" {...form.field('openingHours.close')} />
-          </div>
-        </fieldset>
+        {HOUR_PARTS.map((part) => (
+          <fieldset className="superadmin-fieldset" key={part.id}>
+            <legend>Giờ mở cửa {part.legend}</legend>
+            <div className="field-row">
+              <TextField
+                id={`settings-${part.id}-open`}
+                type="time"
+                label="Mở cửa"
+                {...form.field(`openingHours.${part.id}.open`)}
+              />
+              <TextField
+                id={`settings-${part.id}-close`}
+                type="time"
+                label="Đóng cửa"
+                {...form.field(`openingHours.${part.id}.close`)}
+              />
+            </div>
+          </fieldset>
+        ))}
         <TextField
           id="settings-reminder"
           type="number"

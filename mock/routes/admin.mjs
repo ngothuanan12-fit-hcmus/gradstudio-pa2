@@ -54,14 +54,20 @@ function replaceSettings({ req, db, body }) {
   const b = body && typeof body === 'object' ? body : {};
   const hours = b.openingHours && typeof b.openingHours === 'object' ? b.openingHours : {};
   const fields = {};
-  const openOk = typeof hours.open === 'string' && TIME.test(hours.open);
-  if (!openOk) fields['openingHours.open'] = 'Giờ theo dạng HH:MM.';
-  if (typeof hours.close !== 'string' || !TIME.test(hours.close)) fields['openingHours.close'] = 'Giờ theo dạng HH:MM.';
-  else if (openOk && hours.close <= hours.open) fields['openingHours.close'] = 'Giờ đóng cửa phải sau giờ mở cửa.';
+  const saved = {};
+  for (const part of ['weekday', 'weekend']) {
+    const day = hours[part] && typeof hours[part] === 'object' ? hours[part] : {};
+    const key = `openingHours.${part}`;
+    const openOk = typeof day.open === 'string' && TIME.test(day.open);
+    if (!openOk) fields[`${key}.open`] = 'Giờ theo dạng HH:MM.';
+    if (typeof day.close !== 'string' || !TIME.test(day.close)) fields[`${key}.close`] = 'Giờ theo dạng HH:MM.';
+    else if (openOk && day.close <= day.open) fields[`${key}.close`] = 'Giờ đóng cửa phải sau giờ mở cửa.';
+    saved[part] = { open: day.open, close: day.close };
+  }
   const h = b.reminderHoursBefore;
   if (!Number.isInteger(h) || h < 1 || h > 168) fields.reminderHoursBefore = 'Số giờ từ 1 đến 168.';
   if (Object.keys(fields).length) return invalid(fields);
-  db.settings = { openingHours: { open: hours.open, close: hours.close }, reminderHoursBefore: h };
+  db.settings = { openingHours: saved, reminderHoursBefore: h };
   return ok(db.settings);
 }
 
