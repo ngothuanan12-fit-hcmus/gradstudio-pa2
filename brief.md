@@ -831,3 +831,21 @@ Sent to Antigravity (Gemini 4 Neon (High)).
 > ## Khi xong
 >
 > Dừng lại và báo An: danh sách commit (hash, message), file đã đổi, kết quả từng kiểm tra kèm con số, những gì bạn làm sai và đã sửa, mọi chỗ phải dừng hoặc còn thắc mắc.
+
+### 2.30 Reviews of tasks 1–3, PR #8, the message to Khánh, and the PR #8 review notes (2026-11-27 – 2026-11-28)
+
+> đã xong việc 1
+
+> đã xong việc 2
+
+> đã xong việc 3
+
+> đồng ý, push và soạn tin nhắn cho Khánh
+
+> soạn lại câu hỏi cho Khánh
+
+> (answer to the assistant's question about what to redraft: "Tin nhắn cho Khánh")
+
+> đã có comment pr#8, có cần Khánh merge luôn không hay mình merge
+
+> đồng ý, làm bước 1

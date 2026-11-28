@@ -2573,3 +2573,12 @@ Kept: the three commits as made. `92a14ce`: lint, build, 10/10 tests, 158/158 ex
 Changed: nothing in the three commits. The tool line names Gemini 4 Neon (High) where tasks 1 and 2 name Gemini 4 Carbon (High); asked An to confirm the model was switched.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-28 — contract 03 and 09: two notes from Khánh's PR #8 review
+Commit: the commit that adds this entry with `docs/api/03-conversations.md`, `docs/api/09-gallery.md` and `brief.md`, on `feature/po-2711`.
+Tool: Claude Code (Claude Opus 5.5); `git diff`, reading `mock/routes/conversations.mjs` and `client/src/pages/Conversations.jsx`.
+Asked for: the two minor notes of Khánh's comment on PR #8, and before them the PR itself and the message to Khánh (PR #8 opened with a body in English and no attribution line; the message to Khánh redrafted shorter, tasks only).
+Kept: awaiting An's review. `09-gallery.md`: the `limit` row no longer calls the two packages *waiting*. `03-conversations.md`: when two conversations' newest messages are at the same moment, the one listed first by `GET /api/conversations` counts as the latest. Each with a dated `## Changes` line.
+Changed: Khánh's note named the difference as `>=` in the mock against `>` in G3; reading both showed what that means: the list is sorted by newest message with a stable sort, so G3 takes the earliest-made of two tied conversations and the mock took the latest-made. The contract now picks G3's reading, and the mock follows in the next commit. No seed conversations tie, so no example changes.
+Rejected: changing G3 to the mock's reading (the screen shows the list in that order, so "first in the list" is what a customer sees).
+By hand: none.

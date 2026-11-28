@@ -16,7 +16,7 @@ What the customer does after the shoot (step G9): look at the preview photos, ch
 | Field | Type | Notes |
 |---|---|---|
 | `bookingId` | string | e.g. `GS-1022` |
-| `limit` | integer or `null` | The package's `editedPhotos`: how many photos may be chosen; `null` while the package gives no number (Kỷ yếu lớp, Chân dung/CV: *waiting*), and then no choice can be saved |
+| `limit` | integer or `null` | The package's `editedPhotos`: how many photos may be chosen; `null` only if a package ever gave no number (every package in `02-catalogue.md` has one since 2026-11-27), and then no choice can be saved |
 | `locked` | boolean | `true` once the remaining 70% is paid: the choice can no longer change |
 | `shootDone` | boolean | `true` when the booking's `shoot` job (`08-jobs.md`) has status *Hoàn thành*; `false` otherwise (including when the booking has no `shoot` job yet) |
 | `selected` | list of strings | The chosen previews' ids, in the order sent; empty before a choice |
@@ -368,3 +368,4 @@ Content-Type: application/json
 - 2026-11-22 — `limit` may be `null` (a package with no number of edited photos yet), and a choice is then refused with `409`. Found while writing the mock, before it. No client code calls these endpoints yet.
 - 2026-11-27 — Added the `POST /api/conversations` example after `GS-1022` / `c-customer2` moves to *Hoàn thành*, verifying that a customer's new message opens a new conversation (`201`) when their latest conversation by newest message is *Hoàn thành*, per the product owners' answers ([answer 5](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622), [follow-up answer 2](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28854602184238579)). Client G3 updated after mock.
 - 2026-11-27 — Gallery gains boolean `shootDone` (`true` when the booking's `shoot` job in `08-jobs.md` has status *Hoàn thành*, `false` otherwise), so screen G9 disables *Thanh toán 70%* with a visible reason until the shoot job is *Hoàn thành* and a photo choice is saved, per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)). Added `shootDone` to every Gallery response example and added a read-only `GS-1024` (`shootDone: false`) example. Client G9 updated after mock.
+- 2026-11-28 — The `limit` row no longer says Kỷ yếu lớp and Chân dung/CV are *waiting*: every package has `editedPhotos` since `02-catalogue.md` changed on 2026-11-27 (PR #8 review). No example changes.
