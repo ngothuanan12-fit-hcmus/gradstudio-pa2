@@ -56,11 +56,13 @@ export default function Gallery() {
                 ? 'Booking không ở trạng thái thanh toán.'
                 : paid
                   ? 'Đã thanh toán 70% còn lại.'
-                  : !saved
-                    ? 'Lưu lựa chọn ảnh trước khi thanh toán.'
-                    : dirty
-                      ? 'Lưu thay đổi lựa chọn trước khi thanh toán.'
-                      : null;
+                  : !g.shootDone
+                    ? 'Studio chưa cập nhật buổi chụp hoàn thành.'
+                    : !saved
+                      ? 'Lưu lựa chọn ảnh trước khi thanh toán.'
+                      : dirty
+                        ? 'Lưu thay đổi lựa chọn trước khi thanh toán.'
+                        : null;
               const receiveWhy =
                 b.status === 'Hoàn thành'
                   ? 'Bạn đã nhận ảnh.'

@@ -673,3 +673,179 @@ Numbered 2.25 because Khánh's PR #7 adds 2.23 and 2.24.
 
 > cho mình prompt để agent khác với model khác làm, đảm bảo ghi đúng file và trả lời đúng nguyên tắc và rubric, quy định của đề, ghi đúng model commit đúng lượt, ...
 > mỗi việc 1 prompt, làm xong mình sẽ báo bạn kiểm tra
+
+### 2.27 Số liệu mọi gói chụp theo product owners (2026-11-27)
+
+Sent to Antigravity (Gemini 4 Carbon (High)).
+
+> Bạn làm việc trong repo nhóm GradStudio tại E:\S1Y4\Web\pj\PA2 (đồ án CSC13008, PA#3: React client trên contract docs/api/ và mock mock/server.mjs). Người giao việc là Ngô Thuận An (23120206), lead. Đây là việc 1 trong 3: số liệu cho mọi gói chụp, theo quyết định của product owners ngày 2026-11-27.
+>
+> Đọc trước khi làm (bắt buộc)
+> CLAUDE.md (luật nhóm, danh sách NEVER), AGENTS.md, brief.md Phần 1, docs/api/README.md, docs/api/02-catalogue.md, FRONTEND.md mục 5.
+> Rubric PA#3 chấm: contract commit trước code dùng nó; mock theo đúng contract; mọi thay đổi sau đó của docs/api/ hoặc mock/ có dòng ghi ngày trong ## Changes; AI-LOG.md ghi ngay trong bước, mỗi entry nêu tool và model, yêu cầu, và trong Changed/Rejected nêu lỗi của trợ lý cùng phép kiểm tra đã bắt được nó; lịch sử commit một commit cho mỗi phần, viết commit trước mỗi yêu cầu.
+> Quyết định của product owners cần làm theo
+> Nguồn (trích dẫn link này): https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622
+>
+> Brief chỉ cố định Gói Tốt nghiệp Premium (GS-1024: 2 giờ, 30 ảnh chỉnh, 1.800.000đ). Các gói còn lại nhóm tự đặt, miễn mỗi gói có tên, thời lượng, số ảnh chỉnh và giá, và mỗi dịch vụ có ít nhất một gói. Giá "từ …đ" là giá thấp nhất của dịch vụ. Với Kỷ yếu lớp (từ 350.000đ/người) … nhóm có thể tính giá booking bằng đơn giá mỗi người nhân số người … giá và cọc 30% phải do máy chủ tính (R3), và số ảnh khách được chọn là số ảnh chỉnh của gói (R5).
+>
+> Nhóm đã chọn (An duyệt): Gói Kỷ yếu lớp ky-yeu-lop: 240 phút, 60 ảnh chỉnh, 350.000đ/người, giá booking = đơn giá × số người (máy chủ đã tính như vậy). Gói Chân dung/CV chan-dung-cv: 60 phút, 10 ảnh chỉnh, 690.000đ. Gói Tốt nghiệp Premium giữ nguyên. Không bịa thêm gói, giá hay số liệu nào khác (NEVER 11).
+>
+> Việc cần làm, đúng thứ tự, mỗi phần một commit
+> Bắt đầu: git status phải sạch, đang ở main đã pull. Tạo nhánh feature/po-2711 từ main. Kiểm tra git config user.name in ra Ngô Thuận An; không đổi cấu hình git. Không push, không mở pull request, không amend, không rebase.
+>
+> Commit 1 — contract. docs/api/02-catalogue.md: đối tượng Package ghi rõ durationMinutes và editedPhotos là số nguyên (không còn null), priceFrom của dịch vụ là giá thấp nhất trong các gói của nó; sửa các ví dụ cho khớp 2 gói mới; thêm dòng - 2026-11-27 — … vào ## Changes (nêu cái gì đổi, vì sao, kèm link product owners). Việc này làm đổi đúng 2 giá trị của booking GS-1023 trong các ví dụ của docs/api/05-bookings.md (file của Khánh): chỉ được sửa "durationMinutes" và "editedPhotos" của GS-1023 trong các ví dụ đó, và thêm một dòng ## Changes ghi rõ là do thay đổi ở 02-catalogue.md. Nếu thấy cần sửa bất kỳ chỗ nào khác trong file của Khánh (docs/api/04–08, mock/routes/schedule|bookings|payments|reminders|jobs.mjs, các màn G4–G8, G10), dừng lại và báo, không tự sửa. Thêm vào FRONTEND.md mục 5 một dòng cho quyết định này kèm link. Cùng commit này: thêm vào cuối brief.md một mục ### 2.<số kế tiếp sau mục cuối cùng> Số liệu mọi gói chụp theo product owners (2026-11-27), một dòng ghi tool và model đã nhận prompt, rồi toàn bộ prompt này nguyên văn trong blockquote; và một entry AI-LOG.md (mẫu bên dưới).
+>
+> Commit 2 — mock. mock/data/services.json theo đúng contract. Kèm entry AI-LOG.md.
+>
+> Commit 3 — client (chỉ khi cần). Tìm mọi chỗ trong client/src đọc durationMinutes / editedPhotos (ví dụ trang chủ G1, cảnh 3D, G9). Màn G1 phải hiện thời lượng và số ảnh chỉnh của cả 3 gói, không hiện null, rỗng hay chữ kiểu "chưa có". Câu dự phòng của G9 khi gói không có số ảnh (limit === null) giữ nguyên. Nếu không cần sửa client thì không tạo commit rỗng; ghi rõ điều đó trong entry của commit 2.
+>
+> Kiểm tra (NEVER 14, NEVER 15)
+> Kiểm tra mỗi commit trên một bản git archive <commit> giải nén vào thư mục tạm riêng, không chạy trong thư mục làm việc chung. Trong bản copy: npm ci ở gốc và ở client/; npm run format:check, npm run lint, npm test, npm run build; mock riêng PORT=3110 node mock/server.mjs, rồi node tools/contract-check.mjs --repo . --base http://localhost:3110 --strict-values: phải 0 FAIL. Nếu cần xem giao diện: npx vite preview --port 4210 --strictPort với một file cấu hình chỉ cho bản copy, proxy /api sang 3110; mở / ở 360, 768 và 1280 px và ở 4 chế độ MOCK_MODE (normal, slow, error, empty). Chỉ dừng những tiến trình chính bạn đã khởi động (theo PID của bạn); không dùng pkill/taskkill theo tên. Không sửa tools/contract-check.mjs, không nới lỏng test hay gate, không thêm thư viện (NEVER 9, 10).
+>
+> Mẫu entry AI-LOG.md (thêm vào cuối file, không sửa entry cũ)
+> ### 2026-11-27 — <bước>: <việc gì>
+> Commit: the commit that adds this entry with <các file>.
+> Tool: <tên sản phẩm> (<tên model chính xác của bạn>); <các lệnh/kiểm tra đã chạy>.
+> Asked for: <yêu cầu, ngắn>.
+> Kept: awaiting An's review. <cái gì đã làm, con số kiểm tra: số ví dụ, độ rộng, chế độ mock>.
+> Changed: <lỗi của chính bạn và phép kiểm tra nào bắt được nó; nếu không có thì "nothing" kèm các kiểm tra đã chạy>.
+> Rejected: <điều đã cân nhắc và bỏ, vì sao>.
+> By hand: none.
+>
+> Ghi đúng tên tool và model của chính bạn; không ghi là model khác. Tài liệu trong repo viết tiếng Anh; chữ trên màn hình tiếng Việt. Commit message tiếng Anh, nói rõ đổi gì, không có dòng Co-Authored-By hay "Generated with" (NEVER 13).
+>
+> Khi xong
+> Dừng lại và báo An: danh sách commit (hash, message), file đã đổi, kết quả từng kiểm tra kèm con số, những gì bạn làm sai và đã sửa, và mọi chỗ bạn phải dừng hoặc còn thắc mắc. Không làm sang việc 2.
+
+### 2.28 Tin mới vào hội thoại nào, đề xuất bị thay (2026-11-27)
+
+Sent to Antigravity (Gemini 4 Carbon (High)).
+
+> Bạn làm việc trong repo nhóm GradStudio tại `E:\S1Y4\Web\pj\PA2` (đồ án CSC13008, PA#3: React client trên contract `docs/api/` và mock `mock/server.mjs`). Người giao việc là Ngô Thuận An (23120206), lead. Đây là **việc 2 trong 3**: tin mới của khách vào hội thoại nào, và câu báo khi trả lời một đề xuất đã bị thay. Việc 1 đã nằm trên nhánh `feature/po-2711`; làm tiếp trên nhánh đó.
+>
+> ## Đọc trước khi làm (bắt buộc)
+>
+> 1. `CLAUDE.md` (luật nhóm, danh sách NEVER), `AGENTS.md`, `brief.md` Phần 1, `docs/api/README.md`, `docs/api/03-conversations.md`, `FRONTEND.md` mục 4–5, `client/src/pages/Conversations.jsx` và các component chat khách dùng.
+> 2. Rubric PA#3 chấm: contract commit **trước** code dùng nó; mock theo đúng contract; mọi thay đổi sau đó của `docs/api/` hoặc `mock/` có dòng ghi ngày trong `## Changes`; mỗi request app gửi phải có trong contract; `AI-LOG.md` ghi ngay trong bước, nêu tool và model, và trong *Changed/Rejected* nêu lỗi của trợ lý cùng phép kiểm tra đã bắt được nó; một commit cho mỗi phần.
+>
+> ## Quyết định của product owners cần làm theo
+>
+> Câu trả lời 5 (link A): https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622
+>
+> > Nối vào hội thoại gần nhất của khách nếu hội thoại đó chưa Hoàn thành và chưa có booking, kể cả khi tin mới là một yêu cầu đặt lịch khác. Nếu hội thoại đó đã có booking (Đã chốt lịch) thì một yêu cầu đặt lịch mới mở hội thoại mới. Một câu hỏi thường … vẫn nối vào hội thoại cũ. Hội thoại đã Hoàn thành thì tin mới luôn mở hội thoại mới. Một hội thoại chỉ gắn một booking.
+>
+> Câu trả lời thêm 2 và 3 (link B): https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28854602184238579
+>
+> > "Hội thoại gần nhất" tính theo tin nhắn mới nhất. … Đề xuất mới thay đề xuất cũ. Đề xuất cũ hết hiệu lực: khách không còn đồng ý hoặc từ chối được, màn hình hiện chữ cho biết nó đã được thay bằng đề xuất mới.
+>
+> Đọc thành quy tắc cho `POST /api/conversations` (khách gửi `text`, `request` hoặc cả hai). Lấy hội thoại của khách có tin nhắn mới nhất:
+> - không có hội thoại nào, hoặc hội thoại đó *Hoàn thành* → tạo hội thoại mới, trả `201`;
+> - hội thoại đó chưa có booking → thêm tin vào đó (kể cả khi là yêu cầu đặt lịch), trả `200` với hội thoại đó;
+> - hội thoại đó đã có booking: có `request` → tạo hội thoại mới (`201`); chỉ có `text` → thêm vào hội thoại đó (`200`).
+>
+> Trạng thái hội thoại khi được nối thêm tin: giữ nguyên (không bịa trạng thái mới). Phần đề xuất bị thay đã đúng ở mock (`409`) và màn hình ("Đã có đề xuất mới"); chỉ có câu báo `409` cho đề xuất **đã bị thay** phải nói đúng như vậy, ví dụ "Đề xuất này đã được thay bằng đề xuất mới."; đề xuất đã được trả lời thì giữ câu "Đề xuất này đã được trả lời.".
+>
+> ## Việc cần làm, đúng thứ tự, mỗi phần một commit
+>
+> **Bắt đầu:** `git status` sạch, đang ở `feature/po-2711`. `git config user.name` phải in `Ngô Thuận An`; không đổi cấu hình. Không push, không mở pull request, không amend, không rebase.
+>
+> **Commit 1 — contract.** `docs/api/03-conversations.md`: mô tả `POST /api/conversations` theo quy tắc trên (ai gọi, khi nào `201`, khi nào `200`), câu `409` phân biệt "đã trả lời" và "đã bị thay", trích link A và B. Thêm ví dụ `http` cho từng nhánh (nối vào hội thoại chưa có booking → `200`; hội thoại gần nhất *Hoàn thành* → `201`; hội thoại gần nhất có booking + yêu cầu mới → `201`; chỉ `text` → `200`; trả lời đề xuất đã bị thay → `409`). Ví dụ được gửi theo thứ tự README rồi các file theo bảng chữ cái, vào **một** mock vừa khởi động: dùng các khách và hội thoại có sẵn sao cho không làm đổi câu trả lời của bất kỳ ví dụ nào khác, nhất là câu chuyện của Linh (`c-linh`, GS-1024) mà `04`–`10` dựa vào. Nếu không làm được mà không đổi file của Khánh (`docs/api/04`–`08`), **dừng lại và báo**. Dòng `- 2026-11-27 — …` trong `## Changes`. `FRONTEND.md` mục 5: các quyết định này kèm link. Cùng commit này: mục mới cuối `brief.md` `### 2.<số kế tiếp> Tin mới vào hội thoại nào, đề xuất bị thay (2026-11-27)`, một dòng ghi tool và model, rồi **toàn bộ prompt này nguyên văn** trong blockquote; và entry `AI-LOG.md`.
+>
+> **Commit 2 — mock.** `mock/routes/conversations.mjs` theo đúng contract (sắp theo thời điểm tin nhắn mới nhất). Không sửa route của file khác. Kèm entry `AI-LOG.md`.
+>
+> **Commit 3 — client G3.** `/tu-van`: sau khi gửi, chuyển tới đúng hội thoại API trả về (cả `200` lẫn `201`), qua submit của form (NEVER 5). Trước khi gửi, khách phải thấy tin của mình sẽ vào đâu: khi đang có hội thoại chưa có booking và chưa *Hoàn thành*, ghi rõ tin và yêu cầu sẽ được thêm vào hội thoại đó (chữ tiếng Việt, ngắn). Không ghi dữ liệu cứng vào component (NEVER 3); trạng thái đang tải / lỗi có *Thử lại* / trống vẫn đủ. Kèm entry `AI-LOG.md`.
+>
+> ## Kiểm tra (NEVER 14, NEVER 15)
+>
+> Kiểm tra mỗi commit trên một bản `git archive <commit>` giải nén vào thư mục tạm riêng, không chạy trong thư mục làm việc chung. Trong bản copy: `npm ci` ở gốc và ở `client/`; `npm run format:check`, `npm run lint`, `npm test`, `npm run build`; mock riêng `PORT=3111 node mock/server.mjs`, rồi `node tools/contract-check.mjs --repo . --base http://localhost:3111 --strict-values`: phải **0 FAIL**, và số ví dụ tăng đúng bằng số ví dụ bạn thêm. Giao diện: `npx vite preview --port 4211 --strictPort` với file cấu hình chỉ cho bản copy (proxy `/api` sang 3111); đăng nhập bằng màn đăng nhập như người dùng (tài khoản trong `FRONTEND.md` mục 3); đi qua G3 cho từng nhánh của quy tắc; mở `/tu-van`, `/tu-van/:id` và `/quan-ly` ở 360, 768, 1280 px và 4 chế độ `MOCK_MODE`; xem log của mock: mỗi lần tải chỉ một request cho mỗi thứ. Chỉ dừng tiến trình chính bạn khởi động (theo PID); không `pkill`/`taskkill` theo tên. Không sửa `tools/contract-check.mjs`, không nới lỏng test hay gate, không thêm thư viện.
+>
+> ## Mẫu entry `AI-LOG.md` (thêm vào cuối, không sửa entry cũ)
+>
+> ```
+> ### 2026-11-27 — <bước>: <việc gì>
+> Commit: the commit that adds this entry with <các file>.
+> Tool: <tên sản phẩm> (<tên model chính xác của bạn>); <các lệnh/kiểm tra đã chạy>.
+> Asked for: <yêu cầu, ngắn>.
+> Kept: awaiting An's review. <cái gì đã làm, con số kiểm tra>.
+> Changed: <lỗi của chính bạn và phép kiểm tra nào bắt được nó; nếu không có thì "nothing" kèm các kiểm tra đã chạy>.
+> Rejected: <điều đã cân nhắc và bỏ, vì sao>.
+> By hand: none.
+> ```
+>
+> Ghi đúng tên tool và model của chính bạn. Tài liệu tiếng Anh; chữ trên màn hình tiếng Việt. Commit message tiếng Anh, nói rõ đổi gì, **không** có `Co-Authored-By` hay "Generated with" (NEVER 13).
+>
+> ## Khi xong
+>
+> Dừng lại và báo An: danh sách commit (hash, message), file đã đổi, kết quả từng kiểm tra kèm con số, những gì bạn làm sai và đã sửa, mọi chỗ phải dừng hoặc còn thắc mắc. Không làm sang việc 3.
+
+### 2.29 Trả 70% chỉ sau khi việc chụp Hoàn thành (2026-11-27)
+
+Sent to Antigravity (Gemini 4 Neon (High)).
+
+> Bạn làm việc trong repo nhóm GradStudio tại `E:\S1Y4\Web\pj\PA2` (đồ án CSC13008, PA#3: React client trên contract `docs/api/` và mock `mock/server.mjs`). Người giao việc là Ngô Thuận An (23120206), lead. Đây là **việc 3 trong 3**: cho màn G9 biết buổi chụp đã xong chưa, để khóa nút trả 70% kèm lý do. Việc 1 và 2 đã nằm trên nhánh `feature/po-2711`; làm tiếp trên nhánh đó.
+>
+> ## Đọc trước khi làm (bắt buộc)
+>
+> 1. `CLAUDE.md` (luật nhóm, danh sách NEVER), `AGENTS.md`, `brief.md` Phần 1, `docs/api/README.md`, `docs/api/09-gallery.md`, `docs/api/08-jobs.md` (chỉ đọc), `docs/api/06-payments.md` (chỉ đọc), `mock/routes/gallery.mjs`, `client/src/pages/Gallery.jsx`, `FRONTEND.md` mục 5.
+> 2. Rubric PA#3 chấm: contract commit **trước** code dùng nó; mock theo đúng contract; mọi thay đổi sau đó của `docs/api/` hoặc `mock/` có dòng ghi ngày trong `## Changes`; nút bị khóa chỉ khi luồng tự khóa và có lý do trên màn hình; `AI-LOG.md` ghi ngay trong bước, nêu tool và model, và trong *Changed/Rejected* nêu lỗi của trợ lý cùng phép kiểm tra đã bắt được nó; một commit cho mỗi phần.
+>
+> ## Quyết định của product owners cần làm theo
+>
+> Nguồn (link A): https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622
+>
+> > Điều kiện "sau buổi chụp" xác định bằng trạng thái việc, không bằng đồng hồ. Khách chỉ trả 70% khi nhân viên đã cập nhật việc chụp ảnh của booking là Hoàn thành và khách đã lưu danh sách ảnh chọn. Khi chưa đủ điều kiện, nút trả 70% bị khóa và có chữ nói lý do.
+>
+> "Việc chụp ảnh" là job có `"role": "shoot"` của booking trong `mock/data/jobs.json` (`08-jobs.md`). Khách không đọc được danh sách việc, nên `09-gallery.md` phải cho G9 biết điều này.
+>
+> **Ngoài phạm vi việc này:** việc máy chủ từ chối `POST /api/payments` (`kind: "remainder"`) khi việc chụp chưa *Hoàn thành* thuộc `06-payments.md` và `mock/routes/payments.mjs` của Khánh, Khánh sẽ làm. Không sửa hai file đó, và không viết trong `09` rằng `06` đã làm điều đó.
+>
+> ## Việc cần làm, đúng thứ tự, mỗi phần một commit
+>
+> **Bắt đầu:** `git status` sạch, đang ở `feature/po-2711`. `git config user.name` phải in `Ngô Thuận An`; không đổi cấu hình. Không push, không mở pull request, không amend, không rebase.
+>
+> **Commit 1 — contract.** `docs/api/09-gallery.md`: đối tượng **Gallery** thêm trường boolean `shootDone` (`true` khi job `shoot` của booking có `status` *Hoàn thành*; booking chưa có job `shoot` thì `false`), nêu quy tắc của product owners kèm link A, và nói G9 khóa *Thanh toán 70%* với lý do cho tới khi `shootDone` là `true` và ảnh chọn đã được lưu. Mọi ví dụ trả về Gallery phải có `shootDone` (contract-check so tên trường theo cả hai chiều); thêm ít nhất một ví dụ có `shootDone: false` nếu có booking phù hợp trong dữ liệu mẫu mà không làm đổi ví dụ nào khác. Không đổi mã thanh toán (`pay-3`) hay luồng ví dụ hiện có của `09`; nếu bắt buộc phải đổi, **dừng lại và báo**. Dòng `- 2026-11-27 — …` trong `## Changes`. `FRONTEND.md` mục 5: quyết định này kèm link. Cùng commit này: mục mới cuối `brief.md` `### 2.<số kế tiếp> Trả 70% chỉ sau khi việc chụp Hoàn thành (2026-11-27)`, một dòng ghi tool và model, rồi **toàn bộ prompt này nguyên văn** trong blockquote; và entry `AI-LOG.md`.
+>
+> **Commit 2 — mock.** `mock/routes/gallery.mjs` tính `shootDone` từ `db.jobs`. Không sửa `jobs.json` hay route của file khác. Kèm entry `AI-LOG.md`.
+>
+> **Commit 3 — client G9.** `client/src/pages/Gallery.jsx`: thêm lý do khóa *Thanh toán 70%* khi `shootDone` là `false`, ví dụ "Studio chưa cập nhật buổi chụp hoàn thành.", theo đúng mẫu nút `aria-disabled` + lý do nối bằng `aria-describedby` đang có. Thứ tự lý do: booking không ở trạng thái thanh toán → đã trả 70% → buổi chụp chưa xong → chưa lưu ảnh → còn thay đổi chưa lưu. Việc chọn ảnh vẫn làm được trước khi buổi chụp xong. Kèm entry `AI-LOG.md`.
+>
+> ## Kiểm tra (NEVER 14, NEVER 15)
+>
+> Kiểm tra mỗi commit trên một bản `git archive <commit>` giải nén vào thư mục tạm riêng, không chạy trong thư mục làm việc chung. Trong bản copy: `npm ci` ở gốc và ở `client/`; `npm run format:check`, `npm run lint`, `npm test`, `npm run build`; mock riêng `PORT=3112 node mock/server.mjs`, rồi `node tools/contract-check.mjs --repo . --base http://localhost:3112 --strict-values`: phải **0 FAIL**. Giao diện: `npx vite preview --port 4212 --strictPort` với file cấu hình chỉ cho bản copy (proxy `/api` sang 3112); đăng nhập qua màn đăng nhập (tài khoản trong `FRONTEND.md` mục 3). Trên `/lich-chup/GS-1022/anh` bằng `customer2`: lúc đầu nút trả 70% khóa vì chưa lưu ảnh; sau khi `tuan` đặt job `job-gs-1022-shoot` về *Đang làm* (qua màn `/cong-viec` hoặc `PATCH /api/jobs/:id` với token của `tuan`), lý do phải là buổi chụp chưa xong; đặt lại *Hoàn thành* thì nút mở sau khi lưu ảnh. Mở G9 ở 360, 768, 1280 px và 4 chế độ `MOCK_MODE`. Chỉ dừng tiến trình chính bạn khởi động (theo PID); không `pkill`/`taskkill` theo tên. Không sửa `tools/contract-check.mjs`, không nới lỏng test hay gate, không thêm thư viện.
+>
+> ## Mẫu entry `AI-LOG.md` (thêm vào cuối, không sửa entry cũ)
+>
+> ```
+> ### 2026-11-27 — <bước>: <việc gì>
+> Commit: the commit that adds this entry with <các file>.
+> Tool: <tên sản phẩm> (<tên model chính xác của bạn>); <các lệnh/kiểm tra đã chạy>.
+> Asked for: <yêu cầu, ngắn>.
+> Kept: awaiting An's review. <cái gì đã làm, con số kiểm tra>.
+> Changed: <lỗi của chính bạn và phép kiểm tra nào bắt được nó; nếu không có thì "nothing" kèm các kiểm tra đã chạy>.
+> Rejected: <điều đã cân nhắc và bỏ, vì sao>.
+> By hand: none.
+> ```
+>
+> Ghi đúng tên tool và model của chính bạn. Tài liệu tiếng Anh; chữ trên màn hình tiếng Việt. Commit message tiếng Anh, nói rõ đổi gì, **không** có `Co-Authored-By` hay "Generated with" (NEVER 13).
+>
+> ## Khi xong
+>
+> Dừng lại và báo An: danh sách commit (hash, message), file đã đổi, kết quả từng kiểm tra kèm con số, những gì bạn làm sai và đã sửa, mọi chỗ phải dừng hoặc còn thắc mắc.
+
+### 2.30 Reviews of tasks 1–3, PR #8, the message to Khánh, and the PR #8 review notes (2026-11-27 – 2026-11-28)
+
+> đã xong việc 1
+
+> đã xong việc 2
+
+> đã xong việc 3
+
+> đồng ý, push và soạn tin nhắn cho Khánh
+
+> soạn lại câu hỏi cho Khánh
+
+> (answer to the assistant's question about what to redraft: "Tin nhắn cho Khánh")
+
+> đã có comment pr#8, có cần Khánh merge luôn không hay mình merge
+
+> đồng ý, làm bước 1
