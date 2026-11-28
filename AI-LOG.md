@@ -2660,3 +2660,13 @@ Kept: awaiting review. Updated `docs/api/07-reminders.md`, `mock/routes/reminder
 Changed: `npm run format:check` flagged formatting in `mock/routes/reminders.mjs` and `test/mock.test.mjs`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`13/13` pass) passed.
 Rejected: replacing `sent` or `failed` reminder records on reschedule, because preserving audit history of past delivery attempts is required alongside the new pending reminder.
 By hand: none.
+
+
+### 2026-11-28 — PR #9 review/approval, branch push, and PR creation for Part A (Mục 9, 1, 2, 4, 6, 7)
+Commit: the commit that adds this entry with `brief.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Hydrogen (High)); `git archive origin/feature/po-2811` isolated verification (`npm run format:check`, `npm run lint`, `npm test`, `npm run build`, `contract-check --strict-values` on port `3114`), `gh pr review 9 --approve`, `git push`, `gh pr create`.
+Asked for: approve pending PR #9 (`feature/po-2811`) first, then push `feature/pa3-business-rules` and open a pull request to An summarizing what was done.
+Kept: verified PR #9 (`origin/feature/po-2811`) on a `git archive` copy (`10/10` tests, `163/163` examples, `38/38` endpoints, `0 FAIL`) and approved PR #9; committed `brief.md` section 2.32 and this log entry; pushed `feature/pa3-business-rules` and opened the PR to An noting the 6 completed items and the 3 `09-gallery.md` coordination blockers (plus rebase note after PR #9 merges).
+Changed: nothing.
+Rejected: merging PR #9 directly without being asked, or modifying `docs/api/09-gallery.md` before An's review.
+By hand: none.

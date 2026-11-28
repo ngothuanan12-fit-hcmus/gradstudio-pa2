@@ -988,3 +988,12 @@ Tool: Antigravity (Gemini 4 Hydrogen (High) / Gemini 4 Neon (Medium)).
 >          tạo job/reminder) và ghi rõ trong `payment.message` để studio hoàn ngoài hệ thống.
 >          - Trên G7 (`DepositCard.jsx`, `PaymentGateway.jsx`, `PaymentResult.jsx`) và G10 (`QuanLyBookingDetail.jsx`): hiển thị rõ hạn thanh toán đến mấy giờ cho khoản `pending`, trạng thái hết hạn, và
 >          hiển thị khoản đã thu trên booking `Đã hủy`.
+
+
+### 2.32 PR #9 approval, push, and PR for Part A (2026-11-28)
+
+Tool: Antigravity (Gemini 4 Hydrogen (High)).
+
+> Push lên sau đó tạo pull request tới An + comment những gì đã làm
+
+> Đang có pull request #9 đang giữ nên approve nhánh đó trước
