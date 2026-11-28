@@ -2,7 +2,7 @@
 
 What the Admin uses to list staff and rooms, inspect a day's busy blocks, and run the clash check before proposing a time (`03-conversations.md`, step G5) or changing a booking (`05-bookings.md`, step G10). Every endpoint here answers `401` without a token and `403` to any role other than `admin`.
 
-Only bookings that hold a slot (*Đã đặt lịch*) block staff and rooms (R1); a booking in *Chờ cọc 30%* holds nothing. Two windows `[aFrom, aTo)` and `[bFrom, bTo)` on the same date overlap when `aFrom < bTo` and `bFrom < aTo`, so back-to-back slots such as `13:00–14:00` make-up and `14:00–16:00` shoot do not clash. Every slot must also sit inside the studio's `openingHours` (`settings.json`).
+Only bookings that hold a slot (*Đã đặt lịch*) block staff and rooms (R1); a booking in *Chờ cọc 30%* holds nothing. Two windows `[aFrom, aTo)` and `[bFrom, bTo)` on the same date overlap when `aFrom < bTo` and `bFrom < aTo`, so back-to-back slots such as `13:00–14:00` make-up and `14:00–16:00` shoot do not clash. Every slot must also sit inside the studio's opening hours for that day of the week: `weekday` hours Monday to Friday, `weekend` hours Saturday and Sunday (`10-admin.md`, `settings.json`), per the product owners ([part II, answer 4](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28855460470819417&reply_comment_id=28858450227187108)); the refusal names the day, e.g. "Chủ nhật studio mở 08:00–18:00.". Past dates are not refused and there is no minimum notice (same answer).
 
 **Product owner decision and sample data.** Per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)), costume stock is not checked and the clash check covers people and rooms only (studio opening hours remain a team rule). In the seed, `Phòng A` (`r-a`), `Hoàng Gia Huy` (`u-staff3`), and each staff member's specialty are *sample* values filling the story.
 
@@ -175,7 +175,7 @@ Query:
 |---|---|---|---|
 | `date` | string | yes | `YYYY-MM-DD`, a real date |
 
-Success: `200` with `{ "date", "openingHours", "blocks", "freeTime" }`.
+Success: `200` with `{ "date", "openingHours", "blocks", "freeTime" }`; `openingHours` is `{ "open", "close" }` for that date's day of the week.
 
 Errors:
 
@@ -301,7 +301,7 @@ Content-Type: application/json
 {"available": true, "message": "Lịch trống: chụp 08:00–12:00 với Mai tại Phòng A.", "conflicts": [], "freeTime": null}
 ```
 
-Outside the studio's opening hours (`08:00`–`18:00` in `settings.json`):
+Outside the studio's opening hours for a Sunday (`weekend`, `08:00`–`18:00` in `settings.json`):
 
 ```http
 POST /api/schedule/check
@@ -315,7 +315,7 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"available": false, "message": "Ngoài giờ mở cửa studio (08:00–18:00).", "conflicts": [{"who": "Giờ mở cửa studio", "kind": "hours", "date": "2026-10-25", "from": "08:00", "to": "18:00"}], "freeTime": null}
+{"available": false, "message": "Chủ nhật studio mở 08:00–18:00.", "conflicts": [{"who": "Giờ mở cửa studio", "kind": "hours", "date": "2026-10-25", "from": "08:00", "to": "18:00"}], "freeTime": null}
 ```
 
 Invalid date, end time before start time, and unknown staff and room:
@@ -356,3 +356,4 @@ Content-Type: application/json
 
 - 2026-11-21 — First version. No client code calls these endpoints yet.
 - 2026-11-22 — Remove costume stock checking (`schedule.costumes`, `costumes` field, `Costume stock` object, `costume` conflict kind) per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)); `checkSchedule` covers staff, rooms, and studio opening hours, and `freeTime` chooses the first candidate window for a date that does not clash with held `busy` blocks. No client code calls these endpoints yet.
+- 2026-11-28 — Opening hours depend on the day of the week (`weekday` / `weekend`, `10-admin.md`), and the refusal names the day ("Chủ nhật studio mở 08:00–18:00." in place of "Ngoài giờ mở cửa studio (08:00–18:00)."); `GET /api/schedule` gives the hours of the requested date in the same `openingHours` shape as before. Product owners' decision ([part II, answer 4](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28855460470819417&reply_comment_id=28858450227187108)). Changed by An with Khánh's agreement (the opening-hours part of the clash check moved to An with the settings).

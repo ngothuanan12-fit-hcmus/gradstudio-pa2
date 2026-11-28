@@ -2627,3 +2627,12 @@ Kept: awaiting An's review. `destinationOf` picks what the mock picks (the conve
 Changed: the script first counted no *Tạo booking* button on the Admin screen after the re-proposal; the disabled button with its reason ("Khách chưa đồng ý lịch đề xuất — …") lives in Khánh's proposal form, shown at the proposal step, so G6 still meets the rubric; not changed here.
 Rejected: a link to the target conversation inside the note (inline links sit under 44 px at 360 px; the conversation list above already links each one).
 By hand: none.
+
+### 2026-11-28 — contract 10, 04 and 03: opening hours for weekdays and weekends (product owners, part II answer 4)
+Commit: the commit that adds this entry with `docs/api/10-admin.md`, `docs/api/04-schedule.md`, `docs/api/03-conversations.md` and `FRONTEND.md`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `contract-check --strict-values` and `npm test` on a temporary copy of `HEAD` with the edited contract and the edited (not yet committed) mock, mock 3106.
+Asked for: task 5, the opening hours by day of the week, with the opening-hours part of the clash check moved from Khánh to An (agreed with An; asked of Khánh in the message of the same day).
+Kept: awaiting An's review. Settings hold `openingHours.weekday` and `openingHours.weekend`, each `open` and `close`, all four checked by `PUT /api/settings`; a proposal, a new booking and a reschedule must sit inside the hours of their day, and the refusal names it ("Chủ nhật studio mở 08:00–18:00."); `GET /api/schedule` still gives `openingHours: { open, close }`, now for the requested date, so the Admin's resource schedule needs no change. `04` also states that past dates are allowed and there is no minimum notice. With the next commit's mock: 163/163 examples, 0 FAIL in strict mode, 10/10 tests. `FRONTEND.md` section 5 gains the row for answer 4.
+Changed: the plan was to use the product owners' example "Thứ Bảy studio mở 07:30–20:00" as the weekend hours; that would invent a time (NEVER 11), so the sample stays the team's `08:00`–`18:00` for both, and no example value in Khánh's `04` changes except the refusal's wording.
+Rejected: a different `openingHours` shape in `GET /api/schedule` (it would break Khánh's resource schedule for no gain); applying the hours to the customer's wished time (the answer says it is not blocked).
+By hand: none.
