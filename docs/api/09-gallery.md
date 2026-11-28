@@ -345,21 +345,38 @@ Content-Type: application/json
 {"error": {"code": "CONFLICT", "message": "Booking này không nhận ảnh được nữa."}}
 ```
 
-Now that Minh Anh's latest conversation (`c-customer2`) is *Hoàn thành*, a new message sent via `POST /api/conversations` (`03-conversations.md`) opens a new conversation even without a booking request:
+Linh's conversation `c-linh` now has `GS-1024`, and she has no conversation without a booking. A plain message sent without choosing a conversation joins `c-linh`, her newest conversation that is not *Hoàn thành* (`03-conversations.md`, `200`):
 
 ```http
 POST /api/conversations
-Authorization: Bearer {{token:customer2}}
+Authorization: Bearer {{token:linh}}
 Content-Type: application/json
 
-{"text": "Em cảm ơn studio, tháng sau nhóm bạn em muốn hỏi thêm gói tốt nghiệp ạ."}
+{"text": "Chị ơi khi nào em chọn ảnh được ạ?"}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"id": "c-linh", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "status": "Đã chốt lịch", "lastMessage": {"from": "customer", "text": "Chị ơi khi nào em chọn ảnh được ạ?", "at": …}, "updatedAt": …, "bookingId": "GS-1024", "messages": […]}
+```
+
+A new booking request opens a new conversation (`201`):
+
+```http
+POST /api/conversations
+Authorization: Bearer {{token:linh}}
+Content-Type: application/json
+
+{"request": {"serviceId": "chan-dung", "packageId": "chan-dung-cv", "date": "2026-11-07", "time": "09:00", "people": 1}}
 ```
 
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
 
-{"id": "c-customer2-3", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Chưa trả lời", "lastMessage": {"from": "customer", "text": "Em cảm ơn studio, tháng sau nhóm bạn em muốn hỏi thêm gói tốt nghiệp ạ.", "at": "2026-10-20T09:53:00+07:00"}, "updatedAt": "2026-10-20T09:53:00+07:00", "bookingId": null, "messages": [{"id": "m-14", "from": "customer", "authorName": "Trần Minh Anh", "kind": "text", "text": "Em cảm ơn studio, tháng sau nhóm bạn em muốn hỏi thêm gói tốt nghiệp ạ.", "at": "2026-10-20T09:53:00+07:00", "request": null, "proposal": null}]}
+{"id": "c-linh-2", "customer": {"id": "u-linh", "name": "Nguyễn Thùy Linh"}, "status": "Chưa trả lời", "lastMessage": {"from": "customer", "text": "Yêu cầu đặt lịch: Chân dung/CV, 07/11/2026 lúc 09:00, 1 người.", "at": …}, "updatedAt": …, "bookingId": null, "messages": […]}
 ```
 
 ## Changes
@@ -369,3 +386,4 @@ Content-Type: application/json
 - 2026-11-27 — Added the `POST /api/conversations` example after `GS-1022` / `c-customer2` moves to *Hoàn thành*, verifying that a customer's new message opens a new conversation (`201`) when their latest conversation by newest message is *Hoàn thành*, per the product owners' answers ([answer 5](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622), [follow-up answer 2](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28854602184238579)). Client G3 updated after mock.
 - 2026-11-27 — Gallery gains boolean `shootDone` (`true` when the booking's `shoot` job in `08-jobs.md` has status *Hoàn thành*, `false` otherwise), so screen G9 disables *Thanh toán 70%* with a visible reason until the shoot job is *Hoàn thành* and a photo choice is saved, per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)). Added `shootDone` to every Gallery response example and added a read-only `GS-1024` (`shootDone: false`) example. Client G9 updated after mock.
 - 2026-11-28 — The `limit` row no longer says Kỷ yếu lớp and Chân dung/CV are *waiting*: every package has `editedPhotos` since `02-catalogue.md` changed on 2026-11-27 (PR #8 review). No example changes.
+- 2026-11-28 — The `POST /api/conversations` example at the end follows the product owners' rule of [part II, answer 6](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28855460470819417&reply_comment_id=28858450227187108): Minh Anh's message would now join `c-anh`, so the end of the file shows Linh instead, whose only conversation has a booking: plain text joins `c-linh` (`200`) and a booking request opens `c-linh-2` (`201`).

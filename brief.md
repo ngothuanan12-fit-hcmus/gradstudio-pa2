@@ -849,3 +849,9 @@ Sent to Antigravity (Gemini 4 Neon (High)).
 > đã có comment pr#8, có cần Khánh merge luôn không hay mình merge
 
 > đồng ý, làm bước 1
+
+### 2.31 The product owners' third round; tasks 4–6 done by the assistant itself, and the message to Khánh (2026-11-28)
+
+> (the questions of another team, 13 in four parts, and the product owners' answers in four replies, pasted, with the links: comment 28855460470819417, replies 28855464487485682, 28855467304152067, 28858446627187468, 28858450227187108, 28858454523853345; then a question on the payment time limit, comment 28865135763185221, and its answer, reply 28865342853164512)
+
+> đồng ý, lần này bạn sẽ thực hiện lần lượt các việc và soạn tin nhắn cho Khánh

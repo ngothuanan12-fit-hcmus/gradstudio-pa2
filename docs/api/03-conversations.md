@@ -152,11 +152,12 @@ Content-Type: application/json
 
 ## POST /api/conversations
 
-Who: a customer (step G3). Sends a message (`text`), a booking request (`request`), or both. Per the product owners' answers ([answer 5](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622), [follow-up answers 2 and 3](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28854602184238579)), take the customer's latest conversation by its newest message (`updatedAt`); when two conversations' newest messages are at the same moment, the one listed first by `GET /api/conversations` counts as the latest:
+Who: a customer (step G3). Sends a message (`text`), a booking request (`request`), or both, without choosing a conversation (from the services page or `/tu-van`). A message inside a conversation the customer has opened goes through `POST /api/conversations/:id/messages`. Per the product owners ([part II, answer 6](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28855460470819417&reply_comment_id=28858450227187108), which replaces the rule of [answer 5](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622) for this case), the message goes to:
 
-- no conversation yet, or that latest conversation is *Hoàn thành* → open a new conversation in *Chưa trả lời* (`bookingId` `null`) with what was sent as its first message, and answer `201`;
-- that latest conversation is not *Hoàn thành* and has no booking (`bookingId` `null`) → add the message to it (even when it carries a booking `request`), keep its `status` unchanged, and answer `200` with that conversation;
-- that latest conversation is not *Hoàn thành* and already has a booking (`bookingId` not `null`; one conversation holds at most one booking): if `request` is present, open a new conversation in *Chưa trả lời* (`201`); if only `text` is sent, add the message to that conversation, keep its `status` unchanged, and answer `200`.
+- the customer's conversation that has no booking (`bookingId` `null`) and is not *Hoàn thành*: a customer has at most one, and if the data holds more, the one with the newest message (`updatedAt`; on a tie, the one listed first by `GET /api/conversations`). The message is added to it, even a booking `request`; its `status` stays; answer `200` with that conversation;
+- when there is no such conversation, a booking `request` opens a new conversation in *Chưa trả lời* (`201`), and plain `text` is added to the conversation that is not *Hoàn thành* with the newest message (`200`), or opens a new conversation (`201`) when every conversation is *Hoàn thành* or there is none.
+
+A booking request is never added to a conversation that already has a booking: one conversation holds one booking.
 
 Body:
 
@@ -171,7 +172,7 @@ Body:
 | `request.people` | integer | yes | 1 to 200; for a class yearbook the representative's estimate, confirmed later by the Admin |
 | `request.extras` | list | no | each `{ "extraId" }`; for a costume also `modelId` and `size`, from that extra's models |
 
-Success: `201` when a new conversation is opened, or `200` when the message is added to the latest conversation; both return the conversation object with its `messages`. Examples for joining an unbooked conversation, adding plain `text` to a booked conversation, and opening a new conversation when a booked conversation gets a new `request` sit at the end of this file (after the earlier `c-linh` / `c-anh` state); opening a new conversation after *Hoàn thành* sits at the end of `09-gallery.md`.
+Success: `201` when a new conversation is opened, or `200` when the message is added to a conversation; both return the conversation object with its `messages`. Examples for each branch sit at the end of this file, after Anh's proposals, and at the end of `09-gallery.md`, after Linh's conversation has its booking.
 
 Errors:
 
@@ -312,7 +313,7 @@ Content-Type: application/json
 
 ## POST /api/conversations/:id/proposals
 
-Who: the Admin. Proposes a time in the chat (step G5). The API runs the clash check of `04-schedule.md` (`POST /api/schedule/check`), with the same rules: the people and the room against bookings that hold a slot (*Đã đặt lịch*; a booking in *Chờ cọc 30%* does not, brief section 3), and the studio's opening hours (a team rule: the product owners do not say). Costume stock is not checked: the product owners decided the clash check covers people and rooms only ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)). A clash is refused with `409`, saying who is busy or which hours are open, and which time is free instead when there is one. An accepted proposal becomes a message of kind `proposal`; an earlier open proposal on the same conversation becomes `replaced`; a *Chưa trả lời* conversation becomes *Đang tư vấn*. A conversation that already has a booking takes no new proposal: that booking's time is changed in the booking itself (`PATCH /api/bookings/:id`, `05-bookings.md`, step G10), and the refusal names the booking in `details.bookingId`, so the screen can link to it.
+Who: the Admin. Proposes a time in the chat (step G5). The API runs the clash check of `04-schedule.md` (`POST /api/schedule/check`), with the same rules: the people and the room against bookings that hold a slot (*Đã đặt lịch*; a booking in *Chờ cọc 30%* does not, brief section 3), and the studio's opening hours (a team rule: the product owners do not say). Costume stock is not checked: the product owners decided the clash check covers people and rooms only ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)). A clash is refused with `409`, saying who is busy or which hours are open, and which time is free instead when there is one. An accepted proposal becomes a message of kind `proposal`; an earlier open proposal on the same conversation becomes `replaced`, and so does a proposal the customer already agreed to while the conversation has no booking: per the product owners ([part II, answer 5](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28855460470819417&reply_comment_id=28858450227187108)) the agreed time is void, the conversation goes back to *Đang tư vấn*, and *Tạo booking* (`POST /api/bookings`, `05-bookings.md`) is refused until the customer agrees to the new proposal; a *Chưa trả lời* conversation becomes *Đang tư vấn*. A conversation that already has a booking takes no new proposal: that booking's time is changed in the booking itself (`PATCH /api/bookings/:id`, `05-bookings.md`, step G10), and the refusal names the booking in `details.bookingId`, so the screen can link to it.
 
 Body:
 
@@ -591,7 +592,75 @@ Content-Type: application/json
 {"error": {"code": "CONFLICT", "message": "Đề xuất này đã được thay bằng đề xuất mới."}}
 ```
 
-Anh's latest conversation (`c-anh`, newest message at `09:47`) is *Đang tư vấn* and has no booking (`bookingId` `null`), so sending a booking request via `POST /api/conversations` adds it to `c-anh` (`200`) and keeps *Đang tư vấn*:
+Anh agrees to `pr-4`; `c-anh` is *Đã chốt lịch* and has no booking yet:
+
+```http
+POST /api/conversations/c-anh/proposals/pr-4/answer
+Authorization: Bearer {{token:customer2}}
+Content-Type: application/json
+
+{"answer": "agree"}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"id": "c-anh", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đã chốt lịch", "lastMessage": {"from": "customer", "text": "Đồng ý lịch đề xuất.", "at": "2026-10-20T09:48:00+07:00"}, "updatedAt": "2026-10-20T09:48:00+07:00", "bookingId": null, "messages": […]}
+```
+
+Before creating the booking, Thảo proposes 15:00 instead (`pr-5`): the agreed `pr-4` is void and `c-anh` goes back to *Đang tư vấn*:
+
+```http
+POST /api/conversations/c-anh/proposals
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"date": "2026-10-27", "makeup": null, "shoot": {"from": "15:00", "to": "16:00", "staffId": "u-staff3", "roomId": "r-b"}}
+```
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{"id": "c-anh", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đang tư vấn", "lastMessage": {"from": "studio", "text": "Studio đề xuất ngày 27/10/2026: chụp 15:00–16:00 với Hoàng Gia Huy tại Phòng B.", "at": "2026-10-20T09:49:00+07:00"}, "updatedAt": "2026-10-20T09:49:00+07:00", "bookingId": null, "messages": […]}
+```
+
+`pr-4` can no longer be answered:
+
+```http
+POST /api/conversations/c-anh/proposals/pr-4/answer
+Authorization: Bearer {{token:customer2}}
+Content-Type: application/json
+
+{"answer": "agree"}
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{"error": {"code": "CONFLICT", "message": "Đề xuất này đã được thay bằng đề xuất mới."}}
+```
+
+And the booking cannot be created from the void agreement (`05-bookings.md`):
+
+```http
+POST /api/bookings
+Authorization: Bearer {{token:thao}}
+Content-Type: application/json
+
+{"conversationId": "c-anh", "serviceId": "chan-dung", "packageId": "chan-dung-cv", "people": 1}
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{"error": {"code": "CONFLICT", "message": "Khách chưa đồng ý lịch đề xuất."}}
+```
+
+`c-anh` is Anh's conversation without a booking, so a booking request sent without choosing a conversation is added to it (`200`) and it stays *Đang tư vấn*:
 
 ```http
 POST /api/conversations
@@ -605,10 +674,10 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "c-anh", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đang tư vấn", "lastMessage": {"from": "customer", "text": "Em gửi thêm yêu cầu chụp chân dung chiều 27/10 ạ.", "at": "2026-10-20T09:48:00+07:00"}, "updatedAt": "2026-10-20T09:48:00+07:00", "bookingId": null, "messages": […]}
+{"id": "c-anh", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đang tư vấn", "lastMessage": {"from": "customer", "text": "Em gửi thêm yêu cầu chụp chân dung chiều 27/10 ạ.", "at": …}, "updatedAt": …, "bookingId": null, "messages": […]}
 ```
 
-Anh writes in `c-customer2` (her booked conversation for `GS-1022`), making `c-customer2` her latest conversation by newest message:
+Anh writes in `c-customer2`, her conversation for `GS-1022`, which now has her newest message:
 
 ```http
 POST /api/conversations/c-customer2/messages
@@ -622,10 +691,10 @@ Content-Type: application/json
 HTTP/1.1 201 Created
 Content-Type: application/json
 
-{"id": "c-customer2", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đã chốt lịch", "lastMessage": {"from": "customer", "text": "Chị ơi buổi chụp 18/10 của em có ảnh xem trước chưa ạ?", "at": "2026-10-20T09:49:00+07:00"}, "updatedAt": "2026-10-20T09:49:00+07:00", "bookingId": "GS-1022", "messages": […]}
+{"id": "c-customer2", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đã chốt lịch", "lastMessage": {"from": "customer", "text": "Chị ơi buổi chụp 18/10 của em có ảnh xem trước chưa ạ?", "at": …}, "updatedAt": …, "bookingId": "GS-1022", "messages": […]}
 ```
 
-Because Anh's latest conversation (`c-customer2`) already has `GS-1022` and is not *Hoàn thành*, sending `text` without `request` via `POST /api/conversations` joins `c-customer2` (`200`) and keeps its status:
+A plain message sent without choosing a conversation still goes to `c-anh`, her conversation without a booking, not to `c-customer2` where her newest message is (`200`):
 
 ```http
 POST /api/conversations
@@ -639,10 +708,10 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "c-customer2", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đã chốt lịch", "lastMessage": {"from": "customer", "text": "Em hỏi thêm khi chọn ảnh xong thì thanh toán 70% ở mục Lịch chụp phải không ạ?", "at": "2026-10-20T09:50:00+07:00"}, "updatedAt": "2026-10-20T09:50:00+07:00", "bookingId": "GS-1022", "messages": […]}
+{"id": "c-anh", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đang tư vấn", "lastMessage": {"from": "customer", "text": "Em hỏi thêm khi chọn ảnh xong thì thanh toán 70% ở mục Lịch chụp phải không ạ?", "at": …}, "updatedAt": …, "bookingId": null, "messages": […]}
 ```
 
-Sending a new `request` via `POST /api/conversations` while `c-customer2` already has `GS-1022` opens a new conversation (`201`):
+So does a new booking request: the product owners' example of a conversation A without a booking and a booked conversation B with the newest message (`200`, added to `c-anh`):
 
 ```http
 POST /api/conversations
@@ -653,13 +722,13 @@ Content-Type: application/json
 ```
 
 ```http
-HTTP/1.1 201 Created
+HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "c-customer2-2", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Chưa trả lời", "lastMessage": {"from": "customer", "text": "Em muốn đặt thêm một buổi chụp chân dung CV vào ngày 28/10 ạ.", "at": "2026-10-20T09:51:00+07:00"}, "updatedAt": "2026-10-20T09:51:00+07:00", "bookingId": null, "messages": [{"id": "m-12", "from": "customer", "authorName": "Trần Minh Anh", "kind": "request", "text": "Em muốn đặt thêm một buổi chụp chân dung CV vào ngày 28/10 ạ.", "at": "2026-10-20T09:51:00+07:00", "request": {"serviceId": "chan-dung", "serviceName": "Chân dung/CV", "packageId": "chan-dung-cv", "packageName": "Gói Chân dung/CV", "date": "2026-10-28", "time": "10:00", "people": 1, "extras": []}, "proposal": null}]}
+{"id": "c-anh", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đang tư vấn", "lastMessage": {"from": "customer", "text": "Em muốn đặt thêm một buổi chụp chân dung CV vào ngày 28/10 ạ.", "at": …}, "updatedAt": …, "bookingId": null, "messages": […]}
 ```
 
-Thảo answers Anh's question in `c-customer2`, so `c-customer2` is once again Anh's latest conversation before `09-gallery.md` moves `GS-1022` to *Hoàn thành*:
+Thảo answers Anh's question in `c-customer2`:
 
 ```http
 POST /api/conversations/c-customer2/messages
@@ -673,7 +742,7 @@ Content-Type: application/json
 HTTP/1.1 201 Created
 Content-Type: application/json
 
-{"id": "c-customer2", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đã chốt lịch", "lastMessage": {"from": "studio", "text": "Dạ đúng rồi bạn nhé, chọn ảnh xong bạn thanh toán 70% ngay trong mục Lịch chụp ạ.", "at": "2026-10-20T09:52:00+07:00"}, "updatedAt": "2026-10-20T09:52:00+07:00", "bookingId": "GS-1022", "messages": […]}
+{"id": "c-customer2", "customer": {"id": "u-customer2", "name": "Trần Minh Anh"}, "status": "Đã chốt lịch", "lastMessage": {"from": "studio", "text": "Dạ đúng rồi bạn nhé, chọn ảnh xong bạn thanh toán 70% ngay trong mục Lịch chụp ạ.", "at": …}, "updatedAt": …, "bookingId": "GS-1022", "messages": […]}
 ```
 
 ## Changes
@@ -685,3 +754,4 @@ Content-Type: application/json
 - 2026-11-22 — `POST /api/conversations/:id/proposals` no longer takes `costumes` and no longer refuses for costume stock; `conflicts.kind` is `staff`, `room` or `hours`. The product owners decided the clash check covers people and rooms only ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)). The earlier line of today added the costume check; this one takes it back. No client code calls this endpoint yet.
 - 2026-11-27 — `POST /api/conversations` joins the customer's latest conversation (by newest message `updatedAt`) and returns `200` keeping its `status` when that conversation is not *Hoàn thành* and either has no booking or already has a booking while the body has no `request`; it opens a new conversation (`201`) when there is no conversation, the latest is *Hoàn thành*, or the latest has a booking and the body includes `request`. `POST /api/conversations/:id/proposals/:proposalId/answer` returns `409` `"Đề xuất này đã được thay bằng đề xuất mới."` for a `replaced` proposal, distinct from `"Đề xuất này đã được trả lời."`. Per the product owners' answers ([answer 5](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622), [follow-up answers 2 and 3](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28854602184238579)). Client G3 (`/tu-van`) updated after mock.
 - 2026-11-28 — `POST /api/conversations` states which conversation counts as the latest when two have their newest message at the same moment: the one listed first by `GET /api/conversations`, as screen G3 already reads it (PR #8 review). No example changes: no two seed conversations tie.
+- 2026-11-28 — `POST /api/conversations` follows the product owners' later answer ([part II, answer 6](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28855460470819417&reply_comment_id=28858450227187108)), which replaces the rule of 2026-11-27 for a message sent without choosing a conversation: it goes to the customer's conversation that has no booking and is not *Hoàn thành*, even a booking request; only when there is none does a request open a new conversation and plain text join the newest conversation that is not *Hoàn thành*. Two examples now answer `c-anh` (`200`) where they answered `c-customer2` and a new `c-customer2-2`. `POST /api/conversations/:id/proposals` also replaces an agreed proposal while the conversation has no booking, and the conversation goes back to *Đang tư vấn* ([part II, answer 5](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28855460470819417&reply_comment_id=28858450227187108)); four new examples on `c-anh`. Message times after the new examples are written as `…`. Client G3 (`/tu-van`) follows the mock.
