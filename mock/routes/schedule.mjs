@@ -25,12 +25,21 @@ function caller(req, db, roles) {
   return { user };
 }
 
+const DAY_NAMES = ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+
+// The opening hours of a date's day of the week: `weekday` Monday–Friday, `weekend` Saturday–Sunday (10-admin.md).
+export function hoursFor(db, date) {
+  const day = new Date(`${date}T00:00:00Z`).getUTCDay();
+  const { open, close } = db.settings.openingHours[day === 0 || day === 6 ? 'weekend' : 'weekday'];
+  return { open, close, dayName: DAY_NAMES[day] };
+}
+
 function freeTimeFor(db, date, excludeBookingId = null) {
   const dayBusy = db.busy.filter((b) => b.date === date && b.bookingId !== excludeBookingId);
   if (!dayBusy.length) return null;
   const raw = db.freeTimes[date] ?? db.freeTimes.default;
   const candidates = Array.isArray(raw) ? raw : raw ? [raw] : [];
-  const { open, close } = db.settings.openingHours;
+  const { open, close } = hoursFor(db, date);
   const fitsHours = (slot) => !slot || (slot.from >= open && slot.to <= close);
   const overlapsBusy = (slot) => slot && dayBusy.some((b) => b.from < slot.to && slot.from < b.to);
   return (
@@ -90,15 +99,16 @@ function slotClashes(db, date, part, slot, label, excludeBookingId) {
   return found;
 }
 
-export function checkSchedule(db, { date, makeup, shoot, excludeBookingId = null }) {
+// `checkHours: false` leaves the opening hours out (the re-check when a deposit succeeds looks at people and rooms only).
+export function checkSchedule(db, { date, makeup, shoot, excludeBookingId = null, checkHours = true }) {
   const conflicts = [
     ...(makeup ? slotClashes(db, date, 'makeup', makeup, 'makeup', excludeBookingId) : []),
     ...slotClashes(db, date, 'shoot', shoot, 'chụp', excludeBookingId),
   ];
 
-  const { open, close } = db.settings.openingHours;
+  const { open, close, dayName } = hoursFor(db, date);
   const outOfHours = [makeup, shoot].filter(Boolean).some((slot) => slot.from < open || slot.to > close);
-  if (outOfHours) {
+  if (checkHours && outOfHours) {
     conflicts.push({ who: 'Giờ mở cửa studio', kind: 'hours', date, from: open, to: close });
   }
 
@@ -118,7 +128,7 @@ export function checkSchedule(db, { date, makeup, shoot, excludeBookingId = null
   const onlyTimeConflicts = conflicts.every((c) => c.kind === 'staff' || c.kind === 'room');
   const freeTime = onlyTimeConflicts ? freeTimeFor(db, date, excludeBookingId) : null;
   const why = conflicts.map((c) => {
-    if (c.kind === 'hours') return `Ngoài giờ mở cửa studio (${c.from}–${c.to})`;
+    if (c.kind === 'hours') return `${dayName} studio mở ${c.from}–${c.to}`;
     return `${c.who}${c.part ? ` (${c.part})` : ''} bận ${c.from}–${c.to} ngày ${vnDate(c.date)}`;
   });
   const offer = freeTime
@@ -172,7 +182,7 @@ function readSchedule({ req, db, query }) {
     }));
   return ok({
     date,
-    openingHours: db.settings.openingHours,
+    openingHours: (({ open, close }) => ({ open, close }))(hoursFor(db, date)),
     blocks,
     freeTime: freeTimeFor(db, date),
   });

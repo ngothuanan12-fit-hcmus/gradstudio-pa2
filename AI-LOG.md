@@ -2636,3 +2636,12 @@ Kept: awaiting An's review. Settings hold `openingHours.weekday` and `openingHou
 Changed: the plan was to use the product owners' example "Thứ Bảy studio mở 07:30–20:00" as the weekend hours; that would invent a time (NEVER 11), so the sample stays the team's `08:00`–`18:00` for both, and no example value in Khánh's `04` changes except the refusal's wording.
 Rejected: a different `openingHours` shape in `GET /api/schedule` (it would break Khánh's resource schedule for no gain); applying the hours to the customer's wished time (the answer says it is not blocked).
 By hand: none.
+
+### 2026-11-28 — mock: opening hours by day of the week
+Commit: the commit that adds this entry with `mock/data/settings.json`, `mock/data/README.md`, `mock/routes/admin.mjs` and `mock/routes/schedule.mjs`, after `19b0d47`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `eslint`, `prettier --check`; `contract-check --strict-values` (163/163) and `npm test` (10/10) on a temporary copy before the contract commit.
+Asked for: task 5, mock side.
+Kept: awaiting An's review. `hoursFor(db, date)` in `schedule.mjs` picks `weekend` for Saturday and Sunday and `weekday` otherwise, with the Vietnamese day name; `checkSchedule` and the free-time search use it, the `hours` refusal reads "<day> studio mở <open>–<close>", and `GET /api/schedule` returns that day's `{ open, close }`. `checkSchedule` takes `checkHours` (default `true`) so the re-check when a deposit succeeds can look at people and rooms only, as the product owners decided; `payments.mjs` (Khánh's) does not pass it yet, left to Khánh. `PUT /api/settings` checks the four times under `openingHours.weekday.*` and `openingHours.weekend.*`.
+Changed: the first run of the edit failed on a Windows path inside a bash heredoc (a Python syntax error before any file was written); the edit was moved into a script file and run again.
+Rejected: changing `payments.mjs` here (Khánh's file).
+By hand: none.
