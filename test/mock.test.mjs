@@ -634,6 +634,24 @@ test('rescheduling a deposit-paid unheld booking to a free slot moves it to Đã
     assert.equal(jobs.length, 1);
     assert.equal(jobs[0].staffId, 'u-tuan');
 
+    const remainderShootGuard = await fetch(`${mock.base}/api/payments`, {
+      method: 'POST',
+      headers: minhAnh,
+      body: JSON.stringify({ bookingId: bookingB.id, kind: 'remainder' }),
+    });
+    assert.equal(remainderShootGuard.status, 409);
+    assert.equal(
+      (await remainderShootGuard.json()).error.message,
+      'Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại.',
+    );
+
+    const markShootDone = await fetch(`${mock.base}/api/jobs/${jobs[0].id}`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ status: 'Hoàn thành' }),
+    });
+    assert.equal(markShootDone.status, 200);
+
     const remainderGuard = await fetch(`${mock.base}/api/payments`, {
       method: 'POST',
       headers: minhAnh,
@@ -642,6 +660,37 @@ test('rescheduling a deposit-paid unheld booking to a free slot moves it to Đã
     assert.equal(remainderGuard.status, 409);
     const remainderBody = await remainderGuard.json();
     assert.equal(remainderBody.error.message, 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
+
+    // Also verify POST /api/payments/:id/result refuses remainder success if shoot job is no longer Hoàn thành.
+    const selRes = await fetch(`${mock.base}/api/bookings/GS-1020/selection`, {
+      method: 'PUT',
+      headers: minhAnh,
+      body: JSON.stringify({ previewIds: ['prv-gs-1020-1'] }),
+    });
+    assert.equal(selRes.status, 200);
+    const remStart = await fetch(`${mock.base}/api/payments`, {
+      method: 'POST',
+      headers: minhAnh,
+      body: JSON.stringify({ bookingId: 'GS-1020', kind: 'remainder' }),
+    });
+    assert.equal(remStart.status, 201);
+    const remPay = await remStart.json();
+    const revertShoot = await fetch(`${mock.base}/api/jobs/job-gs-1020-shoot`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(revertShoot.status, 200);
+    const remConfirm = await fetch(`${mock.base}/api/payments/${remPay.id}/result`, {
+      method: 'POST',
+      headers: minhAnh,
+      body: JSON.stringify({ result: 'success' }),
+    });
+    assert.equal(remConfirm.status, 409);
+    assert.equal(
+      (await remConfirm.json()).error.message,
+      'Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại.',
+    );
   } finally {
     await mock.stop();
   }

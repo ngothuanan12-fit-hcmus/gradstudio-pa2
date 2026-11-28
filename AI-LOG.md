@@ -2610,3 +2610,13 @@ Kept: awaiting review. Updated `docs/api/05-bookings.md` rule 1, `POST /api/book
 Changed: nothing.
 Rejected: changing `mock/routes/bookings.mjs` because `cancel()` already leaves `db.conversations` untouched.
 By hand: none.
+
+
+### 2026-11-28 — contract 06 & mock: require completed shoot job before 70% remainder payment (Mục 1)
+Commit: the commit that adds this entry with `docs/api/06-payments.md`, `mock/routes/payments.mjs`, `test/mock.test.mjs`, and `FRONTEND.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm test`.
+Asked for: Mục 1 — require the booking's `shoot` job (`role === 'shoot'`) to have status `Hoàn thành` before allowing 70% remainder payment on `POST /api/payments` and `POST /api/payments/:id/result` (`409 CONFLICT` otherwise), add example and `## Changes` in `docs/api/06-payments.md`, remove the pending note in `FRONTEND.md` section 7, and verify `Gallery.jsx` and `PaymentResult.jsx`.
+Kept: awaiting review. Updated `docs/api/06-payments.md` (rule 5, error tables, `GS-1024` `409` example, `## Changes`), `mock/routes/payments.mjs` (`isShootDone` check in both `start` and `applyResult`), `test/mock.test.mjs` (both `POST /api/payments` and `POST /api/payments/:id/result` `409` checks), and `FRONTEND.md` (sections 5 and 7). Verified `Gallery.jsx` (`!g.shootDone` hint + `pay.error`) and `PaymentResult.jsx` (`retryAction.error`) already display the reason and `409` errors.
+Changed: `npm run format:check` flagged a long line in `test/mock.test.mjs`; ran `npx prettier --write test/mock.test.mjs`, after which `format:check` and `npm test` (`10/10` pass) passed.
+Rejected: changing `Gallery.jsx` or `PaymentResult.jsx` because they already handle `!g.shootDone` and `409` errors cleanly.
+By hand: none.

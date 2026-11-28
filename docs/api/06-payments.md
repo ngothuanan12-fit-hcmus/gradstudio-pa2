@@ -7,7 +7,7 @@ Deposit (30%, step G7) and remainder (70%, step G9) payments through the app's t
 2. When a deposit succeeds on a free slot, the booking moves from *Chờ cọc 30%* to *Đã đặt lịch*, and its make-up and shoot blocks are added to `busy` so the clash check (`03-conversations.md`, `04-schedule.md`, `05-bookings.md`) sees them.
 3. **Concurrent second-customer deposit ([product owners](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)):** if two bookings in *Chờ cọc 30%* reach checkout together for overlapping resources and the first customer pays first, when the second customer's deposit finishes (`POST /api/payments/:id/result` with `result: "success"`), the payment is still recorded as **`succeeded`** (never `failed`) and `booking.payment.depositStatus` becomes **`paid`** (preventing paying twice, `409`), while the booking **keeps status *Chờ cọc 30%*** (no blocks added to `busy`) and `payment.message` explains that the slot is already held by another customer. No auto-refund happens: the Admin refunds outside the system, cancels the booking, or — **team assumption (follow-up question for the product owners)** — agrees on a new free time with the customer and moves the booking via `PATCH /api/bookings/:id` (`05-bookings.md`), which transitions the booking to *Đã đặt lịch*, adds its blocks to `busy`, and unlocks the remaining 70% payment (`GS-1025` illustrative example in `05-bookings.md`; verified end to end on its own fresh mock process in `test/mock.test.mjs`).
 4. **Failed payments & retries ([product owners](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)):** when `result: "fail"` is recorded, the booking keeps its status (*Chờ cọc 30%* or *Đã đặt lịch* waiting for 70%), with message `"Thanh toán không thành công, booking vẫn chờ cọc."` (deposit) or `"Thanh toán không thành công, booking vẫn chờ thanh toán 70% còn lại."` (remainder), and unlimited retries via `POST /api/payments`. An amount already `paid` answers `409`.
-5. **Team reading of step G9 in the brief:** the remaining 70% follows the order *chọn ảnh → trả 70% → Nhận ảnh*. A remainder payment requires the booking in *Đã đặt lịch*, deposit `paid`, and a saved photo selection (`09-gallery.md`), otherwise the API answers `409` (`"Cần chọn ảnh trước khi thanh toán 70% còn lại."`). When a remainder payment succeeds, `payment.remainderStatus` becomes `paid`; the booking stays *Đã đặt lịch* until *Nhận ảnh* (`09-gallery.md`).
+5. **Team reading of step G9 in the brief & product owners' 2026-11-27 decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)):** the remaining 70% follows the order *chọn ảnh → trả 70% → Nhận ảnh*. Paying `remainder` (`POST /api/payments` and `POST /api/payments/:id/result` with `result: "success"`) requires: (1) booking in *Đã đặt lịch* with `depositStatus === "paid"`, (2) the booking's `shoot` job (`role === "shoot"` in `08-jobs.md`) has status *Hoàn thành*, and (3) a saved photo selection (`09-gallery.md`) with `remainderStatus !== "paid"`. If the `shoot` job is not *Hoàn thành*, the API answers `409` (`"Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại."`); if no photo selection is saved yet, the API answers `409` (`"Cần chọn ảnh trước khi thanh toán 70% còn lại."`). When a remainder payment succeeds, `payment.remainderStatus` becomes `paid`; the booking stays *Đã đặt lịch* until *Nhận ảnh* (`09-gallery.md`).
 
 **Team assumption.** For PA#3, because there is no external payment provider, the signed-in customer records the test gateway outcome directly via `POST /api/payments/:id/result`.
 
@@ -64,7 +64,7 @@ Errors:
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not a customer | — |
 | `404` | `NOT_FOUND` | unknown booking or another customer's booking | — |
-| `409` | `CONFLICT` | booking is *Đã hủy* or *Hoàn thành*; `deposit` already `paid`; `remainder` requested before *Đã đặt lịch* (`deposit` unpaid or concurrent clash left slot unheld), before a photo selection is saved, or already `paid`; `amount` is `null`; or resources now clash on `deposit` before opening checkout | `details` (`conflicts`, `freeTime`) on a pre-checkout clash |
+| `409` | `CONFLICT` | booking is *Đã hủy* or *Hoàn thành*; `deposit` already `paid`; `remainder` requested before *Đã đặt lịch* (`deposit` unpaid or concurrent clash left slot unheld), while `shoot` job (`08-jobs.md`) is not *Hoàn thành*, before a photo selection is saved, or already `paid`; `amount` is `null`; or resources now clash on `deposit` before opening checkout | `details` (`conflicts`, `freeTime`) on a pre-checkout clash |
 
 Another customer cannot pay for GS-1022 (`linh` vs `customer2`):
 
@@ -199,7 +199,7 @@ Body:
 
 Success: `200` with `{ "payment", "booking" }`.
 
-Errors: `400` (`result`: `"Chọn thành công hoặc thất bại."`), `401`, `403`, `404`, `409` (payment result already applied, amount already paid, missing photo selection, or booking not *Đã đặt lịch* for `remainder`).
+Errors: `400` (`result`: `"Chọn thành công hoặc thất bại."`), `401`, `403`, `404`, `409` (payment result already applied, amount already paid, `shoot` job not *Hoàn thành*, missing photo selection, or booking not *Đã đặt lịch* for `remainder`).
 
 First deposit attempt fails: GS-1024 stays *Chờ cọc 30%*:
 
@@ -318,6 +318,23 @@ Content-Type: application/json
 {"available": false, "message": …, "conflicts": [{"who": "Tuấn", "kind": "staff", "date": "2026-10-24", "from": "14:00", "to": "16:00"}, {"who": "Phòng B", "kind": "room", "date": "2026-10-24", "from": "14:00", "to": "16:00"}], "freeTime": …}
 ```
 
+Refused when trying to pay the remaining 70% while GS-1024's `shoot` job (`08-jobs.md`) is not *Hoàn thành* yet:
+
+```http
+POST /api/payments
+Authorization: Bearer {{token:linh}}
+Content-Type: application/json
+
+{"bookingId": "GS-1024", "kind": "remainder"}
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{"error": {"code": "CONFLICT", "message": "Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại."}}
+```
+
 Refused when trying to pay the remaining 70% before saving a photo selection (`GS-1022` has paid the deposit, no photo selection saved yet — team reading of step G9; `09-gallery.md` continues `GS-1022` through photo selection → 70% remainder → *Nhận ảnh*):
 
 ```http
@@ -355,3 +372,4 @@ Content-Type: application/json
 - 2026-11-22 — Require a saved photo selection (`selections` from `09-gallery.md`) before paying the remaining 70% under the team's reading of G9 (replacing GS-1022's remainder-success example with the `409` refusal before selection), align test gateway route names to `/thanh-toan/:paymentId` and `/thanh-toan/:paymentId/ket-qua` (`FRONTEND.md` section 4), state the browser gateway-result assumption explicitly, and replace mixed-English validation messages (`fields.kind` and `fields.result`) with Vietnamese (PR #5 review & agreed items 5, 7). No client code calls these endpoints yet.
 - 2026-11-22 — Adopt the product owners' answers ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)): drop costume stock re-checking, update failed payment messages (`"Thanh toán không thành công, booking vẫn chờ cọc."` / still waiting for 70%), record a second concurrent customer's clashing deposit as `succeeded` (`depositStatus: "paid"`, `409` on retry) while keeping booking status *Chờ cọc 30%* with the conflict reason in `payment.message`, and align GS-1024's `pricing` example to the updated `05-bookings.md` shape. No client code calls these endpoints yet.
 - 2026-11-23 — Clarify under Rule 3 (team assumption, follow-up question for product owners) that moving a deposit-paid unheld booking to a free slot via `PATCH /api/bookings/:id` (`05-bookings.md`) promotes it to *Đã đặt lịch*, adds `busy` blocks, and unlocks the 70% remainder payment (PR #6 review follow-up). No client code calls `remainder` recovery yet (`G7`/`G9`/`G10`).
+- 2026-11-28 — Require the booking's `shoot` job (`08-jobs.md`) to have status *Hoàn thành* on both `POST /api/payments` (`kind: "remainder"`) and `POST /api/payments/:id/result` (`result: "success"` for `remainder`), returning `409 CONFLICT` (`"Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại."`) otherwise per the product owners' 2026-11-27 decision; add a `409` example on `GS-1024`.

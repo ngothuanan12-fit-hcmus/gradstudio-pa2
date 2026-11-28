@@ -48,6 +48,13 @@ function hasPhotoSelection(db, bookingId) {
   return false;
 }
 
+function isShootDone(db, bookingId) {
+  return (
+    Array.isArray(db.jobs) &&
+    db.jobs.some((j) => j.bookingId === bookingId && j.role === 'shoot' && j.status === 'Hoàn thành')
+  );
+}
+
 // --- handlers
 
 function list({ req, db, query }) {
@@ -100,11 +107,14 @@ function start({ req, db, body }) {
     if (booking.status !== 'Đã đặt lịch') {
       return fail(409, 'CONFLICT', 'Booking chưa giữ lịch thành công, không thể thanh toán phần còn lại.');
     }
-    if (!hasPhotoSelection(db, booking.id)) {
-      return fail(409, 'CONFLICT', 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
-    }
     if (booking.payment.remainderStatus === 'paid') {
       return fail(409, 'CONFLICT', 'Booking này đã thanh toán phần còn lại.');
+    }
+    if (!isShootDone(db, booking.id)) {
+      return fail(409, 'CONFLICT', 'Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại.');
+    }
+    if (!hasPhotoSelection(db, booking.id)) {
+      return fail(409, 'CONFLICT', 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
     }
   }
 
@@ -203,11 +213,14 @@ function applyResult({ req, db, params, body }) {
   if (booking.status !== 'Đã đặt lịch') {
     return fail(409, 'CONFLICT', 'Booking chưa giữ lịch thành công, không thể thanh toán phần còn lại.');
   }
-  if (!hasPhotoSelection(db, booking.id)) {
-    return fail(409, 'CONFLICT', 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
-  }
   if (booking.payment.remainderStatus === 'paid') {
     return fail(409, 'CONFLICT', 'Booking này đã thanh toán phần còn lại.');
+  }
+  if (!isShootDone(db, booking.id)) {
+    return fail(409, 'CONFLICT', 'Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại.');
+  }
+  if (!hasPhotoSelection(db, booking.id)) {
+    return fail(409, 'CONFLICT', 'Cần chọn ảnh trước khi thanh toán 70% còn lại.');
   }
   booking.payment.remainderStatus = 'paid';
   booking.payment.remainderPaidAt = at;
