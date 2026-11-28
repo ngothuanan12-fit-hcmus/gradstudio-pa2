@@ -102,7 +102,7 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 | `selections.json` | The customers' photo choices, one row per booking (`bookingId`, `previewIds`, `savedAt`); empty at start | `gallery`; `payments` (the remaining 70% needs a choice) |
 | `busy.json` | Times when a person or a room is held by a booking in *Đã đặt lịch* (R1: a booking in *Chờ cọc 30%* holds nothing) | the clash check in `conversations`; `04-schedule.md` and `06-payments.md` (a successful deposit adds the booking's blocks) |
 | `freeTimes.json` | Candidate free windows per date (plus `default`); the clash check picks the first window still free against held blocks | the clash check (`conversations`, `schedule`) |
-| `settings.json` | Opening hours (*sample*, 08:00–18:00) and `reminderHoursBefore` (24, from the brief) | `admin`; the reminders of `07-reminders.md` |
+| `settings.json` | Opening hours for weekdays (Monday–Friday) and weekends (Saturday–Sunday) (*sample*, 08:00–18:00 both) and `reminderHoursBefore` (24, from the brief) | `admin`; the reminders of `07-reminders.md` |
 
 ## Changes
 
@@ -115,3 +115,4 @@ Ids: the mock gives a new booking the next number, so the booking created from `
 - 2026-11-22 — Update `06-payments.md` outcome: `GS-1022` remainder payment waits for `db.selections` from `09-gallery.md` before succeeding.
 - 2026-11-22 — Remove `costumes.json` (costume stock is not checked, per product owners' decision) and store multiple candidate windows per day in `freeTimes.json`.
 - 2026-11-27 — `services.json` sets `durationMinutes` and `editedPhotos` for `ky-yeu-lop` (`240`, `60`) and `chan-dung-cv` (`60`, `10`), matching `02-catalogue.md` ([product owners](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28852226657809465&reply_comment_id=28852825087749622)).
+- 2026-11-28 — `settings.json` holds `openingHours.weekday` and `openingHours.weekend` (sample `08:00`–`18:00` both), for the product owners' decision that hours bind by the day of the week (`10-admin.md`).

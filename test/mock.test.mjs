@@ -939,7 +939,13 @@ test('reminders: pending updates in place keeping hoursBefore; sent stays in his
     const setRes = await fetch(`${mock.base}/api/settings`, {
       method: 'PUT',
       headers: superadmin,
-      body: JSON.stringify({ openingHours: { open: '08:00', close: '20:00' }, reminderHoursBefore: 12 }),
+      body: JSON.stringify({
+        openingHours: {
+          weekday: { open: '08:00', close: '18:00' },
+          weekend: { open: '08:00', close: '18:00' },
+        },
+        reminderHoursBefore: 12,
+      }),
     });
     assert.equal(setRes.status, 200);
 

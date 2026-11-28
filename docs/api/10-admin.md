@@ -20,7 +20,7 @@ The password is never in an answer.
 
 | Field | Type | Notes |
 |---|---|---|
-| `openingHours` | object | `open` and `close`, both `HH:MM`, the same every day |
+| `openingHours` | object | `weekday` (Monday to Friday) and `weekend` (Saturday and Sunday), each `{ "open", "close" }` in `HH:MM`. Per the product owners ([part II, answer 4](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28855460470819417&reply_comment_id=28858450227187108)), a proposal, a new booking and a reschedule must sit inside the hours of their day (`04-schedule.md`); a customer's wished time is not checked, and changing the hours leaves existing bookings as they are. The sample values, `08:00`–`18:00` for both, are the team's |
 | `reminderHoursBefore` | integer | How many hours before the earliest milestone of a booking its reminder goes out (R4) |
 
 ## GET /api/admins
@@ -164,7 +164,7 @@ Authorization: Bearer {{token:superadmin}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"openingHours": {"open": "08:00", "close": "18:00"}, "reminderHoursBefore": 24}
+{"openingHours": {"weekday": {"open": "08:00", "close": "18:00"}, "weekend": {"open": "08:00", "close": "18:00"}}, "reminderHoursBefore": 24}
 ```
 
 A customer may not read them:
@@ -183,14 +183,16 @@ Content-Type: application/json
 
 ## PUT /api/settings
 
-Who: the Superadmin. Replaces the settings: both fields are sent every time. A new `reminderHoursBefore` applies to reminders set after the change (R4).
+Who: the Superadmin. Replaces the settings: every field is sent every time. A new `reminderHoursBefore` applies to reminders set after the change (R4).
 
 Body:
 
 | Field | Type | Required | Limits |
 |---|---|---|---|
-| `openingHours.open` | string | yes | `HH:MM` |
-| `openingHours.close` | string | yes | `HH:MM`, after `open` |
+| `openingHours.weekday.open` | string | yes | `HH:MM` |
+| `openingHours.weekday.close` | string | yes | `HH:MM`, after `open` |
+| `openingHours.weekend.open` | string | yes | `HH:MM` |
+| `openingHours.weekend.close` | string | yes | `HH:MM`, after `open` |
 | `reminderHoursBefore` | integer | yes | 1 to 168 (one week) |
 
 Success: `200` with the new settings.
@@ -199,7 +201,7 @@ Errors:
 
 | Status | `code` | When | `fields` |
 |---|---|---|---|
-| `400` | `VALIDATION_ERROR` | a field missing or outside its limits | `openingHours.open`: "Giờ theo dạng HH:MM."; `openingHours.close`: "Giờ theo dạng HH:MM." or "Giờ đóng cửa phải sau giờ mở cửa."; `reminderHoursBefore`: "Số giờ từ 1 đến 168." |
+| `400` | `VALIDATION_ERROR` | a field missing or outside its limits | `openingHours.weekday.open`, `openingHours.weekend.open`: "Giờ theo dạng HH:MM."; `openingHours.weekday.close`, `openingHours.weekend.close`: "Giờ theo dạng HH:MM." or "Giờ đóng cửa phải sau giờ mở cửa."; `reminderHoursBefore`: "Số giờ từ 1 đến 168." |
 | `401` | `UNAUTHENTICATED` | no token | — |
 | `403` | `FORBIDDEN` | not the Superadmin | — |
 
@@ -210,31 +212,31 @@ PUT /api/settings
 Authorization: Bearer {{token:superadmin}}
 Content-Type: application/json
 
-{"openingHours": {"open": "08:00", "close": "18:00"}, "reminderHoursBefore": 48}
+{"openingHours": {"weekday": {"open": "08:00", "close": "18:00"}, "weekend": {"open": "08:00", "close": "18:00"}}, "reminderHoursBefore": 48}
 ```
 
 ```http
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"openingHours": {"open": "08:00", "close": "18:00"}, "reminderHoursBefore": 48}
+{"openingHours": {"weekday": {"open": "08:00", "close": "18:00"}, "weekend": {"open": "08:00", "close": "18:00"}}, "reminderHoursBefore": 48}
 ```
 
-Closing before opening, and no reminder time:
+Weekend closing before opening, and no reminder time:
 
 ```http
 PUT /api/settings
 Authorization: Bearer {{token:superadmin}}
 Content-Type: application/json
 
-{"openingHours": {"open": "18:00", "close": "08:00"}}
+{"openingHours": {"weekday": {"open": "08:00", "close": "18:00"}, "weekend": {"open": "18:00", "close": "08:00"}}}
 ```
 
 ```http
 HTTP/1.1 400 Bad Request
 Content-Type: application/json
 
-{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"openingHours.close": "Giờ đóng cửa phải sau giờ mở cửa.", "reminderHoursBefore": "Số giờ từ 1 đến 168."}}}
+{"error": {"code": "VALIDATION_ERROR", "message": "Thông tin chưa hợp lệ.", "fields": {"openingHours.weekend.close": "Giờ đóng cửa phải sau giờ mở cửa.", "reminderHoursBefore": "Số giờ từ 1 đến 168."}}}
 ```
 
 An Admin may not change them:
@@ -244,7 +246,7 @@ PUT /api/settings
 Authorization: Bearer {{token:thao}}
 Content-Type: application/json
 
-{"openingHours": {"open": "07:00", "close": "18:00"}, "reminderHoursBefore": 24}
+{"openingHours": {"weekday": {"open": "07:00", "close": "18:00"}, "weekend": {"open": "07:00", "close": "18:00"}}, "reminderHoursBefore": 24}
 ```
 
 ```http
@@ -258,3 +260,4 @@ Content-Type: application/json
 
 - 2026-11-20 — First version. No client code calls these endpoints yet.
 - 2026-11-21 — Called by the client: `/quan-tri` (step G11). No change to the endpoints.
+- 2026-11-28 — `openingHours` has `weekday` (Monday to Friday) and `weekend` (Saturday and Sunday) hours, each `open` and `close`, set by the Superadmin; `PUT /api/settings` checks the four times (`openingHours.weekday.open`, …). The product owners decided the hours bind proposals, new bookings and reschedules by the day of the week ([part II, answer 4](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28855460470819417&reply_comment_id=28858450227187108)). Sample values stay `08:00`–`18:00` for both (the team's; no time invented). Called by `/quan-tri` (step G11), updated after the mock.

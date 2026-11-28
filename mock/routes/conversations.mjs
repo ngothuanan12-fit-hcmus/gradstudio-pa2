@@ -70,12 +70,12 @@ function addMessage(c, message) {
 }
 
 // Latest conversation of a customer by its newest message (product owners' follow-up answer 2).
-function latestConversationOf(db, customerId) {
+function newestOf(db, customerId, keep) {
   let best = null;
   let bestAt = -Infinity;
   // A tie keeps the conversation made first, the one GET /api/conversations lists first (03-conversations.md).
   for (const c of db.conversations) {
-    if (c.customerId !== customerId || !c.messages.length) continue;
+    if (c.customerId !== customerId || !c.messages.length || !keep(c)) continue;
     const at = Date.parse(c.messages[c.messages.length - 1].at);
     if (at > bestAt) {
       best = c;
@@ -161,16 +161,17 @@ function start({ req, db, body }) {
   const request = hasRequest ? checkRequest(db, b.request, fields) : null;
   if (Object.keys(fields).length) return invalid(fields);
 
-  const latest = latestConversationOf(db, user.id);
+  // Product owners, part II answer 6: the conversation without a booking first, then (plain text only) the newest open one.
+  const unbooked = newestOf(db, user.id, (c) => c.bookingId === null && c.status !== 'Hoàn thành');
+  const target = unbooked || (request ? null : newestOf(db, user.id, (c) => c.status !== 'Hoàn thành'));
   const text = hasText
     ? b.text
     : `Yêu cầu đặt lịch: ${request.serviceName}, ${vnDate(request.date)} lúc ${request.time}, ${request.people} người.`;
   const message = { from: 'customer', authorName: user.name, kind: request ? 'request' : 'text', text, request };
 
-  // Join the latest conversation unless it is Hoàn thành or already has a booking and this carries a request.
-  if (latest && latest.status !== 'Hoàn thành' && (latest.bookingId === null || !request)) {
-    addMessage(latest, message);
-    return ok(full(db, latest));
+  if (target) {
+    addMessage(target, message);
+    return ok(full(db, target));
   }
 
   const short = user.id.replace(/^u-/, '');
@@ -228,7 +229,10 @@ function propose({ req, db, params, body }) {
   }
   const { makeup, shoot } = parsed;
 
-  for (const p of db.proposals) if (p.conversationId === c.id && p.status === 'open') p.status = 'replaced';
+  // An open proposal, or an agreed one while there is no booking (product owners, part II answer 5), is replaced.
+  for (const p of db.proposals) {
+    if (p.conversationId === c.id && (p.status === 'open' || p.status === 'agreed')) p.status = 'replaced';
+  }
   const room = db.rooms.find((r) => r.id === shoot.roomId);
   const proposal = {
     id: `pr-${nextProposal++}`,
@@ -257,7 +261,7 @@ function propose({ req, db, params, body }) {
   ].filter(Boolean);
   const text = `Studio đề xuất ngày ${vnDate(b.date)}: ${parts.join(', ')}.`;
   addMessage(c, { from: 'studio', authorName: user.name, kind: 'proposal', text, proposal: proposal.id });
-  if (c.status === 'Chưa trả lời') c.status = 'Đang tư vấn';
+  if (c.status === 'Chưa trả lời' || c.status === 'Đã chốt lịch') c.status = 'Đang tư vấn';
   return ok(full(db, c), 201);
 }
 

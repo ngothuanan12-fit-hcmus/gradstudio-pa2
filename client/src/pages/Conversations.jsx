@@ -57,27 +57,36 @@ function bodyOf(v) {
   return body;
 }
 
-// Latest conversation by newest message (`updatedAt`), matching POST /api/conversations routing (03-conversations.md).
+// Where POST /api/conversations puts a message sent from here (03-conversations.md, product owners part II answer 6):
+// the conversation without a booking that is not Hoàn thành; if none, a request opens a new one and plain text joins
+// the newest conversation that is not Hoàn thành. Newest by `updatedAt`; a tie keeps the one listed first.
 function newestConversation(items) {
-  if (!Array.isArray(items) || !items.length) return null;
+  if (!items.length) return null;
   return items.reduce((best, cur) => (Date.parse(cur.updatedAt) > Date.parse(best.updatedAt) ? cur : best));
 }
 
-function destinationNote(latest, withRequest) {
-  if (!latest) return 'Bạn chưa có hội thoại nào — tin gửi đi sẽ mở hội thoại mới.';
-  if (latest.status === 'Hoàn thành') return 'Hội thoại gần nhất đã hoàn thành — tin gửi đi sẽ mở hội thoại mới.';
-  if (latest.bookingId === null) {
-    return `Tin nhắn và yêu cầu đặt lịch sẽ được thêm vào hội thoại gần nhất (${latest.status}, cập nhật ${formatMoment(latest.updatedAt)}).`;
+function destinationOf(items, withRequest) {
+  const open = (items || []).filter((c) => c.status !== 'Hoàn thành');
+  const unbooked = newestConversation(open.filter((c) => c.bookingId === null));
+  if (unbooked) return unbooked;
+  return withRequest ? null : newestConversation(open);
+}
+
+function destinationNote(target, withRequest) {
+  if (!target) {
+    return withRequest
+      ? 'Yêu cầu đặt lịch sẽ mở một hội thoại mới với studio.'
+      : 'Tin gửi đi sẽ mở một hội thoại mới với studio.';
   }
-  if (!withRequest) {
-    return `Hội thoại gần nhất đã có booking ${latest.bookingId} — tin nhắn thường sẽ được thêm vào hội thoại đó; chọn "Gửi kèm yêu cầu đặt lịch" nếu muốn mở hội thoại mới.`;
+  if (target.bookingId === null) {
+    return `Tin nhắn và yêu cầu đặt lịch sẽ được thêm vào hội thoại chưa có booking của bạn (${target.status}, cập nhật ${formatMoment(target.updatedAt)}).`;
   }
-  return `Hội thoại gần nhất đã có booking ${latest.bookingId} — yêu cầu đặt lịch mới sẽ mở hội thoại mới.`;
+  return `Tin nhắn sẽ được thêm vào hội thoại về booking ${target.bookingId}. Muốn đặt lịch mới, chọn "Gửi kèm yêu cầu đặt lịch": yêu cầu sẽ mở hội thoại mới.`;
 }
 
 // Step G3, the customer's side: their conversations with the studio, and sending a message, a booking request (service,
-// package, preferred date and time, how many people, make-up, a costume by model and size), or both. The server adds
-// the message to the latest conversation unless it is Hoàn thành or already has a booking with a new request (03-conversations.md).
+// package, preferred date and time, how many people, make-up, a costume by model and size), or both; the note above the
+// form says which conversation will receive it (destinationOf above).
 // A package chosen on the home page arrives in the router's state, never in the URL.
 export default function Conversations() {
   const location = useLocation();
@@ -110,8 +119,7 @@ export default function Conversations() {
 
   const v = form.values;
   const service = services.data?.find((s) => s.id === v['request.serviceId']);
-  const latest = newestConversation(list.data);
-  const willJoin = Boolean(latest && latest.status !== 'Hoàn thành' && (latest.bookingId === null || !v.withRequest));
+  const target = list.status === 'ready' ? destinationOf(list.data, v.withRequest) : null;
 
   return (
     <CustomerLayout title="Hội thoại với studio: GradStudio">
@@ -146,11 +154,11 @@ export default function Conversations() {
 
       <section className="chat-block" aria-labelledby="new-conversation">
         <h2 className="section-heading" id="new-conversation">
-          {willJoin ? 'Gửi vào hội thoại gần nhất' : 'Bắt đầu hội thoại mới'}
+          {target ? 'Gửi vào hội thoại đang mở' : 'Bắt đầu hội thoại mới'}
         </h2>
         {list.status === 'ready' && Array.isArray(list.data) ? (
           <p className="status-line" id="conv-destination">
-            {destinationNote(latest, v.withRequest)}
+            {destinationNote(target, v.withRequest)}
           </p>
         ) : null}
         <form className="chat-form" noValidate onSubmit={form.handleSubmit}>

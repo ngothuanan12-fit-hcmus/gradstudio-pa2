@@ -1,4 +1,7 @@
 {
-  "openingHours": { "open": "08:00", "close": "18:00" },
+  "openingHours": {
+    "weekday": { "open": "08:00", "close": "18:00" },
+    "weekend": { "open": "08:00", "close": "18:00" }
+  },
   "reminderHoursBefore": 24
 }
