@@ -2564,3 +2564,12 @@ Kept: awaiting An's review. `client/src/pages/Gallery.jsx` adds `!g.shootDone ? 
 Changed: nothing; checks run: `npm run format:check`, `npm run lint`, `npm test` (`10/10`), `npm run build`, `node tools/contract-check.mjs --repo . --base http://localhost:3112 --strict-values` (`158/158`, `0 FAIL`), and Playwright on G9 across 3 widths and 4 `MOCK_MODE`s.
 Rejected: calling `GET /api/jobs` from G9 instead of reading `Gallery.shootDone`, because customers receive `403` on `/api/jobs`.
 By hand: none.
+
+### 2026-11-28 — review of task 3 (`shootDone` for G9, `b3ef588`, `e491fad`, `92a14ce`)
+Commit: the commit that adds this entry (log only), on `feature/po-2711`.
+Tool: Claude Code (Claude Opus 5.5); the gates and `contract-check --strict-values` on `git archive` copies of `92a14ce` and `b3ef588` (mock 3106); new script `quan-ly-rieng/checks/check_task3.py` and `check_gallery.py` on the copy of `92a14ce` (previews 4194 and 4215, mock 3108; NEVER 15); a text comparison of `brief.md` section 2.29 with the prompt file.
+Asked for: check task 3, done by Antigravity (Gemini 4 Neon (High)).
+Kept: the three commits as made. `92a14ce`: lint, build, 10/10 tests, 158/158 examples with 0 FAIL in strict mode; `b3ef588` alone gives 152/158 (the mock does not yet send `shootDone`), the contract-before-mock order. In the app on GS-1022 as `customer2`: with the shoot job *Hoàn thành* the reason is "Lưu lựa chọn ảnh trước khi thanh toán."; after `tuan` sets `job-gs-1022-shoot` to *Đang làm* it is "Studio chưa cập nhật buổi chụp hoàn thành.", photos can still be chosen and saved, and pressing the `aria-disabled` button sends no payment; back to *Hoàn thành*, *Thanh toán 70%* turns on. G9's 15 earlier steps unchanged at 360, 768, 1280 px and in the four modes. `09` says `06` checks the saved choice only, not the shoot job. `brief.md` 2.29 matches the prompt word for word.
+Changed: nothing in the three commits. The tool line names Gemini 4 Neon (High) where tasks 1 and 2 name Gemini 4 Carbon (High); asked An to confirm the model was switched.
+Rejected: nothing.
+By hand: none.
