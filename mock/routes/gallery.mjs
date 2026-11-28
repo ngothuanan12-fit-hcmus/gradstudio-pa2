@@ -42,10 +42,12 @@ function access(req, db, params, roles) {
 
 function galleryOut(db, booking) {
   const choice = db.selections.find((s) => s.bookingId === booking.id);
+  const shootDone = db.jobs.some((j) => j.bookingId === booking.id && j.role === 'shoot' && j.status === 'Hoàn thành');
   return {
     bookingId: booking.id,
     limit: packageOf(db, booking)?.editedPhotos ?? null,
     locked: booking.payment.remainderStatus === 'paid',
+    shootDone,
     selected: choice ? [...choice.previewIds] : [],
     savedAt: choice ? choice.savedAt : null,
     previews: db.previews.filter((p) => p.bookingId === booking.id).map(previewOut),
