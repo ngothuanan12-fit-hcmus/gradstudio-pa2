@@ -2654,3 +2654,12 @@ Kept: awaiting An's review. The settings form has two fieldsets, "Giờ mở c�
 Changed: the first wording of the saved line repeated "Mở cửa" with a capital after a semicolon ("Mở cửa ngày thường …; Mở cửa cuối tuần …"), seen in the script's output; now "Mở cửa ngày thường 08:00–18:00, cuối tuần 08:00–19:00; nhắc lịch trước 48 giờ.".
 Rejected: one shared pair of fields with a weekday/weekend switch (two fieldsets show both sets of hours at once, as the settings hold them).
 By hand: none.
+
+### 2026-11-28 — checks of tasks 4 and 5 on `1b9b4bc`
+Commit: the commit that adds this entry (log only), on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); on a `git archive` copy of `1b9b4bc` (mocks 3104, 3106, 3108, 3117; NEVER 15): the gates, `contract-check --strict-values`, `check_task4.py`, `check_admin_v2.py`, `check_all_routes.py`, and `debug_routes_flags2.py` for its flags.
+Asked for: the last check before asking An to push and open the pull request.
+Kept: `format:check`, lint, build, 10/10 tests, 163/163 examples and 38/38 endpoints with 0 FAIL. Task 4 and task 5 behave as in their entries. Every route at 360, 768 and 1280 px, after a reload, behind the guards, and in the four modes, as on 2026-11-23, now with the PR #7 screens.
+Changed: the all-routes script raised flags that were its own doing again: "repeated" requests on the four roles' home pages and on `/quan-ly/hoi-thoai/c-anh` and `/quan-ly/booking/GS-1022` were the sign-in redirect's loads still in flight (parked on a blank page first, each request goes once on all six routes; on `/cong-viec`, the staff home, one of about 40 slow preview files was still loading from the redirect); "Thử lại left" on `/thanh-toan/pay-1` is the `404` for a payment that a fresh mock does not have; the three on `/` are the sections' own buttons and the carousel's `tabindex`. None is an app fault.
+Rejected: nothing.
+By hand: none.
