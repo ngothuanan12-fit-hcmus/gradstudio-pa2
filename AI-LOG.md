@@ -2645,3 +2645,12 @@ Kept: awaiting An's review. `hoursFor(db, date)` in `schedule.mjs` picks `weeken
 Changed: the first run of the edit failed on a Windows path inside a bash heredoc (a Python syntax error before any file was written); the edit was moved into a script file and run again.
 Rejected: changing `payments.mjs` here (Khánh's file).
 By hand: none.
+
+### 2026-11-28 — client G11: weekday and weekend opening hours
+Commit: the commit that adds this entry with `client/src/pages/QuanTri.jsx`, after `3560b1f`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `eslint`, `prettier`, `vite build`; `quan-ly-rieng/checks/check_admin_v2.py` (the G11 script with the new field ids) on a copy of `3560b1f` with this file (preview 4193, mock 3104; NEVER 15).
+Asked for: task 5, client side.
+Kept: awaiting An's review. The settings form has two fieldsets, "Giờ mở cửa ngày thường (thứ Hai – thứ Sáu)" and "Giờ mở cửa cuối tuần (thứ Bảy, Chủ nhật)", each with *Mở cửa* and *Đóng cửa*, checked as `PUT /api/settings` checks them, field names the API's so a `400` lands on the same input. In the app: the form opens on `08:00`, `18:00`, `24`; weekend closing before opening and reminder `0` give "Giờ đóng cửa phải sau giờ mở cửa." and "Số giờ từ 1 đến 168." on their fields with the focus on the first; saving weekend `08:00`–`19:00` and `48` keeps them after a reload; a `400` from the API lands on its field; the Admin accounts part, the guards, slow, error, empty, one request per thing, and 360/768/1280 px unchanged.
+Changed: the first wording of the saved line repeated "Mở cửa" with a capital after a semicolon ("Mở cửa ngày thường …; Mở cửa cuối tuần …"), seen in the script's output; now "Mở cửa ngày thường 08:00–18:00, cuối tuần 08:00–19:00; nhắc lịch trước 48 giờ.".
+Rejected: one shared pair of fields with a weekday/weekend switch (two fieldsets show both sets of hours at once, as the settings hold them).
+By hand: none.
