@@ -30,21 +30,22 @@ export function syncReminderForBooking(db, booking) {
     db.reminders = db.reminders.filter((r) => r.bookingId !== booking.id);
     return;
   }
-  const existing = db.reminders.find((r) => r.bookingId === booking.id);
-  const hoursBefore = existing ? existing.hoursBefore : db.settings.reminderHoursBefore;
+  const pending = db.reminders.find((r) => r.bookingId === booking.id && r.emailStatus === 'pending');
   const earliest = booking.makeup ? booking.makeup.from : booking.shoot.from;
-  const dueAt = computeDueAt(booking.date, earliest, hoursBefore);
   const message = reminderMessage(db, booking);
-  if (existing) {
-    existing.dueAt = dueAt;
-    existing.message = message;
+  if (pending) {
+    pending.dueAt = computeDueAt(booking.date, earliest, pending.hoursBefore);
+    pending.message = message;
     return;
   }
+  const existingCount = db.reminders.filter((r) => r.bookingId === booking.id).length;
+  const hoursBefore = db.settings.reminderHoursBefore;
   db.reminders.push({
-    id: `rem-${booking.id.toLowerCase()}`,
+    id:
+      existingCount === 0 ? `rem-${booking.id.toLowerCase()}` : `rem-${booking.id.toLowerCase()}-${existingCount + 1}`,
     bookingId: booking.id,
     customerId: booking.customerId,
-    dueAt,
+    dueAt: computeDueAt(booking.date, earliest, hoursBefore),
     hoursBefore,
     channels: ['inApp', 'email'],
     emailStatus: 'pending',

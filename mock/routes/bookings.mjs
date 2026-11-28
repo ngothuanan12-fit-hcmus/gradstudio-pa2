@@ -143,6 +143,16 @@ function nextBookingId(db) {
   return `GS-${max + 1}`;
 }
 
+function sameMakeup(a, b) {
+  if (!a && !b) return true;
+  if (!a || !b) return false;
+  return a.from === b.from && a.to === b.to && a.staffId === b.staffId;
+}
+
+function sameShoot(a, b) {
+  return a.from === b.from && a.to === b.to && a.staffId === b.staffId && a.roomId === b.roomId;
+}
+
 function isHttpUrl(value) {
   if (typeof value !== 'string') return false;
   const trimmed = value.trim();
@@ -317,6 +327,12 @@ function update({ req, db, params, body }) {
     }
   }
 
+  const scheduleChanged =
+    parsed.date !== booking.date ||
+    !sameMakeup(parsed.makeup, booking.makeup) ||
+    !sameShoot(parsed.shoot, booking.shoot);
+  const wasStatus = booking.status;
+
   booking.date = parsed.date;
   booking.makeup = parsed.makeup;
   booking.shoot = parsed.shoot;
@@ -328,8 +344,11 @@ function update({ req, db, params, body }) {
     booking.status = 'Đã đặt lịch';
   }
 
+  const promotedToBooked = wasStatus !== 'Đã đặt lịch' && booking.status === 'Đã đặt lịch';
   syncBookingBusy(db, booking);
-  syncReminderForBooking(db, booking);
+  if (scheduleChanged || promotedToBooked) {
+    syncReminderForBooking(db, booking);
+  }
   syncJobsForBooking(db, booking);
   return ok(bookingOut(db, booking));
 }

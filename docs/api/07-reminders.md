@@ -4,9 +4,13 @@ What a customer sees in their account (`Lịch chụp của tôi`, step G7): rem
 
 **Rules (R4 and `10-admin.md`):**
 1. When a booking moves to *Đã đặt lịch*, one reminder is created with `dueAt` set `settings.reminderHoursBefore` hours (`24` at start) before the booking's earliest milestone (`makeup.from` if present, otherwise `shoot.from`). For `GS-1024` (`24/10/2026`, make-up starting at `13:00`), `dueAt` is `2026-10-23T13:00:00+07:00`.
-2. Changing `reminderHoursBefore` in `10-admin.md` applies only to reminders created after the change (R4); rescheduling a booking (`05-bookings.md`) shifts its pending reminder using that reminder's `hoursBefore`, and cancelling removes it.
+2. Changing `reminderHoursBefore` in `10-admin.md` applies only to reminders created after the change (R4).
+3. Non-schedule booking edits (`people`, `sessionType`, `extras`) leave reminders unchanged. When rescheduling (`date`, `makeup`, `shoot`) a booking in *Đã đặt lịch*:
+   - If an unsent reminder (`emailStatus === "pending"`) exists, its `dueAt` and `message` update in place using that pending reminder's `hoursBefore`.
+   - If its previous reminder(s) already have `emailStatus === "sent"` or `"failed"`, those historical records stay untouched and a new `"pending"` reminder (`emailSentAt: null`, `hoursBefore` taken from the current `settings.reminderHoursBefore`) is created for the new slot.
+4. Cancelling a booking removes its reminders.
 
-**Team assumption.** Until the product owners answer (`FRONTEND.md`, section 5), reminders appear on `/lich-chup` with their due time, delivery channels (`inApp`, `email`), e-mail status (`pending` or `sent`), and a Vietnamese summary naming the booking code, milestone times, assigned staff, and room.
+**Team assumption.** Until the product owners answer (`FRONTEND.md`, section 5), reminders appear on `/lich-chup` with their due time, delivery channels (`inApp`, `email`), e-mail status (`pending`, `sent`, or `failed`), and a Vietnamese summary naming the booking code, milestone times, assigned staff, and room.
 
 ## Objects
 
@@ -20,7 +24,7 @@ What a customer sees in their account (`Lịch chụp của tôi`, step G7): rem
 | `dueAt` | string | ISO 8601 with offset (`+07:00`) |
 | `hoursBefore` | integer | Snapshot of `reminderHoursBefore` when created |
 | `channels` | list of strings | `["inApp", "email"]` |
-| `emailStatus` | string | `pending` or `sent` |
+| `emailStatus` | string | `pending` (*Chờ gửi*), `sent` (*Đã gửi*), or `failed` (*Gửi lỗi*) |
 | `emailSentAt` | string or `null` | ISO 8601 with offset when `sent`, otherwise `null` |
 | `message` | string | Vietnamese reminder text shown in the customer's account |
 
@@ -124,3 +128,4 @@ Content-Type: application/json
 ## Changes
 
 - 2026-11-21 — First version. No client code calls this endpoint yet.
+- 2026-11-28 — Add `emailStatus: "failed"` (*Gửi lỗi*) alongside `pending` and `sent`, clarify that non-schedule `PATCH` edits leave reminders untouched, and specify reschedule history rules: `pending` reminders update in place keeping their `hoursBefore`, while `sent` or `failed` reminders stay in history and a new `pending` reminder is created using the current `reminderHoursBefore`.

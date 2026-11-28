@@ -927,3 +927,76 @@ test('PATCH /api/bookings/:id blocks rescheduling once shoot job is Đang làm o
     await mock.stop();
   }
 });
+
+test('reminders: pending updates in place keeping hoursBefore; sent stays in history when rescheduled', async () => {
+  const mock = await startMock('normal', 3213);
+  try {
+    const admin = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const superadmin = { Authorization: 'Bearer token-u-superadmin', 'Content-Type': 'application/json' };
+    const tuan = { Authorization: 'Bearer token-u-tuan', 'Content-Type': 'application/json' };
+
+    // Change reminderHoursBefore to 12; existing pending rem-gs-1023 must keep its original hoursBefore (24).
+    const setRes = await fetch(`${mock.base}/api/settings`, {
+      method: 'PUT',
+      headers: superadmin,
+      body: JSON.stringify({ openingHours: { open: '08:00', close: '20:00' }, reminderHoursBefore: 12 }),
+    });
+    assert.equal(setRes.status, 200);
+
+    const move1023 = await fetch(`${mock.base}/api/bookings/GS-1023`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-30' }),
+    });
+    assert.equal(move1023.status, 200);
+
+    const rem1023 = await (await fetch(`${mock.base}/api/reminders?bookingId=GS-1023`, { headers: admin })).json();
+    assert.equal(rem1023.length, 1);
+    assert.equal(rem1023[0].id, 'rem-gs-1023');
+    assert.equal(rem1023[0].hoursBefore, 24);
+    assert.equal(rem1023[0].emailStatus, 'pending');
+    assert.equal(rem1023[0].dueAt, '2026-10-29T08:00:00+07:00');
+    assert.match(rem1023[0].message, /30\/10\/2026/);
+
+    // Non-schedule edit on GS-1020 (which has a sent reminder) must NOT create a new reminder.
+    const meta1020 = await fetch(`${mock.base}/api/bookings/GS-1020`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ sessionType: 'Tốt nghiệp nhóm' }),
+    });
+    assert.equal(meta1020.status, 200);
+    const rem1020Before = await (
+      await fetch(`${mock.base}/api/reminders?bookingId=GS-1020`, { headers: admin })
+    ).json();
+    assert.equal(rem1020Before.length, 1);
+    assert.equal(rem1020Before[0].emailStatus, 'sent');
+
+    // Rescheduling GS-1020 (after resetting shoot job to Chưa bắt đầu) keeps sent history and adds a new pending reminder with hoursBefore=12.
+    await fetch(`${mock.base}/api/jobs/job-gs-1020-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Chưa bắt đầu' }),
+    });
+    const move1020 = await fetch(`${mock.base}/api/bookings/GS-1020`, {
+      method: 'PATCH',
+      headers: admin,
+      body: JSON.stringify({ date: '2026-10-31' }),
+    });
+    assert.equal(move1020.status, 200);
+
+    const rem1020After = await (await fetch(`${mock.base}/api/reminders?bookingId=GS-1020`, { headers: admin })).json();
+    assert.equal(rem1020After.length, 2);
+    const sentRec = rem1020After.find((r) => r.emailStatus === 'sent');
+    const pendingRec = rem1020After.find((r) => r.emailStatus === 'pending');
+    assert.ok(sentRec);
+    assert.equal(sentRec.id, 'rem-gs-1020');
+    assert.equal(sentRec.hoursBefore, 24);
+    assert.ok(pendingRec);
+    assert.equal(pendingRec.hoursBefore, 12);
+    assert.equal(pendingRec.emailSentAt, null);
+    assert.equal(pendingRec.dueAt, '2026-10-31T01:00:00+07:00');
+    assert.match(pendingRec.message, /31\/10\/2026/);
+  } finally {
+    await mock.stop();
+  }
+});

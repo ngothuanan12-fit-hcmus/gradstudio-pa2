@@ -2650,3 +2650,13 @@ Kept: awaiting review. Updated `docs/api/05-bookings.md` (rules, error table, `G
 Changed: `npm run format:check` flagged formatting in `client/src/pages/QuanLyBookingDetail.jsx`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`12/12` pass) passed.
 Rejected: returning `409` on non-slot metadata edits when `shoot` is `Đang làm`/`Hoàn thành`, because `sessionType` and `extras` remain editable until the booking is `Hoàn thành` or `Đã hủy`.
 By hand: none.
+
+
+### 2026-11-28 — contract 07, mock & G7: add failed reminder status and preserve sent reminder history on reschedule (Mục 7)
+Commit: the commit that adds this entry with `docs/api/07-reminders.md`, `mock/routes/reminders.mjs`, `mock/routes/bookings.mjs`, `test/mock.test.mjs`, and `client/src/components/ReminderList.jsx`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: Mục 7 — add `emailStatus: "failed"` (*Gửi lỗi*) to `07-reminders.md`, keep `reminderHoursBefore` affecting only newly created reminders, update `pending` reminders in place on reschedule (without firing on non-schedule `PATCH` edits), preserve `sent`/`failed` history while creating a new `pending` reminder on reschedule, add tests, and update `ReminderList.jsx` G7 to render all 3 statuses cleanly.
+Kept: awaiting review. Updated `docs/api/07-reminders.md`, `mock/routes/reminders.mjs`, `mock/routes/bookings.mjs`, `test/mock.test.mjs`, and `client/src/components/ReminderList.jsx`.
+Changed: `npm run format:check` flagged formatting in `mock/routes/reminders.mjs` and `test/mock.test.mjs`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`13/13` pass) passed.
+Rejected: replacing `sent` or `failed` reminder records on reschedule, because preserving audit history of past delivery attempts is required alongside the new pending reminder.
+By hand: none.

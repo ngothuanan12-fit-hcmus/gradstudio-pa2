@@ -7,6 +7,12 @@ const CHANNEL_LABEL = {
   email: 'E-mail',
 };
 
+const EMAIL_STATUS = {
+  sent: { tone: 'confirmed', label: 'Đã gửi' },
+  pending: { tone: 'pending', label: 'Chờ gửi' },
+  failed: { tone: 'conflict', label: 'Gửi lỗi' },
+};
+
 // Displays automatic reminders for the selected booking inside .schedule-main.
 export default function ReminderList({ booking, remindersQuery }) {
   const emptyExplanation =
@@ -31,29 +37,32 @@ export default function ReminderList({ booking, remindersQuery }) {
           const items = list.filter((r) => r.bookingId === booking.id);
           return (
             <ul className="reminder-list">
-              {items.map((r) => (
-                <li key={r.id} className="reminder-item">
-                  <div className="reminder-top">
-                    <p className="reminder-due">
-                      Thời điểm nhắc:{' '}
-                      <time className="gs-tnum" dateTime={r.dueAt}>
-                        {formatMoment(r.dueAt)}
-                      </time>{' '}
-                      <span className="meta-line">(Trước {r.hoursBefore} giờ)</span>
+              {items.map((r) => {
+                const statusInfo = EMAIL_STATUS[r.emailStatus] || EMAIL_STATUS.pending;
+                return (
+                  <li key={r.id} className="reminder-item">
+                    <div className="reminder-top">
+                      <p className="reminder-due">
+                        Thời điểm nhắc:{' '}
+                        <time className="gs-tnum" dateTime={r.dueAt}>
+                          {formatMoment(r.dueAt)}
+                        </time>{' '}
+                        <span className="meta-line">(Trước {r.hoursBefore} giờ)</span>
+                      </p>
+                      <StatusBadge tone={statusInfo.tone}>{statusInfo.label}</StatusBadge>
+                    </div>
+                    <p className="reminder-msg">{r.message}</p>
+                    <p className="reminder-meta">
+                      Kênh: {r.channels.map((ch) => CHANNEL_LABEL[ch] || ch).join(' · ')}
+                      {r.emailStatus === 'sent' && r.emailSentAt
+                        ? ` · Đã gửi e-mail lúc ${formatMoment(r.emailSentAt)}`
+                        : r.emailStatus === 'failed'
+                          ? ' · Gửi e-mail không thành công'
+                          : ' · E-mail đang chờ đến giờ gửi'}
                     </p>
-                    <StatusBadge tone={r.emailStatus === 'sent' ? 'confirmed' : 'pending'}>
-                      {r.emailStatus === 'sent' ? 'Đã gửi' : 'Chờ gửi'}
-                    </StatusBadge>
-                  </div>
-                  <p className="reminder-msg">{r.message}</p>
-                  <p className="reminder-meta">
-                    Kênh: {r.channels.map((ch) => CHANNEL_LABEL[ch] || ch).join(' · ')}
-                    {r.emailStatus === 'sent' && r.emailSentAt
-                      ? ` · Đã gửi e-mail lúc ${formatMoment(r.emailSentAt)}`
-                      : ' · E-mail đang chờ đến giờ gửi'}
-                  </p>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           );
         }}
