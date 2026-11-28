@@ -2609,3 +2609,12 @@ Kept: awaiting An's review. `POST /api/conversations`, sent without choosing a c
 Changed: the rule merged yesterday in PR #8 (latest conversation by newest message) gave the opposite answer to the product owners' own example (conversation A without a booking, booked conversation B with the newest message: they want A); it is replaced, with a dated `## Changes` line saying so. The message times after the four inserted examples moved by four minutes, so they are written as `…` rather than recomputed.
 Rejected: keeping yesterday's rule for plain text (the answer applies to "mọi tin, cả tin nhắn chat lẫn yêu cầu đặt lịch"); putting the "no conversation without a booking" examples on `customer2` (she always has `c-anh`), so they use Linh after `05` gives `c-linh` its booking.
 By hand: none.
+
+### 2026-11-28 — mock 03: routing by the conversation without a booking; agreed proposal replaced
+Commit: the commit that adds this entry with `mock/routes/conversations.mjs`, after `6cb8803`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `npm run lint` and `prettier --check` on the file; `contract-check --strict-values` on a temporary copy (163/163, 0 FAIL) before the contract commit.
+Asked for: task 4, mock side.
+Kept: awaiting An's review. `newestOf(db, customerId, keep)` replaces `latestConversationOf` and takes a filter; `POST /api/conversations` picks the conversation without a booking that is not *Hoàn thành*, then (plain text only) the newest that is not *Hoàn thành*, else opens a new one. `POST /api/conversations/:id/proposals` marks an `agreed` proposal `replaced` as well as an `open` one (a booked conversation is refused earlier, so this only happens without a booking) and sets *Đã chốt lịch* back to *Đang tư vấn*. The tie rule of 2026-11-28 is kept.
+Changed: nothing.
+Rejected: a separate flag for "voided" proposals; `replaced` already means "cannot be answered" on screen ("Đã có đề xuất mới") and in `409`.
+By hand: none.
