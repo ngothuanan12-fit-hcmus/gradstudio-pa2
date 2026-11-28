@@ -73,10 +73,11 @@ function addMessage(c, message) {
 function latestConversationOf(db, customerId) {
   let best = null;
   let bestAt = -Infinity;
+  // A tie keeps the conversation made first, the one GET /api/conversations lists first (03-conversations.md).
   for (const c of db.conversations) {
     if (c.customerId !== customerId || !c.messages.length) continue;
     const at = Date.parse(c.messages[c.messages.length - 1].at);
-    if (at >= bestAt) {
+    if (at > bestAt) {
       best = c;
       bestAt = at;
     }

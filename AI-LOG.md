@@ -2582,3 +2582,12 @@ Kept: awaiting An's review. `09-gallery.md`: the `limit` row no longer calls the
 Changed: Khánh's note named the difference as `>=` in the mock against `>` in G3; reading both showed what that means: the list is sorted by newest message with a stable sort, so G3 takes the earliest-made of two tied conversations and the mock took the latest-made. The contract now picks G3's reading, and the mock follows in the next commit. No seed conversations tie, so no example changes.
 Rejected: changing G3 to the mock's reading (the screen shows the list in that order, so "first in the list" is what a customer sees).
 By hand: none.
+
+### 2026-11-28 — mock 03: the tie rule for the latest conversation
+Commit: the commit that adds this entry with `mock/routes/conversations.mjs`, after `a5259d7`, on `feature/po-2711`.
+Tool: Claude Code (Claude Opus 5.5); the gates and `contract-check --strict-values` on a `git archive` copy of this commit (mock 3106; NEVER 15), and `quan-ly-rieng/checks/check_task2.py` on it (preview 4214, mock 3108).
+Asked for: the mock side of the tie rule written into `03-conversations.md` in `a5259d7`.
+Kept: awaiting An's review. `latestConversationOf` keeps the conversation made first when two newest messages are at the same moment (`>` instead of `>=`), matching `GET /api/conversations` and screen G3; a comment names the rule. Results of the checks are in the review entry that follows.
+Changed: nothing.
+Rejected: nothing.
+By hand: none.
