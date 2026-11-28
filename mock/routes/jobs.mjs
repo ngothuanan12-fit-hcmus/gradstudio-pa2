@@ -50,11 +50,29 @@ function caller(req, db, roles) {
   return { user };
 }
 
+function computeJobLock(job, booking) {
+  if (!booking) return { canUpdate: false, lockReason: 'Không tìm thấy booking.' };
+  if (booking.status === 'Đã hủy') {
+    return { canUpdate: false, lockReason: 'Booking đã hủy, không thể cập nhật trạng thái công việc.' };
+  }
+  if ((job.role === 'makeup' || job.role === 'shoot') && booking.payment?.remainderStatus === 'paid') {
+    return { canUpdate: false, lockReason: 'Khách đã thanh toán 70%, công việc này đã khóa.' };
+  }
+  if (job.role === 'edit') {
+    if (booking.payment?.remainderStatus !== 'paid') {
+      return { canUpdate: false, lockReason: 'Chỉ bắt đầu chỉnh ảnh sau khi khách thanh toán 70%.' };
+    }
+    if (booking.fileLink) {
+      return { canUpdate: false, lockReason: 'Booking đã có link ảnh cuối, công việc chỉnh ảnh đã khóa.' };
+    }
+  }
+  return { canUpdate: true, lockReason: null };
+}
+
 function jobOut(db, job) {
-  const view = bookingOut(
-    db,
-    db.bookings.find((b) => b.id === job.bookingId),
-  );
+  const booking = db.bookings.find((b) => b.id === job.bookingId);
+  const view = bookingOut(db, booking);
+  const lock = computeJobLock(job, booking);
   return {
     id: job.id,
     bookingId: job.bookingId,
@@ -72,13 +90,16 @@ function jobOut(db, job) {
     people: view.people,
     extras: view.extras,
     status: job.status,
+    bookingStatus: booking.status,
+    canUpdate: lock.canUpdate,
+    lockReason: lock.lockReason,
   };
 }
 
 export function syncJobsForBooking(db, booking) {
   if (!Array.isArray(db.jobs)) return;
   if (booking.status === 'Đã hủy') {
-    db.jobs = db.jobs.filter((j) => j.bookingId !== booking.id);
+    // Keep cancelled bookings' jobs visible in G8 with bookingStatus "Đã hủy" and canUpdate: false.
     return;
   }
   if (booking.status !== 'Đã đặt lịch') return;
@@ -205,6 +226,11 @@ function updateStatus({ req, db, params, body }) {
   const status = body?.status;
   if (!JOB_STATUSES.includes(status)) {
     return invalid({ status: 'Trạng thái công việc không hợp lệ.' });
+  }
+  const booking = db.bookings.find((b) => b.id === job.bookingId);
+  const lock = computeJobLock(job, booking);
+  if (!lock.canUpdate) {
+    return fail(409, 'CONFLICT', lock.lockReason);
   }
   job.status = status;
   return ok(jobOut(db, job));

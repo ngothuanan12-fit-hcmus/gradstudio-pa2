@@ -2630,3 +2630,13 @@ Kept: awaiting review. Updated `docs/api/05-bookings.md` (`PATCH /api/bookings/:
 Changed: `npm run format:check` flagged formatting in `client/src/pages/QuanLyBookingDetail.jsx`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`10/10` pass) passed.
 Rejected: keeping `paidDepositAmount`-based recomputation for `people` changes after deposit because the product owners' rule locks `people` once the 30% deposit is paid.
 By hand: none.
+
+
+### 2026-11-28 — contract 08, mock & G8: free job transitions with locks and cancelled-booking retention (Mục 4)
+Commit: the commit that adds this entry with `docs/api/08-jobs.md`, `mock/data/jobs.json`, `mock/routes/jobs.mjs`, `test/mock.test.mjs`, and `client/src/pages/CongViec.jsx`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: Mục 4 — allow free status transitions in any order on `PATCH /api/jobs/:id` subject to locks (booking `Đã hủy`, `makeup`/`shoot` locked once 70% paid, `edit` locked before 70% paid and after `fileLink` is set), keep cancelled bookings' jobs in `db.jobs` with `bookingStatus`/`canUpdate`/`lockReason`, update `job-gs-1022-edit` seed status to `Chưa bắt đầu`, and update G8 `CongViec.jsx` to show the cancelled badge, lock status pills, and lock preview uploads with reasons.
+Kept: awaiting review. Updated `docs/api/08-jobs.md`, `mock/data/jobs.json`, `mock/routes/jobs.mjs`, `test/mock.test.mjs`, and `client/src/pages/CongViec.jsx`.
+Changed: `npm run format:check` flagged formatting in `client/src/pages/CongViec.jsx`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`11/11` pass) passed.
+Rejected: calling `/api/bookings` from G8 because `staff` gets `403`; returning `bookingStatus`, `canUpdate`, and `lockReason` directly on `Job` keeps G8 strictly on `/api/jobs`.
+By hand: none.

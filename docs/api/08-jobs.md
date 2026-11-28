@@ -33,6 +33,9 @@ Jobs exist for bookings in *Đã đặt lịch* (created from the booking's make
 | `people` | integer | Confirmed head count |
 | `extras` | list | Booking extras (`{ "extraId", "name", "modelId", "modelName", "size", "quantity" }`) |
 | `status` | string | One of the three statuses above |
+| `bookingStatus` | string | Current status of the booking (`Chờ cọc 30%`, `Đã đặt lịch`, `Hoàn thành`, or `Đã hủy`) |
+| `canUpdate` | boolean | `true` if staff/Admin can update this job's status right now; `false` when locked |
+| `lockReason` | string or `null` | Vietnamese lock reason when `canUpdate` is `false`, otherwise `null` |
 
 **Preview**
 
@@ -49,7 +52,7 @@ Jobs exist for bookings in *Đã đặt lịch* (created from the booking's make
 
 ## GET /api/jobs
 
-Who: `staff` (only jobs assigned to the signed-in staff member) or `admin` (all jobs). Ordered by `date` descending, then `from` ascending.
+Who: `staff` (only jobs assigned to the signed-in staff member) or `admin` (all jobs). Ordered by `date` descending, then `from` ascending. Cancelled bookings keep their existing jobs in this list with `bookingStatus: "Đã hủy"` and `canUpdate: false` (while `busy` blocks are released).
 
 Query:
 
@@ -73,7 +76,7 @@ Authorization: Bearer {{token:mai}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "job-gs-1024-makeup", "bookingId": "GS-1024", "staffId": "u-mai", "staffName": "Mai", "role": "makeup", "title": "Makeup · Gói Tốt nghiệp Premium", "customerName": "Nguyễn Thùy Linh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "from": "13:00", "to": "14:00", "roomName": …, "people": 1, "extras": …, "status": "Chưa bắt đầu"}, …]
+[{"id": "job-gs-1024-makeup", "bookingId": "GS-1024", "staffId": "u-mai", "staffName": "Mai", "role": "makeup", "title": "Makeup · Gói Tốt nghiệp Premium", "customerName": "Nguyễn Thùy Linh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "from": "13:00", "to": "14:00", "roomName": …, "people": 1, "extras": …, "status": "Chưa bắt đầu", "bookingStatus": "Đã đặt lịch", "canUpdate": true, "lockReason": null}, …]
 ```
 
 Tuấn reads his assigned jobs (`GS-1024` shoot and `GS-1022` shoot):
@@ -87,7 +90,7 @@ Authorization: Bearer {{token:tuan}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "job-gs-1024-shoot", "bookingId": "GS-1024", "staffId": "u-tuan", "staffName": "Tuấn", "role": "shoot", "title": "Chụp · Gói Tốt nghiệp Premium", "customerName": "Nguyễn Thùy Linh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "from": "14:00", "to": "16:00", "roomName": "Phòng B", "people": 1, "extras": …, "status": "Chưa bắt đầu"}, …]
+[{"id": "job-gs-1024-shoot", "bookingId": "GS-1024", "staffId": "u-tuan", "staffName": "Tuấn", "role": "shoot", "title": "Chụp · Gói Tốt nghiệp Premium", "customerName": "Nguyễn Thùy Linh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "from": "14:00", "to": "16:00", "roomName": "Phòng B", "people": 1, "extras": …, "status": "Chưa bắt đầu", "bookingStatus": "Đã đặt lịch", "canUpdate": true, "lockReason": null}, …]
 ```
 
 `staff3` (Hoàng Gia Huy) sees his editing job on GS-1022, not GS-1024:
@@ -101,7 +104,7 @@ Authorization: Bearer {{token:staff3}}
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-[{"id": "job-gs-1022-edit", "bookingId": "GS-1022", "staffId": "u-staff3", "staffName": "Hoàng Gia Huy", "role": "edit", "title": "Chỉnh ảnh · Gói Tốt nghiệp Premium", "customerName": "Trần Minh Anh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-18", "from": "16:00", "to": "18:00", "roomName": null, "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "status": "Đang làm"}]
+[{"id": "job-gs-1022-edit", "bookingId": "GS-1022", "staffId": "u-staff3", "staffName": "Hoàng Gia Huy", "role": "edit", "title": "Chỉnh ảnh · Gói Tốt nghiệp Premium", "customerName": "Trần Minh Anh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-18", "from": "16:00", "to": "18:00", "roomName": null, "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "status": "Chưa bắt đầu", "bookingStatus": "Đã đặt lịch", "canUpdate": false, "lockReason": "Chỉ bắt đầu chỉnh ảnh sau khi khách thanh toán 70%."}]
 ```
 
 A customer cannot read staff jobs:
@@ -133,7 +136,12 @@ Content-Type: application/json
 
 ## PATCH /api/jobs/:id
 
-Who: the assigned `staff` member (or `admin`). Updates the job's status without changing the booking's status. Another staff member not assigned to this job answers `403`.
+Who: the assigned `staff` member (or `admin`). Transitions freely between `Chưa bắt đầu`, `Đang làm`, and `Hoàn thành` in any order (including backwards) without changing the booking's status, subject to three locks (`409 CONFLICT`):
+1. **Cancelled booking (`booking.status === "Đã hủy"`):** all jobs of the booking are locked (`"Booking đã hủy, không thể cập nhật trạng thái công việc."`).
+2. **`makeup` and `shoot` jobs:** locked once the customer has paid the remaining 70% (`booking.payment.remainderStatus === "paid"`, `"Khách đã thanh toán 70%, công việc này đã khóa."`).
+3. **`edit` jobs:** cannot be updated until the customer pays the remaining 70% (`booking.payment.remainderStatus !== "paid"`, `"Chỉ bắt đầu chỉnh ảnh sau khi khách thanh toán 70%."`), and locked once the booking has a final file link (`Boolean(booking.fileLink)`, `"Booking đã có link ảnh cuối, công việc chỉnh ảnh đã khóa."`).
+
+Another staff member not assigned to this job answers `403`.
 
 Body:
 
@@ -143,7 +151,7 @@ Body:
 
 Success: `200` with the updated job object.
 
-Errors: `400` (`status`: `"Trạng thái công việc không hợp lệ."`), `401`, `403` (wrong role or unassigned staff), `404` (unknown job id).
+Errors: `400` (`status`: `"Trạng thái công việc không hợp lệ."`), `401`, `403` (wrong role or unassigned staff), `404` (unknown job id), `409` (job locked by booking cancellation, 70% remainder status, or final file link).
 
 Tuấn updates his GS-1024 shoot job to *Đang làm*:
 
@@ -159,7 +167,24 @@ Content-Type: application/json
 HTTP/1.1 200 OK
 Content-Type: application/json
 
-{"id": "job-gs-1024-shoot", "bookingId": "GS-1024", "staffId": "u-tuan", "staffName": "Tuấn", "role": "shoot", "title": "Chụp · Gói Tốt nghiệp Premium", "customerName": "Nguyễn Thùy Linh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "from": "14:00", "to": "16:00", "roomName": "Phòng B", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "status": "Đang làm"}
+{"id": "job-gs-1024-shoot", "bookingId": "GS-1024", "staffId": "u-tuan", "staffName": "Tuấn", "role": "shoot", "title": "Chụp · Gói Tốt nghiệp Premium", "customerName": "Nguyễn Thùy Linh", "serviceName": "Tốt nghiệp", "packageName": "Gói Tốt nghiệp Premium", "date": "2026-10-24", "from": "14:00", "to": "16:00", "roomName": "Phòng B", "people": 1, "extras": [{"extraId": "makeup", "name": "Makeup", "modelId": null, "modelName": null, "size": null, "quantity": 1}], "status": "Đang làm", "bookingStatus": "Đã đặt lịch", "canUpdate": true, "lockReason": null}
+```
+
+`staff3` cannot start editing GS-1022 before the customer pays the remaining 70% (`409`):
+
+```http
+PATCH /api/jobs/job-gs-1022-edit
+Authorization: Bearer {{token:staff3}}
+Content-Type: application/json
+
+{"status": "Đang làm"}
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{"error": {"code": "CONFLICT", "message": "Chỉ bắt đầu chỉnh ảnh sau khi khách thanh toán 70%."}}
 ```
 
 `staff3` (not assigned to GS-1024) cannot update Tuấn's job:
@@ -347,3 +372,4 @@ Content-Type: application/json
 - 2026-11-21 — First version. No client code calls these endpoints yet.
 - 2026-11-22 — Replace base64 preview `url` values with `GET /api/previews/:id` serving the binary image file directly (JSON `401`/`403`/`404` examples here, `200` binary verified in `test/mock.test.mjs`; seed previews may use sample photos in `client/public/photos/`). No client code calls these endpoints yet.
 - 2026-11-22 — Rename job status *Đang thực hiện* to *Đang làm* and state that job status never alters booking status per the product owners' decision ([answer](https://www.facebook.com/groups/wad.fit.hcmus/posts/28572365245795609/?comment_id=28787637377601727&reply_comment_id=28808596665505798)); fix the preview-loading explanation (`GET /api/previews/:id` requires a Bearer token, so browsers fetch it with the header into an object URL for `<img>` instead of `<img src>`). Client: `PreviewImage` (`client/src/components/PreviewImage.jsx`, step G9) already fetches previews with the token.
+- 2026-11-28 — Allow free status transitions (including backwards) on `PATCH /api/jobs/:id` subject to locks (`Đã hủy`, `makeup`/`shoot` locked after 70% paid, `edit` locked before 70% paid and after `fileLink` is set), keep cancelled bookings' jobs visible in `GET /api/jobs`, add `bookingStatus`/`canUpdate`/`lockReason` to `Job`, and align `job-gs-1022-edit` seed status to *Chưa bắt đầu*.

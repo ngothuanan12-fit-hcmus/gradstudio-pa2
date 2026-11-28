@@ -141,10 +141,19 @@ test('POST /api/bookings/:id/cancel cancels a booking and releases its held slot
     assert.equal(after.status, 200);
     assert.equal((await after.json()).available, true);
 
-    const reminders = await fetch(`${mock.base}/api/reminders?bookingId=GS-1023`, { headers });
-    assert.deepEqual(await reminders.json(), []);
-    const jobs = await fetch(`${mock.base}/api/jobs?bookingId=GS-1023`, { headers });
-    assert.deepEqual(await jobs.json(), []);
+    const reminders = await (await fetch(`${mock.base}/api/reminders?bookingId=GS-1023`, { headers })).json();
+    assert.deepEqual(reminders, []);
+    const jobs = await (await fetch(`${mock.base}/api/jobs?bookingId=GS-1023`, { headers })).json();
+    assert.equal(jobs.length, 1);
+    assert.equal(jobs[0].bookingStatus, 'Đã hủy');
+    assert.equal(jobs[0].canUpdate, false);
+
+    const patchCancelledJob = await fetch(`${mock.base}/api/jobs/${jobs[0].id}`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(patchCancelledJob.status, 409);
 
     const again = await fetch(`${mock.base}/api/bookings/GS-1023/cancel`, {
       method: 'POST',
@@ -766,6 +775,101 @@ test('rescheduling a deposit-paid unheld booking to a free slot moves it to Đã
       (await remConfirm.json()).error.message,
       'Buổi chụp chưa hoàn thành, chưa thể thanh toán 70% còn lại.',
     );
+  } finally {
+    await mock.stop();
+  }
+});
+
+test('PATCH /api/jobs/:id allows free status transitions subject to booking, remainder, and fileLink locks', async () => {
+  const mock = await startMock('normal', 3211);
+  try {
+    const admin = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
+    const mai = { Authorization: 'Bearer token-u-mai', 'Content-Type': 'application/json' };
+    const tuan = { Authorization: 'Bearer token-u-tuan', 'Content-Type': 'application/json' };
+    const staff3 = { Authorization: 'Bearer token-u-staff3', 'Content-Type': 'application/json' };
+    const customer2 = { Authorization: 'Bearer token-u-customer2', 'Content-Type': 'application/json' };
+
+    // Free transitions including backwards on GS-1022 shoot while remainder is unpaid.
+    const back = await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(back.status, 200);
+    assert.equal((await back.json()).status, 'Đang làm');
+
+    const doneAgain = await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Hoàn thành' }),
+    });
+    assert.equal(doneAgain.status, 200);
+
+    // Edit job is locked before 70% remainder is paid.
+    const earlyEdit = await fetch(`${mock.base}/api/jobs/job-gs-1022-edit`, {
+      method: 'PATCH',
+      headers: staff3,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(earlyEdit.status, 409);
+
+    // Customer saves photo choice and pays 70% remainder for GS-1022.
+    await fetch(`${mock.base}/api/bookings/GS-1022/selection`, {
+      method: 'PUT',
+      headers: customer2,
+      body: JSON.stringify({ previewIds: ['prv-gs-1022-1'] }),
+    });
+    const pay = await (
+      await fetch(`${mock.base}/api/payments`, {
+        method: 'POST',
+        headers: customer2,
+        body: JSON.stringify({ bookingId: 'GS-1022', kind: 'remainder' }),
+      })
+    ).json();
+    const paid = await fetch(`${mock.base}/api/payments/${pay.id}/result`, {
+      method: 'POST',
+      headers: customer2,
+      body: JSON.stringify({ result: 'success' }),
+    });
+    assert.equal(paid.status, 200);
+
+    // Makeup and shoot are now locked; edit is unlocked.
+    const lockedMakeup = await fetch(`${mock.base}/api/jobs/job-gs-1022-makeup`, {
+      method: 'PATCH',
+      headers: mai,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(lockedMakeup.status, 409);
+
+    const lockedShoot = await fetch(`${mock.base}/api/jobs/job-gs-1022-shoot`, {
+      method: 'PATCH',
+      headers: tuan,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(lockedShoot.status, 409);
+
+    const editStart = await fetch(`${mock.base}/api/jobs/job-gs-1022-edit`, {
+      method: 'PATCH',
+      headers: staff3,
+      body: JSON.stringify({ status: 'Hoàn thành' }),
+    });
+    assert.equal(editStart.status, 200);
+    assert.equal((await editStart.json()).canUpdate, true);
+
+    // Setting final fileLink locks edit job completely.
+    const linkRes = await fetch(`${mock.base}/api/bookings/GS-1022/file-link`, {
+      method: 'PUT',
+      headers: admin,
+      body: JSON.stringify({ fileLink: 'https://drive.gradstudio.test/gs-1022-final' }),
+    });
+    assert.equal(linkRes.status, 200);
+
+    const lockedEdit = await fetch(`${mock.base}/api/jobs/job-gs-1022-edit`, {
+      method: 'PATCH',
+      headers: staff3,
+      body: JSON.stringify({ status: 'Đang làm' }),
+    });
+    assert.equal(lockedEdit.status, 409);
   } finally {
     await mock.stop();
   }

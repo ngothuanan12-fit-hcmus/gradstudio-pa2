@@ -34,9 +34,13 @@ function formatExtras(extras) {
 function JobCard({ job, onJobUpdated }) {
   const statusAction = useAction();
   const [statusFeedback, setStatusFeedback] = useState('');
+  const isCancelledBooking = job.bookingStatus === 'Đã hủy';
+  const canUpdate = job.canUpdate !== false && !isCancelledBooking;
+  const lockMessage =
+    job.lockReason || (isCancelledBooking ? 'Booking đã hủy, không thể cập nhật trạng thái công việc.' : '');
 
   function handleStatusUpdate(nextStatus) {
-    if (nextStatus === job.status || statusAction.busy) return;
+    if (!canUpdate || nextStatus === job.status || statusAction.busy) return;
     setStatusFeedback('');
     statusAction.run(async () => {
       const updated = await api(`/jobs/${job.id}`, {
@@ -61,7 +65,10 @@ function JobCard({ job, onJobUpdated }) {
             {job.bookingId} · {job.customerName}
           </p>
         </div>
-        <StatusBadge tone={JOB_TONE[job.status] || 'neutral'}>{job.status}</StatusBadge>
+        <div className="badge-pair">
+          {isCancelledBooking ? <StatusBadge tone="conflict">Booking đã hủy</StatusBadge> : null}
+          <StatusBadge tone={JOB_TONE[job.status] || 'neutral'}>{job.status}</StatusBadge>
+        </div>
       </div>
 
       <dl className="detail-grid">
@@ -101,13 +108,19 @@ function JobCard({ job, onJobUpdated }) {
               type="button"
               className="filter-pill"
               aria-pressed={job.status === s}
-              aria-disabled={statusAction.busy ? 'true' : undefined}
+              aria-disabled={!canUpdate || statusAction.busy ? 'true' : undefined}
+              aria-describedby={!canUpdate && lockMessage ? `job-lock-${job.id}` : undefined}
               onClick={() => handleStatusUpdate(s)}
             >
               {s}
             </button>
           ))}
         </div>
+        {!canUpdate && lockMessage ? (
+          <p id={`job-lock-${job.id}`} className="field-hint">
+            {lockMessage}
+          </p>
+        ) : null}
         <p className="meta-line">Cập nhật trạng thái công việc không làm thay đổi trạng thái booking.</p>
         {statusAction.error ? (
           <p className="form-error" role="alert">
@@ -123,12 +136,13 @@ function JobCard({ job, onJobUpdated }) {
 }
 
 // Loads and uploads preview photos for one assigned booking using ONLY /bookings/:id/previews (never /bookings/:id).
-function BookingPreviewsCard({ bookingId, customerName, packageName }) {
+function BookingPreviewsCard({ bookingId, bookingStatus, customerName, packageName }) {
   const previewsQuery = useApi(`/bookings/${bookingId}/previews`);
   const uploadAction = useAction();
   const fileInputRef = useRef(null);
   const [fileError, setFileError] = useState(null);
   const [uploadDone, setUploadDone] = useState('');
+  const isCancelled = bookingStatus === 'Đã hủy';
 
   const fileInputId = `preview-upload-${bookingId}`;
   const fileErrorId = `preview-upload-error-${bookingId}`;
@@ -140,7 +154,7 @@ function BookingPreviewsCard({ bookingId, customerName, packageName }) {
 
   function handleUpload(event) {
     event.preventDefault();
-    if (uploadAction.busy) return;
+    if (isCancelled || uploadAction.busy) return;
     setFileError(null);
     setUploadDone('');
 
@@ -198,6 +212,7 @@ function BookingPreviewsCard({ bookingId, customerName, packageName }) {
             {customerName} · {packageName}
           </p>
         </div>
+        {isCancelled ? <StatusBadge tone="conflict">Booking đã hủy</StatusBadge> : null}
       </div>
 
       <DataState
@@ -240,6 +255,7 @@ function BookingPreviewsCard({ bookingId, customerName, packageName }) {
             className="input staff-file-input"
             type="file"
             accept="image/jpeg,image/png,image/webp"
+            disabled={isCancelled}
             aria-invalid={fileError ? 'true' : undefined}
             aria-describedby={`${fileInputId}-hint${fileError ? ` ${fileErrorId}` : ''}`}
             onChange={handleFileChange}
@@ -264,9 +280,19 @@ function BookingPreviewsCard({ bookingId, customerName, packageName }) {
           {uploadDone}
         </p>
 
-        <Button variant="primary" type="submit" aria-disabled={uploadAction.busy ? 'true' : undefined}>
+        <Button
+          variant="primary"
+          type="submit"
+          aria-disabled={isCancelled || uploadAction.busy ? 'true' : undefined}
+          aria-describedby={isCancelled ? `preview-lock-${bookingId}` : undefined}
+        >
           {uploadAction.busy ? 'Đang tải ảnh lên…' : 'Tải ảnh xem trước'}
         </Button>
+        {isCancelled ? (
+          <p id={`preview-lock-${bookingId}`} className="field-hint">
+            Booking đã hủy, không thể tải ảnh xem trước.
+          </p>
+        ) : null}
       </form>
     </article>
   );
@@ -296,6 +322,7 @@ export default function CongViec() {
               seenBookings.add(j.bookingId);
               bookingEntries.push({
                 bookingId: j.bookingId,
+                bookingStatus: j.bookingStatus,
                 customerName: j.customerName,
                 packageName: j.packageName,
               });
@@ -344,6 +371,7 @@ export default function CongViec() {
                     <BookingPreviewsCard
                       key={entry.bookingId}
                       bookingId={entry.bookingId}
+                      bookingStatus={entry.bookingStatus}
                       customerName={entry.customerName}
                       packageName={entry.packageName}
                     />
