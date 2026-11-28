@@ -152,6 +152,17 @@ test('POST /api/bookings/:id/cancel cancels a booking and releases its held slot
       body: JSON.stringify({}),
     });
     assert.equal(again.status, 409);
+
+    // Cancelling a booking linked to a conversation (GS-1022 -> c-customer2) keeps the conversation in Đã chốt lịch.
+    const cancelWithConv = await fetch(`${mock.base}/api/bookings/GS-1022/cancel`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ reason: 'Khách đổi kế hoạch' }),
+    });
+    assert.equal(cancelWithConv.status, 200);
+    const convRes = await fetch(`${mock.base}/api/conversations/c-customer2`, { headers });
+    assert.equal(convRes.status, 200);
+    assert.equal((await convRes.json()).status, 'Đã chốt lịch');
   } finally {
     await mock.stop();
   }

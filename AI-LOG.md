@@ -2600,3 +2600,13 @@ Kept: lint, build, 10/10 tests, 158/158 examples and 38/38 endpoints with 0 FAIL
 Changed: nothing.
 Rejected: nothing.
 By hand: none.
+
+
+### 2026-11-28 — contract 05 & test: keep conversation status Đã chốt lịch on booking cancel (Mục 9)
+Commit: the commit that adds this entry with `docs/api/05-bookings.md`, `test/mock.test.mjs`, and `brief.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm test` (`test/mock.test.mjs`).
+Asked for: Mục 9 — document explicitly in `docs/api/05-bookings.md` (rule 1 and `POST /api/bookings/:id/cancel`) that cancelling a booking keeps its linked conversation in *Đã chốt lịch* (never reverts to *Đang tư vấn* or moves to *Hoàn thành*), verify `mock/routes/bookings.mjs` preserves it with a test in `test/mock.test.mjs`, and record the verbatim prompt in `brief.md` section 2.31.
+Kept: awaiting review. Updated `docs/api/05-bookings.md` rule 1, `POST /api/bookings/:id/cancel`, and `## Changes`; confirmed `mock/routes/bookings.mjs` `cancel()` leaves conversation status untouched; added a `GS-1022` cancel assertion in `test/mock.test.mjs` verifying `GET /api/conversations/c-customer2` remains `Đã chốt lịch`; appended `brief.md` section 2.31.
+Changed: nothing.
+Rejected: changing `mock/routes/bookings.mjs` because `cancel()` already leaves `db.conversations` untouched.
+By hand: none.
