@@ -2618,3 +2618,12 @@ Kept: awaiting An's review. `newestOf(db, customerId, keep)` replaces `latestCon
 Changed: nothing.
 Rejected: a separate flag for "voided" proposals; `replaced` already means "cannot be answered" on screen ("Đã có đề xuất mới") and in `409`.
 By hand: none.
+
+### 2026-11-28 — client G3: the note says which conversation receives a message, by the new rule
+Commit: the commit that adds this entry with `client/src/pages/Conversations.jsx`, after `79a5423`, on `feature/po-2811`.
+Tool: Claude Code (Claude Opus 5.5); `eslint`, `prettier --check`, `vite build`; new script `quan-ly-rieng/checks/check_task4.py` on a copy of `79a5423` with this file (preview 4216, mock 3108; NEVER 15).
+Asked for: task 4, client side.
+Kept: awaiting An's review. `destinationOf` picks what the mock picks (the conversation without a booking that is not *Hoàn thành*; if none, nothing for a request, the newest open conversation for plain text), and the note and heading follow it: "Tin nhắn và yêu cầu đặt lịch sẽ được thêm vào hội thoại chưa có booking của bạn (…)", "Tin nhắn sẽ được thêm vào hội thoại về booking GS-1024. Muốn đặt lịch mới, chọn "Gửi kèm yêu cầu đặt lịch": yêu cầu sẽ mở hội thoại mới.", "Yêu cầu đặt lịch sẽ mở một hội thoại mới với studio.". In the app: `customer2`, with her newest message in the booked `c-customer2`, sends text and a request and both land in `c-anh`; Linh, whose only conversation has GS-1024, sends text into `c-linh` and a request opens `c-linh-2`; on `c-anh` an agreed proposal replaced by a new one comes back *Đang tư vấn*, the old one answers `409`, `POST /api/bookings` answers `409` "Khách chưa đồng ý lịch đề xuất.", the customer sees "Đã có đề xuất mới"; slow, error (no note), empty ("Tin gửi đi sẽ mở một hội thoại mới với studio."); `/tu-van`, `/tu-van/c-anh` and `/quan-ly/hoi-thoai/c-anh` at 360, 768, 1280 px with one `h1`, no sideways scroll, labels, nothing under 44 px, no console error.
+Changed: the script first counted no *Tạo booking* button on the Admin screen after the re-proposal; the disabled button with its reason ("Khách chưa đồng ý lịch đề xuất — …") lives in Khánh's proposal form, shown at the proposal step, so G6 still meets the rubric; not changed here.
+Rejected: a link to the target conversation inside the note (inline links sit under 44 px at 360 px; the conversation list above already links each one).
+By hand: none.
