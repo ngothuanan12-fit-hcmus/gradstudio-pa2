@@ -2591,3 +2591,12 @@ Kept: awaiting An's review. `latestConversationOf` keeps the conversation made f
 Changed: nothing.
 Rejected: nothing.
 By hand: none.
+
+### 2026-11-28 — checks of the PR #8 review fixes (`a5259d7`, `4a9095a`)
+Commit: the commit that adds this entry (log only), on `feature/po-2711`.
+Tool: Claude Code (Claude Opus 5.5); the gates and `contract-check --strict-values` on a `git archive` copy of `4a9095a` (mock 3106; NEVER 15); `quan-ly-rieng/checks/check_task2.py` on it (preview 4214, mock 3108).
+Asked for: check the two fixes before asking Khánh to approve PR #8.
+Kept: lint, build, 10/10 tests, 158/158 examples and 38/38 endpoints with 0 FAIL in strict mode; in G3, Linh's first message opens `c-linh` and the second joins it, `customer2`'s message joins `c-anh`, a plain message joins the booked `c-customer2` and a request opens `c-customer2-2`; a replaced proposal still answers `409` "Đề xuất này đã được thay bằng đề xuất mới.".
+Changed: nothing.
+Rejected: nothing.
+By hand: none.
