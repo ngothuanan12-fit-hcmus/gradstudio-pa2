@@ -294,16 +294,8 @@ function update({ req, db, params, body }) {
   Object.assign(fields, schedFields);
   if (Object.keys(fields).length) return invalid(fields);
 
-  const touchesPrice = b.people !== undefined;
-  if (touchesPrice && booking.payment.remainderStatus === 'paid') {
-    return fail(409, 'CONFLICT', 'Booking đã thanh toán đủ, không thể đổi giá.');
-  }
-  if (touchesPrice && booking.payment.depositStatus === 'paid') {
-    const candidate = { ...booking, people: b.people };
-    const nextPricing = computePricing(db, candidate);
-    if (nextPricing.total < nextPricing.deposit) {
-      return fail(409, 'CONFLICT', 'Tổng tiền không được nhỏ hơn tiền cọc đã thanh toán.');
-    }
+  if (b.people !== undefined && (booking.status !== 'Chờ cọc 30%' || booking.payment.depositStatus !== 'unpaid')) {
+    return fail(409, 'CONFLICT', 'Chỉ sửa được số người khi booking còn Chờ cọc 30%.');
   }
 
   const touchesSlot = b.date !== undefined || b.makeup !== undefined || b.shoot !== undefined;

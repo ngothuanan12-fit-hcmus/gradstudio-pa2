@@ -2620,3 +2620,13 @@ Kept: awaiting review. Updated `docs/api/06-payments.md` (rule 5, error tables, 
 Changed: `npm run format:check` flagged a long line in `test/mock.test.mjs`; ran `npx prettier --write test/mock.test.mjs`, after which `format:check` and `npm test` (`10/10` pass) passed.
 Rejected: changing `Gallery.jsx` or `PaymentResult.jsx` because they already handle `!g.shootDone` and `409` errors cleanly.
 By hand: none.
+
+
+### 2026-11-28 — contract 05, mock & G10: lock people edits after 30% deposit (Mục 2)
+Commit: the commit that adds this entry with `docs/api/05-bookings.md`, `mock/routes/bookings.mjs`, `test/mock.test.mjs`, `client/src/pages/QuanLyBookingDetail.jsx`, and `FRONTEND.md`, on `feature/pa3-business-rules`.
+Tool: Antigravity (Gemini 4 Neon (Medium)); `npm run format:check`, `npm run lint`, `npm test`, `npm run build`.
+Asked for: Mục 2 — allow `people` changes on `PATCH /api/bookings/:id` only when `status === 'Chờ cọc 30%'` and `payment.depositStatus === 'unpaid'` (`409 CONFLICT` otherwise), update `GS-1023` examples in `05-bookings.md` and tests in `test/mock.test.mjs`, remove the pending note in `FRONTEND.md`, and disable `Số người` with a clear hint (omitting `people` from `PATCH`) on G10 `QuanLyBookingDetail.jsx`.
+Kept: awaiting review. Updated `docs/api/05-bookings.md` (`PATCH /api/bookings/:id` rules, error table, `GS-1024` `200`/`restore` + `GS-1023` `409` examples, `## Changes`), `mock/routes/bookings.mjs`, `test/mock.test.mjs`, `client/src/pages/QuanLyBookingDetail.jsx`, and `FRONTEND.md`.
+Changed: `npm run format:check` flagged formatting in `client/src/pages/QuanLyBookingDetail.jsx`; ran `npx prettier --write`, after which `format:check`, `lint`, `build` (`189` modules), and `npm test` (`10/10` pass) passed.
+Rejected: keeping `paidDepositAmount`-based recomputation for `people` changes after deposit because the product owners' rule locks `people` once the 30% deposit is paid.
+By hand: none.

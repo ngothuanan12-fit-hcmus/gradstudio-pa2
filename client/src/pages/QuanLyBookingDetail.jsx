@@ -185,6 +185,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
   const selectedCostumeModel = costumeExtra?.models?.find((m) => m.id === costumeModelId) || null;
 
   const isClosed = booking.status === 'Hoàn thành' || booking.status === 'Đã hủy';
+  const peopleLocked = isClosed || booking.status !== 'Chờ cọc 30%' || booking.payment?.depositStatus === 'paid';
   const isRaceClash = booking.status === 'Chờ cọc 30%' && booking.payment?.depositStatus === 'paid';
   const canSetFileLink = booking.status === 'Đã đặt lịch';
   const canCancel = booking.status === 'Chờ cọc 30%' || booking.status === 'Đã đặt lịch';
@@ -322,7 +323,7 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
       nextShoot.roomId !== booking.shoot.roomId;
     if (shootChanged) patchBody.shoot = nextShoot;
 
-    if (parsedPeople !== booking.people || people.trim() === '') patchBody.people = parsedPeople;
+    if (!peopleLocked && (parsedPeople !== booking.people || people.trim() === '')) patchBody.people = parsedPeople;
     if (trimmedSession !== booking.sessionType) patchBody.sessionType = trimmedSession;
     if (
       extrasCatalog.length &&
@@ -667,12 +668,10 @@ function BookingDetailBody({ booking, staffQuery, roomsQuery, extrasQuery, payme
               max="200"
               label="Số người"
               hint={
-                booking.payment?.remainderStatus === 'paid'
-                  ? 'Đã thanh toán 70%, thay đổi số người làm đổi giá sẽ bị từ chối.'
-                  : undefined
+                peopleLocked && !isClosed ? 'Chỉ sửa được số người khi booking còn Chờ cọc 30% và chưa cọc.' : undefined
               }
               value={people}
-              disabled={isClosed}
+              disabled={peopleLocked}
               error={fieldErrors.people}
               onChange={(e) => {
                 setPeople(e.target.value);

@@ -168,27 +168,102 @@ test('POST /api/bookings/:id/cancel cancels a booking and releases its held slot
   }
 });
 
-test('PATCH /api/bookings/:id locks deposit once depositStatus is paid', async () => {
+test('PATCH /api/bookings/:id allows people edits while Chờ cọc 30% unpaid and locks people once deposit is paid', async () => {
   const mock = await startMock('normal', 3206);
   try {
     const headers = { Authorization: 'Bearer token-u-thao', 'Content-Type': 'application/json' };
-    const updated = await fetch(`${mock.base}/api/bookings/GS-1023`, {
+    const linhHeaders = { Authorization: 'Bearer token-u-linh', 'Content-Type': 'application/json' };
+
+    const conv = await (
+      await fetch(`${mock.base}/api/conversations`, {
+        method: 'POST',
+        headers: linhHeaders,
+        body: JSON.stringify({
+          text: 'Em hỏi kỷ yếu lớp 20 bạn',
+          request: {
+            serviceId: 'ky-yeu',
+            packageId: 'ky-yeu-lop',
+            date: '2026-10-28',
+            time: '09:00',
+            people: 20,
+          },
+        }),
+      })
+    ).json();
+    const proposed = await (
+      await fetch(`${mock.base}/api/conversations/${conv.id}/proposals`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          date: '2026-10-28',
+          makeup: null,
+          shoot: { from: '09:00', to: '13:00', staffId: 'u-tuan', roomId: 'r-b' },
+        }),
+      })
+    ).json();
+    const proposalId = proposed.messages[proposed.messages.length - 1].proposal.id;
+    await fetch(`${mock.base}/api/conversations/${conv.id}/proposals/${proposalId}/answer`, {
+      method: 'POST',
+      headers: linhHeaders,
+      body: JSON.stringify({ answer: 'agree' }),
+    });
+    const created = await (
+      await fetch(`${mock.base}/api/bookings`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          conversationId: conv.id,
+          serviceId: 'ky-yeu',
+          packageId: 'ky-yeu-lop',
+          people: 20,
+        }),
+      })
+    ).json();
+    assert.equal(created.status, 'Chờ cọc 30%');
+
+    // Unpaid Chờ cọc 30% allows updating people and recomputes total, deposit, remainder.
+    const updated = await fetch(`${mock.base}/api/bookings/${created.id}`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ people: 25 }),
+    });
+    assert.equal(updated.status, 200);
+    const body = await updated.json();
+    assert.equal(body.people, 25);
+    assert.equal(body.pricing.total, 8750000);
+    assert.equal(body.pricing.deposit, 2625000);
+    assert.equal(body.pricing.remainder, 6125000);
+
+    // Paying 30% deposit locks people edits.
+    const pay = await (
+      await fetch(`${mock.base}/api/payments`, {
+        method: 'POST',
+        headers: linhHeaders,
+        body: JSON.stringify({ bookingId: created.id, kind: 'deposit' }),
+      })
+    ).json();
+    const payOk = await fetch(`${mock.base}/api/payments/${pay.id}/result`, {
+      method: 'POST',
+      headers: linhHeaders,
+      body: JSON.stringify({ result: 'success' }),
+    });
+    assert.equal(payOk.status, 200);
+
+    const lockedCreated = await fetch(`${mock.base}/api/bookings/${created.id}`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ people: 30 }),
+    });
+    assert.equal(lockedCreated.status, 409);
+    assert.equal((await lockedCreated.json()).error.message, 'Chỉ sửa được số người khi booking còn Chờ cọc 30%.');
+
+    const lockedSeed = await fetch(`${mock.base}/api/bookings/GS-1023`, {
       method: 'PATCH',
       headers,
       body: JSON.stringify({ people: 22 }),
     });
-    assert.equal(updated.status, 200);
-    const body = await updated.json();
-    assert.equal(body.pricing.total, 7700000);
-    assert.equal(body.pricing.deposit, 2100000);
-    assert.equal(body.pricing.remainder, 5600000);
-
-    const tooLow = await fetch(`${mock.base}/api/bookings/GS-1023`, {
-      method: 'PATCH',
-      headers,
-      body: JSON.stringify({ people: 5 }),
-    });
-    assert.equal(tooLow.status, 409);
+    assert.equal(lockedSeed.status, 409);
+    assert.equal((await lockedSeed.json()).error.message, 'Chỉ sửa được số người khi booking còn Chờ cọc 30%.');
 
     const empty = await fetch(`${mock.base}/api/bookings/GS-1023`, {
       method: 'PATCH',
